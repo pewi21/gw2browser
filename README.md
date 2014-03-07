@@ -70,6 +70,20 @@ since gw2DatTools won't compile without those features anyway.
 If you want to use Visual Leak Detector, remove the "//" at #include <vld.h>
 in Gw2Browser.cpp.
 
+How to compile
+--------------
+
+Windows:
+* Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
+by use these command at libweb directory.
+
+nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj
+nmake /f Makefile.vc CFG=debug-dynamic RTLIBCFG=dynamic OBJDIR=obj
+nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
+nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=dynamic OBJDIR=obj
+
+* Compile Gw2Browser using Visual Studio solution.
+
 Authors
 -------
 
