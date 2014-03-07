@@ -75,6 +75,19 @@ namespace gw2b {
 			return image;
 
 		} else if ( fourcc == FCC_RIFF ) {		// we already check if it is WebP or not
+			// Create image
+			wxImage image;
+
+			int* width = nullptr;
+			int* height = nullptr;
+
+			RGBA* decoded_data = nullptr;
+
+			RGB* colors = nullptr;
+			uint8_t* alphas = nullptr;
+
+			size_t data_size = m_data.GetSize( );
+			auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
 
 			WebPDecoderConfig config;
 			WebPDecBuffer* const output_buffer = &config.output;
@@ -82,57 +95,53 @@ namespace gw2b {
 
 			VP8StatusCode status = VP8_STATUS_OK;
 
-			size_t data_size = m_data.GetSize( );
-			auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
-
 			status = WebPGetFeatures( reinterpret_cast<const uint8_t*>( data ), data_size, bitstream );
 
 			if ( status != VP8_STATUS_OK ) {
-				wxMessageBox( wxString( "This file isn't WebP" ), _( "" ), wxOK | wxICON_INFORMATION );
-				return false;
-			}
-
-			if ( bitstream->has_animation ) {
-				wxMessageBox( wxString( "Not support Animation WebP" ), _( "" ), wxOK | wxICON_INFORMATION );
-				return false;
-			}
-
-			output_buffer->colorspace = bitstream->has_alpha ? MODE_RGBA : MODE_RGB;
-
-			// Create image and fill it with color data
-			wxImage image;
-			int* width = nullptr;
-			int* height = nullptr;
-			uint8_t* colors = nullptr;
-			uint8_t* alphas = nullptr;
-
-			if ( output_buffer->colorspace == bitstream->has_alpha ) {
-				auto colors = WebPDecodeRGB( data, data_size, width, height );
-				//auto colors = WebPDecodeRGBA( data, data_size, width, height );
-
-				if ( colors == NULL ) {
-					wxMessageBox( wxString( "Invalid WebP format" ), _( "ERROR" ), wxOK | wxICON_EXCLAMATION );
-				} else {
-					image = wxImage( bitstream->width, bitstream->height, colors, alphas, false );
-
-					// doesn't support alpha chanel yet.
-					//image.SetAlpha( alphas );
-				}
-
+				wxMessageBox( wxString( "This file isn't WebP!" ), _( "" ), wxOK | wxICON_EXCLAMATION );
+			} else if ( bitstream->has_animation ) {
+				wxMessageBox( wxString( "Not support Animation WebP." ), _( "" ), wxOK | wxICON_INFORMATION );
 			} else {
-				auto colors = WebPDecodeRGB( data, data_size, width, height );
 
-				if ( colors == NULL ) {
-					wxMessageBox( wxString( "Invalid WebP format" ), _( "ERROR" ), wxOK | wxICON_EXCLAMATION );
+				output_buffer->colorspace = bitstream->has_alpha ? MODE_RGBA : MODE_RGB;
+
+				RGBA* decoded_data = reinterpret_cast<RGBA*>( WebPDecodeRGBA( data, data_size, width, height ) );
+
+				if ( decoded_data == NULL ) {
+					wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
 				} else {
-					image = wxImage( bitstream->width, bitstream->height, colors, false );
-				}
+					uint numPixels = bitstream->width * bitstream->height;
+					auto colors = allocate<RGB>( numPixels );
+					auto alphas = allocate<uint8_t>( numPixels );
 
+#pragma omp parallel for
+					for ( int y = 0; y < static_cast<int>( bitstream->height ); y++ ) {
+						uint32 curPixel = ( y * bitstream->width );
+
+						for ( uint x = 0; x < static_cast<uint>( bitstream->width ); x++ ) {
+							::memset( &colors[curPixel].r, decoded_data[curPixel].r, sizeof( colors[curPixel].r ) );
+							::memset( &colors[curPixel].g, decoded_data[curPixel].g, sizeof( colors[curPixel].g ) );
+							::memset( &colors[curPixel].b, decoded_data[curPixel].b, sizeof( colors[curPixel].b ) );
+
+							if ( output_buffer->colorspace == bitstream->has_alpha ) {
+								::memset( &alphas[curPixel], decoded_data[curPixel].a, sizeof( alphas[curPixel] ) );
+							}
+							curPixel++;
+						}
+					}
+
+					image = wxImage( bitstream->width, bitstream->height, reinterpret_cast<uint8_t*>( colors ), false );
+
+					// Set alpha if the format has any
+					if ( output_buffer->colorspace == bitstream->has_alpha ) {
+						image.SetAlpha( alphas );
+					}
+				}
 			}
 
 			return image;
 
-		} else { // JPEGs
+		} else {	// JPEGs
 			wxImage image;
 			wxMemoryInputStream stream( m_data.GetPointer( ), m_data.GetSize( ) );
 			image.LoadFile( stream, wxBITMAP_TYPE_JPEG );
