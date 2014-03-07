@@ -2,8 +2,8 @@ Gw2Browser
 ==========
 
 Opens a Guild Wars 2 .dat file and allows the user to browse and extract its 
-files. Currently it supports viewing power-of-two textures, models, and binary 
-files.
+files. Currently it supports viewing power-of-two textures, JPEG and WebP Images,
+models, and binary files.
 
 When a .dat file is opened, it will first index the file. This makes it *a lot*
 faster to re-open the same .dat. Unfortunately, every time the .dat changes it
@@ -59,8 +59,9 @@ since gw2DatTools won't compile without those features anyway.
 * [DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
 * [wxWidgets 3.0.0](http://wxwidgets.org/)
-* [OpenGL Extension Wrangler Library](http://glew.sourceforge.net/)
-* [OpenGL Mathematics](http://glm.g-truc.net/)
+* [OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
+* [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
+* [libwebp](https://code.google.com/p/webp/)*Included*
 
 ### Optional libraries
 
@@ -87,3 +88,11 @@ thanks to:
 special thanks to:
 
 * ArenaNet/NCSoft and the team that make Guild Wars 2!
+
+Legal Disclaimer
+----------------
+
+Guild Wars 2 © ArenaNet, LLC. and NC Interactive, LLC. All rights reserved.
+Guild Wars, Guild Wars 2, ArenaNet, NCSOFT, the Interlocking NC Logo,
+and all associated logos and designs are trademarks or registered trademarks of NCSOFT Corporation.
+All other trademarks are the property of their respective owners.
