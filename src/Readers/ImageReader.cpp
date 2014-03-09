@@ -107,7 +107,7 @@ namespace gw2b {
 
 				RGBA* decoded_data = reinterpret_cast<RGBA*>( WebPDecodeRGBA( data, data_size, width, height ) );
 
-				if ( decoded_data == NULL ) {
+				if ( decoded_data == nullptr ) {
 					wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
 				} else {
 					uint numPixels = bitstream->width * bitstream->height;
