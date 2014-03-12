@@ -429,6 +429,9 @@ namespace gw2b {
 			case FCC_txtm:
 				po_fileType = ANFT_TextPackManifest;
 				break;
+			case FCC_txtV:
+				po_fileType = ANFT_TextPackVariant;
+				break;
 			case FCC_txtv:
 				po_fileType = ANFT_TextPackVoices;
 				break;
