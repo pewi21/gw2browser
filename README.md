@@ -61,7 +61,7 @@ since gw2DatTools won't compile without those features anyway.
 * [wxWidgets 3.0.0](http://wxwidgets.org/)
 * [OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
-* [libwebp](https://code.google.com/p/webp/)*Included*
+* [libwebp](https://code.google.com/p/webp/) *Included*
 
 ### Optional libraries
 
@@ -77,10 +77,10 @@ Windows:
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
 by use these command at libweb directory.
 
-nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj
-nmake /f Makefile.vc CFG=debug-dynamic RTLIBCFG=dynamic OBJDIR=obj
-nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
-nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=dynamic OBJDIR=obj
+`nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
+`nmake /f Makefile.vc CFG=debug-dynamic RTLIBCFG=dynamic OBJDIR=obj`
+`nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
+`nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=dynamic OBJDIR=obj`
 
 * Compile Gw2Browser using Visual Studio solution.
 
