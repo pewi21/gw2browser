@@ -64,23 +64,26 @@ namespace gw2b {
 		ANFT_PF,                    /**< PF file of unknown type. */
 		ANFT_Manifest,              /**< Manifest file. */
 		ANFT_TextPackManifest,		/**< TextPack Manifest file. */
+		ANFT_TextPackVariant,		/**< TextPack Variant file. */
 		ANFT_TextPackVoices,		/**< TextPack Voices file. */
 		ANFT_Bank,                  /**< Soundbank file, contains other files. */
 		ANFT_BankIndex,				/**< Soundbank files index */
 		ANFT_Model,                 /**< Model file. */
 		ANFT_DependencyTable,       /**< Dependency table. */
 		ANFT_EULA,                  /**< EULA file. */
-		ANFT_HavokCloth,            /**< Cloth physics properties. */
-		ANFT_Map,                   /**< Map file. */
+		ANFT_HavokCollision,        /**< Havok collision properties. */
+		ANFT_MapContent,			/**< Map content file. */
+		ANFT_MapParam,              /**< Map parameter file. */
 		ANFT_MapShadow,				/**< Map shadow file. */
 		ANFT_PagedImageTable,		/**< Paged Image Table file. */
 		ANFT_Material,              /**< Compiled DirectX 9 shader. */
 		ANFT_Composite,				/**< Composite data. */
 		ANFT_Cinematic,             /**< Cinematic data. */
-		ANFT_Animation,				/**< Animation data. */
+		ANFT_AnimSequences,			/**< Animation Sequences data. */
 		ANFT_EmoteAnimation,		/**< Emote animation data. */
 		ANFT_PortalManifest,		/**< Portal Manifest file. */
 		ANFT_AudioScript,			/**< Audio script file. */
+		ANFT_ShaderCache,			/**< Shader cache file. */
 
 		// Binary
 		ANFT_Binary,                /**< Binary file of unknown type. */

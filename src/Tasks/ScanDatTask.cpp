@@ -227,6 +227,11 @@ namespace gw2b {
 			MakeCategory( wxT( "TextPack Manifests" ) );
 		}
 
+		// TextPack Variant
+		else if ( p_fileType == ANFT_TextPackVariant ) {
+			MakeCategory( wxT( "TextPack Variant" ) );
+		}
+
 		// TextPack Voices
 		else if ( p_fileType == ANFT_TextPackVoices ) {
 			MakeCategory( wxT( "TextPack Voices" ) );
@@ -244,7 +249,7 @@ namespace gw2b {
 
 		// Audio Script
 		else if ( p_fileType == ANFT_AudioScript ) {
-			MakeCategory( wxT( "Audio Scripts" ) );
+			MakeCategory( wxT( "Audio scripts" ) );
 		}
 
 		// Model files
@@ -268,18 +273,23 @@ namespace gw2b {
 		}
 
 		// Havok
-		else if ( p_fileType == ANFT_HavokCloth ) {
-			MakeCategory( wxT( "Havok cloth" ) );
+		else if ( p_fileType == ANFT_HavokCollision ) {
+			MakeCategory( wxT( "Havok collision" ) );
 		}
 
-		// Maps
-		else if ( p_fileType == ANFT_Map ) {
-			MakeCategory( wxT( "Maps" ) );
+		// Map content
+		else if ( p_fileType == ANFT_MapContent ) {
+			MakeCategory( wxT( "Map content" ) );
+		}
+
+		// Map parameter
+		else if ( p_fileType == ANFT_MapParam ) {
+			MakeCategory( wxT( "Map parameter" ) );
 		}
 
 		// Map shadows
 		else if ( p_fileType == ANFT_MapShadow ) {
-			MakeCategory( wxT( "Maps shadow" ) );
+			MakeCategory( wxT( "Map shadow" ) );
 		}
 
 		// Mini Maps
@@ -296,9 +306,10 @@ namespace gw2b {
 		else if ( p_fileType == ANFT_Composite ) {
 			MakeCategory( wxT( "Composite data" ) );
 		}
-		// Animations
-		else if ( p_fileType == ANFT_Animation ) {
-			MakeCategory( wxT( "Animations" ) );
+
+		// Animation Sequences
+		else if ( p_fileType == ANFT_AnimSequences ) {
+			MakeCategory( wxT( "Animation sequences" ) );
 		}
 
 		// Emote animations
@@ -314,6 +325,11 @@ namespace gw2b {
 		// Bink2 video files
 		else if ( p_fileType == ANFT_Bink2Video ) {
 			MakeCategory( wxT( "Bink videos" ) );
+		}
+
+		// Bink2 video files
+		else if ( p_fileType == ANFT_ShaderCache ) {
+			MakeCategory( wxT( "Shader Cache" ) );
 		}
 
 		// Random PF files

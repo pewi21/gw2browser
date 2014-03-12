@@ -89,8 +89,11 @@ namespace gw2b {
 			break;
 
 		// Maps stuff
-		case ANFT_Map:
-			return wxT( ".mapc" );
+		case ANFT_MapContent:
+			return wxT( ".cntc" );
+			break;
+		case ANFT_MapParam:
+			return wxT( ".parm" );
 			break;
 		case ANFT_MapShadow:
 			return wxT( ".mpsd" );
@@ -105,11 +108,11 @@ namespace gw2b {
 		case ANFT_Composite:
 			return wxT( ".cmpc" );
 			break;
-		case ANFT_HavokCloth:
-			return wxT( ".hvkc" );
+		case ANFT_HavokCollision:
+			return wxT( ".havk" );
 			break;
-		case ANFT_Animation:
-			return wxT( ".anic" );
+		case ANFT_AnimSequences:
+			return wxT( ".seqn" );
 			break;
 		case ANFT_EmoteAnimation:
 			return wxT( ".emoc" );
@@ -125,6 +128,9 @@ namespace gw2b {
 
 		case ANFT_TextPackManifest:
 			return wxT( ".txtm" );
+			break;
+		case ANFT_TextPackVariant:
+			return wxT( ".txtvar" );
 			break;
 		case ANFT_TextPackVoices:
 			return wxT( ".txtv" );
@@ -151,6 +157,10 @@ namespace gw2b {
 		// Bink2 Video file
 		case ANFT_Bink2Video:
 			return wxT( ".bk2" );
+			break;
+
+		case ANFT_ShaderCache :
+			return wxT( ".cdhs" );
 			break;
 
 		// Binary

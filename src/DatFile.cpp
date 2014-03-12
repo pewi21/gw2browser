@@ -454,10 +454,13 @@ namespace gw2b {
 				po_fileType = ANFT_EULA;
 				break;
 			case FCC_hvkC:
-				po_fileType = ANFT_HavokCloth;
+				po_fileType = ANFT_HavokCollision;
+				break;
+			case FCC_cntc:
+				po_fileType = ANFT_MapContent;
 				break;
 			case FCC_mapc:
-				po_fileType = ANFT_Map;
+				po_fileType = ANFT_MapParam;
 				break;
 			case FCC_mpsd:
 				po_fileType = ANFT_MapShadow;
@@ -472,13 +475,16 @@ namespace gw2b {
 				po_fileType = ANFT_Composite;
 				break;
 			case FCC_anic:
-				po_fileType = ANFT_Animation;
+				po_fileType = ANFT_AnimSequences;
 				break;
 			case FCC_emoc:
 				po_fileType = ANFT_EmoteAnimation;
 				break;
 			case FCC_CINP:
 				po_fileType = ANFT_Cinematic;
+				break;
+			case FCC_CDHS:
+				po_fileType = ANFT_ShaderCache;
 				break;
 			}
 		}

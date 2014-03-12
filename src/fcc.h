@@ -67,7 +67,9 @@ namespace gw2b {
 		FCC_ABNK = 0x4b4e4241,
 		FCC_ABIX = 0x58494241,
 		FCC_AMSP = 0x50534d41,
+		FCC_CDHS = 0x53484443,
 		FCC_CINP = 0x504e4943,
+		FCC_cntc = 0x63746e63,
 		FCC_MODL = 0x4c444f4d,
 		FCC_GEOM = 0x4d4f4547,
 		FCC_DEPS = 0x53504544,
@@ -82,6 +84,7 @@ namespace gw2b {
 		FCC_prlt = 0x746c7270,
 		FCC_cmpc = 0x63706d63,
 		FCC_txtm = 0x6d747874,
+		FCC_txtV = 0x56747874,
 		FCC_txtv = 0x76747874,
 
 		// Sound id's
