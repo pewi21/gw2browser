@@ -378,7 +378,7 @@ namespace gw2b {
 		auto bounds = m_model.bounds( );
 		auto size = bounds.size( );
 		auto distance = m_camera.distance( );
-		auto extents = XMFLOAT3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
+		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
 
 		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
 		auto maxZ = ( maxSize + distance ) * 1.1f;
@@ -390,7 +390,7 @@ namespace gw2b {
 		// Projection matrix
 		wxSize clientSize = this->GetClientSize( );
 		float aspectRatio = ( static_cast<float>( clientSize.x ) / static_cast<float>( clientSize.y ) );
-		auto projMatrix = ::XMMatrixPerspectiveFovLH( ( 5.0f / 12.0f ) * XM_PI, aspectRatio, minZ, maxZ );
+		auto projMatrix = ::XMMatrixPerspectiveFovLH( ( 5.0f / 12.0f ) * glm::pi<float>( ), aspectRatio, minZ, maxZ );
 
 		// WorldViewProjection matrix
 		XMFLOAT4X4 worldViewProjMatrix;
@@ -437,7 +437,7 @@ namespace gw2b {
 	}
 
 	void ModelViewer::focus( ) {
-		float fov = ( 5.0f / 12.0f ) * XM_PI;
+		float fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 		uint meshCount = m_model.numMeshes( );
 
 		if ( !meshCount ) {
@@ -457,6 +457,14 @@ namespace gw2b {
 		}
 
 		// Update camera and render
+		XMFLOAT3 dxBounds;
+		glm::vec3 glmBounds = bounds.center( );
+		dxBounds.x = glmBounds.x;
+		dxBounds.y = glmBounds.y;
+		dxBounds.z = glmBounds.z;
+
+		m_camera.setPivot( dxBounds );
+
 		//m_camera.setPivot( bounds.center( ) );
 		m_camera.setDistance( distance );
 		this->render( );
@@ -470,7 +478,7 @@ namespace gw2b {
 
 		// Yaw/Pitch
 		if ( p_event.LeftIsDown( ) ) {
-			float rotateSpeed = 0.5f * ( XM_PI / 180.0f );   // 0.5 degrees per pixel
+			float rotateSpeed = 0.5f * ( glm::pi<float>() / 180.0f );   // 0.5 degrees per pixel
 			m_camera.addYaw( rotateSpeed * -( p_event.GetX( ) - m_lastMousePos.x ) );
 			m_camera.addPitch( rotateSpeed * ( p_event.GetY( ) - m_lastMousePos.y ) );
 			this->render( );

@@ -93,7 +93,7 @@ namespace gw2b {
 	}
 
 	float Camera::clampPitch( float p_pitch ) {
-		float rotationLimit = ( 89.0f * XM_PI ) / 180.0f;
+		float rotationLimit = ( 89.0f * glm::pi<float>( ) ) / 180.0f;
 		return wxMin( rotationLimit, wxMax( -rotationLimit, p_pitch ) );
 	}
 
