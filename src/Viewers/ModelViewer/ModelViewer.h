@@ -97,6 +97,8 @@ namespace gw2b {
 		bool populateBuffers( const Mesh& p_mesh, MeshCache& p_cache );
 		void updateMatrices( );
 		IDirect3DTexture9* loadTexture( uint p_fileId );
+
+		bool statusWireframe = false;
 	}; // class ImageViewer
 
 }; // namespace gw2b

@@ -61,6 +61,8 @@ namespace gw2b {
 		m_presentParams.BackBufferFormat = D3DFMT_A8R8G8B8;
 		m_presentParams.EnableAutoDepthStencil = TRUE;
 		m_presentParams.AutoDepthStencilFormat = D3DFMT_D16;
+		m_presentParams.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
+		m_presentParams.MultiSampleQuality = 0;
 
 		// Init Direct3D
 		IDirect3DDevice9* device = nullptr;
@@ -281,6 +283,13 @@ namespace gw2b {
 	void ModelViewer::render( ) {
 		// No culling as we don't really care about render performance
 		m_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+
+		if ( statusWireframe == true ) {
+			m_device->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+		} else {
+			m_device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
+		}
+
 		this->updateMatrices( );
 
 		uint vertexCount = 0;
@@ -298,6 +307,7 @@ namespace gw2b {
 		this->drawText( 0, 0x28, wxString::Format( wxT( "Triangles: %d" ), triangleCount ) );
 
 		wxSize clientSize = this->GetClientSize( );
+		this->drawText( 0, clientSize.y - 0x64, wxT( "Toggle Wireframe: W" ) );
 		this->drawText( 0, clientSize.y - 0x50, wxT( "Focus: F button" ) );
 		this->drawText( 0, clientSize.y - 0x3c, wxT( "Pan: Middle mouse button" ) );
 		this->drawText( 0, clientSize.y - 0x28, wxT( "Rotate: Left mouse button" ) );
@@ -517,6 +527,8 @@ namespace gw2b {
 	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
 		if ( p_event.GetKeyCode( ) == 'F' ) {
 			this->focus( );
+		} else if ( p_event.GetKeyCode( ) == 'W' ) {
+			statusWireframe = !statusWireframe;
 		}
 	}
 
