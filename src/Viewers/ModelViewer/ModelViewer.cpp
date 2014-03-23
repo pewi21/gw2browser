@@ -104,6 +104,9 @@ namespace gw2b {
 			if ( m_textureCache[i].diffuseMap ) {
 				m_textureCache[i].diffuseMap->Release( );
 			}
+			/*if ( m_textureCache[i].normalMap ) {
+				m_textureCache[i].normalMap->Release( );
+			}*/
 		}
 	}
 
@@ -120,6 +123,9 @@ namespace gw2b {
 			if ( m_textureCache[i].diffuseMap ) {
 				m_textureCache[i].diffuseMap->Release( );
 			}
+			/*if ( m_textureCache[i].normalMap ) {
+				m_textureCache[i].normalMap->Release( );
+			}*/
 		}
 		m_textureCache.Clear( );
 		m_meshCache.Clear( );
@@ -173,6 +179,13 @@ namespace gw2b {
 			} else {
 				cache.diffuseMap = nullptr;
 			}
+
+			// Load normal map
+			/*if ( material.normalMap ) {
+				cache.normalMap = this->loadTexture( material.normalMap );
+			} else {
+				cache.normalMap = nullptr;
+			}*/
 		}
 
 		// Re-focus and re-render

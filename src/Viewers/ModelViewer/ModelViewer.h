@@ -40,6 +40,7 @@ namespace gw2b {
 
 	struct TextureCache {
 		IDirect3DTexture9*  diffuseMap;
+		/*IDirect3DTexture9*  normalMap;*/
 	};
 
 	struct AutoReleaser {

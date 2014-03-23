@@ -531,7 +531,7 @@ namespace gw2b {
 				omp_set_lock( &locks[j] );
 
 				// Bail if this material index already has data
-				if ( data.diffuseMap && data.flags ) {
+				if ( data.diffuseMap && data.normalMap && data.lightMap && data.flags ) {
 					omp_unset_lock( &locks[j] );
 					continue;
 				}
@@ -558,7 +558,17 @@ namespace gw2b {
 
 					// Diffuse?
 					if ( textures[t].hash == 0x67531924 ) {
-						data.diffuseMap = DatFile::fileIdFromFileReference( *fileReference );
+						data.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					}
+
+					// Normal?
+					else if ( textures[t].hash == 0x1816c9ee || textures[t].hash == 0x8b0bbd87 || textures[t].hash == 0xa55a48b0 ) {
+						data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					}
+
+					// Light Map ?
+					else if ( textures[t].hash == 0x680bbd87 ) {
+						data.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 						break;
 					}
 				}

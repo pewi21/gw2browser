@@ -94,6 +94,8 @@ namespace gw2b {
 
 	struct MaterialData {
 		uint32 diffuseMap;
+		uint32 normalMap;
+		uint32 lightMap;
 		uint32 flags;
 	};
 
