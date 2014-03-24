@@ -78,16 +78,8 @@ namespace gw2b {
 			// Create image
 			wxImage image;
 
-			int* width = nullptr;
-			int* height = nullptr;
-
-			RGBA* decoded_data = nullptr;
-
-			RGB* colors = nullptr;
-			uint8_t* alphas = nullptr;
-
-			size_t data_size = m_data.GetSize( );
 			auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
+			size_t data_size = m_data.GetSize( );
 
 			WebPDecoderConfig config;
 			WebPDecBuffer* const output_buffer = &config.output;
@@ -99,44 +91,48 @@ namespace gw2b {
 
 			if ( status != VP8_STATUS_OK ) {
 				wxMessageBox( wxString( "This file isn't WebP!" ), _( "" ), wxOK | wxICON_EXCLAMATION );
-			} else if ( bitstream->has_animation ) {
+				return image;
+			}
+
+			if ( bitstream->has_animation ) {
 				wxMessageBox( wxString( "Not support Animation WebP." ), _( "" ), wxOK | wxICON_INFORMATION );
-			} else {
+				return image;
+			}
 
-				output_buffer->colorspace = bitstream->has_alpha ? MODE_RGBA : MODE_RGB;
+			output_buffer->colorspace = bitstream->has_alpha ? MODE_RGBA : MODE_RGB;
 
-				RGBA* decoded_data = reinterpret_cast<RGBA*>( WebPDecodeRGBA( data, data_size, width, height ) );
+			RGBA* decoded_data = reinterpret_cast<RGBA*>( WebPDecodeRGBA( data, data_size, nullptr, nullptr ) );
 
-				if ( decoded_data == nullptr ) {
-					wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
-				} else {
-					uint numPixels = bitstream->width * bitstream->height;
-					auto colors = allocate<RGB>( numPixels );
-					auto alphas = allocate<uint8_t>( numPixels );
+			if ( decoded_data == nullptr ) {
+				wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
+				return image;
+			}
+
+			uint numPixels = bitstream->width * bitstream->height;
+			auto colors = allocate<RGB>( numPixels );
+			auto alphas = allocate<uint8_t>( numPixels );
 
 #pragma omp parallel for
-					for ( int y = 0; y < static_cast<int>( bitstream->height ); y++ ) {
-						uint32 curPixel = ( y * bitstream->width );
+			for ( int y = 0; y < static_cast<int>( bitstream->height ); y++ ) {
+				uint32 curPixel = ( y * bitstream->width );
 
-						for ( uint x = 0; x < static_cast<uint>( bitstream->width ); x++ ) {
-							::memset( &colors[curPixel].r, decoded_data[curPixel].r, sizeof( colors[curPixel].r ) );
-							::memset( &colors[curPixel].g, decoded_data[curPixel].g, sizeof( colors[curPixel].g ) );
-							::memset( &colors[curPixel].b, decoded_data[curPixel].b, sizeof( colors[curPixel].b ) );
+				for ( uint x = 0; x < static_cast<uint>( bitstream->width ); x++ ) {
+					::memset( &colors[curPixel].r, decoded_data[curPixel].r, sizeof( colors[curPixel].r ) );
+					::memset( &colors[curPixel].g, decoded_data[curPixel].g, sizeof( colors[curPixel].g ) );
+					::memset( &colors[curPixel].b, decoded_data[curPixel].b, sizeof( colors[curPixel].b ) );
 
-							if ( output_buffer->colorspace == bitstream->has_alpha ) {
-								::memset( &alphas[curPixel], decoded_data[curPixel].a, sizeof( alphas[curPixel] ) );
-							}
-							curPixel++;
-						}
-					}
-
-					image = wxImage( bitstream->width, bitstream->height, reinterpret_cast<uint8_t*>( colors ), false );
-
-					// Set alpha if the format has any
 					if ( output_buffer->colorspace == bitstream->has_alpha ) {
-						image.SetAlpha( alphas );
+						::memset( &alphas[curPixel], decoded_data[curPixel].a, sizeof( alphas[curPixel] ) );
 					}
+					curPixel++;
 				}
+			}
+
+			image = wxImage( bitstream->width, bitstream->height, reinterpret_cast<uint8_t*>( colors ), false );
+
+			// Set alpha if the format has any
+			if ( output_buffer->colorspace == bitstream->has_alpha ) {
+				image.SetAlpha( alphas );
 			}
 
 			return image;
