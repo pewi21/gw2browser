@@ -163,6 +163,10 @@ namespace gw2b {
 			return wxT( ".cdhs" );
 			break;
 
+		case ANFT_Model:
+			return wxT( ".modl" );
+			break;
+
 		// Binary
 		case ANFT_DLL:
 			return wxT( ".dll" );
