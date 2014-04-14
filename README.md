@@ -1,3 +1,14 @@
+On the break
+------------
+
+I'm going to hold develop this software, due to I have been conscripted to do military services
+for 2 years (1/5/2014 - 1/5/2016) if any one feel like to continue this, feel free to folk it! :)
+if you continue this project, I suggest to re-design Gw2Browser code architecture first
+so it will be easy to expand in the future. secondly port or rewrite the model renderer to OpenGL,
+and make it run on Windows, MacOS X, Linux (you need to fix gw2DatTools tho.)
+
+See you later! *waves*
+
 Gw2Browser
 ==========
 
@@ -12,7 +23,7 @@ will have to be re-indexed (for now).
 Keep in mind that if you keep tree items expanded while the indexer is running,
 or while an index is being read, the process is *a lot* slower.
 
-The latest binary can always be found [Here](https://drive.google.com/folderview?id=0B0EZlcQoXgS1eXQwUEI3blVNRHc&usp=sharing)
+The latest binary can always be found [Here](http://goo.gl/4xMRVF)
 
 For people who can't run Gw2Browser, download and Install
 [Visual C++ Redistributable Packages for Visual Studio 2013](http://www.microsoft.com/en-us/download/details.aspx?id=40784)
@@ -82,6 +93,7 @@ by use these command at libweb directory.
 `nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
 `nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=dynamic OBJDIR=obj`
 
+* Compile wxWidgets.
 * Compile Gw2Browser using Visual Studio solution.
 
 Authors
