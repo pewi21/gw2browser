@@ -3,11 +3,11 @@ On the break
 
 I'm going to hold develop this software, due to I have been conscripted to do military services
 for 2 years (1/5/2014 - 1/5/2016) if any one feel like to continue this, feel free to folk it! :)
-if you continue this project, I suggest to re-design Gw2Browser code architecture first
-so it will be easy to expand in the future. secondly port or rewrite the model renderer to OpenGL,
-and make it run on Windows, MacOS X, Linux (you need to fix gw2DatTools tho.)
+if you continue this project, I suggest re-design Gw2Browser code architecture port or rewrite
+the model renderer to OpenGL and make it run on Windows, MacOS X, Linux
+(you also need to fix gw2DatTools)
 
-See you later! *waves*
+See you later! * waves *
 
 Gw2Browser
 ==========
@@ -107,6 +107,7 @@ thanks to:
 * [Loumie](https://github.com/ahom) : gw2DatTools
 * [Till034](https://github.com/Till034) : OnCompareItems function overload
 * David Dantowitz : Simple CRC
+* Demonsangel : Noesis script fmt_GW2_pf.py
 * [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
