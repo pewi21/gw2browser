@@ -313,6 +313,31 @@ namespace gw2b {
 		this->drawText( 0, clientSize.y - 0x28, wxT( "Rotate: Left mouse button" ) );
 		this->drawText( 0, clientSize.y - 0x14, wxT( "Zoom: Scroll wheel" ) );
 
+		// Texture That need to extract manualy.
+		wxString diffuseMapFile = wxString( wxT( "diffuseMap:\n" ) );
+		wxString normalMapFile = wxString( wxT( "normalMap:\n" ) );
+		wxString lightMapFile = wxString( wxT( "lightMap:\n" ) );
+
+		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+			auto& material = m_model.materialData( i );
+
+			if ( material.diffuseMap ) {
+				diffuseMapFile += wxString::Format( wxT( "%d\n" ), material.diffuseMap );
+			}
+			if ( material.normalMap ) {
+				normalMapFile += wxString::Format( wxT( "%d\n" ), material.normalMap );
+			}
+			if ( material.lightMap ) {
+				lightMapFile += wxString::Format( wxT( "%d\n" ), material.lightMap );
+			}
+		}
+
+		this->drawText( clientSize.x - 0x11c, 0, wxT( "Textures" ) );
+
+		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMapFile ) );
+		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMapFile ) );
+		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMapFile ) );
+
 		this->endFrame( );
 	}
 

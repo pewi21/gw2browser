@@ -336,7 +336,7 @@ namespace gw2b {
 		uint16 width = atex->width;
 		uint16 height = atex->height;
 
-		// Hack fix for 126x64 ATEX
+		// Hack for read 126x64 ATEX
 		if ( width == 126 && height == 64 ) {
 			width = 128;
 		}

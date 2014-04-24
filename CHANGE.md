@@ -1,12 +1,15 @@
 Change log
 ----------
 
-Gw2Browser_2014-01-30
+Gw2Browser_2014-04-24
 ---------------------
 Change:
-- Fix crash when viewing Luminance DDS file.
-- Fix camera not look at center of model.
-- Hack fix for reading 126x64 ATEX files.
+- Add texture id info used with the model in model viewer, texture file need to be extract manually.
+
+Gw2Browser_2014-03-25
+---------------------
+Change:
+- Hack for read 126x64 ATEX files.
 - Model Reader now use high-res texture, still need to figure out ModelReader to not load LOD models.
 - WebP support, can export to png. WebP can open by Chrome browser.
 - Bink 2 video detect, to play it you need The RAD Video Tools
@@ -18,6 +21,10 @@ the reason why it crash is unknown. (maybe they use custom Bink 2 format?)
 
 Removed:
 - ABFF file support.
+
+Fix:
+- Fix crash when viewing Luminance DDS file.
+- Fix camera not look at center of model.
 
 Issue:
 - Memory leak on viewing WebP files.
