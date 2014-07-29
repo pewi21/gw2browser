@@ -69,7 +69,7 @@ since gw2DatTools won't compile without those features anyway.
 
 * [DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
-* [wxWidgets 3.0.0](http://wxwidgets.org/)
+* [wxWidgets 3.0.1](http://wxwidgets.org/)
 * [OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
 * [libwebp](https://code.google.com/p/webp/) *Included*
@@ -86,15 +86,18 @@ How to compile
 
 Windows:
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
-by use these command at libweb directory.
+by use these command at extern\libweb directory.
 
 `nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
+
 `nmake /f Makefile.vc CFG=debug-dynamic RTLIBCFG=dynamic OBJDIR=obj`
+
 `nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
+
 `nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=dynamic OBJDIR=obj`
 
 * Compile wxWidgets.
-* Compile Gw2Browser using Visual Studio solution.
+* Compile Gw2Browser.
 
 Authors
 -------
@@ -115,6 +118,11 @@ thanks to:
 special thanks to:
 
 * ArenaNet/NCSoft and the team that make Guild Wars 2!
+
+Contributing
+------------
+
+For contributions, please go to [this project's page on GitHub](https://github.com/kytulendu/Gw2Browser).
 
 Legal Disclaimer
 ----------------
