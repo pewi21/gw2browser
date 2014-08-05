@@ -367,6 +367,9 @@ namespace gw2b {
 		case FCC_asnd:
 			po_fileType = ANFT_Sound;
 			break;
+		case FCC_OggS:
+			po_fileType = ANFT_OGG;
+			break;
 		}
 
 		// Identify JPEG files

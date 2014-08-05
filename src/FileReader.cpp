@@ -143,6 +143,9 @@ namespace gw2b {
 		case ANFT_ID3:
 			return wxT( ".mp3" );
 			break;
+		case ANFT_OGG:
+			return wxT( ".ogg" );
+			break;
 
 		// Audio script
 		case ANFT_AudioScript:
