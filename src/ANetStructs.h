@@ -84,6 +84,7 @@ namespace gw2b {
 		ANFT_PortalManifest,		/**< Portal Manifest file. */
 		ANFT_AudioScript,			/**< Audio script file. */
 		ANFT_ShaderCache,			/**< Shader cache file. */
+		ANFT_Config,				/**< Configuration file. */
 
 		// Binary
 		ANFT_Binary,                /**< Binary file of unknown type. */
@@ -94,6 +95,7 @@ namespace gw2b {
 		ANFT_StringFile,            /**< Strings file. */
 		ANFT_FontFile,				/**< Font file. */
 		ANFT_Bink2Video,			/**< Bink2 video file. */
+		ANFT_ARAP,
 	};
 
 	/** Compression flags that appear in the MFT entries. */

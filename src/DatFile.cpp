@@ -370,46 +370,25 @@ namespace gw2b {
 		case FCC_OggS:
 			po_fileType = ANFT_OGG;
 			break;
-		}
-
-		// Identify JPEG files
-		if ( ( fourcc & 0xffffff ) == FCC_JPEG ) {
-			po_fileType = ANFT_JPEG;
-		}
-
-		// Identify binary files
-		if ( ( fourcc & 0xffff ) == FCC_MZ ) {
-			po_fileType = ANFT_Binary;
-
-			if ( p_size >= 0x40 ) {
-				auto peOffset = *reinterpret_cast<const uint32*>( p_data + 0x3c );
-
-				if ( p_size >= ( peOffset + 0x18 ) ) {
-					auto flags = *reinterpret_cast<const uint16*>( p_data + peOffset + 0x16 );
-					po_fileType = ( flags & 0x2000 ) ? ANFT_DLL : ANFT_EXE;
-				} else {
-					return IR_NotEnoughData;
-				}
-			} else {
-				return IR_NotEnoughData;
-			}
-		}
-
-		// Identify RIFF files
-		if ( fourcc == FCC_RIFF ) {
+		case FCC_TTF:
+			po_fileType = ANFT_FontFile;
+			break;
+		case FCC_RIFF:	// Identify RIFF files
 			po_fileType = ANFT_RIFF;
-
 			if ( p_size >= 12 ) {
 				fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
 			} else {
 				return IR_NotEnoughData;
 			}
-
 			switch ( fourcc ) {
 			case FCC_WEBP:
 				po_fileType = ANFT_WEBP;
 				break;
 			}
+			break;
+		case FCC_ARAP:
+			po_fileType = ANFT_ARAP;
+			break;
 		}
 
 		// Identify PF files
@@ -492,11 +471,28 @@ namespace gw2b {
 			case FCC_CDHS:
 				po_fileType = ANFT_ShaderCache;
 				break;
+			case FCC_locl:
+				po_fileType = ANFT_Config;
+				break;
 			}
 		}
 
-		if ( fourcc == FCC_TTF ) {
-			po_fileType = ANFT_FontFile;
+		// Identify binary files
+		if ( ( fourcc & 0xffff ) == FCC_MZ ) {
+			po_fileType = ANFT_Binary;
+
+			if ( p_size >= 0x40 ) {
+				auto peOffset = *reinterpret_cast<const uint32*>( p_data + 0x3c );
+
+				if ( p_size >= ( peOffset + 0x18 ) ) {
+					auto flags = *reinterpret_cast<const uint16*>( p_data + peOffset + 0x16 );
+					po_fileType = ( flags & 0x2000 ) ? ANFT_DLL : ANFT_EXE;
+				} else {
+					return IR_NotEnoughData;
+				}
+			} else {
+				return IR_NotEnoughData;
+			}
 		}
 
 		if ( ( fourcc & 0xffffff ) == FCC_BINK2 ) {
@@ -505,6 +501,11 @@ namespace gw2b {
 
 		if ( ( fourcc & 0xffffff ) == FCC_ID3 ) {
 			po_fileType = ANFT_ID3;
+		}
+
+		// Identify JPEG files
+		if ( ( fourcc & 0xffffff ) == FCC_JPEG ) {
+			po_fileType = ANFT_JPEG;
 		}
 
 		// Identify sounds

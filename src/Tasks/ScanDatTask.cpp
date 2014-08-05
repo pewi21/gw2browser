@@ -327,16 +327,21 @@ namespace gw2b {
 			MakeCategory( wxT( "Bink Videos" ) );
 		}
 
-		// Bink2 video files
+		// Shader Cache
 		else if ( p_fileType == ANFT_ShaderCache ) {
 			MakeCategory( wxT( "Shader Cache" ) );
 		}
 
+		// Configuration file
+		else if ( p_fileType == ANFT_Config ) {
+			MakeCategory( wxT( "Configuration" ) );
+		}
+
 		// Random PF files
-		else if ( p_fileType == ANFT_PF ) {
+		else if ( p_fileType == ANFT_PF || p_fileType == ANFT_ARAP ) {
 			MakeCategory( wxT( "Misc" ) );
 
-			if ( p_size >= 12 ) {
+			if ( p_fileType == ANFT_PF && p_size >= 12 ) {
 				MakeSubCategory( wxString( reinterpret_cast<const char*>( p_data + 8 ), 4 ) );
 			}
 		}

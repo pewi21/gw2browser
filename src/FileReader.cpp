@@ -178,6 +178,14 @@ namespace gw2b {
 			return wxT( ".exe" );
 			break;
 
+		case ANFT_Config:
+			return wxT( ".locl" );
+			break;
+
+		case ANFT_ARAP:
+			return wxT( ".arap" );
+			break;
+
 		default:
 			return wxT( ".raw" );
 			break;

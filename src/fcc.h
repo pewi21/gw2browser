@@ -47,6 +47,8 @@ namespace gw2b {
 		FCC_asnd = 0x646e7361,
 		FCC_RIFF = 0x46464952,	// resource interchange file format
 		FCC_TTF = 0x00000100,	// files with this signature seems to be ttf but it is Embedded OpenType fonts with ttf header
+		FCC_OggS = 0x5367674f,
+		FCC_ARAP = 0x50415241,	// relate to temp folder name of Awesomium
 
 		// Texture codec
 		FCC_DXT1 = 0x31545844,
@@ -76,6 +78,7 @@ namespace gw2b {
 		FCC_DEPS = 0x53504544,
 		FCC_EULA = 0x616c7565,
 		FCC_hvkC = 0x436b7668,
+		FCC_locl = 0x6c636f6c,	// store config, e-mail and hashed password
 		FCC_mapc = 0x6370616d,
 		FCC_mpsd = 0x6473706d,
 		FCC_PIMG = 0x474d4950,
@@ -87,9 +90,6 @@ namespace gw2b {
 		FCC_txtm = 0x6d747874,
 		FCC_txtV = 0x56747874,
 		FCC_txtv = 0x76747874,
-
-		// Sound id's
-		FCC_OggS = 0x5367674f,
 
 		// Not quite FourCC
 		FCC_MZ = 0x5a4d,
