@@ -416,6 +416,7 @@ namespace gw2b {
 		case ANFT_Sound:
 		case ANFT_ID3:
 		case ANFT_OGG:
+		case ANFT_MP3:
 			return CategoryTreeImageList::IT_Sound;
 		case ANFT_FontFile:
 			return CategoryTreeImageList::IT_Font;

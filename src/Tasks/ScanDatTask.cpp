@@ -143,19 +143,19 @@ namespace gw2b {
 
 			switch ( p_fileType ) {
 			case ANFT_ATEX:
-				MakeSubCategory( wxT( "Generic textures" ) );
+				MakeSubCategory( wxT( "Generic Textures" ) );
 				break;
 			case ANFT_ATTX:
-				MakeSubCategory( wxT( "Terrain textures" ) );
+				MakeSubCategory( wxT( "Terrain Textures" ) );
 				break;
 			case ANFT_ATEC:
 				MakeSubCategory( wxT( "ATEC" ) );
 				break;
 			case ANFT_ATEP:
-				MakeSubCategory( wxT( "Map textures" ) );
+				MakeSubCategory( wxT( "Map Textures" ) );
 				break;
 			case ANFT_ATEU:
-				MakeSubCategory( wxT( "UI textures" ) );
+				MakeSubCategory( wxT( "UI Textures" ) );
 				break;
 			case ANFT_ATET:
 				MakeSubCategory( wxT( "ATET" ) );
@@ -244,12 +244,12 @@ namespace gw2b {
 
 		// Soundbank index
 		else if ( p_fileType == ANFT_BankIndex ) {
-			MakeCategory( wxT( "Soundbank index" ) );
+			MakeCategory( wxT( "Soundbank Index" ) );
 		}
 
 		// Audio Script
 		else if ( p_fileType == ANFT_AudioScript ) {
-			MakeCategory( wxT( "Audio scripts" ) );
+			MakeCategory( wxT( "Audio Scripts" ) );
 		}
 
 		// Model files
@@ -259,7 +259,7 @@ namespace gw2b {
 
 		// Dependency table
 		else if ( p_fileType == ANFT_DependencyTable ) {
-			MakeCategory( wxT( "Dependency tables" ) );
+			MakeCategory( wxT( "Dependency Tables" ) );
 		}
 
 		// EULA
@@ -274,22 +274,22 @@ namespace gw2b {
 
 		// Havok
 		else if ( p_fileType == ANFT_HavokCollision ) {
-			MakeCategory( wxT( "Havok collision" ) );
+			MakeCategory( wxT( "Havok Collision" ) );
 		}
 
 		// Map content
 		else if ( p_fileType == ANFT_MapContent ) {
-			MakeCategory( wxT( "Map content" ) );
+			MakeCategory( wxT( "Map Content" ) );
 		}
 
 		// Map parameter
 		else if ( p_fileType == ANFT_MapParam ) {
-			MakeCategory( wxT( "Map parameter" ) );
+			MakeCategory( wxT( "Map Parameter" ) );
 		}
 
 		// Map shadows
 		else if ( p_fileType == ANFT_MapShadow ) {
-			MakeCategory( wxT( "Map shadow" ) );
+			MakeCategory( wxT( "Map Shadow" ) );
 		}
 
 		// Mini Maps
@@ -304,17 +304,17 @@ namespace gw2b {
 
 		// Composite data
 		else if ( p_fileType == ANFT_Composite ) {
-			MakeCategory( wxT( "Composite data" ) );
+			MakeCategory( wxT( "Composite Data" ) );
 		}
 
 		// Animation Sequences
 		else if ( p_fileType == ANFT_AnimSequences ) {
-			MakeCategory( wxT( "Animation sequences" ) );
+			MakeCategory( wxT( "Animation Sequences" ) );
 		}
 
 		// Emote animations
 		else if ( p_fileType == ANFT_EmoteAnimation ) {
-			MakeCategory( wxT( "Emote animations" ) );
+			MakeCategory( wxT( "Emote Animations" ) );
 		}
 
 		// Font files
@@ -324,7 +324,7 @@ namespace gw2b {
 
 		// Bink2 video files
 		else if ( p_fileType == ANFT_Bink2Video ) {
-			MakeCategory( wxT( "Bink videos" ) );
+			MakeCategory( wxT( "Bink Videos" ) );
 		}
 
 		// Bink2 video files
