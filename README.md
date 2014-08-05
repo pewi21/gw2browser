@@ -51,7 +51,7 @@ any references to textures (mostly equipment models). Some models also use the
 second UV channel for rendering while the shader in the browser only uses the
 first. Loading any model is also *far* from optimized!
 
-* **Non-power-of-two tenture are unsupported at the moment.**
+* **Non-power-of-two textures are unsupported at the moment.**
 Decompressing one produces garbage blocks. well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
