@@ -14,7 +14,7 @@ Gw2Browser
 
 Opens a Guild Wars 2 .dat file and allows the user to browse and extract its
 files. Currently it supports viewing power-of-two textures, JPEG and WebP Images,
-models, and binary files.
+models, 126x64 ATEX textures, and binary files.
 
 When a .dat file is opened, it will first index the file. This makes it *a lot*
 faster to re-open the same .dat. Unfortunately, every time the .dat changes it
@@ -44,19 +44,19 @@ If `<input dat>` is given, the program will open the file as soon as it starts.
 Known issues
 ------------
 
-* **Model rendering is very experimental.** Viewing one may crash the
-browser, or it may not. It might also use the wrong texture, or it might not.
-It entirely depends on what model you view, as some models don't have any
-references to textures (mostly equipment models). Some models also use the
+* **Model rendering is very experimental.**
+Viewing one may crash the browser, or it may not. It might also use the wrong texture,
+or it might not. It entirely depends on what model you view, as some models don't have
+any references to textures (mostly equipment models). Some models also use the
 second UV channel for rendering while the shader in the browser only uses the
 first. Loading any model is also *far* from optimized!
 
-* **Non-power-of-two dimensions on non-DDS textures are unsupported at the
-moment.** Decompressing one produces garbage blocks, so viewing them is
-disabled until the reason has been determined.
+* **Non-power-of-two tenture are unsupported at the moment.**
+Decompressing one produces garbage blocks. well, except 126x64 ATEX files.
+Probably they use custom format for NPOT texture.
 
-* **Garbage code architecture!** todo : reducing the god objects and moving
-privates out of the header files, etc.
+* **Memory leak on viewing WebP files**
+With my beginner C++ skill, trying to fix it often come with headache.
 
 Libraries and restrictions
 --------------------------
@@ -104,7 +104,7 @@ Authors
 
 * [Khral Steelforge](https://github.com/kytulendu)
 
-thanks to:
+### Thanks to:
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser
 * [Loumie](https://github.com/ahom) : gw2DatTools
@@ -115,7 +115,7 @@ thanks to:
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
 
-special thanks to:
+### Special thanks to:
 
 * ArenaNet/NCSoft and the team that make Guild Wars 2!
 
@@ -135,8 +135,10 @@ All other trademarks are the property of their respective owners.
 Code License Exceptions
 -----------------------
 
-OpenGL Mathematics (GLM)
+### OpenGL Mathematics (GLM)
+
 -----------------------------------------------------------------------------
+
 extern/glm/*
 
 Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
@@ -159,8 +161,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-libwebp
+### libwebp
+
 -----------------------------------------------------------------------------
+
 extern/libwebp/*
 
 Copyright (c) 2010, Google Inc. All rights reserved.
@@ -193,8 +197,10 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-The OpenGL Extension Wrangler Library
+### The OpenGL Extension Wrangler Library
+
 -----------------------------------------------------------------------------
+
 extern/glew/*
 
 Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>

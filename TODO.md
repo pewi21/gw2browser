@@ -4,6 +4,8 @@ TODO list
 * Port the renderer from D3D9 to OpenGL, run natively on MacOSX or Linux!
 (I will try, with my beginner level skill!)
 
+* Or... port gw2DatTools and Gw2Browser to MacOSX or Linux then re-write the model renderer.
+
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
 
@@ -12,7 +14,7 @@ the index. This is needed for bank files, EULA, and to a certain degree also
 for sound files.
 
 * Support for sound files. (Technically, support for all files!), see [gw2formats](https://github.com/kytulendu/gw2formats)
-need to do 64bit port of gw2formats
+need to do 64bit port of gw2formats or combine it to Gw2Browser.
 
 * Support for model LODs, collision mesh rendering, and more.
 
@@ -21,4 +23,6 @@ need to do 64bit port of gw2formats
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
 
-* External filename database, for known files (such as the exe and dll files).
+* External file name database, for known files (such as the exe and dll files).
+
+* Support for R32f DDS files.

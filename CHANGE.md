@@ -42,7 +42,7 @@ the file(s) will have .dds as extension or export string file(s), the file(s) wi
 - Replace XNA Math with OpenGL Mathematics, doesn't finish yet.
 
 Issue:
-- ModelViewer camera not look at center of model.
+- ModelViewer camera not look at center of model. *Fixed in Gw2Browser_2014-03-25*
 - Some times after the program finish re-index .dat file, some of catalog may missing,
 simply restart Gw2Browser will fix this.
 
