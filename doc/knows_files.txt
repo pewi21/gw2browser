@@ -9,8 +9,9 @@ ID		File Name
 640204		icudt.dll
 640205		libEGL.dll
 640206		libGLESv2.dll
-720545		D3DX9_43.dll
 720546		D3DCompiler_43.dll
+791411		ffmpegsumo.dll
+791413		THIRDPARTYSOFTWAREREADME.TXT
 
 Local.dat
 ID		File Name
