@@ -1,11 +1,9 @@
 On the break
 ------------
 
-I'm going to hold develop this software, due to I have been conscripted to do military services
-for 2 years (1/5/2014 - 1/5/2016) if any one feel like to continue this, feel free to folk it! :)
-if you continue this project, I suggest re-design Gw2Browser code architecture port or rewrite
-the model renderer to OpenGL and make it run on Windows, MacOS X, Linux
-(you also need to fix gw2DatTools)
+Due to I have been conscripted to do military services for 2 years (1/5/2014 - 1/5/2016)
+I may or may not continue to develop Gw2Browser during that time. If you think waiting
+is long and want to continue this project, feel free to folk it ;)
 
 See you later! * waves *
 
@@ -69,6 +67,7 @@ since gw2DatTools won't compile without those features anyway.
 
 * [DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
+* [gw2formats](https://github.com/kytulendu/gw2formats)
 * [wxWidgets 3.0.1](http://wxwidgets.org/)
 * [OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
