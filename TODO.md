@@ -13,8 +13,7 @@ headers, etc.
 the index. This is needed for bank files, EULA, and to a certain degree also
 for sound files.
 
-* Support for sound files. (Technically, support for all files!), see [gw2formats](https://github.com/kytulendu/gw2formats)
-need to do 64bit port of gw2formats or combine it to Gw2Browser.
+* Support for sound files. (Technically, support for all files!), see [gw2formats](https://github.com/kytulendu/gw2formats).
 
 * Support for model LODs, collision mesh rendering, and more.
 

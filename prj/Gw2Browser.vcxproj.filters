@@ -183,6 +183,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h">
       <Filter>Header Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Readers\StringReader.h">
+      <Filter>Header Files\Readers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -274,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\ModelViewer\ModelViewer.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\StringReader.cpp">
+      <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdafx.h"
 #include "FileReader.h"
 
+#include "Readers/StringReader.h"
 #include "Readers/ImageReader.h"
 #include "Readers/ModelReader.h"
 
@@ -213,6 +214,11 @@ namespace gw2b {
 			break;
 		case ANFT_Model:
 			return new ModelReader( p_data, p_fileType );
+			break;
+		case ANFT_StringFile:
+			if ( StringReader::isValidHeader( p_data.GetPointer( ) ) ) {
+				return new StringReader( p_data, p_fileType );
+			}
 			break;
 		default:
 			break;

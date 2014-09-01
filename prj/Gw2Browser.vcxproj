@@ -40,6 +40,7 @@
     <ClInclude Include="..\src\ProgressStatusBar.h" />
     <ClInclude Include="..\src\Readers\ImageReader.h" />
     <ClInclude Include="..\src\Readers\ModelReader.h" />
+    <ClInclude Include="..\src\Readers\StringReader.h" />
     <ClInclude Include="..\src\resource.h" />
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\Task.h" />
@@ -77,6 +78,7 @@
     <ClCompile Include="..\src\ProgressStatusBar.cpp" />
     <ClCompile Include="..\src\Readers\ImageReader.cpp" />
     <ClCompile Include="..\src\Readers\ModelReader.cpp" />
+    <ClCompile Include="..\src\Readers\StringReader.cpp" />
     <ClCompile Include="..\src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -158,13 +160,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\debug-static\x86\lib;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.1\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.1\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_x64_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\debug-static\x64\lib;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.1\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.1\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
@@ -174,12 +176,12 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswu;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\release-static\x86\lib;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.1\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.1\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_x64_lib\mswu;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\release-static\x64\lib;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.1\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.1\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
@@ -199,7 +201,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9d.lib;dxguid.lib;glew32sd.lib;gw2DatToolsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9d.lib;dxguid.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -219,7 +221,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9d.lib;dxguid.lib;glew32sd.lib;gw2DatToolsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9d.lib;dxguid.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -241,7 +243,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;glew32s.lib;gw2DatTools.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
@@ -263,7 +265,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;glew32s.lib;gw2DatTools.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
