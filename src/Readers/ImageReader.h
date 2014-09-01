@@ -167,6 +167,7 @@ namespace gw2b {
 	private:
 		bool readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 		bool readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
+		bool readWebP( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 
 		bool processLuminanceDDS( const DDSHeader* p_header, RGB*& po_colors ) const;
 		bool processUncompressedDDS( const DDSHeader* p_header, RGB*& po_colors, uint8*& po_alphas ) const;

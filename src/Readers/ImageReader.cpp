@@ -47,14 +47,18 @@ namespace gw2b {
 
 		// Read the correct type of data
 		auto fourcc = *reinterpret_cast<const uint32*>( m_data.GetPointer( ) );
-		if ( ( ( fourcc & 0xffffff ) != FCC_JPEG ) && ( fourcc != FCC_RIFF ) ) {
+		if ( ( ( fourcc & 0xffffff ) != FCC_JPEG ) ) {
 
 			wxSize size;
 			BGR* colors = nullptr;
 			uint8* alphas = nullptr;
 
-			if ( fourcc == FCC_DDS ) {
+			if ( ( fourcc == FCC_DDS ) ) {
 				if ( !this->readDDS( size, colors, alphas ) ) {
+					return wxImage( );
+				}
+			} else if ( fourcc == FCC_RIFF ) {  // WebP
+				if ( !this->readWebP( size, colors, alphas ) ) {
 					return wxImage( );
 				}
 			} else {
@@ -69,69 +73,6 @@ namespace gw2b {
 
 			// Set alpha if the format has any
 			if ( alphas ) {
-				image.SetAlpha( alphas );
-			}
-
-			return image;
-
-		} else if ( fourcc == FCC_RIFF ) {		// we already check if it is WebP or not
-			// Create image
-			wxImage image;
-
-			auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
-			size_t data_size = m_data.GetSize( );
-
-			WebPDecoderConfig config;
-			WebPDecBuffer* const output_buffer = &config.output;
-			WebPBitstreamFeatures* const bitstream = &config.input;
-
-			VP8StatusCode status = VP8_STATUS_OK;
-
-			status = WebPGetFeatures( reinterpret_cast<const uint8_t*>( data ), data_size, bitstream );
-
-			if ( status != VP8_STATUS_OK ) {
-				wxMessageBox( wxString( "This file isn't WebP!" ), _( "" ), wxOK | wxICON_EXCLAMATION );
-				return image;
-			}
-
-			if ( bitstream->has_animation ) {
-				wxMessageBox( wxString( "Not support Animation WebP." ), _( "" ), wxOK | wxICON_INFORMATION );
-				return image;
-			}
-
-			output_buffer->colorspace = bitstream->has_alpha ? MODE_RGBA : MODE_RGB;
-
-			RGBA* decoded_data = reinterpret_cast<RGBA*>( WebPDecodeRGBA( data, data_size, nullptr, nullptr ) );
-
-			if ( decoded_data == nullptr ) {
-				wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
-				return image;
-			}
-
-			uint numPixels = bitstream->width * bitstream->height;
-			auto colors = allocate<RGB>( numPixels );
-			auto alphas = allocate<uint8_t>( numPixels );
-
-#pragma omp parallel for
-			for ( int y = 0; y < static_cast<int>( bitstream->height ); y++ ) {
-				uint32 curPixel = ( y * bitstream->width );
-
-				for ( uint x = 0; x < static_cast<uint>( bitstream->width ); x++ ) {
-					::memset( &colors[curPixel].r, decoded_data[curPixel].r, sizeof( colors[curPixel].r ) );
-					::memset( &colors[curPixel].g, decoded_data[curPixel].g, sizeof( colors[curPixel].g ) );
-					::memset( &colors[curPixel].b, decoded_data[curPixel].b, sizeof( colors[curPixel].b ) );
-
-					if ( output_buffer->colorspace == bitstream->has_alpha ) {
-						::memset( &alphas[curPixel], decoded_data[curPixel].a, sizeof( alphas[curPixel] ) );
-					}
-					curPixel++;
-				}
-			}
-
-			image = wxImage( bitstream->width, bitstream->height, reinterpret_cast<uint8_t*>( colors ), false );
-
-			// Set alpha if the format has any
-			if ( output_buffer->colorspace == bitstream->has_alpha ) {
 				image.SetAlpha( alphas );
 			}
 
@@ -395,6 +336,69 @@ namespace gw2b {
 
 		if ( po_colors ) {
 			po_size.Set( width, height );
+			return true;
+		}
+
+		return false;
+	}
+
+	bool ImageReader::readWebP( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
+		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
+
+		// Init some fields
+		auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
+		size_t data_size = m_data.GetSize( );
+		po_colors = nullptr;
+		po_alphas = nullptr;
+
+		WebPDecoderConfig config;
+		WebPBitstreamFeatures* bitstream = &config.input;
+
+		VP8StatusCode status = VP8_STATUS_OK;
+
+		status = WebPGetFeatures( reinterpret_cast<const uint8_t*>( data ), data_size, bitstream );
+
+		if ( status != VP8_STATUS_OK ) {
+			wxMessageBox( wxString( "This file isn't WebP!" ), _( "" ), wxOK | wxICON_EXCLAMATION );
+			return false;
+		}
+
+		if ( bitstream->has_animation ) {
+			wxMessageBox( wxString( "Not support Animation WebP." ), _( "" ), wxOK | wxICON_INFORMATION );
+			return false;
+		}
+
+		uint numPixels = bitstream->width * bitstream->height;
+
+		// Why it need to convert RGB to BGR?
+		auto decoded_data = reinterpret_cast<BGRA*>( WebPDecodeRGBA( data, data_size, nullptr, nullptr ) );
+
+		if ( decoded_data == nullptr ) {
+			wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
+			return false;
+		}
+
+		po_colors = allocate<BGR>( numPixels );
+		po_alphas = allocate<uint8>( numPixels );
+
+#pragma omp parallel for
+		for ( int y = 0; y < static_cast<int>( bitstream->height ); y++ ) {
+			uint32 curPixel = ( y * bitstream->width );
+
+			for ( uint x = 0; x < static_cast<uint>( bitstream->width ); x++ ) {
+				::memcpy( &po_colors[curPixel].b, &decoded_data[curPixel].b, sizeof( po_colors[curPixel].b ) );
+				::memcpy( &po_colors[curPixel].g, &decoded_data[curPixel].g, sizeof( po_colors[curPixel].g ) );
+				::memcpy( &po_colors[curPixel].r, &decoded_data[curPixel].r, sizeof( po_colors[curPixel].r ) );
+
+				if ( bitstream->has_alpha ) {
+					::memcpy( &po_alphas[curPixel], &decoded_data[curPixel].a, sizeof( po_alphas[curPixel] ) );
+				}
+				curPixel++;
+			}
+		}
+
+		if ( po_colors ) {
+			po_size.Set( bitstream->width, bitstream->height );
 			return true;
 		}
 
