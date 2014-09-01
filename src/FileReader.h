@@ -49,6 +49,7 @@ namespace gw2b {
 			DT_Image,           /**< Image data. */
 			DT_Sound,           /**< Sound data. */
 			DT_Model,           /**< Model data. */
+			DT_String,          /**< String data. */
 		};
 	public:
 		/** Constructor.
