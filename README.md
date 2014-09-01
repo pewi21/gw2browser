@@ -11,8 +11,8 @@ Gw2Browser
 ==========
 
 Opens a Guild Wars 2 .dat file and allows the user to browse and extract its
-files. Currently it supports viewing power-of-two textures, JPEG and WebP Images,
-models, 126x64 ATEX textures, and binary files.
+files. Currently it supports power-of-two textures, JPEG and WebP Images, models,
+126x64 ATEX textures, strings and binary files.
 
 When a .dat file is opened, it will first index the file. This makes it *a lot*
 faster to re-open the same .dat. Unfortunately, every time the .dat changes it
