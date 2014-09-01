@@ -401,7 +401,7 @@ namespace gw2b {
 		return false;
 	}
 
-	bool ImageReader::isValidHeader( const byte* p_data, uint p_size ) {
+	bool ImageReader::isValidHeader( const byte* p_data, size_t p_size ) {
 		if ( p_size < 0x10 ) {
 			return false;
 		}

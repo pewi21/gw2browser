@@ -37,12 +37,12 @@ namespace gw2b {
 		*  \param[in]  p_data   PNG data to load.
 		*  \param[in]  p_size   Size of the PNG data.
 		*  \return wxBitmap    Bitmap containing the loaded PNG. */
-		wxBitmap loadPNG( const byte* p_data, uint p_size );
+		wxBitmap loadPNG( const byte* p_data, size_t p_size );
 		/** Loads a JPG from memory and returns a new wxBitmap containing it.
 		*  \param[in]  p_data   PNG data to load.
 		*  \param[in]  p_size   Size of the PNG data.
 		*  \return wxBitmap    Bitmap containing the loaded JPG. */
-		wxBitmap loadJPG( const byte* p_data, uint p_size );
+		wxBitmap loadJPG( const byte* p_data, size_t p_size );
 
 		// File: data/about_box.jpg
 		extern const uint about_box_png_size;

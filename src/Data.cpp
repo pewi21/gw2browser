@@ -33,7 +33,7 @@ namespace gw2b {
 
 	namespace data {
 
-		wxBitmap loadPNG( const byte* p_data, uint p_size ) {
+		wxBitmap loadPNG( const byte* p_data, size_t p_size ) {
 			wxMemoryInputStream stream( p_data, p_size );
 			return wxBitmap( stream, wxBITMAP_TYPE_PNG );
 		}

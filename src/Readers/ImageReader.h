@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -162,7 +163,7 @@ namespace gw2b {
 		wxImage getImage( ) const;
 		/** Determines whether the header of this image is valid.
 		*  \return bool    true if valid, false if not. */
-		static bool isValidHeader( const byte* p_data, uint p_size );
+		static bool isValidHeader( const byte* p_data, size_t p_size );
 	private:
 		bool readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 		bool readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;

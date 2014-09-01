@@ -117,7 +117,7 @@ namespace gw2b {
 		this->setCurrentProgress( entryNumber + 1 );
 	}
 
-	uint ScanDatTask::requiredIdentificationSize( const byte* p_data, uint p_size, ANetFileType p_fileType ) {
+	uint ScanDatTask::requiredIdentificationSize( const byte* p_data, size_t p_size, ANetFileType p_fileType ) {
 		switch ( p_fileType ) {
 		case ANFT_Binary:
 			if ( p_size >= 0x40 ) {
@@ -134,7 +134,7 @@ namespace gw2b {
 
 #define MakeCategory(x)     { category = m_index->findOrAddCategory(x); }
 #define MakeSubCategory(x)  { category = category->findOrAddSubCategory(x); }
-	DatIndexCategory* ScanDatTask::categorize( ANetFileType p_fileType, const byte* p_data, uint p_size ) {
+	DatIndexCategory* ScanDatTask::categorize( ANetFileType p_fileType, const byte* p_data, size_t p_size ) {
 		DatIndexCategory* category = nullptr;
 
 		// Textures
@@ -356,7 +356,7 @@ namespace gw2b {
 		return category;
 	}
 
-	void ScanDatTask::ensureBufferSize( uint p_size ) {
+	void ScanDatTask::ensureBufferSize( size_t p_size ) {
 		if ( m_outputBuffer.GetSize( ) < p_size ) {
 			m_outputBuffer.SetSize( p_size );
 		}

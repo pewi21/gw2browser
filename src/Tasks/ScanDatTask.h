@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -46,9 +47,9 @@ namespace gw2b {
 		virtual bool init( ) override;
 		virtual void perform( ) override;
 	private:
-		uint requiredIdentificationSize( const byte* p_data, uint p_size, ANetFileType p_fileType );
-		DatIndexCategory* categorize( ANetFileType p_fileType, const byte* p_data, uint p_size );
-		void ensureBufferSize( uint p_size );
+		uint requiredIdentificationSize( const byte* p_data, size_t p_size, ANetFileType p_fileType );
+		DatIndexCategory* categorize( ANetFileType p_fileType, const byte* p_data, size_t p_size );
+		void ensureBufferSize( size_t p_size );
 	}; // class ScanDatTask
 
 }; // namespace gw2b

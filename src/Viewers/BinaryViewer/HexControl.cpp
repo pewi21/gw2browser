@@ -188,7 +188,7 @@ namespace gw2b {
 		}
 	}
 
-	void HexControl::setData( const byte* pData, uint p_size ) {
+	void HexControl::setData( const byte* pData, size_t p_size ) {
 		if ( p_size ) {
 			Ensure::notNull( pData );
 			m_data = pData;

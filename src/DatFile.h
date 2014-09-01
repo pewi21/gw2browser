@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -181,7 +182,7 @@ namespace gw2b {
 		*  \return Array<byte>  Object used to handle the read file. */
 		Array<byte> readFile( uint p_fileNum );
 
-		IdentificationResult identifyFileType( const byte* p_data, uint p_size, ANetFileType& p_fileType );
+		IdentificationResult identifyFileType( const byte* p_data, size_t p_size, ANetFileType& p_fileType );
 		static uint fileIdFromFileReference( const ANetFileReference& p_fileRef );
 
 	}; // class DatFile

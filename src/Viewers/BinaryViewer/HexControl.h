@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -65,7 +66,7 @@ namespace gw2b {
 	public:
 		HexControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		void onDraw( wxDC& p_DC, wxRect& p_region );
-		void setData( const byte* p_data, uint p_size );
+		void setData( const byte* p_data, size_t p_size );
 	private:
 		void updateScrollbars( wxDC& p_DC, RedrawState& p_state );
 		void drawOffsets( wxDC& p_DC, RedrawState& p_state );
