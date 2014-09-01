@@ -397,6 +397,8 @@ namespace gw2b {
 			}
 		}
 
+		freePointer( decoded_data );
+
 		if ( po_colors ) {
 			po_size.Set( bitstream->width, bitstream->height );
 			return true;
