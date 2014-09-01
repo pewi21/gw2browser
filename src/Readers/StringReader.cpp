@@ -47,7 +47,7 @@ namespace gw2b {
 		wxString string;
 
 		// Table header.
-		string << L"File id,String" << L"\r\n";
+		string << L"Entry,String" << L"\r\n";
 
 		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
@@ -68,11 +68,11 @@ namespace gw2b {
 	Array<byte> StringReader::convertData( ) const {
 		auto string = this->getString( );
 
-		wxString output = string.mb_str( wxConvUTF8 );
+		wxString output = string.utf8_str( );
 
 		// Convert string to byte array
 		Array<byte> outputData( output.length( ) );
-		::memcpy( outputData.GetPointer( ), output.char_str( ), output.length( ) );
+		::memcpy( outputData.GetPointer( ), output.utf8_str( ), output.length( ) );
 
 		return outputData;
 	}
