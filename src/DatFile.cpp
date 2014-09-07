@@ -276,8 +276,22 @@ namespace gw2b {
 			}
 		} else {
 			uint size = wxMin( p_peekSize, inputSize );
-			::memcpy( po_Buffer, m_inputBuffer.GetPointer( ), size );
-			return size;
+
+			uint count = 0;
+			uint out = 0;
+
+			// skip 4 byte every 65532 byte
+			for ( uint i = 0; i < size; i++ ) {
+				if ( count == 65532 ) {
+					i += 4;
+					count = 0;
+				}
+				::memcpy( &po_Buffer[out], &m_inputBuffer[i], sizeof( m_inputBuffer[i] ) );
+				count++;
+				out++;
+			}
+
+			return sizeof( po_Buffer );
 		}
 	}
 
