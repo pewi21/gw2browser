@@ -53,9 +53,6 @@ first. Loading any model is also *far* from optimized!
 Decompressing one produces garbage blocks. well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
-* **Memory leak on viewing WebP files**
-With my beginner C++ skill, trying to fix it often come with headache.
-
 Libraries and restrictions
 --------------------------
 
@@ -106,13 +103,14 @@ Authors
 ### Thanks to:
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser
-* [Loumie](https://github.com/ahom) : gw2DatTools
-* [Till034](https://github.com/Till034) : OnCompareItems function overload
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
-* [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
-* [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
+* [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
+* [Loumie](https://github.com/ahom) : gw2DatTools
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
+* [Till034](https://github.com/Till034) : OnCompareItems function overload
+* [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
+* [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
 
 ### Special thanks to:
 
