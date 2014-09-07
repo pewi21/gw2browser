@@ -33,8 +33,7 @@
 /// These all operate component-wise. The description is per component.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_FUNC_COMMON_INCLUDED
-#define GLM_FUNC_COMMON_INCLUDED
+#pragma once
 
 #include "setup.hpp"
 #include "precision.hpp"
@@ -170,7 +169,7 @@ namespace glm
 	/// @tparam genType Floating-point or integer; scalar or vector types.
 	/// 
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/min.xml">GLSL min man page</a>
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.3 Common Functions</a><<<<<<< HEAD
+	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.3 Common Functions</a>
 	template <typename genType>
 	GLM_FUNC_DECL genType min(
 		genType const & x,
@@ -258,6 +257,18 @@ namespace glm
 	/// glm::dvec3 t = glm::mix(e, f, a); // Types of the third parameter is not required to match with the first and the second.
 	/// glm::vec4 u = glm::mix(g, h, r); // Interpolations can be perform per component with a vector for the last parameter.
 	/// @endcode
+	template <typename T, typename U, precision P, template <typename, precision> class vecType>
+	GLM_FUNC_DECL vecType<T, P> mix(
+		vecType<T, P> const & x,
+		vecType<T, P> const & y,
+		vecType<U, P> const & a);
+
+	template <typename T, typename U, precision P, template <typename, precision> class vecType>
+	GLM_FUNC_DECL vecType<T, P> mix(
+		vecType<T, P> const & x,
+		vecType<T, P> const & y,
+		U const & a);
+
 	template <typename genTypeT, typename genTypeU>
 	GLM_FUNC_DECL genTypeT mix(
 		genTypeT const & x,
@@ -457,4 +468,3 @@ namespace glm
 
 #include "func_common.inl"
 
-#endif//GLM_FUNC_COMMON_INCLUDED

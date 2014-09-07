@@ -33,8 +33,7 @@
 /// These all operate component-wise. The description is per component.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_core_func_exponential
-#define glm_core_func_exponential
+#pragma once
 
 #include "type_vec1.hpp"
 #include "type_vec2.hpp"
@@ -98,8 +97,8 @@ namespace glm
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/log2.xml">GLSL log2 man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.2 Exponential Functions</a>
-	template <typename genType> 
-	GLM_FUNC_DECL genType log2(genType const & x);
+	template <typename genType>
+	GLM_FUNC_DECL genType log2(genType x);
 
 	/// Returns the positive square root of x.
 	/// 
@@ -108,9 +107,12 @@ namespace glm
 	/// 
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/sqrt.xml">GLSL sqrt man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.2 Exponential Functions</a>
-	template <typename genType> 
-	GLM_FUNC_DECL genType sqrt(genType const & x);
+	//template <typename genType>
+	//GLM_FUNC_DECL genType sqrt(genType const & x);
 
+	template <typename T, precision P, template <typename, precision> class vecType>
+	GLM_FUNC_DECL vecType<T, P> sqrt(vecType<T, P> const & x);
+	
 	/// Returns the reciprocal of the positive square root of x.
 	/// 
 	/// @param x inversesqrt function is defined for input values of x defined in the range [0, inf+) in the limit of the type precision.
@@ -125,5 +127,3 @@ namespace glm
 }//namespace glm
 
 #include "func_exponential.inl"
-
-#endif//glm_core_func_exponential

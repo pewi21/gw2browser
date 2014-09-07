@@ -7,6 +7,8 @@
 // File    : glm/gtx/compatibility.inl
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <limits>
+
 namespace glm
 {
 	// isfinite
@@ -14,16 +16,14 @@ namespace glm
 	GLM_FUNC_QUALIFIER bool isfinite(
 		genType const & x)
 	{
-#		if(GLM_COMPILER & GLM_COMPILER_VC)
-			return _finite(x);
-#		elif(GLM_COMPILER & GLM_COMPILER_GCC)
-#			if(GLM_PLATFORM & GLM_PLATFORM_ANDROID)
-				return _isfinite(x) != 0;
-#			else
-				return std::isfinite(x) != 0;
-#			endif
-#		else
+#		if(GLM_LANG & GLM_LANG_CXX11_FLAG)
 			return std::isfinite(x) != 0;
+#		elif(GLM_COMPILER & GLM_COMPILER_VC)
+			return _finite(x);
+#		elif(GLM_COMPILER & GLM_COMPILER_GCC && GLM_PLATFORM & GLM_PLATFORM_ANDROID)
+			return _isfinite(x) != 0;
+#		else
+			return x >= std::numeric_limits<genType>::min() && x <= std::numeric_limits<genType>::max();
 #		endif
 	}
 

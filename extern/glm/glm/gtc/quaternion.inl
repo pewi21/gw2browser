@@ -86,19 +86,6 @@ namespace detail
 		w(w)
 	{}
 
-#if(GLM_HAS_INITIALIZER_LISTS)
-	template <typename T, precision P>
-	template <typename U>
-	GLM_FUNC_QUALIFIER tquat<T, P>::tquat(std::initializer_list<U> l) :
-		x(static_cast<T>(l.begin()[0])),
-		y(static_cast<T>(l.begin()[1])),
-		z(static_cast<T>(l.begin()[2])),
-		w(static_cast<T>(l.begin()[3]))
-	{
-		assert(l.size() >= this->length());
-	}
-#endif//GLM_HAS_INITIALIZER_LISTS
-
 	//////////////////////////////////////////////////////////////
 	// tquat conversions
 
@@ -127,9 +114,9 @@ namespace detail
 		detail::tvec3<T, P> const & v
 	)
 	{
-		detail::tvec3<T, P> w = cross(u, v);
+		detail::tvec3<T, P> const LocalW(cross(u, v));
 		T Dot = detail::compute_dot<detail::tvec3, T, P>::call(u, v);
-		detail::tquat<T, P> q(T(1) + Dot, w.x, w.y, w.z);
+		detail::tquat<T, P> q(T(1) + Dot, LocalW.x, LocalW.y, LocalW.z);
 
 		*this = normalize(q);
 	}
@@ -268,7 +255,7 @@ namespace detail
 	template <typename T, precision P>
 	struct compute_dot<tquat, T, P>
 	{
-		static T call(tquat<T, P> const & x, tquat<T, P> const & y)
+		static GLM_FUNC_QUALIFIER T call(tquat<T, P> const & x, tquat<T, P> const & y)
 		{
 			tvec4<T, P> tmp(x.x * y.x, x.y * y.y, x.z * y.z, x.w * y.w);
 			return (tmp.x + tmp.y) + (tmp.z + tmp.w);
@@ -315,16 +302,11 @@ namespace detail
 		detail::tvec3<T, P> const & v
 	)
 	{
-		T Two(2);
+		detail::tvec3<T, P> const QuatVector(q.x, q.y, q.z);
+		detail::tvec3<T, P> const uv(glm::cross(QuatVector, v));
+		detail::tvec3<T, P> const uuv(glm::cross(QuatVector, uv));
 
-		detail::tvec3<T, P> uv, uuv;
-		detail::tvec3<T, P> QuatVector(q.x, q.y, q.z);
-		uv = glm::cross(QuatVector, v);
-		uuv = glm::cross(QuatVector, uv);
-		uv *= (Two * q.w);
-		uuv *= Two;
-
-		return v + uv + uuv;
+		return v + ((uv * q.w) + uuv) * static_cast<T>(2);
 	}
 
 	template <typename T, precision P>
@@ -600,10 +582,10 @@ namespace detail
 		{
 			// Linear interpolation
 			return detail::tquat<T, P>(
-				mix(x.w, y.w, a),
-				mix(x.x, y.x, a),
-				mix(x.y, y.y, a),
-				mix(x.z, y.z, a));
+				mix(x.w, z.w, a),
+				mix(x.x, z.x, a),
+				mix(x.y, z.y, a),
+				mix(x.z, z.z, a));
 		}
 		else
 		{
@@ -633,12 +615,7 @@ namespace detail
 			Tmp.z *= oneOverLen;
 		}
 
-#ifdef GLM_FORCE_RADIANS
 		T const AngleRad(angle);
-#else
-#		pragma message("GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.")
-		T const AngleRad = radians(angle);
-#endif
 		T const Sin = sin(AngleRad * T(0.5));
 
 		return q * detail::tquat<T, P>(cos(AngleRad * T(0.5)), Tmp.x * Sin, Tmp.y * Sin, Tmp.z * Sin);
@@ -660,12 +637,7 @@ namespace detail
 		detail::tquat<T, P> const & q
 	)
 	{
-#ifdef GLM_FORCE_RADIANS
-		return T(atan2(T(2) * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z));
-#else
-#		pragma message("GLM: roll function returning degrees is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.")
-		return glm::degrees(atan(T(2) * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z));
-#endif
+		return T(atan(T(2) * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z));
 	}
 
 	template <typename T, precision P>
@@ -674,12 +646,7 @@ namespace detail
 		detail::tquat<T, P> const & q
 	)
 	{
-#ifdef GLM_FORCE_RADIANS
-		return T(atan2(T(2) * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z));
-#else
-#		pragma message("GLM: pitch function returning degrees is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.")
-		return glm::degrees(atan(T(2) * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z));
-#endif
+		return T(atan(T(2) * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z));
 	}
 
 	template <typename T, precision P>
@@ -688,12 +655,7 @@ namespace detail
 		detail::tquat<T, P> const & q
 	)
 	{
-#ifdef GLM_FORCE_RADIANS
 		return asin(T(-2) * (q.x * q.z - q.w * q.y));
-#else
-#		pragma message("GLM: yaw function returning degrees is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.")
-		return glm::degrees(asin(T(-2) * (q.x * q.z - q.w * q.y)));
-#endif
 	}
 
 	template <typename T, precision P>
@@ -818,12 +780,7 @@ namespace detail
 		detail::tquat<T, P> const & x
 	)
 	{
-#ifdef GLM_FORCE_RADIANS
 		return acos(x.w) * T(2);
-#else
-#		pragma message("GLM: angle function returning degrees is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.")
-		return glm::degrees(acos(x.w) * T(2));
-#endif
 	}
 
 	template <typename T, precision P>
@@ -848,15 +805,10 @@ namespace detail
 	{
 		detail::tquat<T, P> result;
 
-#ifdef GLM_FORCE_RADIANS
 		T const a(angle);
-#else
-#		pragma message("GLM: angleAxis function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.")
-		T const a(glm::radians(angle));
-#endif
-		T s = glm::sin(a * T(0.5));
+		T const s = glm::sin(a * static_cast<T>(0.5));
 
-		result.w = glm::cos(a * T(0.5));
+		result.w = glm::cos(a * static_cast<T>(0.5));
 		result.x = v.x * s;
 		result.y = v.y * s;
 		result.z = v.z * s;

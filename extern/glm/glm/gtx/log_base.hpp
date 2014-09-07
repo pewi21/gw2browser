@@ -35,8 +35,7 @@
 /// <glm/gtx/log_base.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_log_base
-#define GLM_GTX_log_base
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -53,7 +52,7 @@ namespace glm
 	//! Logarithm for any base.
 	//! From GLM_GTX_log_base.
 	template <typename genType> 
-	genType log(
+	GLM_FUNC_DECL genType log(
 		genType const & x, 
 		genType const & base);
 
@@ -61,5 +60,3 @@ namespace glm
 }//namespace glm
 
 #include "log_base.inl"
-
-#endif//GLM_GTX_log_base

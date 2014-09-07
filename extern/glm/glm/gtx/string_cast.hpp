@@ -36,16 +36,20 @@
 /// @brief Setup strings for GLM type values
 /// 
 /// <glm/gtx/string_cast.hpp> need to be included to use these functionalities.
+/// This extension is not supported with CUDA
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_string_cast
-#define GLM_GTX_string_cast
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
 #include "../gtx/integer.hpp"
 #include "../gtx/quaternion.hpp"
 #include <string>
+
+#if(GLM_COMPILER & GLM_COMPILER_CUDA)
+#	error "GLM_GTX_string_cast is not supported on CUDA compiler"
+#endif
 
 #if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_string_cast extension included")
@@ -59,11 +63,9 @@ namespace glm
 	/// Create a string from a GLM type value.
 	/// @see gtx_string_cast extension.
 	template <typename genType> 
-	std::string to_string(genType const & x);
+	GLM_FUNC_DECL std::string to_string(genType const & x);
 
 	/// @}
 }//namespace glm
 
 #include "string_cast.inl"
-
-#endif//GLM_GTX_string_cast

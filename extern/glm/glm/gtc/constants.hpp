@@ -31,13 +31,12 @@
 /// @defgroup gtc_constants GLM_GTC_constants
 /// @ingroup gtc
 /// 
-/// @brief Allow to perform bit operations on integer values
+/// @brief Provide a list of constants and precomputed useful values.
 /// 
 /// <glm/gtc/constants.hpp> need to be included to use these features.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTC_constants
-#define GLM_GTC_constants
+#pragma once
 
 // Dependencies
 #include "../detail/setup.hpp"
@@ -181,5 +180,3 @@ namespace glm
 } //namespace glm
 
 #include "constants.inl"
-
-#endif//GLM_GTC_constants

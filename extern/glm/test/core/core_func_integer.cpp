@@ -7,7 +7,6 @@
 // File    : test/core/func_integer.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define GLM_FORCE_RADIANS
 #include <glm/integer.hpp>
 #include <iostream>
 
@@ -197,14 +196,14 @@ namespace findLSB
 		genType		Value;
 		genType		Return;
 	};
-    
+
 	type<int> const DataI32[] =
 	{
 		{0x00000001,  0},
-        {0x00000003,  0},
-        {0x00000002,  1}
+		{0x00000003,  0},
+		{0x00000002,  1}
 	};
-    
+
 	int test()
 	{
 		int Error(0);
@@ -215,10 +214,26 @@ namespace findLSB
 			Error += DataI32[i].Return == Result ? 0 : 1;
 			assert(!Error);
 		}
-        
+
 		return Error;
 	}
 }//findLSB
+
+namespace usubBorrow
+{
+	int test()
+	{
+		int Error(0);
+		
+		glm::uint x = 16;
+		glm::uint y = 17;
+		glm::uint Borrow = 0;
+		glm::uint Result = glm::usubBorrow(x, y, Borrow);
+		
+		return Error;
+	}
+	
+}//namespace usubBorrow
 
 int main()
 {

@@ -19,8 +19,49 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
+///
+/// @ref gtc_std
+/// @file glm/gtc/std.hpp
+/// @date 2014-07-25 / 2014-07-25
+/// @author Christophe Riccio
+/// 
+/// @see core (dependence)
+///
+/// @defgroup gtc_std GLM_GTC_std_type
+/// @ingroup gtc
+/// 
+/// @brief Comparison functions for a user defined epsilon values.
+/// 
+/// <glm/gtc/std.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#if(defined(GLM_MESSAGES))
-#	pragma message("GLM: GLM_GTX_unsigned_int extension is deprecated, include GLM_GTX_integer instead")
+#pragma once
+
+// Dependencies
+#include "../detail/setup.hpp"
+#include "../detail/precision.hpp"
+#include "../detail/type_vec1.hpp"
+#include "../detail/type_vec2.hpp"
+#include "../detail/type_vec3.hpp"
+#include "../detail/type_vec4.hpp"
+
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
+#	pragma message("GLM: GLM_GTC_std_type extension included")
 #endif
+
+namespace glm
+{
+	namespace type
+	{
+		void func(){}
+	}
+
+	using namespace type;
+
+	/// @addtogroup gtc_std
+	/// @{
+
+
+
+	/// @}
+}//namespace glm

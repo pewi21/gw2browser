@@ -35,8 +35,7 @@
 /// <glm/gtx/gradient_paint.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_gradient_paint
-#define GLM_GTX_gradient_paint
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -54,7 +53,7 @@ namespace glm
 	/// Return a color from a radial gradient.
 	/// @see - gtx_gradient_paint
 	template <typename T, precision P>
-	T radialGradient(
+	GLM_FUNC_DECL T radialGradient(
 		detail::tvec2<T, P> const & Center,
 		T const & Radius,
 		detail::tvec2<T, P> const & Focal,
@@ -63,7 +62,7 @@ namespace glm
 	/// Return a color from a linear gradient.
 	/// @see - gtx_gradient_paint
 	template <typename T, precision P>
-	T linearGradient(
+	GLM_FUNC_DECL T linearGradient(
 		detail::tvec2<T, P> const & Point0,
 		detail::tvec2<T, P> const & Point1,
 		detail::tvec2<T, P> const & Position);
@@ -72,5 +71,3 @@ namespace glm
 }// namespace glm
 
 #include "gradient_paint.inl"
-
-#endif//GLM_GTX_gradient_paint

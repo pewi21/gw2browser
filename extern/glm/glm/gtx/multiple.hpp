@@ -36,8 +36,7 @@
 /// <glm/gtx/multiple.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_multiple
-#define GLM_GTX_multiple
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -59,7 +58,7 @@ namespace glm
 	///
 	/// @see gtx_multiple
 	template <typename genType>
-	genType higherMultiple(
+	GLM_FUNC_DECL genType higherMultiple(
 		genType const & Source,
 		genType const & Multiple);
 
@@ -71,7 +70,7 @@ namespace glm
 	///
 	/// @see gtx_multiple
 	template <typename genType>
-	genType lowerMultiple(
+	GLM_FUNC_DECL genType lowerMultiple(
 		genType const & Source,
 		genType const & Multiple);
 
@@ -79,5 +78,3 @@ namespace glm
 }//namespace glm
 
 #include "multiple.inl"
-
-#endif//GLM_GTX_multiple

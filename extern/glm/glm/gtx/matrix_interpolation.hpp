@@ -35,8 +35,7 @@
 /// <glm/gtx/matrix_interpolation.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_matrix_interpolation
-#define GLM_GTX_matrix_interpolation
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -53,7 +52,7 @@ namespace glm
 	/// Get the axis and angle of the rotation from a matrix.
 	/// From GLM_GTX_matrix_interpolation extension.
 	template <typename T, precision P>
-	void axisAngle(
+	GLM_FUNC_DECL void axisAngle(
 		detail::tmat4x4<T, P> const & mat,
 		detail::tvec3<T, P> & axis,
 		T & angle);
@@ -61,21 +60,21 @@ namespace glm
 	/// Build a matrix from axis and angle.
 	/// From GLM_GTX_matrix_interpolation extension.
 	template <typename T, precision P>
-	detail::tmat4x4<T, P> axisAngleMatrix(
+	GLM_FUNC_DECL detail::tmat4x4<T, P> axisAngleMatrix(
 		detail::tvec3<T, P> const & axis,
 		T const angle);
 
 	/// Extracts the rotation part of a matrix.
 	/// From GLM_GTX_matrix_interpolation extension.
 	template <typename T, precision P>
-	detail::tmat4x4<T, P> extractMatrixRotation(
+	GLM_FUNC_DECL detail::tmat4x4<T, P> extractMatrixRotation(
 		detail::tmat4x4<T, P> const & mat);
 
 	/// Build a interpolation of 4 * 4 matrixes.
 	/// From GLM_GTX_matrix_interpolation extension.
 	/// Warning! works only with rotation and/or translation matrixes, scale will generate unexpected results.
 	template <typename T, precision P>
-	detail::tmat4x4<T, P> interpolate(
+	GLM_FUNC_DECL detail::tmat4x4<T, P> interpolate(
 		detail::tmat4x4<T, P> const & m1,
 		detail::tmat4x4<T, P> const & m2,
 		T const delta);
@@ -84,5 +83,3 @@ namespace glm
 }//namespace glm
 
 #include "matrix_interpolation.inl"
-
-#endif//GLM_GTX_matrix_interpolation

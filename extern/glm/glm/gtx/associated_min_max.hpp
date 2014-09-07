@@ -35,8 +35,7 @@
 /// <glm/gtx/associated_min_max.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_associated_min_max
-#define GLM_GTX_associated_min_max
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -53,14 +52,14 @@ namespace glm
 	/// Min comparison between 2 variables
 	/// @see gtx_associated_min_max
 	template<typename genTypeT, typename genTypeU>
-	genTypeU associatedMin(
+	GLM_FUNC_DECL genTypeU associatedMin(
 		const genTypeT& x, const genTypeU& a, 
 		const genTypeT& y, const genTypeU& b);
 
 	/// Min comparison between 3 variables
 	/// @see gtx_associated_min_max
 	template<typename genTypeT, typename genTypeU>
-	genTypeU associatedMin(
+	GLM_FUNC_DECL genTypeU associatedMin(
 		const genTypeT& x, const genTypeU& a, 
 		const genTypeT& y, const genTypeU& b, 
 		const genTypeT& z, const genTypeU& c);
@@ -68,7 +67,7 @@ namespace glm
 	/// Min comparison between 4 variables
 	/// @see gtx_associated_min_max
 	template<typename genTypeT, typename genTypeU>
-	genTypeU associatedMin(
+	GLM_FUNC_DECL genTypeU associatedMin(
 		const genTypeT& x, const genTypeU& a, 
 		const genTypeT& y, const genTypeU& b, 
 		const genTypeT& z, const genTypeU& c, 
@@ -77,14 +76,14 @@ namespace glm
 	/// Max comparison between 2 variables
 	/// @see gtx_associated_min_max
 	template<typename genTypeT, typename genTypeU>
-	genTypeU associatedMax(
+	GLM_FUNC_DECL genTypeU associatedMax(
 		const genTypeT& x, const genTypeU& a, 
 		const genTypeT& y, const genTypeU& b);
 
 	/// Max comparison between 3 variables
 	/// @see gtx_associated_min_max
 	template<typename genTypeT, typename genTypeU>
-	genTypeU associatedMax(
+	GLM_FUNC_DECL genTypeU associatedMax(
 		const genTypeT& x, const genTypeU& a, 
 		const genTypeT& y, const genTypeU& b, 
 		const genTypeT& z, const genTypeU& c);
@@ -92,7 +91,7 @@ namespace glm
 	/// Max comparison between 4 variables
 	/// @see gtx_associated_min_max
 	template<typename genTypeT, typename genTypeU>
-	genTypeU associatedMax(
+	GLM_FUNC_DECL genTypeU associatedMax(
 		const genTypeT& x, const genTypeU& a, 
 		const genTypeT& y, const genTypeU& b, 
 		const genTypeT& z, const genTypeU& c, 
@@ -102,5 +101,3 @@ namespace glm
 } //namespace glm
 
 #include "associated_min_max.inl"
-
-#endif//GLM_GTX_associated_min_max

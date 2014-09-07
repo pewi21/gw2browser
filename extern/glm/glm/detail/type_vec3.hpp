@@ -26,8 +26,7 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_core_type_gentype3
-#define glm_core_type_gentype3
+#pragma once
 
 //#include "../fwd.hpp"
 #include "type_vec.hpp"
@@ -38,9 +37,6 @@
 #		include "_swizzle_func.hpp"
 #	endif
 #endif //GLM_SWIZZLE
-#if(GLM_HAS_INITIALIZER_LISTS)
-#	include <initializer_list>
-#endif //GLM_HAS_INITIALIZER_LISTS
 #include <cstddef>
 
 namespace glm{
@@ -108,29 +104,42 @@ namespace detail
 		template <precision Q>
 		GLM_FUNC_DECL tvec3(tvec3<T, Q> const & v);
 
-#if(GLM_HAS_INITIALIZER_LISTS)
-		template <typename U>
-		GLM_FUNC_DECL tvec3(std::initializer_list<U> const & v);
-#endif//GLM_HAS_INITIALIZER_LISTS
+		//////////////////////////////////////
+		// Swizzle constructors
+
+#		if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+			template <int E0, int E1, int E2>
+			GLM_FUNC_DECL tvec3(_swizzle<3, T, P, tvec3<T, P>, E0, E1, E2, -1> const & that)
+			{
+				*this = that();
+			}
+
+			template <int E0, int E1>
+			GLM_FUNC_DECL tvec3(_swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, T const & s)
+			{
+				*this = tvec3<T, P>(v(), s);
+			}
+
+			template <int E0, int E1>
+			GLM_FUNC_DECL tvec3(T const & s, _swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v)
+			{
+				*this = tvec3<T, P>(s, v());
+			}
+#		endif//(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
 
 		//////////////////////////////////////
 		// Explicit basic constructors
 
-		GLM_FUNC_DECL explicit tvec3(
-			ctor);
-		GLM_FUNC_DECL explicit tvec3(
-			T const & s);
-		GLM_FUNC_DECL explicit tvec3(
-			T const & s1,
-			T const & s2,
-			T const & s3);
+		GLM_FUNC_DECL explicit tvec3(ctor);
+		GLM_FUNC_DECL explicit tvec3(T const & s);
+		GLM_FUNC_DECL tvec3(T const & s1, T const & s2, T const & s3);
 
 		//////////////////////////////////////
 		// Conversion scalar constructors
 
 		//! Explicit converions (From section 5.4.1 Conversion and scalar constructors of GLSL 1.30.08 specification)
 		template <typename U, typename V, typename W>
-		GLM_FUNC_DECL explicit tvec3(
+		GLM_FUNC_DECL tvec3(
 			U const & x,
 			V const & y,
 			W const & z);
@@ -152,35 +161,12 @@ namespace detail
 		GLM_FUNC_DECL explicit tvec3(tvec4<U, Q> const & v);
 
 		//////////////////////////////////////
-		// Swizzle constructors
-
-#		if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
-		template <int E0, int E1, int E2>
-		GLM_FUNC_DECL tvec3(_swizzle<3, T, P, tvec3<T, P>, E0, E1, E2, -1> const & that)
-		{
-			*this = that();
-		}
-
-		template <int E0, int E1>
-		GLM_FUNC_DECL tvec3(_swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, T const & s)
-		{
-			*this = tvec3<T, P>(v(), s);
-		}
-
-		template <int E0, int E1>
-		GLM_FUNC_DECL tvec3(T const & s, _swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v)
-		{
-			*this = tvec3<T, P>(s, v());
-		}
-#		endif//(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
-
-		//////////////////////////////////////
 		// Unary arithmetic operators
 
 		GLM_FUNC_DECL tvec3<T, P> & operator= (tvec3<T, P> const & v);
+
 		template <typename U> 
 		GLM_FUNC_DECL tvec3<T, P> & operator= (tvec3<U, P> const & v);
-
 		template <typename U> 
 		GLM_FUNC_DECL tvec3<T, P> & operator+=(U s);
 		template <typename U> 
@@ -337,5 +323,3 @@ namespace detail
 #ifndef GLM_EXTERNAL_TEMPLATE
 #include "type_vec3.inl"
 #endif//GLM_EXTERNAL_TEMPLATE
-
-#endif//glm_core_type_gentype3

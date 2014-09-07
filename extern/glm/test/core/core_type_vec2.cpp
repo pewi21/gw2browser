@@ -7,7 +7,7 @@
 // File    : test/core/type_vec2.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define GLM_FORCE_RADIANS
+#define GLM_SWIZZLE
 #include <glm/vector_relational.hpp>
 #include <glm/vec2.hpp>
 #include <vector>
@@ -219,6 +219,19 @@ int test_vec2_ctor()
 	}
 #endif
 
+#if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+	{
+		glm::vec2 A = glm::vec2(1.0f, 2.0f);
+		glm::vec2 B = A.xy;
+		glm::vec2 C(A.xy);
+		glm::vec2 D(A.xy());
+
+		Error += glm::all(glm::equal(A, B)) ? 0 : 1;
+		Error += glm::all(glm::equal(A, C)) ? 0 : 1;
+		Error += glm::all(glm::equal(A, D)) ? 0 : 1;
+	}
+#endif//(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+
 	{
 		glm::vec2 A = glm::vec2(2.0f);
 		glm::vec2 B = glm::vec2(2.0f, 3.0f);
@@ -276,6 +289,9 @@ int test_operator_increment()
 int main()
 {
 	int Error = 0;
+
+	glm::vec2 v;
+	assert(v.length() == 2);
 
 	Error += test_vec2_size();
 	Error += test_vec2_ctor();

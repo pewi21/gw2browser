@@ -37,8 +37,7 @@
 /// <glm/gtx/rotate_normalized_axis.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_rotate_normalized_axis
-#define GLM_GTX_rotate_normalized_axis
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -66,7 +65,7 @@ namespace glm
 	/// @see - rotate(detail::tmat4x4<T, P> const & m, T angle, T x, T y, T z) 
 	/// @see - rotate(T angle, detail::tvec3<T, P> const & v) 
 	template <typename T, precision P>
-	detail::tmat4x4<T, P> rotateNormalizedAxis(
+	GLM_FUNC_DECL detail::tmat4x4<T, P> rotateNormalizedAxis(
 		detail::tmat4x4<T, P> const & m,
 		T const & angle,
 		detail::tvec3<T, P> const & axis);
@@ -79,7 +78,7 @@ namespace glm
 	/// 
 	/// @see gtx_rotate_normalized_axis
 	template <typename T, precision P>
-	detail::tquat<T, P> rotateNormalizedAxis(
+	GLM_FUNC_DECL detail::tquat<T, P> rotateNormalizedAxis(
 		detail::tquat<T, P> const & q,
 		T const & angle,
 		detail::tvec3<T, P> const & axis);
@@ -88,5 +87,3 @@ namespace glm
 }//namespace glm
 
 #include "rotate_normalized_axis.inl"
-
-#endif//GLM_GTX_rotate_normalized_axis

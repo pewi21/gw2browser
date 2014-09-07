@@ -30,31 +30,20 @@ namespace glm{
 namespace detail
 {
 	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER GLM_CONSTEXPR length_t tmat2x2<T, P>::length() const
-	{
-		return 2;
-	}
+	GLM_FUNC_QUALIFIER GLM_CONSTEXPR length_t tmat2x2<T, P>::length() const {return 2;}
 
 	//////////////////////////////////////
 	// Accesses
 
 	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER typename tmat2x2<T, P>::col_type &
-	tmat2x2<T, P>::operator[]
-	(
-		length_t i
-	)
+	GLM_FUNC_QUALIFIER typename tmat2x2<T, P>::col_type & tmat2x2<T, P>::operator[](length_t i)
 	{
 		assert(i < this->length());
 		return this->value[i];
 	}
 
 	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER typename tmat2x2<T, P>::col_type const &
-	tmat2x2<T, P>::operator[]
-	(
-		length_t i
-	) const
+	GLM_FUNC_QUALIFIER typename tmat2x2<T, P>::col_type const & tmat2x2<T, P>::operator[](length_t i) const
 	{
 		assert(i < this->length());
 		return this->value[i];
@@ -128,29 +117,6 @@ namespace detail
 		this->value[0] = v0;
 		this->value[1] = v1;
 	}
-
-#if(GLM_HAS_INITIALIZER_LISTS)
-	template <typename T, precision P>
-	template <typename U>
-	GLM_FUNC_QUALIFIER tmat2x2<T, P>::tmat2x2(std::initializer_list<U> l)
-	{
-		assert(l.size() == this->length() * this->value[0].length());
-		
-		typename std::initializer_list<U>::iterator p = l.begin();
-
-		this->value[0] = tvec2<T, P>(*(p +  0), *(p +  1));
-		this->value[1] = tvec2<T, P>(*(p +  2), *(p +  3));
-	}
-
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tmat2x2<T, P>::tmat2x2(std::initializer_list<tvec2<T, P> > l)
-	{
-		assert(l.size() == this->length());
-
-		this->value[0] = l.begin()[0];
-		this->value[1] = l.begin()[1];
-	}
-#endif//GLM_HAS_INITIALIZER_LISTS
 
 	//////////////////////////////////////
 	// Conversion constructors

@@ -7,7 +7,6 @@
 // File    : test/core/func_matrix.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define GLM_FORCE_RADIANS
 #include <glm/matrix.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/ulp.hpp>
@@ -80,7 +79,7 @@ int test_matrixCompMult()
 
 int test_outerProduct()
 {
-
+	glm::mat4 m = glm::outerProduct(glm::vec4(1.0f), glm::vec4(1.0f));
 
 	return 0;
 }
@@ -228,10 +227,10 @@ int test_inverse_perf(std::size_t Instance, char const * Message)
 	//glm::uint Ulp = 0;
 	//Ulp = glm::max(glm::float_distance(*Dst, *Src), Ulp);
 
-	printf("inverse<%s>(%f): %d\n", Message, Diff, EndTime - StartTime);
+	printf("inverse<%s>(%f): %lu\n", Message, Diff, EndTime - StartTime);
 
 	return 0;
-};
+}
 
 int main()
 {

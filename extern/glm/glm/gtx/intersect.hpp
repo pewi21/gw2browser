@@ -36,8 +36,7 @@
 /// <glm/gtx/intersect.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_intersect
-#define GLM_GTX_intersect
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -56,7 +55,7 @@ namespace glm
 	//! Ray direction and plane normal must be unit length.
 	//! From GLM_GTX_intersect extension.
 	template <typename genType>
-	bool intersectRayPlane(
+	GLM_FUNC_DECL bool intersectRayPlane(
 		genType const & orig, genType const & dir,
 		genType const & planeOrig, genType const & planeNormal,
 		typename genType::value_type & intersectionDistance);
@@ -64,7 +63,7 @@ namespace glm
 	//! Compute the intersection of a ray and a triangle.
 	//! From GLM_GTX_intersect extension.
 	template <typename genType>
-	bool intersectRayTriangle(
+	GLM_FUNC_DECL bool intersectRayTriangle(
 		genType const & orig, genType const & dir,
 		genType const & vert0, genType const & vert1, genType const & vert2,
 		genType & baryPosition);
@@ -72,7 +71,7 @@ namespace glm
 	//! Compute the intersection of a line and a triangle.
 	//! From GLM_GTX_intersect extension.
 	template <typename genType>
-	bool intersectLineTriangle(
+	GLM_FUNC_DECL bool intersectLineTriangle(
 		genType const & orig, genType const & dir,
 		genType const & vert0, genType const & vert1, genType const & vert2,
 		genType & position);
@@ -81,7 +80,7 @@ namespace glm
 	//! The ray direction vector is unit length.
 	//! From GLM_GTX_intersect extension.
 	template <typename genType>
-	bool intersectRaySphere(
+	GLM_FUNC_DECL bool intersectRaySphere(
 		genType const & rayStarting, genType const & rayNormalizedDirection,
 		genType const & sphereCenter, typename genType::value_type const sphereRadiusSquered,
 		typename genType::value_type & intersectionDistance);
@@ -89,7 +88,7 @@ namespace glm
 	//! Compute the intersection of a ray and a sphere.
 	//! From GLM_GTX_intersect extension.
 	template <typename genType>
-	bool intersectRaySphere(
+	GLM_FUNC_DECL bool intersectRaySphere(
 		genType const & rayStarting, genType const & rayNormalizedDirection,
 		genType const & sphereCenter, const typename genType::value_type sphereRadius,
 		genType & intersectionPosition, genType & intersectionNormal);
@@ -97,7 +96,7 @@ namespace glm
 	//! Compute the intersection of a line and a sphere.
 	//! From GLM_GTX_intersect extension
 	template <typename genType>
-	bool intersectLineSphere(
+	GLM_FUNC_DECL bool intersectLineSphere(
 		genType const & point0, genType const & point1,
 		genType const & sphereCenter, typename genType::value_type sphereRadius,
 		genType & intersectionPosition1, genType & intersectionNormal1, 
@@ -107,5 +106,3 @@ namespace glm
 }//namespace glm
 
 #include "intersect.inl"
-
-#endif//GLM_GTX_intersect

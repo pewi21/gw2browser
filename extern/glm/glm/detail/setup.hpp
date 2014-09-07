@@ -26,19 +26,18 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_SETUP_INCLUDED
-#define GLM_SETUP_INCLUDED
+#pragma once
 
 #include <cassert>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Version
 
-#define GLM_VERSION					95
+#define GLM_VERSION					96
 #define GLM_VERSION_MAJOR			0
 #define GLM_VERSION_MINOR			9
-#define GLM_VERSION_PATCH			5
-#define GLM_VERSION_REVISION		1
+#define GLM_VERSION_PATCH			6
+#define GLM_VERSION_REVISION		0
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Platform
@@ -211,6 +210,9 @@
 
 // CUDA
 #elif defined(__CUDACC__)
+#	if !defined(CUDA_VERSION) && !defined(GLM_FORCE_CUDA)
+#		include <cuda.h>  // make sure version is defined since nvcc does not define it itself! 
+#	endif
 #	if CUDA_VERSION < 3000
 #		error "GLM requires CUDA 3.0 or higher"
 #	else
@@ -520,6 +522,32 @@
 	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_GCC) && (GLM_COMPILER >= GLM_COMPILER_GCC44)) || \
 	__has_feature(cxx_generalized_initializers))
 
+// N2544 Unrestricted unions
+#define GLM_HAS_UNRESTRICTED_UNIONS ( \
+	(GLM_LANG & GLM_LANG_CXX11_FLAG) || \
+	(GLM_LANG & GLM_LANG_CXXMS_FLAG) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_GCC) && (GLM_COMPILER >= GLM_COMPILER_GCC46)) || \
+	__has_feature(cxx_unrestricted_unions))
+
+// N2346
+#define GLM_HAS_DEFAULTED_FUNCTIONS ( \
+	(GLM_LANG & GLM_LANG_CXX11_FLAG) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && ((GLM_COMPILER & GLM_COMPILER_VC) && (GLM_COMPILER >= GLM_COMPILER_VC12))) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_GCC) && (GLM_COMPILER >= GLM_COMPILER_GCC44)) || \
+	__has_feature(cxx_defaulted_functions))
+
+// N2118
+#define GLM_HAS_RVALUE_REFERENCES ( \
+	(GLM_LANG & GLM_LANG_CXX11_FLAG) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && ((GLM_COMPILER & GLM_COMPILER_VC) && (GLM_COMPILER >= GLM_COMPILER_VC11))) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_GCC) && (GLM_COMPILER >= GLM_COMPILER_GCC43)) || \
+	__has_feature(cxx_rvalue_references))
+
+#define GLM_HAS_STL_ARRAY ( \
+	(GLM_LANG & GLM_LANG_CXX11_FLAG) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && ((GLM_COMPILER & GLM_COMPILER_VC) && (GLM_COMPILER >= GLM_COMPILER_VC10))) || \
+	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_GCC) && (GLM_COMPILER >= GLM_COMPILER_GCC43)))
+
 // OpenMP
 #ifdef _OPENMP 
 #	if(GLM_COMPILER & GLM_COMPILER_GCC)
@@ -545,66 +573,61 @@
 /////////////////
 // Platform 
 
-// User defines: GLM_FORCE_PURE GLM_FORCE_SSE2 GLM_FORCE_AVX
+// User defines: GLM_FORCE_PURE GLM_FORCE_SSE2 GLM_FORCE_SSE3 GLM_FORCE_AVX GLM_FORCE_AVX2
 
 #define GLM_ARCH_PURE		0x0000
 #define GLM_ARCH_SSE2		0x0001
-#define GLM_ARCH_SSE3		0x0002// | GLM_ARCH_SSE2
-#define GLM_ARCH_SSE4		0x0004// | GLM_ARCH_SSE3 | GLM_ARCH_SSE2
-#define GLM_ARCH_AVX		0x0008// | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2
-#define GLM_ARCH_AVX2		0x0010// | GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2
+#define GLM_ARCH_SSE3		0x0002
+#define GLM_ARCH_SSE4		0x0004
+#define GLM_ARCH_AVX		0x0008
+#define GLM_ARCH_AVX2		0x0010
 
 #if(defined(GLM_FORCE_PURE))
 #	define GLM_ARCH GLM_ARCH_PURE
 #elif(defined(GLM_FORCE_AVX2))
-#	define GLM_ARCH (GLM_ARCH_AVX2 | GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	define GLM_ARCH (GLM_ARCH_AVX2 | GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
 #elif(defined(GLM_FORCE_AVX))
-#	define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
 #elif(defined(GLM_FORCE_SSE4))
 #	define GLM_ARCH (GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
 #elif(defined(GLM_FORCE_SSE3))
 #	define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
 #elif(defined(GLM_FORCE_SSE2))
 #	define GLM_ARCH (GLM_ARCH_SSE2)
-#elif((GLM_COMPILER & GLM_COMPILER_VC) && (defined(_M_IX86) || defined(_M_X64)))
-#	if(GLM_PLATFORM == GLM_PLATFORM_WINCE)
-#		define GLM_ARCH GLM_ARCH_PURE
-#	elif(defined(_M_CEE_PURE))
-#		define GLM_ARCH GLM_ARCH_PURE
-/* TODO: Explore auto detection of instruction set support
-#	elif(defined(_M_IX86_FP))
-#		if(_M_IX86_FP >= 3)
-#			define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
-#		elif(_M_IX86_FP >= 2)
-#			define GLM_ARCH (GLM_ARCH_SSE2)
-#		else
-#			define GLM_ARCH GLM_ARCH_PURE
-#		endif
-*/
-#	elif(GLM_COMPILER >= GLM_COMPILER_VC11)
+#elif((GLM_COMPILER & GLM_COMPILER_CLANG) || (GLM_COMPILER & GLM_COMPILER_GCC))
+#	if(__AVX2__)
+#		define GLM_ARCH (GLM_ARCH_AVX2 | GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	elif(__AVX__)
 #		define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
-#	elif(GLM_COMPILER >= GLM_COMPILER_VC10)
-#		if(_MSC_FULL_VER >= 160031118) //160031118: VC2010 SP1 beta full version
-#			define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)//GLM_ARCH_AVX (Require SP1)
-#		else
-#			define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
-#		endif
-#	elif(GLM_COMPILER >= GLM_COMPILER_VC9) 
+#	elif(__SSE3__)
 #		define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
-#	elif(GLM_COMPILER >= GLM_COMPILER_VC8)
-#		define GLM_ARCH GLM_ARCH_SSE2
+#	elif(__SSE2__)
+#		define GLM_ARCH (GLM_ARCH_SSE2)
 #	else
 #		define GLM_ARCH GLM_ARCH_PURE
 #	endif
-#elif((GLM_PLATFORM & GLM_PLATFORM_APPLE) && (GLM_COMPILER & GLM_COMPILER_GCC))
-#	define GLM_ARCH GLM_ARCH_PURE
-#elif(((GLM_COMPILER & GLM_COMPILER_GCC) && (defined(__i386__) || defined(__x86_64__))) || (GLM_COMPILER & GLM_COMPILER_LLVM_GCC))
-#	define GLM_ARCH (GLM_ARCH_PURE \
-| (defined(__AVX2__) ? GLM_ARCH_AVX2 : 0) \
-| (defined(__AVX__) ? GLM_ARCH_AVX : 0) \
-| (defined(__SSE4__) ? GLM_ARCH_SSE4 : 0) \
-| (defined(__SSE3__) ? GLM_ARCH_SSE3 : 0) \
-| (defined(__SSE2__) ? GLM_ARCH_SSE2 : 0))
+#elif(GLM_COMPILER & GLM_COMPILER_VC)
+#	if _M_IX86_FP == 2 && defined(__AVX__)
+#		define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	elif _M_IX86_FP == 2
+#		define GLM_ARCH (GLM_ARCH_SSE2)
+#	else
+#		define GLM_ARCH (GLM_ARCH_PURE)
+#	endif
+#elif(((GLM_COMPILER & GLM_COMPILER_GCC) && (defined(__i386__) || defined(__x86_64__))) || (GLM_COMPILER & GLM_COMPILER_LLVM_GCC) || (GLM_COMPILER & GLM_COMPILER_CLANG))
+#	if defined(__AVX2__) 
+#		define GLM_ARCH (GLM_ARCH_AVX2 | GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	elif defined(__AVX__)
+#		define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	elif defined(__SSE4_1__ )
+#		define GLM_ARCH (GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	elif defined(__SSE3__)
+#		define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	elif defined(__SSE2__)
+#		define GLM_ARCH (GLM_ARCH_SSE2)
+#	else
+#		define GLM_ARCH (GLM_ARCH_PURE)
+#	endif
 #else
 #	define GLM_ARCH GLM_ARCH_PURE
 #endif
@@ -616,7 +639,6 @@
 #	include <intrin.h>
 #endif
 
-//#if(GLM_ARCH != GLM_ARCH_PURE)
 #if(GLM_ARCH & GLM_ARCH_AVX2)
 #	include <immintrin.h>
 #endif//GLM_ARCH
@@ -639,30 +661,22 @@
 		inline __m128 _mm_castsi128_ps(__m128i PI) { union { __m128 ps; __m128i pi; } c; c.pi = PI; return c.ps; }
 #	endif
 #endif//GLM_ARCH
-//#endif//(GLM_ARCH != GLM_ARCH_PURE)
 
 #if(defined(GLM_MESSAGES) && !defined(GLM_MESSAGE_ARCH_DISPLAYED))
 #	define GLM_MESSAGE_ARCH_DISPLAYED
 #	if(GLM_ARCH == GLM_ARCH_PURE)
-#		pragma message("GLM: Platform independent")
-#	elif(GLM_ARCH & GLM_ARCH_SSE2)
-#		pragma message("GLM: SSE2 instruction set")
-#	elif(GLM_ARCH & GLM_ARCH_SSE3)
-#		pragma message("GLM: SSE3 instruction set")
-#	elif(GLM_ARCH & GLM_ARCH_SSE4)
-#		pragma message("GLM: SSE4 instruction set")
-#	elif(GLM_ARCH & GLM_ARCH_AVX)
-#		pragma message("GLM: AVX instruction set")
+#		pragma message("GLM: Platform independent code")
 #	elif(GLM_ARCH & GLM_ARCH_AVX2)
 #		pragma message("GLM: AVX2 instruction set")
+#	elif(GLM_ARCH & GLM_ARCH_AVX)
+#		pragma message("GLM: AVX instruction set")
+#	elif(GLM_ARCH & GLM_ARCH_SSE3)
+#		pragma message("GLM: SSE3 instruction set")
+#	elif(GLM_ARCH & GLM_ARCH_SSE2)
+#		pragma message("GLM: SSE2 instruction set")
 #	endif//GLM_ARCH
 #	pragma message("GLM: #define GLM_FORCE_PURE to avoid using platform specific instruction sets")
 #endif//GLM_MESSAGE
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Radians
-
-//#define GLM_FORCE_RADIANS
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Static assert
@@ -786,5 +800,3 @@ namespace glm
 #else
 #	define GLM_CONSTEXPR
 #endif
-
-#endif//GLM_SETUP_INCLUDED

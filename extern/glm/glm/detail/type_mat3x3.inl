@@ -139,31 +139,6 @@ namespace detail
 		this->value[2] = v2;
 	}
 
-#if(GLM_HAS_INITIALIZER_LISTS)
-	template <typename T, precision P>
-	template <typename U>
-	GLM_FUNC_QUALIFIER tmat3x3<T, P>::tmat3x3(std::initializer_list<U> l)
-	{
-		assert(l.size() == this->length() * this->value[0].length());
-
-		typename std::initializer_list<U>::iterator p = l.begin();
-
-		this->value[0] = tvec3<T, P>(*(p + 0), *(p + 1), *(p + 2));
-		this->value[1] = tvec3<T, P>(*(p + 3), *(p + 4), *(p + 5));
-		this->value[2] = tvec3<T, P>(*(p + 6), *(p + 7), *(p + 8));
-	}
-
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tmat3x3<T, P>::tmat3x3(std::initializer_list<tvec3<T, P> > l)
-	{
-		assert(l.size() == this->length());
-
-		this->value[0] = l.begin()[0];
-		this->value[1] = l.begin()[1];
-		this->value[2] = l.begin()[2];
-	}
-#endif//GLM_HAS_INITIALIZER_LISTS
-
 	//////////////////////////////////////
 	// Conversion constructors
 	template <typename T, precision P>
@@ -454,52 +429,6 @@ namespace detail
 			return Inverse;
 		}
 	};
-
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tmat3x3<T, P> compute_inverse_mat3(tmat3x3<T, P> const & m)
-	{
-		T S00 = m[0][0];
-		T S01 = m[0][1];
-		T S02 = m[0][2];
-
-		T S10 = m[1][0];
-		T S11 = m[1][1];
-		T S12 = m[1][2];
-
-		T S20 = m[2][0];
-		T S21 = m[2][1];
-		T S22 = m[2][2];
-/*
-		tmat3x3<T, P> Inverse(
-			+ (S11 * S22 - S21 * S12),
-			- (S10 * S22 - S20 * S12),
-			+ (S10 * S21 - S20 * S11),
-			- (S01 * S22 - S21 * S02),
-			+ (S00 * S22 - S20 * S02),
-			- (S00 * S21 - S20 * S01),
-			+ (S01 * S12 - S11 * S02),
-			- (S00 * S12 - S10 * S02),
-			+ (S00 * S11 - S10 * S01));
-*/
-		tmat3x3<T, P> Inverse(
-			S11 * S22 - S21 * S12,
-			S12 * S20 - S22 * S10,
-			S10 * S21 - S20 * S11,
-			S02 * S21 - S01 * S22,
-			S00 * S22 - S02 * S20,
-			S01 * S20 - S00 * S21,
-			S12 * S01 - S11 * S02,
-			S10 * S02 - S12 * S00,
-			S11 * S00 - S10 * S01);
-
-		T Determinant = 
-			+ S00 * (S11 * S22 - S21 * S12)
-			- S10 * (S01 * S22 - S21 * S02)
-			+ S20 * (S01 * S12 - S11 * S02);
-
-		Inverse /= Determinant;
-		return Inverse;
-	}
 
 	//////////////////////////////////////////////////////////////
 	// Binary operators

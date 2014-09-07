@@ -26,8 +26,7 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_core_type_gentype4
-#define glm_core_type_gentype4
+#pragma once
 
 //#include "../fwd.hpp"
 #include "setup.hpp"
@@ -39,14 +38,33 @@
 #		include "_swizzle_func.hpp"
 #	endif
 #endif //GLM_SWIZZLE
-#if(GLM_HAS_INITIALIZER_LISTS)
-#	include <initializer_list>
-#endif //GLM_HAS_INITIALIZER_LISTS
 #include <cstddef>
 
 namespace glm{
 namespace detail
 {
+	template <typename T>
+	struct simd
+	{
+		typedef T type[4];
+	};
+
+#	if(GLM_ARCH & GLM_ARCH_SSE2)
+		template <>
+		struct simd<float>
+		{
+			typedef __m128 type;
+		};
+#	endif
+
+#	if(GLM_ARCH & GLM_ARCH_AVX)
+		template <>
+		struct simd<double>
+		{
+			typedef __m256d type;
+		};
+#	endif
+	
 	template <typename T, precision P>
 	struct tvec4
 	{
@@ -71,6 +89,7 @@ namespace detail
 #		if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
 			union
 			{
+				typename simd<T>::type data;
 				struct { T r, g, b, a; };
 				struct { T s, t, p, q; };
 				struct { T x, y, z, w;};
@@ -86,11 +105,25 @@ namespace detail
 				_GLM_SWIZZLE4_4_MEMBERS(T, P, tvec4, s, t, p, q)
 			};
 #		else
-			union { T x, r, s; };
-			union { T y, g, t; };
-			union { T z, b, p; };
-			union { T w, a, q; };
-
+#			if(GLM_HAS_UNRESTRICTED_UNIONS)
+				union
+				{
+					typename simd<T>::type data;
+					struct
+					{
+						union { T x, r, s; };
+						union { T y, g, t; };
+						union { T z, b, p; };
+						union { T w, a, q; };
+					};
+				};
+#			else
+				union { T x, r, s; };
+				union { T y, g, t; };
+				union { T z, b, p; };
+				union { T w, a, q; };
+#			endif
+		
 #			ifdef GLM_SWIZZLE
 				GLM_SWIZZLE_GEN_VEC_FROM_VEC4(T, P, detail::tvec4, detail::tvec2, detail::tvec3, detail::tvec4)
 #			endif
@@ -110,11 +143,6 @@ namespace detail
 		template <precision Q>
 		GLM_FUNC_DECL tvec4(tvec4<T, Q> const & v);
 
-#if(GLM_HAS_INITIALIZER_LISTS)
-		template <typename U>
-		GLM_FUNC_DECL tvec4(std::initializer_list<U> l);
-#endif//GLM_HAS_INITIALIZER_LISTS
-
 		//////////////////////////////////////
 		// Explicit basic constructors
 
@@ -122,7 +150,7 @@ namespace detail
 			ctor);
 		GLM_FUNC_DECL explicit tvec4(
 			T const & s);
-		GLM_FUNC_DECL explicit tvec4(
+		GLM_FUNC_DECL tvec4(
 			T const & s0,
 			T const & s1,
 			T const & s2,
@@ -133,7 +161,7 @@ namespace detail
 
 		/// Explicit converions (From section 5.4.1 Conversion and scalar constructors of GLSL 1.30.08 specification)
 		template <typename A, typename B, typename C, typename D>
-		GLM_FUNC_DECL explicit tvec4(
+		GLM_FUNC_DECL tvec4(
 			A const & x,
 			B const & y,
 			C const & z,
@@ -168,56 +196,65 @@ namespace detail
 		// Swizzle constructors
 
 #		if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
-		template <int E0, int E1, int E2, int E3>
-		GLM_FUNC_DECL tvec4(_swizzle<4, T, P, tvec4<T, P>, E0, E1, E2, E3> const & that)
-		{
-			*this = that();
-		}
+			template <int E0, int E1, int E2, int E3>
+			GLM_FUNC_DECL tvec4(_swizzle<4, T, P, tvec4<T, P>, E0, E1, E2, E3> const & that)
+			{
+				*this = that();
+			}
 
-		template <int E0, int E1, int F0, int F1>
-		GLM_FUNC_DECL tvec4(_swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, _swizzle<2, T, P, tvec2<T, P>, F0, F1, -1, -2> const & u)
-		{
-			*this = tvec4<T, P>(v(), u());
-		}
+			template <int E0, int E1, int F0, int F1>
+			GLM_FUNC_DECL tvec4(_swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, _swizzle<2, T, P, tvec2<T, P>, F0, F1, -1, -2> const & u)
+			{
+				*this = tvec4<T, P>(v(), u());
+			}
 
-		template <int E0, int E1>
-		GLM_FUNC_DECL tvec4(T const & x, T const & y, _swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v)
-		{
-			*this = tvec4<T, P>(x, y, v());
-		}
+			template <int E0, int E1>
+			GLM_FUNC_DECL tvec4(T const & x, T const & y, _swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v)
+			{
+				*this = tvec4<T, P>(x, y, v());
+			}
 
-		template <int E0, int E1>
-		GLM_FUNC_DECL tvec4(T const & x, _swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, T const & w)
-		{
-			*this = tvec4<T, P>(x, v(), w);
-		}
+			template <int E0, int E1>
+			GLM_FUNC_DECL tvec4(T const & x, _swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, T const & w)
+			{
+				*this = tvec4<T, P>(x, v(), w);
+			}
 
-		template <int E0, int E1>
-		GLM_FUNC_DECL tvec4(_swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, T const & z, T const & w)
-		{
-			*this = tvec4<T, P>(v(), z, w);
-		}
+			template <int E0, int E1>
+			GLM_FUNC_DECL tvec4(_swizzle<2, T, P, tvec2<T, P>, E0, E1, -1, -2> const & v, T const & z, T const & w)
+			{
+				*this = tvec4<T, P>(v(), z, w);
+			}
 
-		template <int E0, int E1, int E2>
-		GLM_FUNC_DECL tvec4(_swizzle<3, T, P, tvec3<T, P>, E0, E1, E2, -1> const & v, T const & w)
-		{
-			*this = tvec4<T, P>(v(), w);
-		}
+			template <int E0, int E1, int E2>
+			GLM_FUNC_DECL tvec4(_swizzle<3, T, P, tvec3<T, P>, E0, E1, E2, -1> const & v, T const & w)
+			{
+				*this = tvec4<T, P>(v(), w);
+			}
 
-		template <int E0, int E1, int E2>
-		GLM_FUNC_DECL tvec4(T const & x, _swizzle<3, T, P, tvec3<T, P>, E0, E1, E2, -1> const & v)
-		{
-			*this = tvec4<T, P>(x, v());
-		}
+			template <int E0, int E1, int E2>
+			GLM_FUNC_DECL tvec4(T const & x, _swizzle<3, T, P, tvec3<T, P>, E0, E1, E2, -1> const & v)
+			{
+				*this = tvec4<T, P>(x, v());
+			}
 #		endif//(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
 
 		//////////////////////////////////////
 		// Unary arithmetic operators
 
 		GLM_FUNC_DECL tvec4<T, P> & operator= (tvec4<T, P> const & v);
+
+		GLM_FUNC_DECL tvec4<T, P> & operator+=(T v);
+		GLM_FUNC_DECL tvec4<T, P> & operator+=(tvec4<T, P> const & v);
+		GLM_FUNC_DECL tvec4<T, P> & operator-=(T v);
+		GLM_FUNC_DECL tvec4<T, P> & operator-=(tvec4<T, P> const & v);
+		GLM_FUNC_DECL tvec4<T, P> & operator*=(T v);
+		GLM_FUNC_DECL tvec4<T, P> & operator*=(tvec4<T, P> const & v);
+		GLM_FUNC_DECL tvec4<T, P> & operator/=(T v);
+		GLM_FUNC_DECL tvec4<T, P> & operator/=(tvec4<T, P> const & v);
+		
 		template <typename U, precision Q>
 		GLM_FUNC_DECL tvec4<T, P> & operator= (tvec4<U, Q> const & v);
-
 		template <typename U>
 		GLM_FUNC_DECL tvec4<T, P> & operator+=(U s);
 		template <typename U>
@@ -380,5 +417,3 @@ namespace detail
 #ifndef GLM_EXTERNAL_TEMPLATE
 #include "type_vec4.inl"
 #endif//GLM_EXTERNAL_TEMPLATE
-
-#endif//glm_core_type_gentype4

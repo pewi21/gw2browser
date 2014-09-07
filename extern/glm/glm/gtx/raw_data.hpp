@@ -35,11 +35,11 @@
 /// <glm/gtx/raw_data.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_raw_data
-#define GLM_GTX_raw_data
+#pragma once
 
 // Dependencies
 #include "../detail/setup.hpp"
+#include "../detail/type_int.hpp"
 
 #if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_raw_data extension included")
@@ -70,5 +70,3 @@ namespace glm
 }// namespace glm
 
 #include "raw_data.inl"
-
-#endif//GLM_GTX_raw_data

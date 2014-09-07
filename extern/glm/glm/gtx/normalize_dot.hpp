@@ -36,8 +36,7 @@
 /// <glm/gtx/normalized_dot.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_normalize_dot
-#define GLM_GTX_normalize_dot
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
@@ -56,7 +55,7 @@ namespace glm
 	//! It's faster that dot(normalize(x), normalize(y)).
 	//! From GLM_GTX_normalize_dot extension.
 	template <typename genType> 
-	typename genType::value_type normalizeDot(
+	GLM_FUNC_DECL typename genType::value_type normalizeDot(
 		genType const & x, 
 		genType const & y);
 
@@ -64,7 +63,7 @@ namespace glm
 	//! Faster that dot(fastNormalize(x), fastNormalize(y)).
 	//! From GLM_GTX_normalize_dot extension.
 	template <typename genType> 
-	typename genType::value_type fastNormalizeDot(
+	GLM_FUNC_DECL typename genType::value_type fastNormalizeDot(
 		genType const & x, 
 		genType const & y);
 
@@ -72,5 +71,3 @@ namespace glm
 }//namespace glm
 
 #include "normalize_dot.inl"
-
-#endif//GLM_GTX_normalize_dot

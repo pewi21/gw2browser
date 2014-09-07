@@ -26,13 +26,20 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_core_type_mat2x2
-#define glm_core_type_mat2x2
+#pragma once
 
 #include "../fwd.hpp"
 #include "type_vec2.hpp"
 #include "type_mat.hpp"
 #include <limits>
+#if GLM_HAS_INITIALIZER_LISTS
+#	include <initializer_list>
+#endif
+#if GLM_HAS_RVALUE_REFERENCES
+#	include <algorithm>
+#endif
+#include <limits>
+#include <cstddef>
 
 namespace glm{
 namespace detail
@@ -72,29 +79,22 @@ namespace detail
 			ctor Null);
 		GLM_FUNC_DECL explicit tmat2x2(
 			T const & x);
-		GLM_FUNC_DECL explicit tmat2x2(
+		GLM_FUNC_DECL tmat2x2(
 			T const & x1, T const & y1,
 			T const & x2, T const & y2);
-		GLM_FUNC_DECL explicit tmat2x2(
+		GLM_FUNC_DECL tmat2x2(
 			col_type const & v1,
 			col_type const & v2);
-
-#if(GLM_HAS_INITIALIZER_LISTS)
-		template <typename U>
-		GLM_FUNC_DECL tmat2x2(std::initializer_list<U> m);
-
-		GLM_FUNC_DECL tmat2x2(std::initializer_list<tvec2<T, P> > m);
-#endif//GLM_HAS_INITIALIZER_LISTS
 
 		//////////////////////////////////////
 		// Conversions
 		template <typename U, typename V, typename M, typename N>
-		GLM_FUNC_DECL explicit tmat2x2(
+		GLM_FUNC_DECL tmat2x2(
 			U const & x1, V const & y1,
 			M const & x2, N const & y2);
 
 		template <typename U, typename V>
-		GLM_FUNC_DECL explicit tmat2x2(
+		GLM_FUNC_DECL tmat2x2(
 			tvec2<U, P> const & v1,
 			tvec2<V, P> const & v2);
 
@@ -119,6 +119,15 @@ namespace detail
 		GLM_FUNC_DECL col_type const & operator[](length_t i) const;
 
 		// Unary updatable operators
+#		if(GLM_HAS_DEFAULTED_FUNCTIONS && GLM_HAS_RVALUE_REFERENCES)
+			GLM_FUNC_DECL tmat2x2<T, P> & operator=(tmat2x2<T, P> && m)
+			{
+				this->value[0] = std::move(m.value[0]);
+				this->value[1] = std::move(m.value[1]);
+				return *this;
+			}
+#		endif//(GLM_HAS_DEFAULTED_FUNCTIONS && GLM_HAS_RVALUE_REFERENCES)
+
 		GLM_FUNC_DECL tmat2x2<T, P> & operator=(tmat2x2<T, P> const & m);
 		template <typename U> 
 		GLM_FUNC_DECL tmat2x2<T, P> & operator=(tmat2x2<U, P> const & m);
@@ -147,9 +156,6 @@ namespace detail
 		GLM_FUNC_DECL tmat2x2<T, P> operator++(int);
 		GLM_FUNC_DECL tmat2x2<T, P> operator--(int);
 	};
-
-	template <typename T, precision P>
-	GLM_FUNC_DECL tmat2x2<T, P> compute_inverse_mat2(tmat2x2<T, P> const & m);
 
 	// Binary operators
 	template <typename T, precision P>
@@ -252,5 +258,3 @@ namespace detail
 #ifndef GLM_EXTERNAL_TEMPLATE
 #include "type_mat2x2.inl"
 #endif
-
-#endif //glm_core_type_mat2x2

@@ -7,10 +7,10 @@
 // File    : test/gtc/quaternion.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <glm/vector_relational.hpp>
+#include <vector>
 
 int test_quat_angle()
 {
@@ -195,6 +195,15 @@ int test_quat_slerp()
 	// Must be 0 0.00X 0 0.99999
 	glm::quat almostid = glm::slerp(id, glm::angleAxis(0.1f, glm::vec3(0.0f, 1.0f, 0.0f)), 0.5f);
 
+	// Testing quaternions with opposite sign
+	{
+		glm::quat a(-1, 0, 0, 0);
+
+		glm::quat result = glm::slerp(a, id, 0.5f);
+
+		Error += glm::epsilonEqual(glm::pow(glm::dot(id, result), 2.f), 1.f, 0.01f) ? 0 : 1;
+	}
+
 	return Error;
 }
 
@@ -246,10 +255,43 @@ int test_quat_type()
 	return 0;
 }
 
+int test_quat_mul_vec()
+{
+	int Error(0);
+
+	glm::quat q = glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(0, 0, 1));
+	glm::vec3 v(1, 0, 0);
+	glm::vec3 u(q * v);
+	glm::vec3 w(u * q);
+
+	Error += glm::all(glm::epsilonEqual(v, w, 0.01f)) ? 0 : 1;
+
+	return Error;
+}
+
+int test_quat_ctr()
+{
+	int Error(0);
+
+#	if(GLM_HAS_INITIALIZER_LISTS)
+	{
+		glm::quat A{0, 1, 2, 3};
+
+		std::vector<glm::quat> B{
+			{0, 1, 2, 3},
+			{0, 1, 2, 3}};
+	}
+#	endif//GLM_HAS_INITIALIZER_LISTS
+
+	return Error;
+}
+
 int main()
 {
 	int Error(0);
 
+	Error += test_quat_ctr();
+	Error += test_quat_mul_vec();
 	Error += test_quat_two_axis_ctr();
 	Error += test_quat_mul();
 	Error += test_quat_precision();

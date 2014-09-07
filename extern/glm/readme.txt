@@ -37,6 +37,79 @@ More informations in GLM manual:
 http://glm.g-truc.net/glm.pdf
 
 ================================================================================
+GLM 0.9.6.0: 2014-XX-XX
+--------------------------------------------------------------------------------
+- Added transparent use of SIMD instructions for vec4 and mat4 types
+- Removed degrees for function parameters
+- Removed GLM_FORCE_RADIANS, active by default
+- Added move contructors and assignment operators (#141)
+- Use pragma once
+- Fixed Visual Studio 14 compiler warnings
+- Added *vec1 support to *vec2 types
+
+================================================================================
+GLM 0.9.5.5: 2014-XX-XX
+--------------------------------------------------------------------------------
+- Fixed std::nextafter not supported with C++11 on Android #217
+- Fixed missing value_type for dual quaternion
+- Fixed return type of dual quaternion length
+- Fixed infinite loop in isfinite function with GCC #221
+- Rely on C++11 to implement isinf and isnan
+
+================================================================================
+GLM 0.9.5.4: 2014-06-21
+--------------------------------------------------------------------------------
+- Fixed non-utf8 character #196
+- Added FindGLM install for CMake #189
+- Fixed GTX_color_space - saturation #195
+- Fixed glm::isinf and glm::isnan for with Android NDK 9d #191
+- Fixed builtin GLM_ARCH_SSE4 #204
+- Optimized Quaternion vector rotation #205
+- Fixed missing doxygen @endcond tag #211
+- Fixed instruction set detection with Clang #158
+- Fixed orientate3 function #207
+- Fixed lerp when cosTheta is close to 1 in quaternion slerp #210
+- Added GTX_io for io with <iostream> #144
+- Fixed fastDistance ambiguity #215
+- Fixed tweakedInfinitePerspective #208 and added user-defined epsilon to
+  tweakedInfinitePerspective
+- Fixed std::copy and std::vector with GLM types #214
+- Fixed strict aliasing issues #212, #152
+- Fixed std::nextafter not supported with C++11 on Android #213
+- Fixed corner cases in exp and log functions for quaternions #199
+
+================================================================================
+GLM 0.9.5.3: 2014-04-02
+--------------------------------------------------------------------------------
+- Added instruction set auto detection with Visual C++ using _M_IX86_FP - /arch
+  compiler argument
+- Fixed GTX_raw_data code dependency
+- Fixed GCC instruction set detection
+- Added GLM_GTX_matrix_transform_2d extension (#178, #176)
+- Fixed CUDA issues (#169, #168, #183, #182)
+- Added support for all extensions but GTX_string_cast to CUDA
+- Fixed strict aliasing warnings in GCC 4.8.1 / Android NDK 9c (#152)
+- Fixed missing bitfieldInterleave definisions
+- Fixed usubBorrow (#171)
+- Fixed eulerAngle*** not consistent for right-handed coordinate system (#173)
+- Added full tests for eulerAngle*** functions (#173)
+- Added workaround for a CUDA compiler bug (#186, #185)
+
+================================================================================
+GLM 0.9.5.2: 2014-02-08
+--------------------------------------------------------------------------------
+- Fixed initializer list ambiguity (#159, #160)
+- Fixed warnings with the Android NDK 9c
+- Fixed non power of two matrix products
+- Fixed mix function link error
+- Fixed SSE code included in GLM tests on "pure" platforms
+- Fixed undefined reference to fastInverseSqrt (#161)
+- Fixed GLM_FORCE_RADIANS with <glm/ext.hpp> build error (#165)
+- Fix dot product clamp range for vector angle functions. (#163)
+- Tentative fix for strict aliasing warning in GCC 4.8.1 / Android NDK 9c (#152)
+- Fixed GLM_GTC_constants description brief (#162)
+
+================================================================================
 GLM 0.9.5.1: 2014-01-11
 --------------------------------------------------------------------------------
 - Fixed angle and orientedAngle that sometimes return NaN values (#145)

@@ -71,26 +71,17 @@ namespace detail
 		x(v.x)
 	{}
 
-#if(GLM_HAS_INITIALIZER_LISTS)
 	template <typename T, precision P>
 	template <typename U>
-	GLM_FUNC_QUALIFIER tvec1<T, P>::tvec1(std::initializer_list<U> const & v) :
-		x(static_cast<T>(v.begin()[0]))
-	{
-		assert(v.size() == this->length());
-	}
-#endif//GLM_HAS_INITIALIZER_LISTS
+	GLM_FUNC_QUALIFIER  tvec1<T, P>::tvec1(U const & s) :
+		x(static_cast<T>(s))
+	{}
 
 	//////////////////////////////////////
 	// Explicit basic constructors
 
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec1<T, P>::tvec1(ctor)
-	{}
-
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tvec1<T, P>::tvec1(T const & s) :
-		x(s)
 	{}
 
 	//////////////////////////////////////
