@@ -86,11 +86,7 @@ by use these command at extern\libweb directory.
 
 `nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
 
-`nmake /f Makefile.vc CFG=debug-dynamic RTLIBCFG=dynamic OBJDIR=obj`
-
 `nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
-
-`nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=dynamic OBJDIR=obj`
 
 * Compile wxWidgets.
 * Compile Gw2Browser.
