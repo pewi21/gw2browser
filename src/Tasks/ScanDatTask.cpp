@@ -179,11 +179,13 @@ namespace gw2b {
 					break;
 				}
 
-				if ( p_fileType != ANFT_WEBP && p_fileType != ANFT_JPEG && p_fileType != ANFT_DDS && p_size >= 12 ) { // ATxx textures
+				if ( ( p_fileType == ANFT_ATEX || p_fileType == ANFT_ATTX || p_fileType == ANFT_ATEC ||
+					p_fileType == ANFT_ATEP || p_fileType == ANFT_ATEU || p_fileType == ANFT_ATET ) &&
+					p_size >= 12 ) {
 					uint16 width = *reinterpret_cast<const uint16*>( p_data + 8 );
 					uint16 height = *reinterpret_cast<const uint16*>( p_data + 10 );
 					MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
-				} else if ( p_fileType == ANFT_DDS && p_size >= 20 ) { // DDS textures
+				} else if ( p_fileType == ANFT_DDS && p_size >= 20 ) {
 					uint32 width = *reinterpret_cast<const uint32*>( p_data + 16 );
 					uint32 height = *reinterpret_cast<const uint32*>( p_data + 12 );
 					MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
