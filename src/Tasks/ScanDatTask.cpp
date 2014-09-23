@@ -137,222 +137,180 @@ namespace gw2b {
 	DatIndexCategory* ScanDatTask::categorize( ANetFileType p_fileType, const byte* p_data, size_t p_size ) {
 		DatIndexCategory* category = nullptr;
 
-		// Textures
-		if ( p_fileType > ANFT_TextureStart && p_fileType < ANFT_TextureEnd ) {
-			MakeCategory( wxT( "Textures" ) );
+		switch ( p_fileType ) {
+		case ANFT_ATEX:
+		case ANFT_ATTX:
+		case ANFT_ATEC:
+		case ANFT_ATEP:
+		case ANFT_ATEU:
+		case ANFT_ATET:
+		case ANFT_DDS:
+		case ANFT_JPEG:
+		case ANFT_WEBP:
+				MakeCategory( wxT( "Textures" ) );
 
-			switch ( p_fileType ) {
-			case ANFT_ATEX:
-				MakeSubCategory( wxT( "Generic Textures" ) );
-				break;
-			case ANFT_ATTX:
-				MakeSubCategory( wxT( "Terrain Textures" ) );
-				break;
-			case ANFT_ATEC:
-				MakeSubCategory( wxT( "ATEC" ) );
-				break;
-			case ANFT_ATEP:
-				MakeSubCategory( wxT( "Map Textures" ) );
-				break;
-			case ANFT_ATEU:
-				MakeSubCategory( wxT( "UI Textures" ) );
-				break;
-			case ANFT_ATET:
-				MakeSubCategory( wxT( "ATET" ) );
-				break;
-			case ANFT_DDS:
-				MakeSubCategory( wxT( "DDS" ) );
-				break;
-			case ANFT_JPEG:
-				MakeSubCategory( wxT( "JPEG" ) );
-				break;
-			case ANFT_WEBP:
-				MakeSubCategory( wxT( "WebP" ) );
-				break;
-			}
+				switch ( p_fileType ) {
+				case ANFT_ATEX:
+					MakeSubCategory( wxT( "Generic Textures" ) );
+					break;
+				case ANFT_ATTX:
+					MakeSubCategory( wxT( "Terrain Textures" ) );
+					break;
+				case ANFT_ATEC:
+					MakeSubCategory( wxT( "ATEC" ) );
+					break;
+				case ANFT_ATEP:
+					MakeSubCategory( wxT( "Map Textures" ) );
+					break;
+				case ANFT_ATEU:
+					MakeSubCategory( wxT( "UI Textures" ) );
+					break;
+				case ANFT_ATET:
+					MakeSubCategory( wxT( "ATET" ) );
+					break;
+				case ANFT_DDS:
+					MakeSubCategory( wxT( "DDS" ) );
+					break;
+				case ANFT_JPEG:
+					MakeSubCategory( wxT( "JPEG" ) );
+					break;
+				case ANFT_WEBP:
+					MakeSubCategory( wxT( "WebP" ) );
+					break;
+				}
 
-			if ( p_fileType != ANFT_WEBP && p_fileType != ANFT_JPEG && p_fileType != ANFT_DDS && p_size >= 12 ) {
-				uint16 width = *reinterpret_cast<const uint16*>( p_data + 0x8 );
-				uint16 height = *reinterpret_cast<const uint16*>( p_data + 0xa );
-				MakeSubCategory( wxString::Format( wxT( "%dx%d" ), width, height ) );
-			} else if ( p_fileType != ANFT_WEBP && p_fileType != ANFT_JPEG && p_size >= 20 ) {
-				uint32 width = *reinterpret_cast<const uint32*>( p_data + 0x10 );
-				uint32 height = *reinterpret_cast<const uint32*>( p_data + 0x0c );
-				MakeSubCategory( wxString::Format( wxT( "%dx%d" ), width, height ) );
-			}
-		}
+				if ( ( p_fileType == ANFT_ATEX || p_fileType == ANFT_ATTX || p_fileType == ANFT_ATEC ||
+					p_fileType == ANFT_ATEP || p_fileType == ANFT_ATEU || p_fileType == ANFT_ATET ) &&
+					p_size >= 12 ) {
+					uint16 width = *reinterpret_cast<const uint16*>( p_data + 8 );
+					uint16 height = *reinterpret_cast<const uint16*>( p_data + 10 );
+					MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
+				} else if ( p_fileType == ANFT_DDS && p_size >= 20 ) {
+					uint32 width = *reinterpret_cast<const uint32*>( p_data + 16 );
+					uint32 height = *reinterpret_cast<const uint32*>( p_data + 12 );
+					MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
+				}
 
-		// Sounds
-		else if ( p_fileType > ANFT_SoundStart && p_fileType < ANFT_SoundEnd ) {
-			MakeCategory( wxT( "Sounds" ) );
+				break;
+		case ANFT_Sound:
+		case ANFT_MP3:
+		case ANFT_OGG:
+		case ANFT_ID3:
+				MakeCategory( wxT( "Sounds" ) );
 
-			switch ( p_fileType ) {
-			case ANFT_MP3:
-				MakeSubCategory( wxT( "MP3" ) );
+				switch ( p_fileType ) {
+				case ANFT_MP3:
+					MakeSubCategory( wxT( "MP3" ) );
+					break;
+				case ANFT_OGG:
+					MakeSubCategory( wxT( "OGG" ) );
+					break;
+				case ANFT_Sound:
+					MakeSubCategory( wxT( "Sounds" ) );
+					break;
+				case ANFT_ID3:
+					MakeSubCategory( wxT( "ID3 (MP3)" ) );
+					break;
+				}
 				break;
-			case ANFT_OGG:
-				MakeSubCategory( wxT( "OGG" ) );
-				break;
-			case ANFT_Sound:
-				MakeSubCategory( wxT( "Sounds" ) );
-				break;
-			case ANFT_ID3:
-				MakeSubCategory( wxT( "ID3 (MP3)" ) );
-				break;
-			}
-		}
-
-		// Binaries
-		else if ( p_fileType == ANFT_Binary || p_fileType == ANFT_EXE || p_fileType == ANFT_DLL ) {
+		case ANFT_Binary:
+		case ANFT_EXE:
+		case ANFT_DLL:
 			MakeCategory( wxT( "Binaries" ) );
-		}
-
-		// Strings
-		else if ( p_fileType == ANFT_StringFile ) {
+			break;
+		case ANFT_StringFile:
 			MakeCategory( wxT( "Strings" ) );
-		}
-
-		// Manifests
-		else if ( p_fileType == ANFT_Manifest ) {
+			break;
+		case ANFT_Manifest:
 			MakeCategory( wxT( "Manifests" ) );
-		}
-
-		// Portal Manifest
-		else if ( p_fileType == ANFT_PortalManifest ) {
+			break;
+		case ANFT_PortalManifest:
 			MakeCategory( wxT( "Portal Manifests" ) );
-		}
-
-		// TextPack Manifest
-		else if ( p_fileType == ANFT_TextPackManifest ) {
+			break;
+		case ANFT_TextPackManifest:
 			MakeCategory( wxT( "TextPack Manifests" ) );
-		}
-
-		// TextPack Variant
-		else if ( p_fileType == ANFT_TextPackVariant ) {
+			break;
+		case ANFT_TextPackVariant:
 			MakeCategory( wxT( "TextPack Variant" ) );
-		}
-
-		// TextPack Voices
-		else if ( p_fileType == ANFT_TextPackVoices ) {
+			break;
+		case ANFT_TextPackVoices:
 			MakeCategory( wxT( "TextPack Voices" ) );
-		}
-
-		// Soundbank
-		else if ( p_fileType == ANFT_Bank ) {
+			break;
+		case ANFT_Bank:
 			MakeCategory( wxT( "Soundbank" ) );
-		}
-
-		// Soundbank index
-		else if ( p_fileType == ANFT_BankIndex ) {
+			break;
+		case ANFT_BankIndex:
 			MakeCategory( wxT( "Soundbank Index" ) );
-		}
-
-		// Audio Script
-		else if ( p_fileType == ANFT_AudioScript ) {
+			break;
+		case ANFT_AudioScript:
 			MakeCategory( wxT( "Audio Scripts" ) );
-		}
-
-		// Model files
-		else if ( p_fileType == ANFT_Model ) {
+			break;
+		case ANFT_Model:
 			MakeCategory( wxT( "Models" ) );
-		}
-
-		// Dependency table
-		else if ( p_fileType == ANFT_DependencyTable ) {
+			break;
+		case ANFT_DependencyTable:
 			MakeCategory( wxT( "Dependency Tables" ) );
-		}
-
-		// EULA
-		else if ( p_fileType == ANFT_EULA ) {
+			break;
+		case ANFT_EULA:
 			MakeCategory( wxT( "EULA" ) );
-		}
-
-		// Cinematic
-		else if ( p_fileType == ANFT_Cinematic ) {
+			break;
+		case ANFT_Cinematic:
 			MakeCategory( wxT( "Cinematics" ) );
-		}
-
-		// Havok
-		else if ( p_fileType == ANFT_HavokCollision ) {
+			break;
+		case ANFT_HavokCollision:
 			MakeCategory( wxT( "Havok Collision" ) );
-		}
-
-		// Map content
-		else if ( p_fileType == ANFT_MapContent ) {
+			break;
+		case ANFT_MapContent:
 			MakeCategory( wxT( "Map Content" ) );
-		}
-
-		// Map parameter
-		else if ( p_fileType == ANFT_MapParam ) {
+			break;
+		case ANFT_MapParam:
 			MakeCategory( wxT( "Map Parameter" ) );
-		}
-
-		// Map shadows
-		else if ( p_fileType == ANFT_MapShadow ) {
+			break;
+		case ANFT_MapShadow:
 			MakeCategory( wxT( "Map Shadow" ) );
-		}
-
-		// Mini Maps
-		else if ( p_fileType == ANFT_PagedImageTable ) {
+			break;
+		case ANFT_PagedImageTable:
 			MakeCategory( wxT( "Paged Image Table" ) );
-		}
-
-		// Materials
-		else if ( p_fileType == ANFT_Material ) {
+			break;
+		case ANFT_Material:
 			MakeCategory( wxT( "Materials" ) );
-		}
-
-		// Composite data
-		else if ( p_fileType == ANFT_Composite ) {
+			break;
+		case ANFT_Composite:
 			MakeCategory( wxT( "Composite Data" ) );
-		}
-
-		// Animation Sequences
-		else if ( p_fileType == ANFT_AnimSequences ) {
+			break;
+		case ANFT_AnimSequences:
 			MakeCategory( wxT( "Animation Sequences" ) );
-		}
-
-		// Emote animations
-		else if ( p_fileType == ANFT_EmoteAnimation ) {
+			break;
+		case ANFT_EmoteAnimation:
 			MakeCategory( wxT( "Emote Animations" ) );
-		}
-
-		// Font files
-		else if ( p_fileType == ANFT_FontFile ) {
+			break;
+		case ANFT_FontFile:
 			MakeCategory( wxT( "Font" ) );
-		}
-
-		// Bink2 video files
-		else if ( p_fileType == ANFT_Bink2Video ) {
+			break;
+		case ANFT_Bink2Video:
 			MakeCategory( wxT( "Bink Videos" ) );
-		}
-
-		// Shader Cache
-		else if ( p_fileType == ANFT_ShaderCache ) {
+			break;
+		case ANFT_ShaderCache:
 			MakeCategory( wxT( "Shader Cache" ) );
-		}
-
-		// Configuration file
-		else if ( p_fileType == ANFT_Config ) {
+			break;
+		case ANFT_Config:
 			MakeCategory( wxT( "Configuration" ) );
-		}
-
-		// Random PF files
-		else if ( p_fileType == ANFT_PF || p_fileType == ANFT_ARAP ) {
+			break;
+		case ANFT_PF:
+		case ANFT_ARAP:
 			MakeCategory( wxT( "Misc" ) );
 
 			if ( p_fileType == ANFT_PF && p_size >= 12 ) {
 				MakeSubCategory( wxString( reinterpret_cast<const char*>( p_data + 8 ), 4 ) );
 			}
-		}
+			break;
 
-		// unknown stuff
-		else {
+		default: // unknown stuff
 			// to do: printable character detection in files for detect text files.
 			MakeCategory( wxT( "Unknown" ) );
 			//MakeSubCategory( wxString::Format( wxT( "%x" ), *reinterpret_cast<const uint32*>( p_data ) ) );
+			break;
 		}
-
 		return category;
 	}
 

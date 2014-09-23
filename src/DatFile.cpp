@@ -389,11 +389,7 @@ namespace gw2b {
 			break;
 		case FCC_RIFF:	// Identify RIFF files
 			po_fileType = ANFT_RIFF;
-			if ( p_size >= 12 ) {
-				fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
-			} else {
-				return IR_NotEnoughData;
-			}
+			fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
 			switch ( fourcc ) {
 			case FCC_WEBP:
 				po_fileType = ANFT_WEBP;

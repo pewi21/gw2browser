@@ -53,6 +53,8 @@ namespace gw2b {
 		, m_splitter( nullptr )
 		, m_catTree( nullptr )
 		, m_previewPanel( nullptr ) {
+		// Set BrowserWindow to center of screen
+		Centre( );
 		// Set window icon
 		SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
 		auto menuBar = new wxMenuBar( );
