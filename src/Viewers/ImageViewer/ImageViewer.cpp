@@ -41,7 +41,7 @@ namespace gw2b {
 		auto toolbar = this->buildToolbar( );
 		sizer->Add( toolbar, wxSizerFlags( ).Expand( ).FixedMinSize( ) );
 
-		// Hex control
+		// Image control
 		m_imageControl = new ImageControl( this );
 		sizer->Add( m_imageControl, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
