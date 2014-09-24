@@ -194,7 +194,7 @@ namespace gw2b {
 				break;
 		case ANFT_Sound:
 		case ANFT_MP3:
-		case ANFT_OGG:
+		case ANFT_Ogg:
 		case ANFT_ID3:
 				MakeCategory( wxT( "Sounds" ) );
 
@@ -202,7 +202,7 @@ namespace gw2b {
 				case ANFT_MP3:
 					MakeSubCategory( wxT( "MP3" ) );
 					break;
-				case ANFT_OGG:
+				case ANFT_Ogg:
 					MakeSubCategory( wxT( "OGG" ) );
 					break;
 				case ANFT_Sound:
