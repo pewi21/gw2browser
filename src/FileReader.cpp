@@ -30,6 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/StringReader.h"
 #include "Readers/ImageReader.h"
 #include "Readers/ModelReader.h"
+#include "Readers/MP3Reader.h"
+//#include "Readers/OggReader.h"
 
 namespace gw2b {
 
@@ -139,12 +141,13 @@ namespace gw2b {
 
 		// Sound
 		case ANFT_Sound:
+		case ANFT_MP3:
 			return wxT( ".asnd" );
 			break;
 		case ANFT_ID3:
 			return wxT( ".mp3" );
 			break;
-		case ANFT_OGG:
+		case ANFT_Ogg:
 			return wxT( ".ogg" );
 			break;
 
@@ -220,6 +223,18 @@ namespace gw2b {
 				return new StringReader( p_data, p_fileType );
 			}
 			break;
+		//case ANFT_Sound:
+		case ANFT_MP3:
+			// if it asnd file ( no PF with asnd chunk ) don't read it.
+			// still, there is PF with assnd chunk that aren't MP3 (OggS) in here.
+			if ( MP3Reader::isValidHeader( p_data.GetPointer( ), p_data.GetSize( ) ) ) {
+				return new MP3Reader( p_data, p_fileType );
+			}
+			break;
+		//case ANFT_Sound:
+		//case ANFT_Ogg:
+			//return new OggReader( p_data, p_fileType );
+			//break;
 		default:
 			break;
 		}

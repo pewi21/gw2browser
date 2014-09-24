@@ -382,7 +382,7 @@ namespace gw2b {
 			po_fileType = ANFT_Sound;
 			break;
 		case FCC_OggS:
-			po_fileType = ANFT_OGG;
+			po_fileType = ANFT_Ogg;
 			break;
 		case FCC_TTF:
 			po_fileType = ANFT_FontFile;
@@ -518,27 +518,41 @@ namespace gw2b {
 			po_fileType = ANFT_JPEG;
 		}
 
-		// Identify sounds
+		// Identify sounds, not really work
 		if ( po_fileType == ANFT_Sound ) {
-			if ( p_size >= 12 ) {
-				if ( *reinterpret_cast<const uint32*>( p_data ) == FCC_asnd ) {
-					if ( p_size >= 40 ) {
-						po_fileType = ( *reinterpret_cast<const uint32*>( p_data + 36 ) == FCC_OggS ) ? ANFT_OGG : ANFT_MP3;
-					} else {
-						return IR_NotEnoughData;
-					}
-				} else if ( *reinterpret_cast<const uint32*>( p_data ) == FCC_PF && *reinterpret_cast<const uint32*>( p_data + 8 ) == FCC_ASND ) {
-					if ( p_size >= 96 ) {
-						po_fileType = ( *reinterpret_cast<const uint32*>( p_data + 92 ) == FCC_OggS ) ? ANFT_OGG : ANFT_MP3;
-					} else {
-						return IR_NotEnoughData;
-					}
-				}
-			} else {
-				return IR_NotEnoughData;
-			}
-		}
+			if ( ( *reinterpret_cast< const uint32* >( p_data ) & 0xffff ) == FCC_PF
+				&& *reinterpret_cast< const uint32* >( p_data + 8 ) == FCC_ASND ) {
 
+				// this not work, WHY????
+				//byte format = *reinterpret_cast< const byte* >( p_data + 68 );
+
+				//switch ( format ) {
+				//case 0x01:
+				//	po_fileType = ANFT_MP3;
+				//	break;
+				//case 0x02:
+				//	po_fileType = ANFT_Ogg;
+				//	break;
+				//default:
+					po_fileType = ANFT_MP3;
+				//}
+			} else if ( *reinterpret_cast< const uint32* >( p_data ) == FCC_asnd ) {
+				byte format = *reinterpret_cast< const byte* >( p_data + 8 );
+
+				switch ( format ) {
+				case 0x01:
+					po_fileType = ANFT_MP3;
+					break;
+				//case 0x02:
+				//	po_fileType = ANFT_Ogg;
+				//	break;
+				default:
+					po_fileType = ANFT_Sound;
+				}
+			}
+		} else {
+			return IR_NotEnoughData;
+		}
 		return IR_Success;
 	}
 

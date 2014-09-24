@@ -52,8 +52,8 @@ namespace gw2b {
 		// Sound
 		ANFT_SoundStart,			/**< Values in between this and ANFT_SoundEnd are sound types. */
 		ANFT_Sound,                 /**< Sound file of unknown type. */
-		ANFT_MP3,                   /**< MP3 file, probably with a custom header. */
-		ANFT_OGG,                   /**< OGG file, probably with a custom header. */
+		ANFT_MP3,                   /**< MP3 file. */
+		ANFT_Ogg,                   /**< OGG file. */
 		ANFT_ID3,					/**< MP3 file. */
 		ANFT_SoundEnd,				/**< Values in between this and ANFT_SoundStart are sound types. */
 
