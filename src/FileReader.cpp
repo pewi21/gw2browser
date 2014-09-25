@@ -141,10 +141,15 @@ namespace gw2b {
 
 		// Sound
 		case ANFT_Sound:
-		case ANFT_MP3:
+		case ANFT_MP3Sound:
+		case ANFT_OggSound:
+			return wxT( ".sound" );
+			break;
+		case ANFT_PackedMP3:
+		case ANFT_PackedOgg:
 			return wxT( ".asnd" );
 			break;
-		case ANFT_ID3:
+		case ANFT_MP3:
 			return wxT( ".mp3" );
 			break;
 		case ANFT_Ogg:
@@ -224,9 +229,9 @@ namespace gw2b {
 			}
 			break;
 		//case ANFT_Sound:
-		case ANFT_MP3:
+		case ANFT_PackedMP3:
 			// if it asnd file ( no PF with asnd chunk ) don't read it.
-			// still, there is PF with assnd chunk that aren't MP3 (OggS) in here.
+			// also, there is PF with assnd chunk that are OggS.
 			if ( MP3Reader::isValidHeader( p_data.GetPointer( ), p_data.GetSize( ) ) ) {
 				return new MP3Reader( p_data, p_fileType );
 			}

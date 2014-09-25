@@ -414,9 +414,12 @@ namespace gw2b {
 			return CategoryTreeImageList::IT_Text;
 		case ANFT_Bank:
 		case ANFT_Sound:
-		case ANFT_ID3:
 		case ANFT_Ogg:
 		case ANFT_MP3:
+		case ANFT_MP3Sound:
+		case ANFT_OggSound:
+		case ANFT_PackedMP3:
+		case ANFT_PackedOgg:
 			return CategoryTreeImageList::IT_Sound;
 		case ANFT_FontFile:
 			return CategoryTreeImageList::IT_Font;

@@ -380,6 +380,20 @@ namespace gw2b {
 			break;
 		case FCC_asnd:
 			po_fileType = ANFT_Sound;
+			if ( p_size >= 12 ) {
+				byte format = *reinterpret_cast< const byte* >( p_data + 8 );
+
+				switch ( format ) {
+				case 0x01:
+					po_fileType = ANFT_MP3Sound;
+					break;
+				case 0x02:
+					po_fileType = ANFT_OggSound;
+					break;
+				}
+			} else {
+				return IR_NotEnoughData;
+			}
 			break;
 		case FCC_OggS:
 			po_fileType = ANFT_Ogg;
@@ -428,7 +442,21 @@ namespace gw2b {
 				po_fileType = ANFT_TextPackVoices;
 				break;
 			case FCC_ASND:
-				po_fileType = ANFT_Sound;
+				// po_fileType = ANFT_Sound;
+				po_fileType = ANFT_PackedMP3;
+				/*
+				// this not work, WHY????
+				formatOffset = *reinterpret_cast< const uint32* >( p_data + 68 );
+
+				switch ( formatOffset ) {
+				case 0x01:
+					po_fileType = ANFT_PackedMP3;
+					break;
+				case 0x02:
+					po_fileType = ANFT_PackedOgg;
+					break;
+				}
+				*/
 				break;
 			case FCC_ABNK:
 				po_fileType = ANFT_Bank;
@@ -510,7 +538,7 @@ namespace gw2b {
 		}
 
 		if ( ( fourcc & 0xffffff ) == FCC_ID3 ) {
-			po_fileType = ANFT_ID3;
+			po_fileType = ANFT_MP3;
 		}
 
 		// Identify JPEG files
@@ -518,45 +546,6 @@ namespace gw2b {
 			po_fileType = ANFT_JPEG;
 		}
 
-		// Identify sounds, not really work
-		if ( po_fileType == ANFT_Sound ) {
-			if ( p_size >= 12 ) {
-				if ( ( *reinterpret_cast< const uint32* >( p_data ) & 0xffff ) == FCC_PF
-					&& *reinterpret_cast< const uint32* >( p_data + 8 ) == FCC_ASND ) {
-
-					// this not work, WHY????
-					byte format = *reinterpret_cast< const byte* >( p_data + 68 );
-
-					//switch ( format ) {
-					//case 0x01:
-					//	po_fileType = ANFT_MP3;
-					//	break;
-					//case 0x02:
-					//	po_fileType = ANFT_Ogg;
-					//	break;
-					//default:
-					po_fileType = ANFT_MP3;
-					//}
-				} else if ( *reinterpret_cast< const uint32* >( p_data ) == FCC_asnd ) {
-					if ( p_size >= 8 ) {
-						byte format = *reinterpret_cast< const byte* >( p_data + 8 );
-
-						switch ( format ) {
-						case 0x01:
-						//	po_fileType = ANFT_MP3;
-						//	break;
-						case 0x02:
-						//	po_fileType = ANFT_Ogg;
-							break;
-						}
-					} else {
-						return IR_NotEnoughData;
-					}
-				}
-			} else {
-				return IR_NotEnoughData;
-			}
-		}
 		return IR_Success;
 	}
 

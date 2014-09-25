@@ -195,7 +195,10 @@ namespace gw2b {
 		case ANFT_Sound:
 		case ANFT_MP3:
 		case ANFT_Ogg:
-		case ANFT_ID3:
+		case ANFT_PackedMP3:
+		case ANFT_PackedOgg:
+		case ANFT_MP3Sound:
+		case ANFT_OggSound:
 				MakeCategory( wxT( "Sounds" ) );
 
 				switch ( p_fileType ) {
@@ -203,13 +206,19 @@ namespace gw2b {
 					MakeSubCategory( wxT( "MP3" ) );
 					break;
 				case ANFT_Ogg:
-					MakeSubCategory( wxT( "OGG" ) );
+					MakeSubCategory( wxT( "Ogg" ) );
 					break;
-				case ANFT_Sound:
-					MakeSubCategory( wxT( "Sounds" ) );
+				case ANFT_MP3Sound:
+					MakeSubCategory( wxT( "asndMP3" ) );
 					break;
-				case ANFT_ID3:
-					MakeSubCategory( wxT( "ID3 (MP3)" ) );
+				case ANFT_OggSound:
+					MakeSubCategory( wxT( "asndOgg" ) );
+					break;
+				case ANFT_PackedMP3:
+					MakeSubCategory( wxT( "PackedMP3" ) );
+					break;
+				case ANFT_PackedOgg:
+					MakeSubCategory( wxT( "PackedOgg" ) );
 					break;
 				}
 				break;
