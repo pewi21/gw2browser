@@ -40,24 +40,22 @@ namespace gw2b {
 	Array<byte> MP3Reader::getMP3( ) const {
 		gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		auto chunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
+		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
 
-		Array<byte> output( chunk->audioData.size( ) );
+		int size = audioChunk->audioData.size( );
 
-		int size = chunk->audioData.size( );
+		Array<byte> outputArray( size );
 
 #pragma omp parallel for
 		for ( int i = 0; i < size; i++ ) {
-			output[i] = chunk->audioData[i];
+			outputArray[i] = audioChunk->audioData[i];
 		}
 
-		return output;
+		return outputArray;
 	}
 
 	Array<byte> MP3Reader::convertData( ) const {
-		auto outputData = this->getMP3( );
-
-		return outputData;
+		return( this->getMP3( ) );
 	}
 
 	bool MP3Reader::isValidHeader( const byte* p_data, size_t p_size ) {

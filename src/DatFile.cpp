@@ -520,38 +520,42 @@ namespace gw2b {
 
 		// Identify sounds, not really work
 		if ( po_fileType == ANFT_Sound ) {
-			if ( ( *reinterpret_cast< const uint32* >( p_data ) & 0xffff ) == FCC_PF
-				&& *reinterpret_cast< const uint32* >( p_data + 8 ) == FCC_ASND ) {
+			if ( p_size >= 12 ) {
+				if ( ( *reinterpret_cast< const uint32* >( p_data ) & 0xffff ) == FCC_PF
+					&& *reinterpret_cast< const uint32* >( p_data + 8 ) == FCC_ASND ) {
 
-				// this not work, WHY????
-				//byte format = *reinterpret_cast< const byte* >( p_data + 68 );
+					// this not work, WHY????
+					byte format = *reinterpret_cast< const byte* >( p_data + 68 );
 
-				//switch ( format ) {
-				//case 0x01:
-				//	po_fileType = ANFT_MP3;
-				//	break;
-				//case 0x02:
-				//	po_fileType = ANFT_Ogg;
-				//	break;
-				//default:
+					//switch ( format ) {
+					//case 0x01:
+					//	po_fileType = ANFT_MP3;
+					//	break;
+					//case 0x02:
+					//	po_fileType = ANFT_Ogg;
+					//	break;
+					//default:
 					po_fileType = ANFT_MP3;
-				//}
-			} else if ( *reinterpret_cast< const uint32* >( p_data ) == FCC_asnd ) {
-				byte format = *reinterpret_cast< const byte* >( p_data + 8 );
+					//}
+				} else if ( *reinterpret_cast< const uint32* >( p_data ) == FCC_asnd ) {
+					if ( p_size >= 8 ) {
+						byte format = *reinterpret_cast< const byte* >( p_data + 8 );
 
-				switch ( format ) {
-				case 0x01:
-					po_fileType = ANFT_MP3;
-					break;
-				//case 0x02:
-				//	po_fileType = ANFT_Ogg;
-				//	break;
-				default:
-					po_fileType = ANFT_Sound;
+						switch ( format ) {
+						case 0x01:
+						//	po_fileType = ANFT_MP3;
+						//	break;
+						case 0x02:
+						//	po_fileType = ANFT_Ogg;
+							break;
+						}
+					} else {
+						return IR_NotEnoughData;
+					}
 				}
+			} else {
+				return IR_NotEnoughData;
 			}
-		} else {
-			return IR_NotEnoughData;
 		}
 		return IR_Success;
 	}
