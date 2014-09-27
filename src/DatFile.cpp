@@ -381,8 +381,9 @@ namespace gw2b {
 		case FCC_asnd:
 			po_fileType = ANFT_Sound;
 			if ( p_size >= 12 ) {
-				byte format = *reinterpret_cast< const byte* >( p_data + 8 );
+				auto format = *reinterpret_cast< const byte* >( p_data + 8 );
 
+				// all of files of this type is MP3 format, but who know.
 				switch ( format ) {
 				case 0x01:
 					po_fileType = ANFT_MP3Sound;
@@ -442,21 +443,20 @@ namespace gw2b {
 				po_fileType = ANFT_TextPackVoices;
 				break;
 			case FCC_ASND:
-				// po_fileType = ANFT_Sound;
-				po_fileType = ANFT_PackedMP3;
-				/*
-				// this not work, WHY????
-				formatOffset = *reinterpret_cast< const uint32* >( p_data + 68 );
+				po_fileType = ANFT_Sound;
+				if ( p_size >= 68 ) {
+					auto format = *reinterpret_cast< const byte* >( p_data + 68 );
 
-				switch ( formatOffset ) {
-				case 0x01:
-					po_fileType = ANFT_PackedMP3;
-					break;
-				case 0x02:
-					po_fileType = ANFT_PackedOgg;
-					break;
+					switch ( format ) {
+					case 0x01:
+						po_fileType = ANFT_PackedMP3;
+						break;
+					case 0x02:
+						po_fileType = ANFT_PackedOgg;
+						break;
+					}
 				}
-				*/
+
 				break;
 			case FCC_ABNK:
 				po_fileType = ANFT_Bank;
