@@ -229,14 +229,10 @@ namespace gw2b {
 			}
 			break;
 		case ANFT_PackedMP3:
-			if ( PackedMP3Reader::isValidHeader( p_data.GetPointer( ), p_data.GetSize( ) ) ) {
-				return new PackedMP3Reader( p_data, p_fileType );
-			}
+			return new PackedMP3Reader( p_data, p_fileType );
 			break;
 		case ANFT_PackedOgg:
-			if ( PackedMP3Reader::isValidHeader( p_data.GetPointer( ), p_data.GetSize( ) ) ) {
-				return new PackedOggReader( p_data, p_fileType );
-			}
+			return new PackedOggReader( p_data, p_fileType );
 			break;
 		default:
 			break;

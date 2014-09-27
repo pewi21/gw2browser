@@ -57,9 +57,6 @@ namespace gw2b {
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     MP3 format. */
 		Array<byte> getMP3( ) const;
-		/** Determines whether the header is valid.
-		*  \return bool    true if valid, false if not. */
-		static bool isValidHeader( const byte* p_data, size_t p_size );
 
 	}; // class PackedMP3Reader
 

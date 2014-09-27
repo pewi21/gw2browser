@@ -58,20 +58,4 @@ namespace gw2b {
 		return( this->getOgg( ) );
 	}
 
-	bool PackedOggReader::isValidHeader( const byte* p_data, size_t p_size ) {
-		if ( p_size < 0x10 ) {
-			return false;
-		}
-		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
-
-		if ( ( fourcc & 0xffff ) == FCC_PF ) {
-			// the file is Ogg
-			if ( ( *reinterpret_cast<const byte*>( p_data + 68 ) ) == 0x02 ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 }; // namespace gw2b
