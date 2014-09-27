@@ -186,6 +186,12 @@
     <ClInclude Include="..\src\Readers\StringReader.h">
       <Filter>Header Files\Readers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Readers\PackedMP3Reader.h">
+      <Filter>Header Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\PackedOggReader.h">
+      <Filter>Header Files\Readers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -279,6 +285,12 @@
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Readers\StringReader.cpp">
+      <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\PackedMP3Reader.cpp">
+      <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\PackedOggReader.cpp">
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>

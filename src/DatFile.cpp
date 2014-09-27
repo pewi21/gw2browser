@@ -380,9 +380,24 @@ namespace gw2b {
 			break;
 		case FCC_asnd:
 			po_fileType = ANFT_Sound;
+			if ( p_size >= 12 ) {
+				auto format = *reinterpret_cast< const byte* >( p_data + 8 );
+
+				// all of files of this type is MP3 format, but who know.
+				switch ( format ) {
+				case 0x01:
+					po_fileType = ANFT_MP3Sound;
+					break;
+				case 0x02:
+					po_fileType = ANFT_OggSound;
+					break;
+				}
+			} else {
+				return IR_NotEnoughData;
+			}
 			break;
 		case FCC_OggS:
-			po_fileType = ANFT_OGG;
+			po_fileType = ANFT_Ogg;
 			break;
 		case FCC_TTF:
 			po_fileType = ANFT_FontFile;
@@ -429,6 +444,20 @@ namespace gw2b {
 				break;
 			case FCC_ASND:
 				po_fileType = ANFT_Sound;
+				// 92 is offset to sound data
+				if ( p_size >= 92 ) {
+					auto format = *reinterpret_cast< const byte* >( p_data + 68 );
+
+					switch ( format ) {
+					case 0x01:
+						po_fileType = ANFT_PackedMP3;
+						break;
+					case 0x02:
+						po_fileType = ANFT_PackedOgg;
+						break;
+					}
+				}
+
 				break;
 			case FCC_ABNK:
 				po_fileType = ANFT_Bank;
@@ -510,33 +539,12 @@ namespace gw2b {
 		}
 
 		if ( ( fourcc & 0xffffff ) == FCC_ID3 ) {
-			po_fileType = ANFT_ID3;
+			po_fileType = ANFT_MP3;
 		}
 
 		// Identify JPEG files
 		if ( ( fourcc & 0xffffff ) == FCC_JPEG ) {
 			po_fileType = ANFT_JPEG;
-		}
-
-		// Identify sounds
-		if ( po_fileType == ANFT_Sound ) {
-			if ( p_size >= 12 ) {
-				if ( *reinterpret_cast<const uint32*>( p_data ) == FCC_asnd ) {
-					if ( p_size >= 40 ) {
-						po_fileType = ( *reinterpret_cast<const uint32*>( p_data + 36 ) == FCC_OggS ) ? ANFT_OGG : ANFT_MP3;
-					} else {
-						return IR_NotEnoughData;
-					}
-				} else if ( *reinterpret_cast<const uint32*>( p_data ) == FCC_PF && *reinterpret_cast<const uint32*>( p_data + 8 ) == FCC_ASND ) {
-					if ( p_size >= 96 ) {
-						po_fileType = ( *reinterpret_cast<const uint32*>( p_data + 92 ) == FCC_OggS ) ? ANFT_OGG : ANFT_MP3;
-					} else {
-						return IR_NotEnoughData;
-					}
-				}
-			} else {
-				return IR_NotEnoughData;
-			}
 		}
 
 		return IR_Success;

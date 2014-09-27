@@ -54,11 +54,11 @@ namespace gw2b {
 
 	void ScanDatTask::perform( ) {
 		// Make sure the output buffer is big enough
-		this->ensureBufferSize( 0x20 );
+		this->ensureBufferSize( 128 );
 
 		// Read file
 		uint32 entryNumber = this->currentProgress( );
-		uint size = m_datFile.peekFile( entryNumber, 0x20, m_outputBuffer.GetPointer( ) );
+		uint size = m_datFile.peekFile( entryNumber, 128, m_outputBuffer.GetPointer( ) );
 
 		// Skip if empty
 		if ( !size ) {
@@ -71,7 +71,7 @@ namespace gw2b {
 		auto results = m_datFile.identifyFileType( m_outputBuffer.GetPointer( ), size, fileType );
 
 		// Enough data to identify the file type?
-		uint lastRequestedSize = 0x20;
+		uint lastRequestedSize = 128;
 		while ( results == DatFile::IR_NotEnoughData ) {
 			uint sizeRequired = this->requiredIdentificationSize( m_outputBuffer.GetPointer( ), size, fileType );
 
@@ -194,22 +194,31 @@ namespace gw2b {
 				break;
 		case ANFT_Sound:
 		case ANFT_MP3:
-		case ANFT_OGG:
-		case ANFT_ID3:
+		case ANFT_Ogg:
+		case ANFT_PackedMP3:
+		case ANFT_PackedOgg:
+		case ANFT_MP3Sound:
+		case ANFT_OggSound:
 				MakeCategory( wxT( "Sounds" ) );
 
 				switch ( p_fileType ) {
 				case ANFT_MP3:
 					MakeSubCategory( wxT( "MP3" ) );
 					break;
-				case ANFT_OGG:
-					MakeSubCategory( wxT( "OGG" ) );
+				case ANFT_Ogg:
+					MakeSubCategory( wxT( "Ogg" ) );
 					break;
-				case ANFT_Sound:
-					MakeSubCategory( wxT( "Sounds" ) );
+				case ANFT_MP3Sound:
+					MakeSubCategory( wxT( "asndMP3" ) );
 					break;
-				case ANFT_ID3:
-					MakeSubCategory( wxT( "ID3 (MP3)" ) );
+				case ANFT_OggSound:
+					MakeSubCategory( wxT( "asndOgg" ) );
+					break;
+				case ANFT_PackedMP3:
+					MakeSubCategory( wxT( "PackedMP3" ) );
+					break;
+				case ANFT_PackedOgg:
+					MakeSubCategory( wxT( "PackedOgg" ) );
 					break;
 				}
 				break;
