@@ -47,6 +47,7 @@ namespace gw2b {
 		this->Add( data::loadPNG( data::sound_png, data::sound_png_size ) );
 		this->Add( data::loadPNG( data::font_png, data::font_png_size ) );
 		this->Add( data::loadPNG( data::video_png, data::video_png_size ) );
+		this->Add( data::loadPNG( data::model_png, data::model_png_size ) );
 	}
 
 	//============================================================================/
@@ -422,6 +423,8 @@ namespace gw2b {
 			return CategoryTreeImageList::IT_Font;
 		case ANFT_Bink2Video:
 			return CategoryTreeImageList::IT_Video;
+		case ANFT_Model:
+			return CategoryTreeImageList::IT_Model;
 		default:
 			return CategoryTreeImageList::IT_UnknownFile;
 		}
