@@ -54,11 +54,11 @@ namespace gw2b {
 
 	void ScanDatTask::perform( ) {
 		// Make sure the output buffer is big enough
-		this->ensureBufferSize( 0x20 );
+		this->ensureBufferSize( 128 );
 
 		// Read file
 		uint32 entryNumber = this->currentProgress( );
-		uint size = m_datFile.peekFile( entryNumber, 0x20, m_outputBuffer.GetPointer( ) );
+		uint size = m_datFile.peekFile( entryNumber, 128, m_outputBuffer.GetPointer( ) );
 
 		// Skip if empty
 		if ( !size ) {
@@ -71,7 +71,7 @@ namespace gw2b {
 		auto results = m_datFile.identifyFileType( m_outputBuffer.GetPointer( ), size, fileType );
 
 		// Enough data to identify the file type?
-		uint lastRequestedSize = 0x20;
+		uint lastRequestedSize = 128;
 		while ( results == DatFile::IR_NotEnoughData ) {
 			uint sizeRequired = this->requiredIdentificationSize( m_outputBuffer.GetPointer( ), size, fileType );
 
