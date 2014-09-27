@@ -1,5 +1,5 @@
-/* \file       Readers/OggReader.h
-*  \brief      Contains the declaration of the Ogg reader class.
+/* \file       Readers/PackedOggReader.h
+*  \brief      Contains the declaration of the packed Ogg reader class.
 *  \author     Khral Steelforge
 */
 
@@ -24,21 +24,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef READERS_OGGREADER_H_INCLUDED
-#define READERS_OGGREADER_H_INCLUDED
+#ifndef READERS_PACKEDOGGREADER_H_INCLUDED
+#define READERS_PACKEDOGGREADER_H_INCLUDED
 
 #include "FileReader.h"
 
 namespace gw2b {
 
-	class OggReader : public FileReader {
+	class PackedOggReader : public FileReader {
 	public:
 		/** Constructor.
 		*  \param[in]  p_data       Data to be handled by this reader.
 		*  \param[in]  p_fileType   File type of the given data. */
-		OggReader( const Array<byte>& p_data, ANetFileType p_fileType );
+		PackedOggReader( const Array<byte>& p_data, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */
-		virtual ~OggReader( );
+		virtual ~PackedOggReader( );
 
 		/** Gets the type of data contained in this file. Not to be confused with
 		*  file type.
@@ -57,9 +57,12 @@ namespace gw2b {
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     ogg format. */
 		Array<byte> getOgg( ) const;
+		/** Determines whether the header is valid.
+		*  \return bool    true if valid, false if not. */
+		static bool isValidHeader( const byte* p_data, size_t p_size );
 
-	}; // class OggReader
+	}; // class PackedOggReader
 
 }; // namespace gw2b
 
-#endif // READERS_OGGREADER_H_INCLUDED
+#endif // READERS_PACKEDOGGREADER_H_INCLUDED

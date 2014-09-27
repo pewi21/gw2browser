@@ -1,5 +1,5 @@
-/* \file       Readers/MP3Reader.h
-*  \brief      Contains the declaration of the MP3 reader class.
+/* \file       Readers/PackedMP3Reader.h
+*  \brief      Contains the declaration of the packed MP3 reader class.
 *  \author     Khral Steelforge
 */
 
@@ -24,21 +24,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef READERS_MP3READER_H_INCLUDED
-#define READERS_MP3READER_H_INCLUDED
+#ifndef READERS_PACKEDMP3READER_H_INCLUDED
+#define READERS_PACKEDMP3READER_H_INCLUDED
 
 #include "FileReader.h"
 
 namespace gw2b {
 
-	class MP3Reader : public FileReader {
+	class PackedMP3Reader : public FileReader {
 	public:
 		/** Constructor.
 		*  \param[in]  p_data       Data to be handled by this reader.
 		*  \param[in]  p_fileType   File type of the given data. */
-		MP3Reader( const Array<byte>& p_data, ANetFileType p_fileType );
+		PackedMP3Reader( const Array<byte>& p_data, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */
-		virtual ~MP3Reader( );
+		virtual ~PackedMP3Reader( );
 
 		/** Gets the type of data contained in this file. Not to be confused with
 		*  file type.
@@ -61,8 +61,8 @@ namespace gw2b {
 		*  \return bool    true if valid, false if not. */
 		static bool isValidHeader( const byte* p_data, size_t p_size );
 
-	}; // class MP3Reader
+	}; // class PackedMP3Reader
 
 }; // namespace gw2b
 
-#endif // READERS_MP3READER_H_INCLUDED
+#endif // READERS_PACKEDMP3READER_H_INCLUDED

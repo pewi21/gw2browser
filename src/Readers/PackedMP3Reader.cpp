@@ -1,5 +1,5 @@
-/* \file       Readers/OggReader.cpp
-*  \brief      Contains the definition of the Ogg reader class.
+/* \file       Readers/PackedMP3Reader.cpp
+*  \brief      Contains the definition of the packed MP3 reader class.
 *  \author     Khral Steelforge
 */
 
@@ -26,39 +26,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <gw2formats\pf\AudioPackFile.h>
 
-#include "OggReader.h"
+#include "PackedMP3Reader.h"
 
 namespace gw2b {
 
-	OggReader::OggReader( const Array<byte>& p_data, ANetFileType p_fileType )
+	PackedMP3Reader::PackedMP3Reader( const Array<byte>& p_data, ANetFileType p_fileType )
 		: FileReader( p_data, p_fileType ) {
 	}
 
-	OggReader::~OggReader( ) {
+	PackedMP3Reader::~PackedMP3Reader( ) {
 	}
 
-	Array<byte> OggReader::getOgg( ) const {
-
+	Array<byte> PackedMP3Reader::getMP3( ) const {
 		gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		auto chunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
+		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
 
-		Array<byte> output( chunk->audioData.size( ) );
+		int size = audioChunk->audioData.size( );
 
-		int size = chunk->audioData.size( );
+		Array<byte> outputArray( size );
 
 #pragma omp parallel for
 		for ( int i = 0; i < size; i++ ) {
-			output[i] = chunk->audioData[i];
+			outputArray[i] = audioChunk->audioData[i];
 		}
 
-		return output;
+		return outputArray;
 	}
 
-	Array<byte> OggReader::convertData( ) const {
-		auto outputData = this->getOgg( );
+	Array<byte> PackedMP3Reader::convertData( ) const {
+		return( this->getMP3( ) );
+	}
 
-		return outputData;
+	bool PackedMP3Reader::isValidHeader( const byte* p_data, size_t p_size ) {
+		if ( p_size < 0x10 ) {
+			return false;
+		}
+		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
+
+		if ( ( fourcc & 0xffff ) == FCC_PF ) {
+			// the file is MP3
+			if ( ( *reinterpret_cast<const byte*>( p_data + 68 ) ) == 0x01 ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }; // namespace gw2b

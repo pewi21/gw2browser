@@ -1,5 +1,5 @@
-/* \file       Readers/MP3Reader.cpp
-*  \brief      Contains the definition of the MP3 reader class.
+/* \file       Readers/PackedOggReader.cpp
+*  \brief      Contains the definition of the packed Ogg reader class.
 *  \author     Khral Steelforge
 */
 
@@ -26,18 +26,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <gw2formats\pf\AudioPackFile.h>
 
-#include "MP3Reader.h"
+#include "PackedOggReader.h"
 
 namespace gw2b {
 
-	MP3Reader::MP3Reader( const Array<byte>& p_data, ANetFileType p_fileType )
+	PackedOggReader::PackedOggReader( const Array<byte>& p_data, ANetFileType p_fileType )
 		: FileReader( p_data, p_fileType ) {
 	}
 
-	MP3Reader::~MP3Reader( ) {
+	PackedOggReader::~PackedOggReader( ) {
 	}
 
-	Array<byte> MP3Reader::getMP3( ) const {
+	Array<byte> PackedOggReader::getOgg( ) const {
 		gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
 
 		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
@@ -54,18 +54,21 @@ namespace gw2b {
 		return outputArray;
 	}
 
-	Array<byte> MP3Reader::convertData( ) const {
-		return( this->getMP3( ) );
+	Array<byte> PackedOggReader::convertData( ) const {
+		return( this->getOgg( ) );
 	}
 
-	bool MP3Reader::isValidHeader( const byte* p_data, size_t p_size ) {
+	bool PackedOggReader::isValidHeader( const byte* p_data, size_t p_size ) {
 		if ( p_size < 0x10 ) {
 			return false;
 		}
 		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
 
 		if ( ( fourcc & 0xffff ) == FCC_PF ) {
-			return true;
+			// the file is Ogg
+			if ( ( *reinterpret_cast<const byte*>( p_data + 68 ) ) == 0x02 ) {
+				return true;
+			}
 		}
 
 		return false;
