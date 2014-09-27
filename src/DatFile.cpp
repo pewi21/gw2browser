@@ -444,7 +444,8 @@ namespace gw2b {
 				break;
 			case FCC_ASND:
 				po_fileType = ANFT_Sound;
-				if ( p_size >= 68 ) {
+				// 92 is offset to sound data
+				if ( p_size >= 92 ) {
 					auto format = *reinterpret_cast< const byte* >( p_data + 68 );
 
 					switch ( format ) {
