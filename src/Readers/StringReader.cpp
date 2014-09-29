@@ -42,8 +42,6 @@ namespace gw2b {
 	}
 
 	wxString StringReader::getString( ) const {
-		auto data = m_data.GetPointer( );
-
 		wxString string;
 
 		// Table header.

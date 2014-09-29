@@ -508,7 +508,7 @@ namespace gw2b {
 
 	void ImageReader::processDXT1( const BGRA* p_data, uint p_width, uint p_height, BGR*& po_colors, uint8*& po_alphas ) const {
 		uint numPixels = ( p_width * p_height );
-		uint numBlocks = numPixels >> 4;
+
 		const DXT1Block* blocks = reinterpret_cast<const DXT1Block*>( p_data );
 
 		po_colors = allocate<BGR>( numPixels );
@@ -552,7 +552,6 @@ namespace gw2b {
 
 	void ImageReader::processDXTA( const uint64* p_data, uint p_width, uint p_height, BGR*& po_colors ) const {
 		uint numPixels = ( p_width * p_height );
-		uint numBlocks = numPixels >> 4;
 
 		po_colors = allocate<BGR>( numPixels );
 
@@ -601,7 +600,6 @@ namespace gw2b {
 
 	void ImageReader::processDXT3( const BGRA* p_data, uint p_width, uint p_height, BGR*& po_colors, uint8*& po_alphas ) const {
 		uint numPixels = ( p_width * p_height );
-		uint numBlocks = numPixels >> 4;
 		const DXT3Block* blocks = reinterpret_cast<const DXT3Block*>( p_data );
 
 		po_colors = allocate<BGR>( numPixels );
@@ -646,7 +644,6 @@ namespace gw2b {
 
 	void ImageReader::processDXT5( const BGRA* p_data, uint p_width, uint p_height, BGR*& po_colors, uint8*& po_alphas ) const {
 		uint numPixels = ( p_width * p_height );
-		uint numBlocks = numPixels >> 4;
 		const DXT3Block* blocks = reinterpret_cast<const DXT3Block*>( p_data );
 
 		po_colors = allocate<BGR>( numPixels );
@@ -709,7 +706,6 @@ namespace gw2b {
 
 	void ImageReader::process3DCX( const RGBA* p_data, uint p_width, uint p_height, BGR*& po_colors, uint8*& po_alphas ) const {
 		uint numPixels = ( p_width * p_height );
-		uint numBlocks = numPixels >> 4;
 		const DCXBlock* blocks = reinterpret_cast<const DCXBlock*>( p_data );
 
 		po_colors = allocate<BGR>( numPixels );
