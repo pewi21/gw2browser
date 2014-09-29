@@ -417,8 +417,8 @@ namespace gw2b {
 		case ANFT_Sound:
 		case ANFT_Ogg:
 		case ANFT_MP3:
-		case ANFT_MP3Sound:
-		case ANFT_OggSound:
+		case ANFT_asndMP3:
+		case ANFT_asndOgg:
 		case ANFT_PackedMP3:
 		case ANFT_PackedOgg:
 			return CategoryTreeImageList::IT_Sound;

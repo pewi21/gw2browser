@@ -38,6 +38,7 @@
     <ClInclude Include="..\src\PackFile.h" />
     <ClInclude Include="..\src\PreviewPanel.h" />
     <ClInclude Include="..\src\ProgressStatusBar.h" />
+    <ClInclude Include="..\src\Readers\asndMP3Reader.h" />
     <ClInclude Include="..\src\Readers\ImageReader.h" />
     <ClInclude Include="..\src\Readers\ModelReader.h" />
     <ClInclude Include="..\src\Readers\PackedMP3Reader.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="..\src\PackFile.cpp" />
     <ClCompile Include="..\src\PreviewPanel.cpp" />
     <ClCompile Include="..\src\ProgressStatusBar.cpp" />
+    <ClCompile Include="..\src\Readers\asndMP3Reader.cpp" />
     <ClCompile Include="..\src\Readers\ImageReader.cpp" />
     <ClCompile Include="..\src\Readers\ModelReader.cpp" />
     <ClCompile Include="..\src\Readers\PackedMP3Reader.cpp" />

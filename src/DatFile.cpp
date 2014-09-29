@@ -386,10 +386,10 @@ namespace gw2b {
 				// all of files of this type is MP3 format, but who know.
 				switch ( format ) {
 				case 0x01:
-					po_fileType = ANFT_MP3Sound;
+					po_fileType = ANFT_asndMP3;
 					break;
 				case 0x02:
-					po_fileType = ANFT_OggSound;
+					po_fileType = ANFT_asndOgg;
 					break;
 				}
 			} else {
