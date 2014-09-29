@@ -31,7 +31,7 @@ namespace gw2b {
 	template <typename T>
 	struct ArrayData : public wxRefCounter {
 		T*      mData;
-		uint    mSize;
+		size_t  mSize;
 	public:
 		ArrayData( )
 			: mData( nullptr )
@@ -57,7 +57,7 @@ namespace gw2b {
 	/** Class representing an array of elements.
 	*  \tparam T           Type of elements stored in the array.
 	*  \tparam Granularity Mask deciding how many objects to allocate at a time. */
-	template <typename T, uint Granularity = 0x7>
+	template <typename T, size_t Granularity = 0x7>
 	class Array {
 		wxObjectDataPtr< ArrayData<T> >  mData;
 	public:
@@ -68,7 +68,7 @@ namespace gw2b {
 
 		/** Constructor.
 		*  \param[in]  pSize   The initial size of the array. */
-		Array( uint pSize )
+		Array( size_t pSize )
 			: mData( new ArrayData<T>( ) ) {
 			this->SetSize( pSize );
 		}
@@ -98,8 +98,8 @@ namespace gw2b {
 		Array& operator+=( const Array& pOther ) {
 			this->UnShare( );
 
-			uint startPos = mData.get( )->mSize;
-			uint newSize = mData.get( )->mSize + pOther.GetSize( );
+			size_t startPos = mData.get( )->mSize;
+			size_t newSize = mData.get( )->mSize + pOther.GetSize( );
 			this->SetSize( newSize );
 			::memcpy( &( ( *this )[startPos] ), pOther.GetPointer( ), pOther.GetSize( ) * sizeof( T ) );
 
@@ -113,10 +113,10 @@ namespace gw2b {
 
 		/** Appends an item to this array.
 		*  \param[in]  pItem   Item to add.
-		*  \return uint    Index of newly added item. */
-		uint Add( const T& pItem ) {
+		*  \return size_t    Index of newly added item. */
+		size_t Add( const T& pItem ) {
 			this->UnShare( );
-			uint index = mData.get( )->mSize;
+			size_t index = mData.get( )->mSize;
 			SetSize( mData.get( )->mSize + 1 );
 			( *this )[index] = pItem;
 			return index;
@@ -126,7 +126,7 @@ namespace gw2b {
 		*  \return T&  reference to newly added item. */
 		T& AddNew( ) {
 			this->UnShare( );
-			uint index = mData.get( )->mSize;
+			size_t index = mData.get( )->mSize;
 			SetSize( mData.get( )->mSize + 1 );
 			return ( *this )[index];
 		}
@@ -134,10 +134,10 @@ namespace gw2b {
 		/** Removes the given item from this array.
 		*  \param[in]  pItem   Item to remove from this array. */
 		void Remove( const T& item ) {
-			uint& size = mData.get( )->mSize;
+			size_t& size = mData.get( )->mSize;
 			T*& data = mData.get( )->mData;
 
-			for ( uint i = 0; i < size; i++ ) {
+			for ( size_t i = 0; i < size; i++ ) {
 				if ( data[i] == pItem )
 					RemoveAt( i );
 			}
@@ -145,11 +145,11 @@ namespace gw2b {
 
 		/** Removes the item residing at the given index.
 		*  \param[in]  pIndex  Index of element to remove. */
-		void RemoveAt( uint pIndex ) {
+		void RemoveAt( size_t pIndex ) {
 			Assert( pIndex >= 0 && pIndex < mData.get( )->mSize );
 			this->UnShare( );
 
-			uint& size = mData.get( )->mSize;
+			size_t& size = mData.get( )->mSize;
 			T*& data = mData.get( )->mData;
 
 			if ( pIndex != size - 1 ) {
@@ -157,28 +157,28 @@ namespace gw2b {
 			}
 			size--;
 
-			uint count = ( ( size + Granularity - 1 ) / Granularity ) * Granularity;
+			size_t count = ( ( size + Granularity - 1 ) / Granularity ) * Granularity;
 			data = static_cast<T*>( ::realloc( data, count * sizeof( T ) ) );
 		}
 
 		/** Sets the size of the array.
 		*  \param[in]  pSize   New size of the array. */
-		void SetSize( uint pSize ) {
+		void SetSize( size_t pSize ) {
 			this->UnShare( );
-			uint count = ( pSize + Granularity ) & ~Granularity;
+			size_t count = ( pSize + Granularity ) & ~Granularity;
 			mData.get( )->mData = static_cast<T*>( ::realloc( this->GetPointer( ), count * sizeof( T ) ) );
 			mData.get( )->mSize = pSize;
 		}
 
 		/** Gets the size of the array.
-		*  \return uint    Size of the array. */
-		uint GetSize( ) const {
+		*  \return size_t    Size of the array. */
+		size_t GetSize( ) const {
 			return mData.get( )->mSize;
 		}
 
 		/** Gets the size of the array, in bytes.
-		*  \return uint    Size of the array, in bytes. */
-		uint GetByteSize( ) const {
+		*  \return size_t    Size of the array, in bytes. */
+		size_t GetByteSize( ) const {
 			return mData.get( )->mSize * sizeof( T );
 		}
 
@@ -197,7 +197,7 @@ namespace gw2b {
 		/** Array index operator. Returns the element at the given index.
 		*  \param[in]  pIndex  Index of the element to retrieve.
 		*  \return T&  Reference to the found item. */
-		inline T& operator[]( uint pIndex ) {
+		inline T& operator[]( size_t pIndex ) {
 			Assert( pIndex < mData.get( )->mSize );
 			return mData.get( )->mData[pIndex];
 		}
@@ -205,7 +205,7 @@ namespace gw2b {
 		/** Const array index operator. Returns the element at the given index.
 		*  \param[in]  pIndex  Index of the element to retrieve.
 		*  \return T&  Reference to the found item. */
-		inline const T& operator[]( uint pIndex ) const {
+		inline const T& operator[]( size_t pIndex ) const {
 			Assert( pIndex < mData.get( )->mSize );
 			return mData.get( )->mData[pIndex];
 		}
@@ -214,7 +214,7 @@ namespace gw2b {
 		*  the data contained. The data *must* be allocated using malloc.
 		*  \param[in]  pData   Data to wrap.
 		*  \param[in]  pSize   Size of the array. */
-		void Wrap( T* pData, uint pSize ) {
+		void Wrap( T* pData, size_t pSize ) {
 			this->UnShare( false );
 			mData.get( )->mData = pData;
 			mData.get( )->mSize = pSize;

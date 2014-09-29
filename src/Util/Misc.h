@@ -83,7 +83,7 @@ namespace gw2b {
 	*  \tparam     T       type of elements to allocate memory for.
 	*  \return     T*      pointer to newly allocated data. */
 	template <typename T>
-	T* allocate( uint p_count ) {
+	T* allocate( size_t p_count ) {
 		return static_cast<T*>( ::malloc( p_count * sizeof( T ) ) );
 	}
 
