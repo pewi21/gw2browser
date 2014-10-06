@@ -1,6 +1,25 @@
 Change log
 ----------
 
+Gw2Browser_2014-10-06
+---------------------
+Change:
+- String and Sound files support. Strings can be export to CSV,
+If open the CSV file in Notepad++, go to Encoding -> Convert to ANSI
+and go to Encoding again -> Encode in UTF-8 for the text to display correctly.
+- Ogg, Configuration and ARAP file detection.
+- Add icon for model files.
+- Some change in category name.
+- Set Gw2Browser to center of screen.
+
+Fix:
+- Fix memory leak on viewing WebP files.
+- Fix extraction of uncompressed files larger than 65532 bytes.
+- Fix MP3 files doesn't have icon.
+
+Issue:
+- Some textures not go to it's sub category.
+
 Gw2Browser_2014-04-24
 ---------------------
 Change:
@@ -14,7 +33,7 @@ Change:
 - WebP support, can export to png. WebP can open by Chrome browser.
 - Bink 2 video detect, to play it you need The RAD Video Tools
 but the player will play only 1 second of video and it will crash,
-the reason why it crash is unknown. (maybe they use custom Bink 2 format?)
+the reason why it crash is unknown. (maybe they use custom Bink 2 format?) *Fixed in Gw2Browser_2014-10-06*
 - ID3 (MP3), Embedded OpenType font, TextPack Variant, Map content and Shader Cache files detection.
 - Simple Wireframe view.
 - Force enable 4x MSAA.
@@ -27,7 +46,7 @@ Fix:
 - Fix camera not look at center of model.
 
 Issue:
-- Memory leak on viewing WebP files.
+- Memory leak on viewing WebP files. *Fixed in Gw2Browser_2014-10-06*
 
 Gw2Browser_2014-01-30
 ---------------------
