@@ -166,13 +166,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.1\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.2\include\;..\..\wxWidgets-3.0.2\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.2\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.1\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.2\include\;..\..\wxWidgets-3.0.2\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.2\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
@@ -182,12 +182,12 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.1\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.2\include\;..\..\wxWidgets-3.0.2\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\glew\lib\x86\;..\extern\GW2DatTools\lib\x86;..\..\wxWidgets-3.0.2\lib\vc_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.1\include\;..\..\wxWidgets-3.0.1\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.1\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
+    <IncludePath>..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\..\wxWidgets-3.0.2\include\;..\..\wxWidgets-3.0.2\lib\vc_lib\mswud;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\glew\lib\x64\;..\extern\GW2DatTools\lib\x64;..\..\wxWidgets-3.0.2\lib\vc_x64_lib;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
