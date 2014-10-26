@@ -402,8 +402,9 @@ static int CreateMux(const char* const filename, WebPMux** mux) {
 
 static int WriteData(const char* filename, const WebPData* const webpdata) {
   int ok = 0;
-  FILE* fout = strcmp(filename, "-") ? fopen(filename, "wb") : stdout;
-  if (!fout) {
+  FILE* fout = strcmp(filename, "-") ? fopen(filename, "wb")
+                                     : ExUtilSetBinaryMode(stdout);
+  if (fout == NULL) {
     fprintf(stderr, "Error opening output WebP file %s!\n", filename);
     return 0;
   }
@@ -487,7 +488,7 @@ static int ParseBgcolorArgs(const char* args, uint32_t* const bgcolor) {
 static void DeleteConfig(WebPMuxConfig* config) {
   if (config != NULL) {
     free(config->feature_.args_);
-    free(config);
+    memset(config, 0, sizeof(*config));
   }
 }
 
@@ -790,33 +791,27 @@ static int ValidateConfig(WebPMuxConfig* config) {
 
 // Create config object from command-line arguments.
 static int InitializeConfig(int argc, const char* argv[],
-                            WebPMuxConfig** config) {
+                            WebPMuxConfig* config) {
   int num_feature_args = 0;
   int ok = 1;
 
   assert(config != NULL);
-  *config = NULL;
+  memset(config, 0, sizeof(*config));
 
   // Validate command-line arguments.
   if (!ValidateCommandLine(argc, argv, &num_feature_args)) {
     ERROR_GOTO1("Exiting due to command-line parsing error.\n", Err1);
   }
 
-  // Allocate memory.
-  *config = (WebPMuxConfig*)calloc(1, sizeof(**config));
-  if (*config == NULL) {
-    ERROR_GOTO1("ERROR: Memory allocation error.\n", Err1);
-  }
-  (*config)->feature_.arg_count_ = num_feature_args;
-  (*config)->feature_.args_ =
-      (FeatureArg*)calloc(num_feature_args, sizeof(FeatureArg));
-  if ((*config)->feature_.args_ == NULL) {
+  config->feature_.arg_count_ = num_feature_args;
+  config->feature_.args_ =
+      (FeatureArg*)calloc(num_feature_args, sizeof(*config->feature_.args_));
+  if (config->feature_.args_ == NULL) {
     ERROR_GOTO1("ERROR: Memory allocation error.\n", Err1);
   }
 
   // Parse command-line.
-  if (!ParseCommandLine(argc, argv, *config) ||
-      !ValidateConfig(*config)) {
+  if (!ParseCommandLine(argc, argv, config) || !ValidateConfig(config)) {
     ERROR_GOTO1("Exiting due to command-line parsing error.\n", Err1);
   }
 
@@ -838,14 +833,16 @@ static int GetFrameFragment(const WebPMux* mux,
   WebPMux* mux_single = NULL;
   long num = 0;
   int ok = 1;
+  int parse_error = 0;
   const WebPChunkId id = is_frame ? WEBP_CHUNK_ANMF : WEBP_CHUNK_FRGM;
   WebPMuxFrameInfo info;
   WebPDataInit(&info.bitstream);
 
-  num = strtol(config->feature_.args_[0].params_, NULL, 10);
+  num = ExUtilGetInt(config->feature_.args_[0].params_, 10, &parse_error);
   if (num < 0) {
     ERROR_GOTO1("ERROR: Frame/Fragment index must be non-negative.\n", ErrGet);
   }
+  if (parse_error) goto ErrGet;
 
   err = WebPMuxGetFrame(mux, num, &info);
   if (err == WEBP_MUX_OK && info.id != id) err = WEBP_MUX_NOT_FOUND;
@@ -871,7 +868,7 @@ static int GetFrameFragment(const WebPMux* mux,
  ErrGet:
   WebPDataClear(&info.bitstream);
   WebPMuxDelete(mux_single);
-  return ok;
+  return ok && !parse_error;
 }
 
 // Read and process config.
@@ -933,16 +930,19 @@ static int Process(const WebPMuxConfig* config) {
                 break;
               }
               case SUBTYPE_LOOP: {
-                const long loop_count =
-                    strtol(feature->args_[i].params_, NULL, 10);
-                if (loop_count != (int)loop_count) {
+                int parse_error = 0;
+                const int loop_count =
+                    ExUtilGetInt(feature->args_[i].params_, 10, &parse_error);
+                if (loop_count < 0 || loop_count > 65535) {
                   // Note: This is only a 'necessary' condition for loop_count
                   // to be valid. The 'sufficient' conditioned in checked in
                   // WebPMuxSetAnimationParams() method called later.
                   ERROR_GOTO1("ERROR: Loop count must be in the range 0 to "
                               "65535.\n", Err2);
                 }
-                params.loop_count = (int)loop_count;
+                ok = !parse_error;
+                if (!ok) goto Err2;
+                params.loop_count = loop_count;
                 break;
               }
               case SUBTYPE_ANMF: {
@@ -1042,8 +1042,8 @@ static int Process(const WebPMuxConfig* config) {
                       ErrorString(err), kDescriptions[feature->type_], Err2);
         }
       } else {
-          ERROR_GOTO1("ERROR: Invalid feature for action 'strip'.\n", Err2);
-          break;
+        ERROR_GOTO1("ERROR: Invalid feature for action 'strip'.\n", Err2);
+        break;
       }
       ok = WriteWebP(mux, config->output_);
       break;
@@ -1069,14 +1069,14 @@ static int Process(const WebPMuxConfig* config) {
 // Main.
 
 int main(int argc, const char* argv[]) {
-  WebPMuxConfig* config;
+  WebPMuxConfig config;
   int ok = InitializeConfig(argc - 1, argv + 1, &config);
   if (ok) {
-    ok = Process(config);
+    ok = Process(&config);
   } else {
     PrintHelp();
   }
-  DeleteConfig(config);
+  DeleteConfig(&config);
   return !ok;
 }
 

@@ -13,11 +13,29 @@
 #ifndef WEBP_EXAMPLES_EXAMPLE_UTIL_H_
 #define WEBP_EXAMPLES_EXAMPLE_UTIL_H_
 
+#include <stdio.h>
 #include "webp/decode.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+//------------------------------------------------------------------------------
+// String parsing
+
+// Parses 'v' using strto(ul|l|d)(). If error is non-NULL, '*error' is set to
+// true on failure while on success it is left unmodified to allow chaining of
+// calls. An error is only printed on the first occurrence.
+uint32_t ExUtilGetUInt(const char* const v, int base, int* const error);
+int ExUtilGetInt(const char* const v, int base, int* const error);
+float ExUtilGetFloat(const char* const v, int* const error);
+
+//------------------------------------------------------------------------------
+// File I/O
+
+// Reopen file in binary (O_BINARY) mode.
+// Returns 'file' on success, NULL otherwise.
+FILE* ExUtilSetBinaryMode(FILE* file);
 
 // Allocates storage for entire file 'file_name' and returns contents and size
 // in 'data' and 'data_size'. Returns 1 on success, 0 otherwise. '*data' should

@@ -1,7 +1,7 @@
-AC_INIT([libwebp], [0.4.1],
+AC_INIT([libwebp], [0.4.2],
         [http://code.google.com/p/webp/issues],,
         [http://developers.google.com/speed/webp])
-AC_CANONICAL_TARGET
+AC_CANONICAL_HOST
 AC_PREREQ([2.60])
 AM_INIT_AUTOMAKE([-Wall foreign subdir-objects])
 
@@ -62,6 +62,19 @@ TEST_AND_ADD_CFLAGS([AM_CFLAGS], [-Wshadow])
 TEST_AND_ADD_CFLAGS([AM_CFLAGS], [-Wunused-but-set-variable])
 TEST_AND_ADD_CFLAGS([AM_CFLAGS], [-Wunused])
 TEST_AND_ADD_CFLAGS([AM_CFLAGS], [-Wvla])
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=62040
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61622
+AS_IF([test "$GCC" = "yes" ], [
+       gcc_version=`$CC -dumpversion`
+       gcc_wht_bug=""
+       case "$host_cpu" in
+         aarch64|arm64)
+          case "$gcc_version" in
+            4.9|4.9.0|4.9.1) gcc_wht_bug=yes ;;
+          esac
+       esac
+       AS_IF([test "$gcc_wht_bug" = "yes"], [
+              TEST_AND_ADD_CFLAGS([AM_CFLAGS], [-frename-registers])])])
 AC_SUBST([AM_CFLAGS])
 
 dnl === Check for machine specific flags
@@ -283,15 +296,12 @@ AC_ARG_ENABLE([png], AS_HELP_STRING([--disable-png],
                                      @<:@default=auto@:>@]))
 AS_IF([test "x$enable_png" != "xno"], [
   CLEAR_LIBVARS([PNG])
-  AC_PATH_PROGS(LIBPNG_CONFIG,
-                [libpng-config libpng15-config libpng14-config libpng12-config])
+  AC_PATH_PROGS([LIBPNG_CONFIG],
+                [libpng-config libpng16-config libpng15-config libpng14-config \
+                 libpng12-config])
   if test -n "$LIBPNG_CONFIG"; then
     PNG_INCLUDES=`$LIBPNG_CONFIG --cflags`
-    PNG_PREFIX=`$LIBPNG_CONFIG --prefix`
-    if test "${PNG_PREFIX}/lib" != "/usr/lib" ; then
-      PNG_LIBS="-L${PNG_PREFIX}/lib"
-    fi
-    PNG_LIBS="$PNG_LIBS `$LIBPNG_CONFIG --libs`"
+    PNG_LIBS="`$LIBPNG_CONFIG --ldflags`"
   fi
 
   WITHLIB_OPTION([png], [PNG])
@@ -409,8 +419,9 @@ AC_ARG_ENABLE([wic],
                               @<:@default=auto@:>@]),,
               [enable_wic=yes])
 
-if test \( "$target_os" = "mingw32" -o "$target_os" = "mingw64" \) \
-        -a "$enable_wic" = "yes"; then
+case $host_os in
+mingw*)
+if test "$enable_wic" = "yes"; then
   AC_CHECK_HEADERS([wincodec.h shlwapi.h windows.h])
   if test "$ac_cv_header_wincodec_h" = "yes"; then
     AC_MSG_CHECKING(for Windows Imaging Component support)
@@ -450,6 +461,7 @@ if test \( "$target_os" = "mingw32" -o "$target_os" = "mingw64" \) \
     AC_MSG_RESULT(${wic_support-no})
   fi
 fi
+esac
 
 dnl === If --enable-aligned is defined, define WEBP_FORCE_ALIGNED
 

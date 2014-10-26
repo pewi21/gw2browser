@@ -38,11 +38,6 @@
 #include <wincodec.h>
 #endif
 
-#if defined(_WIN32)
-#include <fcntl.h>   // for _O_BINARY
-#include <io.h>      // for _setmode()
-#endif
-
 #include "webp/decode.h"
 #include "./example_util.h"
 #include "./stopwatch.h"
@@ -482,15 +477,8 @@ static int SaveOutput(const WebPDecBuffer* const buffer,
   needs_open_file = (format != PNG);
 #endif
 
-#if defined(_WIN32)
-  if (use_stdout && _setmode(_fileno(stdout), _O_BINARY) == -1) {
-    fprintf(stderr, "Failed to reopen stdout in O_BINARY mode.\n");
-    return -1;
-  }
-#endif
-
   if (needs_open_file) {
-    fout = use_stdout ? stdout : fopen(out_file, "wb");
+    fout = use_stdout ? ExUtilSetBinaryMode(stdout) : fopen(out_file, "wb");
     if (fout == NULL) {
       fprintf(stderr, "Error opening output file %s\n", out_file);
       return 0;
@@ -557,7 +545,7 @@ static void Help(void) {
          "  -nofilter .... disable in-loop filtering\n"
          "  -nodither .... disable dithering\n"
          "  -dither <d> .. dithering strength (in 0..100)\n"
-#if WEBP_DECODER_ABI_VERSION > 0x0203
+#if WEBP_DECODER_ABI_VERSION > 0x0204
          "  -alpha_dither  use alpha-plane dithering if needed\n"
 #endif
          "  -mt .......... use multi-threading\n"
@@ -598,6 +586,7 @@ int main(int argc, const char *argv[]) {
   }
 
   for (c = 1; c < argc; ++c) {
+    int parse_error = 0;
     if (!strcmp(argv[c], "-h") || !strcmp(argv[c], "-help")) {
       Help();
       return 0;
@@ -628,24 +617,25 @@ int main(int argc, const char *argv[]) {
       format = YUV;
     } else if (!strcmp(argv[c], "-mt")) {
       config.options.use_threads = 1;
-#if WEBP_DECODER_ABI_VERSION > 0x0203
+#if WEBP_DECODER_ABI_VERSION > 0x0204
     } else if (!strcmp(argv[c], "-alpha_dither")) {
       config.options.alpha_dithering_strength = 100;
 #endif
     } else if (!strcmp(argv[c], "-nodither")) {
       config.options.dithering_strength = 0;
     } else if (!strcmp(argv[c], "-dither") && c < argc - 1) {
-      config.options.dithering_strength = strtol(argv[++c], NULL, 0);
+      config.options.dithering_strength =
+          ExUtilGetInt(argv[++c], 0, &parse_error);
     } else if (!strcmp(argv[c], "-crop") && c < argc - 4) {
       config.options.use_cropping = 1;
-      config.options.crop_left   = strtol(argv[++c], NULL, 0);
-      config.options.crop_top    = strtol(argv[++c], NULL, 0);
-      config.options.crop_width  = strtol(argv[++c], NULL, 0);
-      config.options.crop_height = strtol(argv[++c], NULL, 0);
+      config.options.crop_left   = ExUtilGetInt(argv[++c], 0, &parse_error);
+      config.options.crop_top    = ExUtilGetInt(argv[++c], 0, &parse_error);
+      config.options.crop_width  = ExUtilGetInt(argv[++c], 0, &parse_error);
+      config.options.crop_height = ExUtilGetInt(argv[++c], 0, &parse_error);
     } else if (!strcmp(argv[c], "-scale") && c < argc - 2) {
       config.options.use_scaling = 1;
-      config.options.scaled_width  = strtol(argv[++c], NULL, 0);
-      config.options.scaled_height = strtol(argv[++c], NULL, 0);
+      config.options.scaled_width  = ExUtilGetInt(argv[++c], 0, &parse_error);
+      config.options.scaled_height = ExUtilGetInt(argv[++c], 0, &parse_error);
 #if WEBP_DECODER_ABI_VERSION > 0x0203
     } else if (!strcmp(argv[c], "-flip")) {
       config.options.flip = 1;
@@ -667,6 +657,11 @@ int main(int argc, const char *argv[]) {
       return -1;
     } else {
       in_file = argv[c];
+    }
+
+    if (parse_error) {
+      Help();
+      return -1;
     }
   }
 

@@ -36,7 +36,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-target_triplet = @target@
 subdir = src/mux
 DIST_COMMON = $(libwebpmuxinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/libwebpmux.pc.in
@@ -254,11 +253,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
-target = @target@
 target_alias = @target_alias@
-target_cpu = @target_cpu@
-target_os = @target_os@
-target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
@@ -267,7 +262,7 @@ libwebpmux_la_SOURCES = muxedit.c muxi.h muxinternal.c muxread.c
 libwebpmuxinclude_HEADERS = ../webp/mux.h ../webp/mux_types.h \
 	../webp/types.h
 libwebpmux_la_LIBADD = ../libwebp.la
-libwebpmux_la_LDFLAGS = -no-undefined -version-info 1:1:0
+libwebpmux_la_LDFLAGS = -no-undefined -version-info 1:2:0
 libwebpmuxincludedir = $(includedir)/webp
 pkgconfig_DATA = libwebpmux.pc
 all: all-am

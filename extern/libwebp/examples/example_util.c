@@ -11,6 +11,11 @@
 //
 
 #include "./example_util.h"
+
+#if defined(_WIN32)
+#include <fcntl.h>   // for _O_BINARY
+#include <io.h>      // for _setmode()
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,12 +23,50 @@
 #include "webp/decode.h"
 #include "./stopwatch.h"
 
+//------------------------------------------------------------------------------
+// String parsing
+
+uint32_t ExUtilGetUInt(const char* const v, int base, int* const error) {
+  char* end = NULL;
+  const uint32_t n = (v != NULL) ? (uint32_t)strtoul(v, &end, base) : 0u;
+  if (end == v && error != NULL && !*error) {
+    *error = 1;
+    fprintf(stderr, "Error! '%s' is not an integer.\n",
+            (v != NULL) ? v : "(null)");
+  }
+  return n;
+}
+
+int ExUtilGetInt(const char* const v, int base, int* const error) {
+  return (int)ExUtilGetUInt(v, base, error);
+}
+
+float ExUtilGetFloat(const char* const v, int* const error) {
+  char* end = NULL;
+  const float f = (v != NULL) ? (float)strtod(v, &end) : 0.f;
+  if (end == v && error != NULL && !*error) {
+    *error = 1;
+    fprintf(stderr, "Error! '%s' is not a floating point number.\n",
+            (v != NULL) ? v : "(null)");
+  }
+  return f;
+}
+
 // -----------------------------------------------------------------------------
 // File I/O
 
-static const size_t kBlockSize = 16384;  // default initial size
+FILE* ExUtilSetBinaryMode(FILE* file) {
+#if defined(_WIN32)
+  if (_setmode(_fileno(file), _O_BINARY) == -1) {
+    fprintf(stderr, "Failed to reopen file in O_BINARY mode.\n");
+    return NULL;
+  }
+#endif
+  return file;
+}
 
 int ExUtilReadFromStdin(const uint8_t** data, size_t* data_size) {
+  static const size_t kBlockSize = 16384;  // default initial size
   size_t max_size = 0;
   size_t size = 0;
   uint8_t* input = NULL;
@@ -31,6 +74,8 @@ int ExUtilReadFromStdin(const uint8_t** data, size_t* data_size) {
   if (data == NULL || data_size == NULL) return 0;
   *data = NULL;
   *data_size = 0;
+
+  if (!ExUtilSetBinaryMode(stdin)) return 0;
 
   while (!feof(stdin)) {
     // We double the buffer size each time and read as much as possible.
