@@ -32,8 +32,8 @@ Change:
 - Model Reader now use high-res texture, still need to figure out ModelReader to not load LOD models.
 - WebP support, can export to png. WebP can open by Chrome browser.
 - Bink 2 video detect, to play it you need The RAD Video Tools
-but the player will play only 1 second of video and it will crash,
-the reason why it crash is unknown. (maybe they use custom Bink 2 format?) *Fixed in Gw2Browser_2014-10-06*
+but the player will play only 1 second of video and it will crash.
+*Fixed in Gw2Browser_2014-10-06*
 - ID3 (MP3), Embedded OpenType font, TextPack Variant, Map content and Shader Cache files detection.
 - Simple Wireframe view.
 - Force enable 4x MSAA.
