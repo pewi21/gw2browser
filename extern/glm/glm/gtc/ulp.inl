@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,10 +11,6 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -203,7 +199,7 @@ namespace glm
 	template <>
 	GLM_FUNC_QUALIFIER float next_float(float const & x)
 	{
-#		if GLM_HAS_CXX11_STL
+#		if((GLM_LANG & GLM_LANG_CXX11_FLAG) && !(GLM_PLATFORM & GLM_PLATFORM_ANDROID))
 			return std::nextafter(x, std::numeric_limits<float>::max());
 #		elif((GLM_COMPILER & GLM_COMPILER_VC) || ((GLM_COMPILER & GLM_COMPILER_INTEL) && (GLM_PLATFORM & GLM_PLATFORM_WINDOWS)))
 			return detail::nextafterf(x, FLT_MAX);
@@ -217,7 +213,7 @@ namespace glm
 	template <>
 	GLM_FUNC_QUALIFIER double next_float(double const & x)
 	{
-#		if GLM_HAS_CXX11_STL
+#		if((GLM_LANG & GLM_LANG_CXX11_FLAG) && !(GLM_PLATFORM & GLM_PLATFORM_ANDROID))
 			return std::nextafter(x, std::numeric_limits<double>::max());
 #		elif((GLM_COMPILER & GLM_COMPILER_VC) || ((GLM_COMPILER & GLM_COMPILER_INTEL) && (GLM_PLATFORM & GLM_PLATFORM_WINDOWS)))
 			return detail::nextafter(x, std::numeric_limits<double>::max());
@@ -231,15 +227,15 @@ namespace glm
 	template<typename T, precision P, template<typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> next_float(vecType<T, P> const & x)
 	{
-		vecType<T, P> Result(uninitialize);
-		for(detail::component_count_t i = 0; i < detail::component_count(Result); ++i)
+		vecType<T, P> Result;
+		for(length_t i = 0; i < Result.length(); ++i)
 			Result[i] = next_float(x[i]);
 		return Result;
 	}
 
 	GLM_FUNC_QUALIFIER float prev_float(float const & x)
 	{
-#		if GLM_HAS_CXX11_STL
+#		if((GLM_LANG & GLM_LANG_CXX11_FLAG) && !(GLM_PLATFORM & GLM_PLATFORM_ANDROID))
 			return std::nextafter(x, std::numeric_limits<float>::min());
 #		elif((GLM_COMPILER & GLM_COMPILER_VC) || ((GLM_COMPILER & GLM_COMPILER_INTEL) && (GLM_PLATFORM & GLM_PLATFORM_WINDOWS)))
 			return detail::nextafterf(x, FLT_MIN);
@@ -252,7 +248,7 @@ namespace glm
 
 	GLM_FUNC_QUALIFIER double prev_float(double const & x)
 	{
-#		if GLM_HAS_CXX11_STL
+#		if((GLM_LANG & GLM_LANG_CXX11_FLAG) && !(GLM_PLATFORM & GLM_PLATFORM_ANDROID))
 			return std::nextafter(x, std::numeric_limits<double>::min());
 #		elif((GLM_COMPILER & GLM_COMPILER_VC) || ((GLM_COMPILER & GLM_COMPILER_INTEL) && (GLM_PLATFORM & GLM_PLATFORM_WINDOWS)))
 			return _nextafter(x, DBL_MIN);
@@ -266,8 +262,8 @@ namespace glm
 	template<typename T, precision P, template<typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> prev_float(vecType<T, P> const & x)
 	{
-		vecType<T, P> Result(uninitialize);
-		for(detail::component_count_t i = 0; i < detail::component_count(Result); ++i)
+		vecType<T, P> Result;
+		for(length_t i = 0; i < Result.length(); ++i)
 			Result[i] = prev_float(x[i]);
 		return Result;
 	}
@@ -284,8 +280,8 @@ namespace glm
 	template<typename T, precision P, template<typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> next_float(vecType<T, P> const & x, vecType<uint, P> const & ulps)
 	{
-		vecType<T, P> Result(uninitialize);
-		for(detail::component_count_t i = 0; i < detail::component_count(Result); ++i)
+		vecType<T, P> Result;
+		for(length_t i = 0; i < Result.length(); ++i)
 			Result[i] = next_float(x[i], ulps[i]);
 		return Result;
 	}
@@ -302,8 +298,8 @@ namespace glm
 	template<typename T, precision P, template<typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> prev_float(vecType<T, P> const & x, vecType<uint, P> const & ulps)
 	{
-		vecType<T, P> Result(uninitialize);
-		for(detail::component_count_t i = 0; i < detail::component_count(Result); ++i)
+		vecType<T, P> Result;
+		for(length_t i = 0; i < Result.length(); ++i)
 			Result[i] = prev_float(x[i], ulps[i]);
 		return Result;
 	}
@@ -342,8 +338,8 @@ namespace glm
 	template<typename T, precision P, template<typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<uint, P> float_distance(vecType<T, P> const & x, vecType<T, P> const & y)
 	{
-		vecType<uint, P> Result(uninitialize);
-		for(detail::component_count_t i = 0; i < detail::component_count(Result); ++i)
+		vecType<uint, P> Result;
+		for(length_t i = 0; i < Result.length(); ++i)
 			Result[i] = float_distance(x[i], y[i]);
 		return Result;
 	}
