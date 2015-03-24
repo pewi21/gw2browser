@@ -147,51 +147,51 @@ namespace gw2b {
 		case ANFT_DDS:
 		case ANFT_JPEG:
 		case ANFT_WEBP:
-				MakeCategory( wxT( "Textures" ) );
+			MakeCategory( wxT( "Textures" ) );
 
-				switch ( p_fileType ) {
-				case ANFT_ATEX:
-					MakeSubCategory( wxT( "Generic Textures" ) );
-					break;
-				case ANFT_ATTX:
-					MakeSubCategory( wxT( "Terrain Textures" ) );
-					break;
-				case ANFT_ATEC:
-					MakeSubCategory( wxT( "ATEC" ) );
-					break;
-				case ANFT_ATEP:
-					MakeSubCategory( wxT( "Map Textures" ) );
-					break;
-				case ANFT_ATEU:
-					MakeSubCategory( wxT( "UI Textures" ) );
-					break;
-				case ANFT_ATET:
-					MakeSubCategory( wxT( "ATET" ) );
-					break;
-				case ANFT_DDS:
-					MakeSubCategory( wxT( "DDS" ) );
-					break;
-				case ANFT_JPEG:
-					MakeSubCategory( wxT( "JPEG" ) );
-					break;
-				case ANFT_WEBP:
-					MakeSubCategory( wxT( "WebP" ) );
-					break;
-				}
-
-				if ( ( p_fileType == ANFT_ATEX || p_fileType == ANFT_ATTX || p_fileType == ANFT_ATEC ||
-					p_fileType == ANFT_ATEP || p_fileType == ANFT_ATEU || p_fileType == ANFT_ATET ) &&
-					p_size >= 12 ) {
-					uint16 width = *reinterpret_cast<const uint16*>( p_data + 8 );
-					uint16 height = *reinterpret_cast<const uint16*>( p_data + 10 );
-					MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
-				} else if ( p_fileType == ANFT_DDS && p_size >= 20 ) {
-					uint32 width = *reinterpret_cast<const uint32*>( p_data + 16 );
-					uint32 height = *reinterpret_cast<const uint32*>( p_data + 12 );
-					MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
-				}
-
+			switch ( p_fileType ) {
+			case ANFT_ATEX:
+				MakeSubCategory( wxT( "Generic Textures" ) );
 				break;
+			case ANFT_ATTX:
+				MakeSubCategory( wxT( "Terrain Textures" ) );
+				break;
+			case ANFT_ATEC:
+				MakeSubCategory( wxT( "ATEC" ) );
+				break;
+			case ANFT_ATEP:
+				MakeSubCategory( wxT( "Map Textures" ) );
+				break;
+			case ANFT_ATEU:
+				MakeSubCategory( wxT( "UI Textures" ) );
+				break;
+			case ANFT_ATET:
+				MakeSubCategory( wxT( "ATET" ) );
+				break;
+			case ANFT_DDS:
+				MakeSubCategory( wxT( "DDS" ) );
+				break;
+			case ANFT_JPEG:
+				MakeSubCategory( wxT( "JPEG" ) );
+				break;
+			case ANFT_WEBP:
+				MakeSubCategory( wxT( "WebP" ) );
+				break;
+			}
+
+			if ( ( p_fileType == ANFT_ATEX || p_fileType == ANFT_ATTX || p_fileType == ANFT_ATEC ||
+				p_fileType == ANFT_ATEP || p_fileType == ANFT_ATEU || p_fileType == ANFT_ATET ) &&
+				p_size >= 12 ) {
+				uint16 width = *reinterpret_cast<const uint16*>( p_data + 8 );
+				uint16 height = *reinterpret_cast<const uint16*>( p_data + 10 );
+				MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
+			} else if ( p_fileType == ANFT_DDS && p_size >= 20 ) {
+				uint32 width = *reinterpret_cast<const uint32*>( p_data + 16 );
+				uint32 height = *reinterpret_cast<const uint32*>( p_data + 12 );
+				MakeSubCategory( wxString::Format( wxT( "%ux%u" ), width, height ) );
+			}
+
+			break;
 		case ANFT_Sound:
 		case ANFT_MP3:
 		case ANFT_Ogg:
@@ -199,29 +199,29 @@ namespace gw2b {
 		case ANFT_PackedOgg:
 		case ANFT_asndMP3:
 		case ANFT_asndOgg:
-				MakeCategory( wxT( "Sounds" ) );
+			MakeCategory( wxT( "Sounds" ) );
 
-				switch ( p_fileType ) {
-				case ANFT_MP3:
-					MakeSubCategory( wxT( "MP3" ) );
-					break;
-				case ANFT_Ogg:
-					MakeSubCategory( wxT( "Ogg" ) );
-					break;
-				case ANFT_asndMP3:
-					MakeSubCategory( wxT( "asndMP3" ) );
-					break;
-				case ANFT_asndOgg:
-					MakeSubCategory( wxT( "asndOgg" ) );
-					break;
-				case ANFT_PackedMP3:
-					MakeSubCategory( wxT( "PackedMP3" ) );
-					break;
-				case ANFT_PackedOgg:
-					MakeSubCategory( wxT( "PackedOgg" ) );
-					break;
-				}
+			switch ( p_fileType ) {
+			case ANFT_MP3:
+				MakeSubCategory( wxT( "MP3" ) );
 				break;
+			case ANFT_Ogg:
+				MakeSubCategory( wxT( "Ogg" ) );
+				break;
+			case ANFT_asndMP3:
+				MakeSubCategory( wxT( "asndMP3" ) );
+				break;
+			case ANFT_asndOgg:
+				MakeSubCategory( wxT( "asndOgg" ) );
+				break;
+			case ANFT_PackedMP3:
+				MakeSubCategory( wxT( "PackedMP3" ) );
+				break;
+			case ANFT_PackedOgg:
+				MakeSubCategory( wxT( "PackedOgg" ) );
+				break;
+			}
+			break;
 		case ANFT_Binary:
 		case ANFT_EXE:
 		case ANFT_DLL:

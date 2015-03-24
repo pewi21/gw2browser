@@ -346,7 +346,8 @@ namespace gw2b {
 
 	DatFile::IdentificationResult DatFile::identifyFileType( const byte* p_data, size_t p_size, ANetFileType& po_fileType ) {
 		if ( p_size < 4 ) {
-			po_fileType = ANFT_Unknown; return IR_Failure;
+			po_fileType = ANFT_Unknown;
+			return IR_Failure;
 		}
 
 		// start with fourcc
