@@ -421,11 +421,7 @@ namespace gw2b {
 		if ( ( fourcc & 0xffff ) == FCC_PF ) {
 			po_fileType = ANFT_PF;
 
-			if ( p_size >= 12 ) {
-				fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
-			} else {
-				return IR_NotEnoughData;
-			}
+			fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
 
 			switch ( fourcc ) {
 			case FCC_ARMF:
