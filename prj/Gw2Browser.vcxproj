@@ -41,8 +41,7 @@
     <ClInclude Include="..\src\Readers\asndMP3Reader.h" />
     <ClInclude Include="..\src\Readers\ImageReader.h" />
     <ClInclude Include="..\src\Readers\ModelReader.h" />
-    <ClInclude Include="..\src\Readers\PackedMP3Reader.h" />
-    <ClInclude Include="..\src\Readers\PackedOggReader.h" />
+    <ClInclude Include="..\src\Readers\PackedSoundReader.h" />
     <ClInclude Include="..\src\Readers\StringReader.h" />
     <ClInclude Include="..\src\resource.h" />
     <ClInclude Include="..\src\stdafx.h" />
@@ -82,8 +81,7 @@
     <ClCompile Include="..\src\Readers\asndMP3Reader.cpp" />
     <ClCompile Include="..\src\Readers\ImageReader.cpp" />
     <ClCompile Include="..\src\Readers\ModelReader.cpp" />
-    <ClCompile Include="..\src\Readers\PackedMP3Reader.cpp" />
-    <ClCompile Include="..\src\Readers\PackedOggReader.cpp" />
+    <ClCompile Include="..\src\Readers\PackedSoundReader.cpp" />
     <ClCompile Include="..\src\Readers\StringReader.cpp" />
     <ClCompile Include="..\src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

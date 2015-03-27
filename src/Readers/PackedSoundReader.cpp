@@ -1,4 +1,4 @@
-/* \file       Readers/PackedOggReader.cpp
+/* \file       Readers/PackedSoundReader.cpp
 *  \brief      Contains the definition of the packed Ogg reader class.
 *  \author     Khral Steelforge
 */
@@ -26,18 +26,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <gw2formats\pf\AudioPackFile.h>
 
-#include "PackedOggReader.h"
+#include "PackedSoundReader.h"
 
 namespace gw2b {
 
-	PackedOggReader::PackedOggReader( const Array<byte>& p_data, ANetFileType p_fileType )
+	PackedSoundReader::PackedSoundReader( const Array<byte>& p_data, ANetFileType p_fileType )
 		: FileReader( p_data, p_fileType ) {
 	}
 
-	PackedOggReader::~PackedOggReader( ) {
+	PackedSoundReader::~PackedSoundReader( ) {
 	}
 
-	Array<byte> PackedOggReader::getOgg( ) const {
+	Array<byte> PackedSoundReader::getSound( ) const {
 		gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
 
 		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
@@ -54,8 +54,8 @@ namespace gw2b {
 		return outputArray;
 	}
 
-	Array<byte> PackedOggReader::convertData( ) const {
-		return( this->getOgg( ) );
+	Array<byte> PackedSoundReader::convertData( ) const {
+		return( this->getSound( ) );
 	}
 
 }; // namespace gw2b

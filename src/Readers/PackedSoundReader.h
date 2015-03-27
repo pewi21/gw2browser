@@ -1,4 +1,4 @@
-/* \file       Readers/PackedOggReader.h
+/* \file       Readers/PackedSoundReader.h
 *  \brief      Contains the declaration of the packed Ogg reader class.
 *  \author     Khral Steelforge
 */
@@ -24,21 +24,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef READERS_PACKEDOGGREADER_H_INCLUDED
-#define READERS_PACKEDOGGREADER_H_INCLUDED
+#ifndef READERS_PackedSoundReader_H_INCLUDED
+#define READERS_PackedSoundReader_H_INCLUDED
 
 #include "FileReader.h"
 
 namespace gw2b {
 
-	class PackedOggReader : public FileReader {
+	class PackedSoundReader : public FileReader {
 	public:
 		/** Constructor.
 		*  \param[in]  p_data       Data to be handled by this reader.
 		*  \param[in]  p_fileType   File type of the given data. */
-		PackedOggReader( const Array<byte>& p_data, ANetFileType p_fileType );
+		PackedSoundReader( const Array<byte>& p_data, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */
-		virtual ~PackedOggReader( );
+		virtual ~PackedSoundReader( );
 
 		/** Gets the type of data contained in this file. Not to be confused with
 		*  file type.
@@ -49,17 +49,24 @@ namespace gw2b {
 		/** Gets an appropriate file extension for the contents of this reader.
 		*  \return wxString    File extension. */
 		virtual const wxChar* extension( ) const override {
-			return wxT( ".ogg" );
+			switch ( m_fileType ) {
+			case ANFT_PackedMP3:
+				return wxT( ".mp3" );
+				break;
+			case ANFT_PackedOgg:
+				return wxT( ".ogg" );
+				break;
+			}
 		}
 		/** Converts the data associated with this file into ogg file.
 		*  \return Array<byte> converted data. */
 		virtual Array<byte> convertData( ) const;
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     ogg format. */
-		Array<byte> getOgg( ) const;
+		Array<byte> getSound( ) const;
 
-	}; // class PackedOggReader
+	}; // class PackedSoundReader
 
 }; // namespace gw2b
 
-#endif // READERS_PACKEDOGGREADER_H_INCLUDED
+#endif // READERS_PackedSoundReader_H_INCLUDED

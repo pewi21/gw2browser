@@ -186,13 +186,10 @@
     <ClInclude Include="..\src\Readers\StringReader.h">
       <Filter>Header Files\Readers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Readers\PackedMP3Reader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\PackedOggReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Readers\asndMP3Reader.h">
+      <Filter>Header Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\PackedSoundReader.h">
       <Filter>Header Files\Readers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -290,13 +287,10 @@
     <ClCompile Include="..\src\Readers\StringReader.cpp">
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Readers\PackedMP3Reader.cpp">
-      <Filter>Source Files\Readers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Readers\PackedOggReader.cpp">
-      <Filter>Source Files\Readers</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Readers\asndMP3Reader.cpp">
+      <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\PackedSoundReader.cpp">
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>

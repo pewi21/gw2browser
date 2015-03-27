@@ -32,3 +32,6 @@ models could get an *export with textures* option.
 * Support NPOT textures.
 
 * Support map files, map renderer.
+
+* export model, choose where to put it (directory), named with file id, with texture exported etc.
+ for easy to work with current arch
