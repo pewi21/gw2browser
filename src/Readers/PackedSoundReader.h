@@ -56,6 +56,8 @@ namespace gw2b {
 			case ANFT_PackedOgg:
 				return wxT( ".ogg" );
 				break;
+			default:
+				return wxT( ".asnd" );
 			}
 		}
 		/** Converts the data associated with this file into ogg file.
