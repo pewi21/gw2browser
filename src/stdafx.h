@@ -42,9 +42,6 @@
 #include <gw2DatTools/compression/inflateDatFileBuffer.h>
 #include <gw2DatTools/compression/inflateTextureFileBuffer.h>
 
-// OpenGL
-#include <GL/glew.h>
-
 // OpenGL Mathematics
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
