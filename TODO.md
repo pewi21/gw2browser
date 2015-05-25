@@ -6,9 +6,6 @@ TODO list
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
 
-* Rewrite model renderer to OpenGL, run natively on MacOSX or Linux!
-(I will try, with my beginner level skill!)
-
 * Support for sub-items, where a file in the .dat can contain child-entries in
 the index. This is needed for soundbank files, EULA.
 
@@ -27,6 +24,8 @@ models could get an *export with textures* option.
 
 * External file name database, for known files (such as the exe and dll files).
 
+* Rewrite model renderer to OpenGL
+
 * Support for R32f DDS files.
 
 * Support NPOT textures.
@@ -34,4 +33,3 @@ models could get an *export with textures* option.
 * Support map files, map renderer.
 
 * export model, choose where to put it (directory), named with file id, with texture exported etc.
- for easy to work with current arch
