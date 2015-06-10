@@ -45,7 +45,7 @@ namespace gw2b {
 		wxString string;
 
 		// Table header.
-		string << L"Entry,String" << L"\r\n";
+		string << L"Entry;String" << L"\r\n";
 
 		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
@@ -57,8 +57,11 @@ namespace gw2b {
 				str = L"Encrypted string";
 			} else {
 				str = entry.get( );
+				if ( str.IsEmpty( ) ) {
+					str = L"Empty string";
+				}
 			}
-			string << i << L",\"" << str << L"\"\r\n";
+			string << i << L";\"" << str << L"\"\r\n";
 		}
 		return string;
 	}
