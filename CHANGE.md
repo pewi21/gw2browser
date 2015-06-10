@@ -1,6 +1,17 @@
 Change log
 ----------
 
+Gw2Browser_2015-xx-xx
+---------------------
+Change:
+- Merged Packed Ogg and MP3 reader.
+- Improved texture id info in model viewer, now remove duplicate file id
+from the list.
+- Change string file reader csv export delimiter from comma (,) to semicolon (;).
+
+Fix:
+- Fix some texture not in it's sub category.
+
 Gw2Browser_2014-10-06
 ---------------------
 Change:
@@ -18,7 +29,7 @@ Fix:
 - Fix MP3 files doesn't have icon.
 
 Issue:
-- Some textures not go to it's sub category.
+- Some textures not go to it's sub category. *Fixed in Gw2Browser_2015-xx-xx*
 
 Gw2Browser_2014-04-24
 ---------------------
