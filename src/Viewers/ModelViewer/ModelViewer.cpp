@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <algorithm>
+#include <vector>
+
 #include "ModelViewer.h"
 
 #include "Readers/ImageReader.h"
@@ -313,30 +316,59 @@ namespace gw2b {
 		this->drawText( 0, clientSize.y - 0x28, wxT( "Rotate: Left mouse button" ) );
 		this->drawText( 0, clientSize.y - 0x14, wxT( "Zoom: Scroll wheel" ) );
 
+		wxString diffuseMap = wxString( wxT( "diffuseMap:\n" ) );
+		wxString normalMap = wxString( wxT( "normalMap:\n" ) );
+		wxString lightMap = wxString( wxT( "lightMap:\n" ) );
+
+		// TODO : Move this else where, no need to update file list each render
 		// Texture That need to extract manualy.
-		wxString diffuseMapFile = wxString( wxT( "diffuseMap:\n" ) );
-		wxString normalMapFile = wxString( wxT( "normalMap:\n" ) );
-		wxString lightMapFile = wxString( wxT( "lightMap:\n" ) );
+		std::vector<uint32> diffuseMapFileList;
+		std::vector<uint32> normalMapFileList;
+		std::vector<uint32> lightMapFileList;
 
 		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
 
 			if ( material.diffuseMap ) {
-				diffuseMapFile += wxString::Format( wxT( "%d\n" ), material.diffuseMap );
+				diffuseMapFileList.push_back( material.diffuseMap );
 			}
 			if ( material.normalMap ) {
-				normalMapFile += wxString::Format( wxT( "%d\n" ), material.normalMap );
+				normalMapFileList.push_back( material.normalMap );
 			}
 			if ( material.lightMap ) {
-				lightMapFile += wxString::Format( wxT( "%d\n" ), material.lightMap );
+				lightMapFileList.push_back( material.lightMap );
 			}
+		}
+
+		std::vector<uint32>::iterator temp;
+
+		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
+
+		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
+
+		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
+
+		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
+			diffuseMap << *it << "\n";
+		}
+		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
+			normalMap << *it << "\n";
+		}
+		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
+			lightMap << *it << "\n";
 		}
 
 		this->drawText( clientSize.x - 0x11c, 0, wxT( "Textures" ) );
 
-		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMapFile ) );
-		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMapFile ) );
-		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMapFile ) );
+		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMap ) );
+		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
+		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
 
 		this->endFrame( );
 	}
