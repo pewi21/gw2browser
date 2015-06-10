@@ -1,10 +1,14 @@
 TODO list
 =========
 
-* "Find by fileId" dialog (seems easy for me to do it :P).
-
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
+
+* Use thread instread of wxIdleEventHandler.
+
+* Categorized string files by language.
+
+* "Find by fileId" dialog.
 
 * Support for sub-items, where a file in the .dat can contain child-entries in
 the index. This is needed for soundbank files, EULA.
@@ -12,9 +16,7 @@ the index. This is needed for soundbank files, EULA.
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
 
-* Support for sound and soundbank files. *partial done for sound files, need sound player*
-
-* Support for string files. *partial done, need it's viewer*
+* String viewer, sound player.
 
 * Support for model LODs, collision mesh rendering, bone, animation and more.
 
