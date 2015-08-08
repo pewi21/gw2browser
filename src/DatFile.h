@@ -36,10 +36,7 @@ namespace gw2b {
 
 	/** Represents a GW2 .dat file. */
 	class DatFile {
-		struct IdEntry {
-			uint32  baseId;
-			uint32  fileId;
-		};
+		struct IdEntry;
 	private:
 		typedef Array<ANetMftEntry> EntryArray;
 		typedef Array<IdEntry>      EntryToIdArray;
@@ -53,7 +50,7 @@ namespace gw2b {
 		InputBufferArray    m_inputBuffer;
 		uint                m_lastReadEntry;
 	private:
-		enum {
+		enum MFTFileOffset {
 			MFT_FILE_OFFSET = 16
 		};
 	public:

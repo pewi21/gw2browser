@@ -29,6 +29,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+	struct DatFile::IdEntry {
+		uint32  baseId;
+		uint32  fileId;
+	};
+
 	DatFile::DatFile( )
 		: m_lastReadEntry( -1 ) {
 		::memset( &m_datHead, 0, sizeof( m_datHead ) );

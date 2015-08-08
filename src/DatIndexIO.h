@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	enum {
+	enum DatIndexMagicNumber {
 		DatIndex_Magic = 0x4944,
 		DatIndex_Version = 0x2,
 		DatIndex_RootCategory = -0x1,
