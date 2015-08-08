@@ -572,7 +572,7 @@ namespace gw2b {
 
 	void CategoryTree::onExtractRawFiles( wxCommandEvent& p_event ) {
 		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeExtractRaw( *this );
+			( *it )->onTreeExtractFile( *this, false );
 		}
 	}
 
@@ -580,7 +580,7 @@ namespace gw2b {
 
 	void CategoryTree::onExtractConvertedFiles( wxCommandEvent& p_event ) {
 		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeExtractConverted( *this );
+			( *it )->onTreeExtractFile( *this, true );
 		}
 	}
 

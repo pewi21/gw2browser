@@ -113,8 +113,10 @@ namespace gw2b {
 		/** Raised when the category tree was cleared.
 		*  \param[in]  p_tree   tree that was cleared. */
 		virtual void onTreeCleared( CategoryTree& p_tree ) override;
-		virtual void onTreeExtractRaw( CategoryTree& p_tree ) override;
-		virtual void onTreeExtractConverted( CategoryTree& p_tree ) override;
+		/** Raised when the user wants to extract raw files.
+		*  \param[in]  p_tree	category tree invoking the callback.
+		*  \param[in]  p_mode	if false extract raw file, if true extract converted file. */
+		virtual void onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) override;
 	}; // class BrowserWindow
 
 }; // namespace gw2b

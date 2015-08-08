@@ -343,7 +343,7 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::onTreeExtractRaw( CategoryTree& p_tree ) {
+	void BrowserWindow::onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) {
 		auto entries = p_tree.getSelectedEntries( );
 
 		if ( entries.GetSize( ) ) {
@@ -365,6 +365,9 @@ namespace gw2b {
 
 				auto ext = wxEmptyString;
 				if ( reader ) {
+					if ( p_mode ) {
+						entryData = reader->convertData( );
+					}
 					ext = reader->extension();
 				}
 
@@ -385,71 +388,17 @@ namespace gw2b {
 						wxMessageBox( wxT( "Failed to open the file for writing." ), wxT( "Error" ), wxOK | wxICON_ERROR );
 					}
 				}
-			}
-
-			// More files than one
-			else {
-				wxDirDialog dialog( this, wxT( "Select output folder" ) );
-				if ( dialog.ShowModal( ) == wxID_OK ) {
-					new ExtractFilesWindow( entries, m_datFile, dialog.GetPath( ), ExtractFilesWindow::EM_Raw );
-				}
-			}
-		}
-	}
-
-	//============================================================================/
-
-	void BrowserWindow::onTreeExtractConverted( CategoryTree& p_tree ) {
-		auto entries = p_tree.getSelectedEntries( );
-
-		if ( entries.GetSize( ) ) {
-			// If it's just one file, we could handle it here
-			if ( entries.GetSize( ) == 1 ) {
-				auto entry = entries[0];
-				auto entryData = m_datFile.readFile( entry->mftEntry( ) );
-
-				// Valid data?
-				if ( !entryData.GetSize( ) ) {
-					wxMessageBox( wxT( "Failed to extract the file, most likely due to a decompression error." ), wxT( "Error" ), wxOK | wxICON_ERROR );
-					return;
-				}
-				// Convert to a usable format
-				auto fileType = ANFT_Unknown;
-				m_datFile.identifyFileType( entryData.GetPointer( ), entryData.GetSize( ), fileType );
-				auto reader = FileReader::readerForData( entryData, fileType );
-
-				auto ext = wxEmptyString;
-				if ( reader ) {
-					entryData = reader->convertData( );
-					ext = reader->extension( );
-				}
-
-				// Ask for location
-				wxFileDialog dialog( this,
-					wxString::Format( wxT( "Extract %s%s..." ), entry->name( ), ext ),
-					wxEmptyString,
-					entry->name( ) + ext,
-					wxFileSelectorDefaultWildcardStr,
-					wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
-
-				if ( dialog.ShowModal( ) == wxID_OK ) {
-					wxFile file( dialog.GetPath( ), wxFile::write );
-					if ( file.IsOpened( ) ) {
-						file.Write( entryData.GetPointer( ), entryData.GetSize( ) );
-						file.Close( );
-					} else {
-						wxMessageBox( wxT( "Failed to open the file for writing." ), wxT( "Error" ), wxOK | wxICON_ERROR );
-					}
-				}
-
 				deletePointer( reader );
-			}
 
-			// More files than one
-			else {
+			// More than one files
+			} else {
 				wxDirDialog dialog( this, wxT( "Select output folder" ) );
 				if ( dialog.ShowModal( ) == wxID_OK ) {
-					new ExtractFilesWindow( entries, m_datFile, dialog.GetPath( ), ExtractFilesWindow::EM_Converted );
+					if ( p_mode ) {
+						new ExtractFilesWindow( entries, m_datFile, dialog.GetPath( ), ExtractFilesWindow::EM_Converted );
+					} else {
+						new ExtractFilesWindow( entries, m_datFile, dialog.GetPath( ), ExtractFilesWindow::EM_Raw );
+					}
 				}
 			}
 		}

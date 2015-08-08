@@ -109,13 +109,10 @@ namespace gw2b {
 	*  Receives events from the category tree. */
 	class ICategoryTreeListener {
 	public:
-		/** Raised when the user wants to extract raw files.
-		*  \param[in]  p_tree   category tree invoking the callback. */
-		virtual void onTreeExtractRaw( CategoryTree& p_tree ) {
-		}
-		/** Raised when the user wants to extract converted files.
-		*  \param[in]  p_tree   category tree invoking the callback. */
-		virtual void onTreeExtractConverted( CategoryTree& p_tree ) {
+		/** Raised when the user wants to extract files.
+		*  \param[in]  p_tree	category tree invoking the callback.
+		*  \param[in]  p_mode	if false extract raw file, if true extract converted file. */
+		virtual void onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) {
 		}
 		/** Raised whenever a non-category entry is clicked in the category tree.
 		*  \param[in]  p_tree   category tree invoking the callback.
