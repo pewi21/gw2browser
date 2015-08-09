@@ -44,7 +44,8 @@
 
 // OpenGL Mathematics
 #include <glm/glm.hpp>
-#include <glm/ext.hpp>
+#include <glm/gtc/constants.hpp>
+#include <glm/gtx/compatibility.hpp>
 
 // 16-bit floats
 #include "Imported/half.h"
