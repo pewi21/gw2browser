@@ -7,8 +7,6 @@ headers, etc.
 * Use wxLogDebug( wxT( "Something Happened" ) ); to check in some place when
 debug.
 
-* Use thread instread of wxIdleEventHandler.
-
 * Categorized string files by language.
 
 * "Find by fileId" dialog.
