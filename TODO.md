@@ -7,8 +7,6 @@ headers, etc.
 * Use wxLogDebug( wxT( "Something Happened" ) ); to check in some place when
 debug.
 
-* Categorized string files by language.
-
 * "Find by fileId" dialog.
 
 * Support for sub-items, where a file in the .dat can contain child-entries in
