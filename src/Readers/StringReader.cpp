@@ -50,7 +50,8 @@ namespace gw2b {
 		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
 #ifdef _DEBUG
-		switch ( stringFile.language( ) ) {
+		auto language = stringFile.language( );
+		switch ( language ) {
 		case gw2f::language::English:
 			wxLogDebug( wxT( "English String." ) );
 			break;
@@ -66,6 +67,8 @@ namespace gw2b {
 		case gw2f::language::Spanish:
 			wxLogDebug( wxT( "Spanish String." ) );
 			break;
+		default:
+			wxLogDebug( wxT( "Unknown Language: %d" ), language );
 		}
 #endif
 
