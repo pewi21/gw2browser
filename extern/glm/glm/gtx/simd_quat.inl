@@ -1,12 +1,34 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Created : 2013-04-22
-// Updated : 2013-04-22
-// Licence : This source is under MIT License
-// File    : glm/gtx/simd_quat.inl
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////////////
+/// OpenGL Mathematics (glm.g-truc.net)
+///
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+/// 
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
+/// 
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+///
+/// @ref gtx_simd_quat
+/// @file glm/gtx/simd_quat.inl
+/// @date 2013-04-22 / 2014-11-25
+/// @author Christophe Riccio
+///////////////////////////////////////////////////////////////////////////////////
 
 namespace glm{
 namespace detail{
@@ -33,20 +55,23 @@ void print(const fvec4SIMD &v)
 //////////////////////////////////////
 // Implicit basic constructors
 
-GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD()
-#ifdef GLM_SIMD_ENABLE_DEFAULT_INIT
-    : Data(_mm_set_ps(1.0f, 0.0f, 0.0f, 0.0f))
-#endif
-{}
+#	if !GLM_HAS_DEFAULTED_FUNCTIONS || !defined(GLM_FORCE_NO_CTOR_INIT)
+	GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD()
+#		ifdef GLM_FORCE_NO_CTOR_INIT
+			: Data(_mm_set_ps(1.0f, 0.0f, 0.0f, 0.0f))
+#		endif
+	{}
+#	endif
+
+#	if !GLM_HAS_DEFAULTED_FUNCTIONS
+	GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD(fquatSIMD const & q) :
+		Data(q.Data)
+	{}
+#	endif//!GLM_HAS_DEFAULTED_FUNCTIONS
 
 GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD(__m128 const & Data) :
 	Data(Data)
 {}
-
-GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD(fquatSIMD const & q) :
-	Data(q.Data)
-{}
-
 
 //////////////////////////////////////
 // Explicit basic constructors
@@ -61,25 +86,27 @@ GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD(quat const & q) :
 
 GLM_FUNC_QUALIFIER fquatSIMD::fquatSIMD(vec3 const & eulerAngles)
 {
-    vec3 c = glm::cos(eulerAngles * 0.5f);
+	vec3 c = glm::cos(eulerAngles * 0.5f);
 	vec3 s = glm::sin(eulerAngles * 0.5f);
 
-    Data = _mm_set_ps(
-        (c.x * c.y * c.z) + (s.x * s.y * s.z),
-        (c.x * c.y * s.z) - (s.x * s.y * c.z),
-        (c.x * s.y * c.z) + (s.x * c.y * s.z),
-        (s.x * c.y * c.z) - (c.x * s.y * s.z));
+	Data = _mm_set_ps(
+		(c.x * c.y * c.z) + (s.x * s.y * s.z),
+		(c.x * c.y * s.z) - (s.x * s.y * c.z),
+		(c.x * s.y * c.z) + (s.x * c.y * s.z),
+		(s.x * c.y * c.z) - (c.x * s.y * s.z));
 }
 
 
 //////////////////////////////////////
 // Unary arithmetic operators
 
-GLM_FUNC_QUALIFIER fquatSIMD& fquatSIMD::operator=(fquatSIMD const & q)
-{
-    this->Data = q.Data;
-    return *this;
-}
+#if !GLM_HAS_DEFAULTED_FUNCTIONS
+	GLM_FUNC_QUALIFIER fquatSIMD& fquatSIMD::operator=(fquatSIMD const & q)
+	{
+		this->Data = q.Data;
+		return *this;
+	}
+#endif//!GLM_HAS_DEFAULTED_FUNCTIONS
 
 GLM_FUNC_QUALIFIER fquatSIMD& fquatSIMD::operator*=(float const & s)
 {
@@ -305,7 +332,7 @@ GLM_FUNC_QUALIFIER detail::fquatSIMD quatSIMD_cast
 template <typename T, precision P>
 GLM_FUNC_QUALIFIER detail::fquatSIMD quatSIMD_cast
 (
-    detail::tmat4x4<T, P> const & m
+    tmat4x4<T, P> const & m
 )
 {
     return quatSIMD_cast_impl(&m[0][0], &m[1][0], &m[2][0]);
@@ -314,7 +341,7 @@ GLM_FUNC_QUALIFIER detail::fquatSIMD quatSIMD_cast
 template <typename T, precision P>
 GLM_FUNC_QUALIFIER detail::fquatSIMD quatSIMD_cast
 (
-    detail::tmat3x3<T, P> const & m
+    tmat3x3<T, P> const & m
 )
 {
     return quatSIMD_cast_impl(&m[0][0], &m[1][0], &m[2][0]);

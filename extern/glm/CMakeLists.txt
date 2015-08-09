@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-cmake_policy(VERSION 2.6)
 
 project(glm)
-enable_testing()
+set(GLM_VERSION "0.9.7")
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+enable_testing()
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
@@ -19,13 +22,18 @@ if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" 
 	option(GLM_TEST_ENABLE_CXX_0X "Enable C++ 0x" OFF)
 	option(GLM_TEST_ENABLE_CXX_11 "Enable C++ 11" OFF)
 	option(GLM_TEST_ENABLE_CXX_1Y "Enable C++ 1y" OFF)
-	option(GLM_TEST_ENABLE_CXX_PEDANTIC "Pedantic" ON)
+	option(GLM_TEST_ENABLE_CXX_14 "Enable C++ 14" OFF)
+	option(GLM_TEST_ENABLE_CXX_1Z "Enable C++ 1z" OFF)
 
-	if(GLM_TEST_ENABLE_CXX_PEDANTIC)
-		add_definitions(-pedantic)
-	endif()
-
-	if(GLM_TEST_ENABLE_CXX_1Y)
+	if(GLM_TEST_ENABLE_CXX_1Z)
+		set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++1z")
+		set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
+		set(CMAKE_CXX_FLAGS "-std=c++1Z")
+	elseif(GLM_TEST_ENABLE_CXX_14)
+		set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++14")
+		set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
+		set(CMAKE_CXX_FLAGS "-std=c++14")
+	elseif(GLM_TEST_ENABLE_CXX_1Y)
 		set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++1y")
 		set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 		set(CMAKE_CXX_FLAGS "-std=c++1y")
@@ -44,11 +52,18 @@ if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" 
 	endif()
 endif()
 
-if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC") OR (("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel") AND WIN32))
-	option(GLM_TEST_ENABLE_MS_EXTENSIONS "Enable MS extensions" OFF)
+option(GLM_TEST_ENABLE_MS_EXTENSIONS "Enable MS extensions" OFF)
 
-	if(NOT GLM_TEST_ENABLE_MS_EXTENSIONS)
+if(GLM_TEST_ENABLE_MS_EXTENSIONS)
+	if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"))
+		add_definitions(-Wgnu-anonymous-struct)
+		add_definitions(-Wnested-anon-types)
+	endif()
+else()
+	if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC") OR (("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel") AND WIN32))
 		add_definitions(/Za)
+	elseif(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"))
+		add_definitions(-pedantic)
 	endif()
 endif()
 
@@ -63,26 +78,24 @@ if(GLM_TEST_FORCE_PURE)
 
 	if(CMAKE_COMPILER_IS_GNUCXX)
 		add_definitions(-mfpmath=387)
-	elseif(MSVC)
-		add_definitions(/arch:IA32)
 	endif()
-elseif(GLM_TEST_ENABLE_AVX2)
+elseif(GLM_TEST_ENABLE_SIMD_AVX2)
 	if(CMAKE_COMPILER_IS_GNUCXX)
 		add_definitions(-mavx2)
 	elseif(GLM_USE_INTEL)
 		add_definitions(/QxAVX2)
 	elseif(MSVC)
-		add_definitions(/arch:AVX2)	
+		add_definitions(/arch:AVX2)
 	endif()
-elseif(GLM_TEST_ENABLE_AVX)
+elseif(GLM_TEST_ENABLE_SIMD_AVX)
 	if(CMAKE_COMPILER_IS_GNUCXX)
 		add_definitions(-mavx)
 	elseif(GLM_USE_INTEL)
 		add_definitions(/QxAVX)
 	elseif(MSVC)
-		add_definitions(/arch:AVX)	
+		add_definitions(/arch:AVX)
 	endif()
-elseif(GLM_TEST_ENABLE_SSE3)
+elseif(GLM_TEST_ENABLE_SIMD_SSE3)
 	if(CMAKE_COMPILER_IS_GNUCXX)
 		add_definitions(-msse3)
 	elseif(GLM_USE_INTEL)
@@ -90,14 +103,14 @@ elseif(GLM_TEST_ENABLE_SSE3)
 	elseif(MSVC)
 		add_definitions(/arch:SSE2) # VC doesn't support /arch:SSE3	
 	endif()
-elseif(GLM_TEST_ENABLE_SSE2)
+elseif(GLM_TEST_ENABLE_SIMD_SSE2)
 	if(CMAKE_COMPILER_IS_GNUCXX)
 		add_definitions(-msse2)
 	elseif(GLM_USE_INTEL)
 		add_definitions(/QxSSE2)
 	elseif(MSVC)
 		if(NOT CMAKE_CL_64)
-			add_definitions(/arch:SSE2)	
+			add_definitions(/arch:SSE2)
 		endif()
 	endif()
 endif()
@@ -120,8 +133,7 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX)
 	#add_definitions(-S)
 	#add_definitions(-s)
-	#add_definitions(-m32)
-	#add_definitions(-O3)
+	add_definitions(-O2)
 
 	#add_definitions(-fprofile-arcs -ftest-coverage) gcov
 	#ctest_enable_coverage()
@@ -132,6 +144,56 @@ include_directories("${PROJECT_SOURCE_DIR}/test/external")
 
 add_subdirectory(glm)
 add_subdirectory(test)
-add_subdirectory(util)
 
-install(DIRECTORY glm DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
+set(GLM_INSTALL_CONFIGDIR "${CMAKE_INSTALL_LIBDIR}/cmake/glm")
+install(DIRECTORY glm DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/glmVersion.cmake"
+    VERSION ${GLM_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+# build tree package config
+configure_file(
+    cmake/glmBuildConfig.cmake.in
+    glmConfig.cmake
+    @ONLY
+)
+
+# install tree package config
+configure_package_config_file(
+    cmake/glmConfig.cmake.in
+    ${GLM_INSTALL_CONFIGDIR}/glmConfig.cmake
+    INSTALL_DESTINATION ${GLM_INSTALL_CONFIGDIR}
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+
+install(
+    FILES 
+        "${CMAKE_CURRENT_BINARY_DIR}/${GLM_INSTALL_CONFIGDIR}/glmConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/glmVersion.cmake"
+    DESTINATION ${GLM_INSTALL_CONFIGDIR}
+)
+
+if (NOT CMAKE_VERSION VERSION_LESS "3.0")
+    add_library(glm INTERFACE)
+    target_include_directories(glm INTERFACE
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    )
+    install(TARGETS glm EXPORT glmTargets)
+
+    export(
+        EXPORT glmTargets
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/glmTargets.cmake"
+    )
+    
+    install(
+        EXPORT glmTargets FILE glmTargets.cmake
+        DESTINATION ${GLM_INSTALL_CONFIGDIR}
+    )
+endif()
+
+export(PACKAGE glm)

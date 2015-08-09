@@ -1,12 +1,37 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Created : 2008-08-31
-// Updated : 2013-12-24
-// Licence : This source is under MIT License
-// File    : test/core/type_vec4.cpp
-///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+/// OpenGL Mathematics (glm.g-truc.net)
+///
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+/// 
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
+/// 
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+///
+/// @file test/core/core_type_vec4.cpp
+/// @date 2008-08-31 / 2014-11-25
+/// @author Christophe Riccio
+///////////////////////////////////////////////////////////////////////////////////
 
+#if !(GLM_COMPILER & GLM_COMPILER_GCC)
+#	define GLM_META_PROG_HELPERS
+#endif
 #define GLM_SWIZZLE
 #include <glm/vector_relational.hpp>
 #include <glm/vec2.hpp>
@@ -41,8 +66,25 @@ enum comp
 int test_vec4_ctor()
 {
 	int Error = 0;
-	
-#if(GLM_HAS_INITIALIZER_LISTS)
+
+	{
+		glm::ivec4 A(1, 2, 3, 4);
+		glm::ivec4 B(A);
+		Error += glm::all(glm::equal(A, B)) ? 0 : 1;
+	}
+
+#	if GLM_HAS_TRIVIAL_QUERIES
+	//	Error += std::is_trivially_default_constructible<glm::vec4>::value ? 0 : 1;
+	//	Error += std::is_trivially_copy_assignable<glm::vec4>::value ? 0 : 1;
+		Error += std::is_trivially_copyable<glm::vec4>::value ? 0 : 1;
+		Error += std::is_trivially_copyable<glm::dvec4>::value ? 0 : 1;
+		Error += std::is_trivially_copyable<glm::ivec4>::value ? 0 : 1;
+		Error += std::is_trivially_copyable<glm::uvec4>::value ? 0 : 1;
+
+		Error += std::is_copy_constructible<glm::vec4>::value ? 0 : 1;
+#	endif
+
+#if GLM_HAS_INITIALIZER_LISTS
 	{
 		glm::vec4 a{ 0, 1, 2, 3 };
 		std::vector<glm::vec4> v = {
@@ -60,7 +102,7 @@ int test_vec4_ctor()
 	}
 #endif
 
-#if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+#if GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE)
 	{
 		glm::vec4 A = glm::vec4(1.0f, 2.0f, 3.0f, 4.0f);
 		glm::vec4 B = A.xyzw;
@@ -89,7 +131,7 @@ int test_vec4_ctor()
 		Error += glm::all(glm::equal(A, L)) ? 0 : 1;
 		Error += glm::all(glm::equal(A, M)) ? 0 : 1;
 	}
-#endif//(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+#endif// GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE)
 
 	{
 		glm::vec4 A(1);
@@ -276,7 +318,7 @@ int test_vec4_swizzle_partial()
 
 	glm::vec4 A(1, 2, 3, 4);
 
-#	if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE_RELAX))
+#	if GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE_RELAX)
 	{
 		glm::vec4 B(A.xy, A.zw);
 		Error += A == B ? 0 : 1;
@@ -358,7 +400,7 @@ int test_vec4_perf_AoS(std::size_t Size)
 
 	std::clock_t EndTime = std::clock();
 
-  std::printf("AoS: %d\n", EndTime - StartTime);
+	std::printf("AoS: %ld\n", EndTime - StartTime);
 
 	return Error;
 }
@@ -397,24 +439,59 @@ int test_vec4_perf_SoA(std::size_t Size)
 
 	std::clock_t EndTime = std::clock();
 
-	std::printf("SoA: %d\n", EndTime - StartTime);
+	std::printf("SoA: %ld\n", EndTime - StartTime);
 
 	return Error;
 }
+
+namespace heap
+{
+	class A
+	{
+		float f;
+	};
+
+	class B : public A
+	{
+		float g;
+		glm::vec4 v;
+	};
+
+	int test()
+	{
+		int Error(0);
+
+		A* p = new B;
+		delete p;
+
+		return Error;
+	}
+}//namespace heap
 
 int main()
 {
 	int Error(0);
 
-	std::size_t const Size(1000000);
+	glm::vec4 v;
+	assert(v.length() == 4);
 
-	Error += test_vec4_perf_AoS(Size);
-	Error += test_vec4_perf_SoA(Size);
+#	ifdef GLM_META_PROG_HELPERS
+		assert(glm::vec4::components == glm::vec4().length());
+		assert(glm::vec4::components == 4);
+#	endif
+
+#	ifdef NDEBUG
+		std::size_t const Size(1000000);
+		Error += test_vec4_perf_AoS(Size);
+		Error += test_vec4_perf_SoA(Size);
+#	endif//NDEBUG
+
 	Error += test_vec4_ctor();
 	Error += test_vec4_size();
 	Error += test_vec4_operators();
 	Error += test_vec4_swizzle_partial();
 	Error += test_operator_increment();
+	Error += heap::test();
 
 	return Error;
 }
