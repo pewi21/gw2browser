@@ -4,10 +4,12 @@ Change log
 Gw2Browser_2015-xx-xx
 ---------------------
 Change:
-- Merged Packed Ogg and MP3 reader.
 - Improved texture id info in model viewer, now remove duplicate file id
 from the list.
 - Change string file reader csv export delimiter from comma (,) to semicolon (;).
+- Categorized string files by language.
+- Merged Packed Ogg and MP3 reader.
+- Merge onTreeExtractConverted and onTreeExtractRaw to onTreeExtractFile.
 
 Fix:
 - Fix some texture not in it's sub category.
