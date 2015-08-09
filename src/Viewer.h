@@ -31,7 +31,6 @@ namespace gw2b {
 	class DatFile;
 	class FileReader;
 
-
 	class INeedDatFile {
 		DatFile* m_datFile;
 	protected:
