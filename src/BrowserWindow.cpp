@@ -388,6 +388,7 @@ namespace gw2b {
 						wxMessageBox( wxT( "Failed to open the file for writing." ), wxT( "Error" ), wxOK | wxICON_ERROR );
 					}
 				}
+				deletePointer( reader );
 
 			// More than one files
 			} else {
