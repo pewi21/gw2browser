@@ -235,6 +235,8 @@ namespace gw2b {
 		// due to strs file format that have to read near end of file to know what language is
 		case ANFT_StringFile:
 		{
+			MakeCategory( wxT( "Strings" ) );
+
 			uint32 entryNumber = this->currentProgress( );
 
 			auto buffer = allocate<byte>( m_datFile.fileSize( entryNumber ) );
@@ -242,7 +244,7 @@ namespace gw2b {
 
 			gw2f::StringsFile stringFile( buffer, size );
 
-			MakeCategory( wxT( "Strings" ) );
+			//wxLogDebug( wxT( "%d" ), entryNumber );
 
 			switch ( stringFile.language( ) ) {
 			case gw2f::language::English:
@@ -260,6 +262,8 @@ namespace gw2b {
 			case gw2f::language::Spanish:
 				MakeSubCategory( wxT( "Spanish" ) );
 				break;
+			default:
+				MakeSubCategory( wxT( "Unknown" ) );
 			}
 			freePointer( buffer );
 
