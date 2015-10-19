@@ -30,6 +30,8 @@ choose vcredist_x64.exe for 64bit and vcredist_x86.exe for 32bit executable.
 And if it still didn't run, download and install
 [DirectX End-User Runtimes (June 2010)](http://www.microsoft.com/en-us/download/details.aspx?id=8109)
 
+Future version of Gw2Browser will use OpenGL for model rendering, it will not require DirectX. And hopefully, make a Mac OSX version too.
+
 Usage
 -----
 
@@ -55,6 +57,9 @@ Probably they use custom format for NPOT texture.
 
 * **Some times after the finish re-index .dat file, some of catalog is missing**
 Restart Gw2Browser will fix this issue.
+
+* **The code architect is messy**
+Need to work on it some day once I understand about it.
 
 Libraries and restrictions
 --------------------------
