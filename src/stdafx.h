@@ -38,6 +38,8 @@
 #include <wx/wx.h>
 #endif
 
+#include <wx/glcanvas.h>
+
 // gw2CoreTools
 #include <gw2DatTools/compression/inflateDatFileBuffer.h>
 #include <gw2DatTools/compression/inflateTextureFileBuffer.h>

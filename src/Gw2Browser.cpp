@@ -23,11 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-#include "Gw2Browser.h"
 
 //#include <vld.h>
 
 #include "BrowserWindow.h"
+
+#include "Gw2Browser.h"
 
 namespace gw2b {
 

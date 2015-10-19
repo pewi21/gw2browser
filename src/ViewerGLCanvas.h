@@ -1,9 +1,10 @@
-/* \file       Viewer.h
-*  \brief      Contains declaration of the viewer base class.
-*  \author     Rhoot
+/* \file       ViewerGLCanvas.h
+*  \brief      Contains declaration of the ViewerGLCanvas base class.
+*  \author     Khral Steelforge
 */
 
 /*
+Copyright (C) 2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -24,8 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef VIEWER_H_INCLUDED
-#define VIEWER_H_INCLUDED
+#ifndef VIEWERGLCANVAS_H_INCLUDED
+#define VIEWERGLCANVAS_H_INCLUDED
 
 namespace gw2b {
 	class DatFile;
@@ -33,16 +34,16 @@ namespace gw2b {
 	class INeedDatFile;
 
 	/** Panel used to view the contents of a file. */
-	class Viewer : public wxPanel {
+	class ViewerGLCanvas : public wxGLCanvas {
 		FileReader*     m_reader;
 	public:
 		/** Constructor. Creates the viewer with the given parent.
 		*  \param[in]  p_parent Parent of the control.
 		*  \param[in]  p_pos    Optional location of the control.
 		*  \param[in]  p_size   Optional size of the control. */
-		Viewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+		ViewerGLCanvas( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		/** Destructor. */
-		virtual ~Viewer( );
+		virtual ~ViewerGLCanvas( );
 
 		/** Clears all data in this viewer. */
 		virtual void clear( );
@@ -64,4 +65,4 @@ namespace gw2b {
 
 }; // namespace gw2b
 
-#endif // VIEWER_H_INCLUDED
+#endif // VIEWERGLCANVAS_H_INCLUDED

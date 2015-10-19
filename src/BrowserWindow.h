@@ -33,6 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "CategoryTree.h"
 #include "DatFile.h"
+#include "PreviewPanel.h"
+#include "PreviewGLCanvas.h"
 
 namespace gw2b {
 	class DatIndex;
@@ -49,7 +51,10 @@ namespace gw2b {
 		Task*                       m_currentTask;
 		wxSplitterWindow*           m_splitter;
 		CategoryTree*               m_catTree;
-		PreviewPanel*               m_previewPanel;
+		PreviewPanel*				m_previewPanel;
+		PreviewGLCanvas*			m_previewGLCanvas;
+	private:
+		bool						m_isGLCanvasSplit;
 	public:
 		/** Constructs the frame with the given title.
 		*  \param[in]  p_title  Title of window. */

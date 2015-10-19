@@ -1,5 +1,5 @@
-/* \file       Viewer.cpp
-*  \brief      Contains definition of the viewer base class.
+/* \file       INeedDatFile.h
+*  \brief      Contains declaration of the viewer base class.
 *  \author     Rhoot
 */
 
@@ -22,30 +22,34 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "stdafx.h"
+#pragma once
 
-#include "FileReader.h"
-
-#include "Viewer.h"
+#ifndef INEEDDATFILE_H_INCLUDED
+#define INEEDDATFILE_H_INCLUDED
 
 namespace gw2b {
+	class DatFile;
 
-	Viewer::Viewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: wxPanel( p_parent, wxID_ANY, p_pos, p_size )
-		, m_reader( nullptr ) {
-	}
-
-	Viewer::~Viewer( ) {
-		deletePointer( m_reader );
-	}
-
-	void Viewer::clear( ) {
-		deletePointer( m_reader );
-	}
-
-	void Viewer::setReader( FileReader* p_reader ) {
-		this->clear( );
-		m_reader = p_reader;
-	}
+	class INeedDatFile {
+		DatFile* m_datFile;
+	protected:
+		INeedDatFile( ) {
+		}
+	public:
+		virtual ~INeedDatFile( ) {
+		}
+		// I know interfaces per definition aren't supposed to have implementation, but screw that. /rebelyell
+		DatFile* datFile( ) {
+			return m_datFile;
+		}
+		const DatFile* datFile( ) const {
+			return m_datFile;
+		}
+		void setDatFile( DatFile* p_datFile ) {
+			m_datFile = p_datFile;
+		}
+	};
 
 }; // namespace gw2b
+
+#endif // INEEDDATFILE_H_INCLUDED

@@ -35,7 +35,9 @@
     <ClInclude Include="..\src\Identifiers\BaseIdentifier.h" />
     <ClInclude Include="..\src\Imported\crc.h" />
     <ClInclude Include="..\src\Imported\half.h" />
+    <ClInclude Include="..\src\INeedDatFile.h" />
     <ClInclude Include="..\src\PackFile.h" />
+    <ClInclude Include="..\src\PreviewGLCanvas.h" />
     <ClInclude Include="..\src\PreviewPanel.h" />
     <ClInclude Include="..\src\ProgressStatusBar.h" />
     <ClInclude Include="..\src\Readers\asndMP3Reader.h" />
@@ -53,6 +55,7 @@
     <ClInclude Include="..\src\Util\Ensure.h" />
     <ClInclude Include="..\src\Util\Misc.h" />
     <ClInclude Include="..\src\Viewer.h" />
+    <ClInclude Include="..\src\ViewerGLCanvas.h" />
     <ClInclude Include="..\src\Viewers\BinaryViewer\BinaryViewer.h" />
     <ClInclude Include="..\src\Viewers\BinaryViewer\HexControl.h" />
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageControl.h" />
@@ -76,6 +79,7 @@
     <ClCompile Include="..\src\Imported\crc.cpp" />
     <ClCompile Include="..\src\Imported\half.cpp" />
     <ClCompile Include="..\src\PackFile.cpp" />
+    <ClCompile Include="..\src\PreviewGLCanvas.cpp" />
     <ClCompile Include="..\src\PreviewPanel.cpp" />
     <ClCompile Include="..\src\ProgressStatusBar.cpp" />
     <ClCompile Include="..\src\Readers\asndMP3Reader.cpp" />
@@ -95,6 +99,7 @@
     <ClCompile Include="..\src\Tasks\WriteIndexTask.cpp" />
     <ClCompile Include="..\src\Util\Misc.cpp" />
     <ClCompile Include="..\src\Viewer.cpp" />
+    <ClCompile Include="..\src\ViewerGLCanvas.cpp" />
     <ClCompile Include="..\src\Viewers\BinaryViewer\BinaryViewer.cpp" />
     <ClCompile Include="..\src\Viewers\BinaryViewer\HexControl.cpp" />
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageControl.cpp" />

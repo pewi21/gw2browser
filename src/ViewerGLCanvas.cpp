@@ -1,9 +1,10 @@
-/* \file       Viewer.cpp
-*  \brief      Contains definition of the viewer base class.
-*  \author     Rhoot
+/* \file       ViewerGLCanvas.cpp
+*  \brief      Contains definition of the ViewerGLCanvas base class.
+*  \author     Khral Steelforge
 */
 
 /*
+Copyright (C) 2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -26,24 +27,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "FileReader.h"
 
-#include "Viewer.h"
+#include "ViewerGLCanvas.h"
 
 namespace gw2b {
 
-	Viewer::Viewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: wxPanel( p_parent, wxID_ANY, p_pos, p_size )
+	ViewerGLCanvas::ViewerGLCanvas( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
+		: wxGLCanvas( p_parent, wxID_ANY, nullptr, p_pos, p_size )
 		, m_reader( nullptr ) {
 	}
 
-	Viewer::~Viewer( ) {
+	ViewerGLCanvas::~ViewerGLCanvas( ) {
 		deletePointer( m_reader );
 	}
 
-	void Viewer::clear( ) {
+	void ViewerGLCanvas::clear( ) {
 		deletePointer( m_reader );
 	}
 
-	void Viewer::setReader( FileReader* p_reader ) {
+	void ViewerGLCanvas::setReader( FileReader* p_reader ) {
 		this->clear( );
 		m_reader = p_reader;
 	}

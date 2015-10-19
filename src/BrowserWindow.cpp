@@ -30,7 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <wx/stdpaths.h>
 
 #include "Imported/crc.h"
-#include "BrowserWindow.h"
 
 #include "AboutBox.h"
 #include "DatIndexIO.h"
@@ -38,10 +37,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "FileReader.h"
 #include "ProgressStatusBar.h"
 #include "PreviewPanel.h"
+#include "PreviewGLCanvas.h"
 
 #include "Tasks/ReadIndexTask.h"
 #include "Tasks/ScanDatTask.h"
 #include "Tasks/WriteIndexTask.h"
+
+#include "BrowserWindow.h"
 
 namespace gw2b {
 
@@ -53,11 +55,16 @@ namespace gw2b {
 		, m_splitter( nullptr )
 		, m_catTree( nullptr )
 		, m_previewPanel( nullptr ) {
+
+		m_isGLCanvasSplit = false;
+
 		// Set BrowserWindow to center of screen
 		Centre( );
 		// Set window icon
 		SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
+
 		auto menuBar = new wxMenuBar( );
+
 		// File menu
 		auto fileMenu = new wxMenu( );
 		wxAcceleratorEntry accel( wxACCEL_CTRL, 'O' );
@@ -67,6 +74,7 @@ namespace gw2b {
 		// Help menu
 		auto helpMenu = new wxMenu( );
 		helpMenu->Append( wxID_ABOUT, wxT( "&About Gw2Browser" ) );
+
 		// Attach menu
 		menuBar->Append( fileMenu, wxT( "&File" ) );
 		menuBar->Append( helpMenu, wxT( "&Help" ) );
@@ -87,6 +95,11 @@ namespace gw2b {
 		// Preview panel
 		m_previewPanel = new PreviewPanel( m_splitter );
 		m_previewPanel->Hide( );
+
+		// Model Viewer
+		m_previewGLCanvas = new PreviewGLCanvas( m_splitter );
+		m_previewGLCanvas->SetBackgroundColour( GetBackgroundColour( ) );
+		m_previewGLCanvas->Hide( );
 
 		// Initialize splitter
 		m_splitter->Initialize( m_catTree );
@@ -161,11 +174,40 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::viewEntry( const DatIndexEntry& p_entry ) {
-		if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
-			m_previewPanel->Show( );
-			// Split it!
-			m_splitter->SetMinimumPaneSize( 100 );
-			m_splitter->SplitVertically( m_catTree, m_previewPanel, m_splitter->GetClientSize( ).x / 4 );
+		// This seems terible :P
+		switch ( p_entry.fileType( ) ) {
+		case ANFT_Model:
+			if ( m_previewGLCanvas->previewFile( m_datFile, p_entry ) ) {
+				if ( !m_isGLCanvasSplit ) {
+					if ( m_splitter->IsSplit( ) ) {
+						m_splitter->Unsplit( );
+					}
+				}
+				m_isGLCanvasSplit = true;
+
+				m_previewGLCanvas->Show( );
+				m_previewPanel->Hide( );
+				// Split it!
+				m_splitter->SetMinimumPaneSize( 100 );
+				m_splitter->SplitVertically( m_catTree, m_previewGLCanvas, m_splitter->GetClientSize( ).x / 4 );
+			}
+			break;
+		default:
+			if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
+				if ( m_isGLCanvasSplit ) {
+					if ( m_splitter->IsSplit( ) ) {
+						m_splitter->Unsplit( );
+					}
+				}
+				m_isGLCanvasSplit = false;
+
+				m_previewPanel->Show( );
+				m_previewGLCanvas->Hide( );
+				// Split it!
+				m_splitter->SetMinimumPaneSize( 100 );
+				m_splitter->SplitVertically( m_catTree, m_previewPanel, m_splitter->GetClientSize( ).x / 4 );
+
+			}
 		}
 	}
 
