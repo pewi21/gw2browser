@@ -38,6 +38,9 @@
 #include <wx/wx.h>
 #endif
 
+// OpenGL Extension Wrangler Library
+#include <GL/glew.h>
+
 #include <wx/glcanvas.h>
 
 // gw2CoreTools
