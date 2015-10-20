@@ -11,3 +11,4 @@ Debug_x64
 Release_x86
 Release_x64
 extern/glew/lib
+tmp
