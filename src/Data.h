@@ -68,9 +68,6 @@ namespace gw2b {
 		// File: data/model.png
 		extern const uint model_png_size;
 		extern const byte model_png[];
-		// File: data/model_view.hlsl
-		extern const uint model_view_hlsl_size;
-		extern const byte model_view_hlsl[];
 		// File: data/open_folder.png
 		extern const uint open_folder_png_size;
 		extern const byte open_folder_png[];
