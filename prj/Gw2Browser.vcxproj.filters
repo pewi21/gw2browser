@@ -313,7 +313,10 @@
     <None Include="..\src\Imported\half.inl">
       <Filter>Header Files\Imported</Filter>
     </None>
-    <None Include="..\data\model_view.hlsl">
+    <None Include="..\data\shader.frag">
+      <Filter>Data Files</Filter>
+    </None>
+    <None Include="..\data\shader.vert">
       <Filter>Data Files</Filter>
     </None>
   </ItemGroup>

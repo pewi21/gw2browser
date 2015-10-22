@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	namespace {
-		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 32, 0 }; // or NULL?
+		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 32, 0 };
 	}
 
 	PreviewGLCanvas::PreviewGLCanvas( wxWindow* p_parent, const wxPoint& p_location, const wxSize& p_size )
@@ -95,7 +95,7 @@ namespace gw2b {
 		ViewerGLCanvas* newViewer = nullptr;
 		switch ( p_dataType ) {
 		case FileReader::DT_Model:
-			//newViewer = new ModelViewer( this );
+			newViewer = new ModelViewer( this );
 			break;
 		}
 

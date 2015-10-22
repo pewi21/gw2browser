@@ -1,10 +1,10 @@
-/* \file       Viewers/ModelViewer.cpp
+﻿/* \file       Viewers/ModelViewer.cpp
 *  \brief      Contains the definition of the model viewer class.
-*  \author     Rhoot
+*  \author     Khral Steelforge
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -25,8 +25,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <algorithm>
-#include <vector>
+//#include <iostream>
+#include <fstream>
+#include <string>
+//#include <algorithm>
+//#include <vector>
 
 #include "ModelViewer.h"
 
@@ -37,8 +40,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	namespace {
-
-		const uint32 c_vertexFVF = ( D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 );
 
 		bool doesUseAlpha( const wxString& p_shaderName ) {
 			if ( p_shaderName.StartsWith( wxT( "AmatShader" ) ) ) {
@@ -52,53 +53,80 @@ namespace gw2b {
 
 	};
 
+	RenderTimer::RenderTimer( ModelViewer* canvas ) : wxTimer( ) {
+		RenderTimer::canvas = canvas;
+	}
+
+	void RenderTimer::Notify( ) {
+		canvas->Refresh( );
+	}
+
+	void RenderTimer::start( ) {
+		wxTimer::Start( 10 );
+	}
+
+	//============================================================================/
+
 	ModelViewer::ModelViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: Viewer( p_parent, p_pos, p_size )
+		: ViewerGLCanvas( p_parent, p_pos, p_size )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
-		::memset( &m_presentParams, 0, sizeof( m_presentParams ) );
-		m_presentParams.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
-		m_presentParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		m_presentParams.Windowed = TRUE;
-		m_presentParams.BackBufferCount = 1;
-		m_presentParams.BackBufferWidth = wxSystemSettings::GetMetric( wxSYS_SCREEN_X );
-		m_presentParams.BackBufferHeight = wxSystemSettings::GetMetric( wxSYS_SCREEN_Y );
-		m_presentParams.BackBufferFormat = D3DFMT_A8R8G8B8;
-		m_presentParams.EnableAutoDepthStencil = TRUE;
-		m_presentParams.AutoDepthStencilFormat = D3DFMT_D16;
-		m_presentParams.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
-		m_presentParams.MultiSampleQuality = 0;
 
-		// Init Direct3D
-		IDirect3DDevice9* device = nullptr;
-		m_d3d.reset( ::Direct3DCreate9( D3D_SDK_VERSION ) );
-		m_d3d->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, this->GetHandle( ), D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_FPU_PRESERVE, &m_presentParams, &device );
-		m_device.reset( device );
+		// Create the OpenGL context
+		m_glContext = new wxGLContext( this );
 
-		// Load shader
-		ID3DXEffect* effect = nullptr;
-		ID3DXBuffer* errors = nullptr;
-		uint32 shaderFlags = ifDebug( D3DXSHADER_DEBUG, 0 );
-		auto result = ::D3DXCreateEffect( m_device.get( ), data::model_view_hlsl, data::model_view_hlsl_size, nullptr, nullptr, shaderFlags, nullptr, &effect, &errors );
-		m_effect.reset( effect );
+		SetCurrent( *m_glContext );
 
-		if ( FAILED( result ) ) {
-			wxMessageBox( wxString::Format( wxT( "Error 0x%08x while loading shader: %s" ), result, static_cast<const char*>( errors->GetBufferPointer( ) ) ) );
+		glewExperimental = true;
+		GLenum err = glewInit( );
+		if ( GLEW_OK != err ) {
+			wxString message;
+			message << "Error: " << glewGetErrorString( err );
+			wxMessageBox( message, wxT( "glewInit failed" ), wxICON_ERROR );
 		}
 
+		//message << "Running on a " << glGetString( GL_RENDERER ) << " from " << glGetString( GL_VENDOR ) << "\n";
+		//message << "GLEW version : " << glewGetString( GLEW_VERSION ) << "\n" << "OpenGL version " << glGetString( GL_VERSION ) << " is supported";
+		//wxMessageBox( message, wxT( "glewInit scucess" ), wxICON_INFORMATION );
+
+		if ( !GLEW_VERSION_3_3 ) {
+			wxMessageBox( wxT( "The modelviewer required OpenGL 3.3 support." ), wxT( "" ), wxICON_ERROR );
+		}
+
+		// Initialize OpenGL
+		if ( !m_gldata.initialized ) {
+			initGL( );
+			m_gldata.initialized = true;
+		}
+
+		// Todo : write shader manager
+		// Create and compile our GLSL program from the shaders
+		programID = loadShaders( "..//data//shader.vert", "..//data//shader.frag" );
+		//wxMessageBox( Error 0x%08x while loading shader: %s" )
+
 		// Load font
-		ID3DXFont* font = nullptr;
-		::D3DXCreateFontA( m_device.get( ), 18, 0, FW_NORMAL, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Segoe UI", &font );
-		m_font.reset( font );
+
+		timer = new RenderTimer( this );
+		timer->start( );
 
 		// Hook up events
 		this->Connect( wxEVT_PAINT, wxPaintEventHandler( ModelViewer::onPaintEvt ) );
-		this->Connect( wxEVT_MOTION, wxMouseEventHandler( ModelViewer::onMotionEvt ) );
-		this->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ModelViewer::onMouseWheelEvt ) );
-		this->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( ModelViewer::onKeyDownEvt ) );
+		//this->Connect( wxEVT_MOTION, wxMouseEventHandler( ModelViewer::onMotionEvt ) );
+		//this->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ModelViewer::onMouseWheelEvt ) );
+		//this->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( ModelViewer::onKeyDownEvt ) );
+		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ModelViewer::onClose ) );
 	}
 
 	ModelViewer::~ModelViewer( ) {
-		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
+		// Cleanup VBO and shader
+		glDeleteBuffers( 1, &vertexbuffer );
+		glDeleteBuffers( 1, &colorbuffer );
+		glDeleteProgram( programID );
+		glDeleteVertexArrays( 1, &VertexArrayID );
+
+		delete m_glContext;
+		delete timer;
+
+		/*for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
 			if ( m_meshCache[i].indexBuffer ) {
 				m_meshCache[i].indexBuffer->Release( );
 			}
@@ -110,14 +138,14 @@ namespace gw2b {
 			if ( m_textureCache[i].diffuseMap ) {
 				m_textureCache[i].diffuseMap->Release( );
 			}
-			/*if ( m_textureCache[i].normalMap ) {
-				m_textureCache[i].normalMap->Release( );
-			}*/
-		}
+			//if ( m_textureCache[i].normalMap ) {
+			//	m_textureCache[i].normalMap->Release( );
+			//}
+		}*/
 	}
 
 	void ModelViewer::clear( ) {
-		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
+		/*for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
 			if ( m_meshCache[i].indexBuffer ) {
 				m_meshCache[i].indexBuffer->Release( );
 			}
@@ -129,29 +157,126 @@ namespace gw2b {
 			if ( m_textureCache[i].diffuseMap ) {
 				m_textureCache[i].diffuseMap->Release( );
 			}
-			/*if ( m_textureCache[i].normalMap ) {
-				m_textureCache[i].normalMap->Release( );
-			}*/
-		}
-		m_textureCache.Clear( );
-		m_meshCache.Clear( );
+			//if ( m_textureCache[i].normalMap ) {
+			//	m_textureCache[i].normalMap->Release( );
+			//}
+		}*/
+		//m_textureCache.Clear( );
+		//m_meshCache.Clear( );
 		m_model = Model( );
-		Viewer::clear( );
+		ViewerGLCanvas::clear( );
 	}
 
 	void ModelViewer::setReader( FileReader* p_reader ) {
 		Ensure::isOfType<ModelReader>( p_reader );
-		Viewer::setReader( p_reader );
+		ViewerGLCanvas::setReader( p_reader );
 
 		// Load model
 		auto reader = this->modelReader( );
 		m_model = reader->getModel( );
 
+
+
+
+
+		// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+		// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
+		static const GLfloat g_vertex_buffer_data[] = {
+			-1.0f, -1.0f, -1.0f, // triangle 1 : begin
+			-1.0f, -1.0f, 1.0f,
+			-1.0f, 1.0f, 1.0f, // triangle 1 : end
+			1.0f, 1.0f, -1.0f, // triangle 2 : begin
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, 1.0f, -1.0f, // triangle 2 : end
+			1.0f, -1.0f, 1.0f,
+			-1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f, 1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, 1.0f, 1.0f,
+			-1.0f, 1.0f, -1.0f,
+			1.0f, -1.0f, 1.0f,
+			-1.0f, -1.0f, 1.0f,
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, 1.0f, 1.0f,
+			-1.0f, -1.0f, 1.0f,
+			1.0f, -1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f, 1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, -1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, -1.0f,
+			-1.0f, 1.0f, -1.0f,
+			1.0f, 1.0f, 1.0f,
+			-1.0f, 1.0f, -1.0f,
+			-1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			-1.0f, 1.0f, 1.0f,
+			1.0f, -1.0f, 1.0f
+		};
+
+		// One color for each vertex. They were generated randomly.
+		static const GLfloat g_color_buffer_data[] = {
+			0.583f, 0.771f, 0.014f,
+			0.609f, 0.115f, 0.436f,
+			0.327f, 0.483f, 0.844f,
+			0.822f, 0.569f, 0.201f,
+			0.435f, 0.602f, 0.223f,
+			0.310f, 0.747f, 0.185f,
+			0.597f, 0.770f, 0.761f,
+			0.559f, 0.436f, 0.730f,
+			0.359f, 0.583f, 0.152f,
+			0.483f, 0.596f, 0.789f,
+			0.559f, 0.861f, 0.639f,
+			0.195f, 0.548f, 0.859f,
+			0.014f, 0.184f, 0.576f,
+			0.771f, 0.328f, 0.970f,
+			0.406f, 0.615f, 0.116f,
+			0.676f, 0.977f, 0.133f,
+			0.971f, 0.572f, 0.833f,
+			0.140f, 0.616f, 0.489f,
+			0.997f, 0.513f, 0.064f,
+			0.945f, 0.719f, 0.592f,
+			0.543f, 0.021f, 0.978f,
+			0.279f, 0.317f, 0.505f,
+			0.167f, 0.620f, 0.077f,
+			0.347f, 0.857f, 0.137f,
+			0.055f, 0.953f, 0.042f,
+			0.714f, 0.505f, 0.345f,
+			0.783f, 0.290f, 0.734f,
+			0.722f, 0.645f, 0.174f,
+			0.302f, 0.455f, 0.848f,
+			0.225f, 0.587f, 0.040f,
+			0.517f, 0.713f, 0.338f,
+			0.053f, 0.959f, 0.120f,
+			0.393f, 0.621f, 0.362f,
+			0.673f, 0.211f, 0.457f,
+			0.820f, 0.883f, 0.371f,
+			0.982f, 0.099f, 0.879f
+		};
+
+		// Generate 1 buffer, put the resulting identifier in vertexbuffer
+		glGenBuffers( 1, &vertexbuffer );
+		// The following commands will talk about our 'vertexbuffer' buffer
+		glBindBuffer( GL_ARRAY_BUFFER, vertexbuffer );
+		// Give our vertices to OpenGL.
+		glBufferData( GL_ARRAY_BUFFER, sizeof( g_vertex_buffer_data ), g_vertex_buffer_data, GL_STATIC_DRAW );
+
+		glGenBuffers( 1, &colorbuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, colorbuffer );
+		glBufferData( GL_ARRAY_BUFFER, sizeof( g_color_buffer_data ), g_color_buffer_data, GL_STATIC_DRAW );
+
+
 		// Create DX mesh cache
-		m_meshCache.SetSize( m_model.numMeshes( ) );
+		//m_meshCache.SetSize( m_model.numMeshes( ) );
 
 		// Load meshes
-		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+		/*for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
@@ -169,13 +294,13 @@ namespace gw2b {
 				releasePointer( cache.vertexBuffer );
 				continue;
 			}
-		}
+		}*/
 
 		// Create DX texture cache
-		m_textureCache.SetSize( m_model.numMaterialData( ) );
+		//m_textureCache.SetSize( m_model.numMaterialData( ) );
 
 		// Load textures
-		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+		/*for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
 			auto& cache = m_textureCache[i];
 
@@ -187,19 +312,31 @@ namespace gw2b {
 			}
 
 			// Load normal map
-			/*if ( material.normalMap ) {
-				cache.normalMap = this->loadTexture( material.normalMap );
-			} else {
-				cache.normalMap = nullptr;
-			}*/
-		}
+			//if ( material.normalMap ) {
+			//	cache.normalMap = this->loadTexture( material.normalMap );
+			//} else {
+			//	cache.normalMap = nullptr;
+			//}
+		}*/
 
 		// Re-focus and re-render
-		this->focus( );
+		//this->focus( );
 		this->render( );
 	}
 
-	bool ModelViewer::createBuffers( MeshCache& p_cache, uint p_vertexCount, uint p_vertexSize, uint p_indexCount, uint p_indexSize ) {
+	void ModelViewer::initGL( ) {
+		// Enable depth test
+		glEnable( GL_DEPTH_TEST );
+		// Accept fragment if it closer to the camera than the former one
+		glDepthFunc( GL_LESS );
+
+		// Generate VAO
+		glGenVertexArrays( 1, &VertexArrayID );
+		glBindVertexArray( VertexArrayID );
+	}
+
+	//createBuffers
+/*	bool ModelViewer::createBuffers( MeshCache& p_cache, uint p_vertexCount, uint p_vertexSize, uint p_indexCount, uint p_indexSize ) {
 		p_cache.indexBuffer = nullptr;
 		p_cache.vertexBuffer = nullptr;
 
@@ -224,9 +361,9 @@ namespace gw2b {
 		}
 
 		return true;
-	}
-
-	bool ModelViewer::populateBuffers( const Mesh& p_mesh, MeshCache& p_cache ) {
+	}*/
+	//populateBuffers
+/*	bool ModelViewer::populateBuffers( const Mesh& p_mesh, MeshCache& p_cache ) {
 		uint vertexCount = p_mesh.vertices.GetSize( );
 		uint vertexSize = sizeof( Vertex );
 		uint indexCount = p_mesh.triangles.GetSize( ) * 3;
@@ -254,37 +391,64 @@ namespace gw2b {
 		Assert( SUCCEEDED( p_cache.indexBuffer->Unlock( ) ) );
 
 		return true;
-	}
-
-	void ModelViewer::beginFrame( uint32 p_clearColor ) {
-		wxSize clientSize = this->GetClientSize( );
-
-		D3DVIEWPORT9 viewport;
-		::memset( &viewport, 0, sizeof( viewport ) );
-		viewport.Width = clientSize.x;
-		viewport.Height = clientSize.y;
-		viewport.MaxZ = 1;
-		viewport.MinZ = 0;
-
-		m_device->SetViewport( &viewport );
-		m_device->BeginScene( );
-		m_device->Clear( 0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, p_clearColor, 1, 0 );
-	}
-
-	void ModelViewer::endFrame( ) {
-		D3DVIEWPORT9 viewport;
-		m_device->GetViewport( &viewport );
-
-		RECT sourceRect;
-		::memset( &sourceRect, 0, sizeof( sourceRect ) );
-		sourceRect.right = viewport.Width;
-		sourceRect.bottom = viewport.Height;
-
-		m_device->EndScene( );
-		m_device->Present( &sourceRect, nullptr, nullptr, nullptr );
-	}
+	}*/
 
 	void ModelViewer::render( ) {
+		// Set the OpenGL viewport according to the client size of wxGLCanvas.
+		const wxSize ClientSize = this->GetClientSize( );
+		glViewport( 0, 0, ClientSize.x, ClientSize.y );
+
+		// Set clear background color to blue
+		glClearColor( 0.3f, 0.4f, 0.6f, 1.0f );
+
+		// Get a handle for our "MVP" uniform
+		MatrixID = glGetUniformLocation( programID, "MVP" );
+
+		this->updateMatrices( );
+
+		// Clear background to blue
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+		// Use the shader
+		glUseProgram( programID );
+
+		// Send our transformation to the currently bound shader, 
+		// in the "MVP" uniform
+		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, &MVP[0][0] );
+
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray( 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, vertexbuffer );
+		glVertexAttribPointer(
+			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			( void* ) 0         // array buffer offset
+			);
+
+		// 2nd attribute buffer : colors
+		glEnableVertexAttribArray( 1 );
+		glBindBuffer( GL_ARRAY_BUFFER, colorbuffer );
+		glVertexAttribPointer(
+			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			( void* ) 0                          // array buffer offset
+			);
+
+		// Draw the triangle !
+		glDrawArrays( GL_TRIANGLES, 0, 12 * 3 ); // 12*3 indices starting at 0 -> 12 triangles
+
+		glDisableVertexAttribArray( 0 );
+		glDisableVertexAttribArray( 1 );
+
+		SwapBuffers( );
+
+		/*
 		// No culling as we don't really care about render performance
 		m_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 
@@ -371,14 +535,177 @@ namespace gw2b {
 		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
 		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
 
-		this->endFrame( );
+		this->endFrame( );*/
 	}
 
-	void ModelViewer::onPaintEvt( wxPaintEvent& p_event ) {
+	void ModelViewer::paintNow( wxPaintEvent& p_event ) {
+		wxPaintDC dc( this );
+
 		this->render( );
 	}
 
-	void ModelViewer::drawMesh( uint p_meshIndex ) {
+	void ModelViewer::onPaintEvt( wxPaintEvent& p_event ) {
+		wxPaintDC dc( this );
+
+		this->render( );
+	}
+
+	void ModelViewer::onClose( wxCloseEvent& evt ) {
+		timer->Stop( );
+		evt.Skip( );
+	}
+
+	GLuint ModelViewer::loadShaders( const char *vertex_file_path, const char *fragment_file_path ) {
+		// Create the shaders
+		GLuint VertexShaderID = glCreateShader( GL_VERTEX_SHADER );
+		GLuint FragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
+
+		// Read the Vertex Shader code from the file
+		std::string VertexShaderCode;
+		std::ifstream VertexShaderStream( vertex_file_path );
+
+		if ( VertexShaderStream.is_open( ) ) {
+			std::string Line = "";
+			while ( getline( VertexShaderStream, Line ) ) {
+				VertexShaderCode += "\n" + Line;
+			}
+			VertexShaderStream.close( );
+		}
+
+		// Read the Fragment Shader code from the file
+		std::string FragmentShaderCode;
+		std::ifstream FragmentShaderStream( fragment_file_path );
+		if ( FragmentShaderStream.is_open( ) ) {
+			std::string Line = "";
+			while ( getline( FragmentShaderStream, Line ) ) {
+				FragmentShaderCode += "\n" + Line;
+			}
+			FragmentShaderStream.close( );
+		}
+
+		GLint isCompiled = GL_FALSE;
+		GLint InfoLogLength = 0;
+
+		// Compile Vertex Shader
+		wxString vertexPath( vertex_file_path );
+		wxLogDebug( wxT( "Compiling shader : %s\n" ), vertexPath.utf8_str( ) );
+		const GLchar *VertexSourcePointer = VertexShaderCode.c_str( );
+		glShaderSource( VertexShaderID, 1, &VertexSourcePointer, NULL );
+		glCompileShader( VertexShaderID );
+
+		// Check Vertex Shader
+		glGetShaderiv( VertexShaderID, GL_COMPILE_STATUS, &isCompiled );
+		if ( isCompiled == GL_FALSE ) {
+			glGetShaderiv( VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
+			std::vector<GLchar> VertexShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
+			glGetShaderInfoLog( VertexShaderID, InfoLogLength, &InfoLogLength, &VertexShaderErrorMessage[0] );
+
+			glDeleteShader( VertexShaderID );
+
+			wxLogDebug( wxT( "%s\n" ), &VertexShaderErrorMessage[0] );
+			//return;
+		}
+
+		// Compile Fragment Shader
+		wxString fragmentPath( fragment_file_path );
+		wxLogDebug( wxT( "Compiling shader : %s\n" ), fragmentPath.utf8_str( ) );
+		const GLchar *FragmentSourcePointer = FragmentShaderCode.c_str( );
+		glShaderSource( FragmentShaderID, 1, &FragmentSourcePointer, NULL );
+		glCompileShader( FragmentShaderID );
+
+		// Check Fragment Shader
+		glGetShaderiv( FragmentShaderID, GL_COMPILE_STATUS, &isCompiled );
+		if ( isCompiled == GL_FALSE ) {
+			glGetShaderiv( FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
+			std::vector<GLchar> FragmentShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
+			glGetShaderInfoLog( FragmentShaderID, InfoLogLength, &InfoLogLength, &FragmentShaderErrorMessage[0] );
+
+			glDeleteShader( FragmentShaderID );
+
+			wxLogDebug( wxT( "%s\n" ), &FragmentShaderErrorMessage[0] );
+			//return;
+		}
+
+		GLint isLinked = GL_FALSE;
+
+		// Link the program
+		wxLogDebug( wxT( "Linking program\n" ) );
+		GLuint ProgramID = glCreateProgram( );
+		glAttachShader( ProgramID, VertexShaderID );
+		glAttachShader( ProgramID, FragmentShaderID );
+		glLinkProgram( ProgramID );
+
+		// Check the program
+		glGetProgramiv( ProgramID, GL_LINK_STATUS, &isLinked );
+		if ( isLinked == GL_FALSE ) {
+			glGetProgramiv( ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength );
+			std::vector<GLchar> ProgramErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
+			glGetProgramInfoLog( ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0] );
+
+			glDeleteShader( VertexShaderID );
+			glDeleteShader( FragmentShaderID );
+
+			wxLogDebug( wxT( "%s\n" ), &ProgramErrorMessage[0] );
+			//return;
+		}
+
+		glDeleteShader( VertexShaderID );
+		glDeleteShader( FragmentShaderID );
+
+		return ProgramID;
+	}
+
+	void ModelViewer::updateMatrices( ) {
+		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
+
+		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+		glm::mat4 Projection = glm::perspective( 45.0f, 4.0f / 3.0f, 0.1f, 100.0f );
+		// Or, for an ortho camera :
+		//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
+
+		// Camera matrix
+		glm::mat4 View = glm::lookAt(
+			glm::vec3( 4, 3, 3 ), // Camera is at (4,3,3), in World Space
+			glm::vec3( 0, 0, 0 ), // and looks at the origin
+			glm::vec3( 0, 1, 0 )  // Head is up (set to 0,-1,0 to look upside-down)
+			);
+		// Model matrix : an identity matrix (model will be at the origin)
+		glm::mat4 Model = glm::mat4( 1.0f );
+		// Our ModelViewProjection : multiplication of our 3 matrices
+		MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
+
+
+
+
+		/*
+		// Calculate minZ/maxZ
+		auto bounds = m_model.bounds( );
+		auto size = bounds.size( );
+		auto distance = m_camera.distance( );
+		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
+
+		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
+		auto maxZ = ( maxSize + distance ) * 1.1f;
+		auto minZ = maxZ * 0.0001f;
+
+		// View matrix
+		auto viewMatrix = m_camera.calculateViewMatrix( );
+
+		// Projection matrix
+		wxSize clientSize = this->GetClientSize( );
+		float aspectRatio = ( static_cast<float>( clientSize.x ) / static_cast<float>( clientSize.y ) );
+		auto projMatrix = ::XMMatrixPerspectiveFovLH( ( 5.0f / 12.0f ) * glm::pi<float>( ), aspectRatio, minZ, maxZ );
+
+		// WorldViewProjection matrix
+		XMFLOAT4X4 worldViewProjMatrix;
+		::XMStoreFloat4x4( &worldViewProjMatrix, ::XMMatrixMultiply( viewMatrix, projMatrix ) );
+
+		m_effect->SetMatrix( "g_WorldViewProjMatrix", reinterpret_cast<D3DXMATRIX*>( &worldViewProjMatrix ) );
+		*/
+
+	}
+
+/*	void ModelViewer::drawMesh( uint p_meshIndex ) {
 		auto& mesh = m_meshCache[p_meshIndex];
 
 		// No mesh to draw?
@@ -442,45 +769,20 @@ namespace gw2b {
 		// End
 		m_effect->End( );
 	}
+	*/
 
-	void ModelViewer::drawText( uint p_x, uint p_y, const wxString& p_text ) {
+// draw text function
+
+/*	void ModelViewer::drawText( uint p_x, uint p_y, const wxString& p_text ) {
 		if ( m_font.get( ) ) {
 			RECT outRect;
 			::SetRect( &outRect, p_x, p_y, p_x + 0x200, p_y + 0x14 );
 			m_font->DrawTextW( NULL, p_text.wchar_str( ), -1, &outRect, DT_LEFT | DT_NOCLIP, 0xFFFFFFFF );
 		}
-	}
+	}*/
 
-
-	void ModelViewer::updateMatrices( ) {
-		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
-
-		// Calculate minZ/maxZ
-		auto bounds = m_model.bounds( );
-		auto size = bounds.size( );
-		auto distance = m_camera.distance( );
-		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
-
-		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
-		auto maxZ = ( maxSize + distance ) * 1.1f;
-		auto minZ = maxZ * 0.0001f;
-
-		// View matrix
-		auto viewMatrix = m_camera.calculateViewMatrix( );
-
-		// Projection matrix
-		wxSize clientSize = this->GetClientSize( );
-		float aspectRatio = ( static_cast<float>( clientSize.x ) / static_cast<float>( clientSize.y ) );
-		auto projMatrix = ::XMMatrixPerspectiveFovLH( ( 5.0f / 12.0f ) * glm::pi<float>( ), aspectRatio, minZ, maxZ );
-
-		// WorldViewProjection matrix
-		XMFLOAT4X4 worldViewProjMatrix;
-		::XMStoreFloat4x4( &worldViewProjMatrix, ::XMMatrixMultiply( viewMatrix, projMatrix ) );
-
-		m_effect->SetMatrix( "g_WorldViewProjMatrix", reinterpret_cast<D3DXMATRIX*>( &worldViewProjMatrix ) );
-	}
-
-	IDirect3DTexture9* ModelViewer::loadTexture( uint p_fileId ) {
+// load textures function
+/*	IDirect3DTexture9* ModelViewer::loadTexture( uint p_fileId ) {
 		auto entryNumber = this->datFile( )->entryNumFromFileId( p_fileId );
 		auto fileData = this->datFile( )->readEntry( entryNumber );
 
@@ -515,9 +817,10 @@ namespace gw2b {
 		// Delete reader and return
 		deletePointer( reader );
 		return texture;
-	}
+	}*/
 
-	void ModelViewer::focus( ) {
+// camera
+/*	void ModelViewer::focus( ) {
 		float fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 		uint meshCount = m_model.numMeshes( );
 
@@ -538,20 +841,18 @@ namespace gw2b {
 		}
 
 		// Update camera and render
-		XMFLOAT3 dxBounds;
 		glm::vec3 glmBounds = bounds.center( );
-		dxBounds.x = glmBounds.x;
-		dxBounds.y = glmBounds.y;
-		dxBounds.z = glmBounds.z;
 
-		m_camera.setPivot( dxBounds );
+		//m_camera.setPivot( dxBounds );
+		//m_camera.setPivot( glmBounds );
 
 		//m_camera.setPivot( bounds.center( ) );
-		m_camera.setDistance( distance );
+		//m_camera.setDistance( distance );
 		this->render( );
-	}
+	}*/
 
-	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
+// mouse related stuff below
+/*	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
 		if ( m_lastMousePos.x == std::numeric_limits<int>::min( ) &&
 			m_lastMousePos.y == std::numeric_limits<int>::min( ) ) {
 			m_lastMousePos = p_event.GetPosition( );
@@ -574,20 +875,20 @@ namespace gw2b {
 		}
 
 		m_lastMousePos = p_event.GetPosition( );
-	}
+	}*/
 
-	void ModelViewer::onMouseWheelEvt( wxMouseEvent& p_event ) {
+/*	void ModelViewer::onMouseWheelEvt( wxMouseEvent& p_event ) {
 		float zoomSteps = static_cast<float>( p_event.GetWheelRotation( ) ) / static_cast<float>( p_event.GetWheelDelta( ) );
 		m_camera.multiplyDistance( -zoomSteps );
 		this->render( );
-	}
+	}*/
 
-	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
+/*	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
 		if ( p_event.GetKeyCode( ) == 'F' ) {
 			this->focus( );
 		} else if ( p_event.GetKeyCode( ) == 'W' ) {
 			statusWireframe = !statusWireframe;
 		}
-	}
+	}*/
 
 }; // namespace gw2b

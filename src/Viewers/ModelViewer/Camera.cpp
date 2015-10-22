@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Camera.h"
 
 namespace gw2b {
-
+	/*
 	Camera::Camera( )
 		: m_pivot( 0, 0, 0 )
 		, m_distance( 200 )
@@ -145,5 +145,5 @@ namespace gw2b {
 		m_pivot = p_pivot;
 	}
 
-
+	*/
 }; // namespace gw2b
