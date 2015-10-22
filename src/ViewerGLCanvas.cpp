@@ -31,8 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	ViewerGLCanvas::ViewerGLCanvas( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: wxGLCanvas( p_parent, wxID_ANY, nullptr, p_pos, p_size )
+	ViewerGLCanvas::ViewerGLCanvas( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style )
+		: wxGLCanvas( p_parent, wxID_ANY, p_attrib, p_pos, p_size, p_style )
 		, m_reader( nullptr ) {
 	}
 

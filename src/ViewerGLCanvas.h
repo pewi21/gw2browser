@@ -41,7 +41,7 @@ namespace gw2b {
 		*  \param[in]  p_parent Parent of the control.
 		*  \param[in]  p_pos    Optional location of the control.
 		*  \param[in]  p_size   Optional size of the control. */
-		ViewerGLCanvas( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+		ViewerGLCanvas( wxWindow* p_parent, const int *p_attrib = ( const int* ) 0, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize, long p_style = 0L );
 		/** Destructor. */
 		virtual ~ViewerGLCanvas( );
 

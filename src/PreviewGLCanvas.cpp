@@ -35,12 +35,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	namespace {
-		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 32, 0 };
-	}
-
 	PreviewGLCanvas::PreviewGLCanvas( wxWindow* p_parent, const wxPoint& p_location, const wxSize& p_size )
-		: wxGLCanvas( p_parent, wxID_ANY, attrib, p_location, p_size, wxNO_BORDER | wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE, wxT( "GLCanvas" ), wxNullPalette )
+		: wxGLCanvas( p_parent, wxID_ANY, nullptr, p_location, p_size )
 		, m_currentView( nullptr )
 		, m_currentDataType( FileReader::DT_None ) {
 

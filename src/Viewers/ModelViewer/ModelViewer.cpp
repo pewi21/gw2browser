@@ -41,6 +41,9 @@ namespace gw2b {
 
 	namespace {
 
+		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0 };
+		const long style = ( wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE );
+
 		bool doesUseAlpha( const wxString& p_shaderName ) {
 			if ( p_shaderName.StartsWith( wxT( "AmatShader" ) ) ) {
 				auto ordinal = p_shaderName.Mid( ::strlen( "AmatShader" ) );
@@ -68,7 +71,7 @@ namespace gw2b {
 	//============================================================================/
 
 	ModelViewer::ModelViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: ViewerGLCanvas( p_parent, p_pos, p_size )
+		: ViewerGLCanvas( p_parent, attrib, p_pos, p_size, style )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
 		// Create the OpenGL context
