@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -22,11 +23,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// todo : need correction in this!
+
 #include "stdafx.h"
 #include "Camera.h"
 
 namespace gw2b {
-	/*
+
 	Camera::Camera( )
 		: m_pivot( 0, 0, 0 )
 		, m_distance( 200 )
@@ -37,35 +40,34 @@ namespace gw2b {
 	Camera::~Camera( ) {
 	}
 
-	XMMATRIX Camera::calculateViewMatrix( ) const {
-		auto eyePosition = XMFLOAT4( 0, -m_distance, 0, 0 );
-		XMVECTOR eyePositionVector = ::XMLoadFloat4( &eyePosition );
+	glm::mat4 Camera::calculateViewMatrix( ) const {
 
-		// Apply rotations to position
-		XMMATRIX rotationMatrix = this->calculateRotationMatrix( );
-		eyePositionVector = ::XMVector4Transform( eyePositionVector, rotationMatrix );
+		// 3d math is confusing.
+
+		// Calculate camera distance
+		glm::vec4 distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f ); //correct
+
+		auto rotViewMat = this->calculateRotationMatrix( );//correct
 
 		// Create the view matrix
-		auto up = XMFLOAT4( 0, 0, -1, 0 );
-		XMVECTOR upVector = ::XMLoadFloat4( &up );
-		XMVECTOR pivotVector = ::XMLoadFloat3( &m_pivot );
-		eyePositionVector = ::XMVectorAdd( eyePositionVector, pivotVector );
+		auto pivotVector = glm::vec3( m_pivot );//correct
+		auto eyePositionVector = glm::vec3( rotViewMat * distance ) + pivotVector;
+		auto upVector = glm::vec3( 0, 1, 0 );//correct
 
-		return ::XMMatrixLookAtLH( eyePositionVector, pivotVector, upVector );
+		glm::mat4 ViewMatrix = glm::lookAt(
+			eyePositionVector,	// the position of your camera, in world space 
+			pivotVector,		// where you want to look at, in world space
+			upVector			// probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+			);
+
+		return ViewMatrix;
 	}
 
-	XMMATRIX Camera::calculateRotationMatrix( ) const {
-		// Yaw
-		auto yawAxis = XMFLOAT4( 0, 0, 1, 0 );
-		XMVECTOR yawAxisVector = ::XMLoadFloat4( &yawAxis );
-		XMMATRIX yawMatrix = ::XMMatrixRotationNormal( yawAxisVector, m_yaw );
-
-		// Pitch
-		auto pitchAxis = XMFLOAT4( 1, 0, 0, 0 );
-		XMVECTOR pitchAxisVector = ::XMLoadFloat4( &pitchAxis );
-		XMMATRIX pitchMatrix = ::XMMatrixRotationNormal( pitchAxisVector, m_pitch );
-
-		return ::XMMatrixMultiply( pitchMatrix, yawMatrix );
+	glm::mat4 Camera::calculateRotationMatrix( ) const {
+		glm::mat4 rotViewMat;
+		rotViewMat = glm::rotate( rotViewMat, m_pitch, glm::vec3( 1.0f, 0.0f, 0.0f ) );
+		rotViewMat = glm::rotate( rotViewMat, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
+		return rotViewMat;
 	}
 
 	float Camera::yaw( ) const {
@@ -94,7 +96,7 @@ namespace gw2b {
 
 	float Camera::clampPitch( float p_pitch ) {
 		float rotationLimit = ( 89.0f * glm::pi<float>( ) ) / 180.0f;
-		return wxMin( rotationLimit, wxMax( -rotationLimit, p_pitch ) );
+		return wxMin( rotationLimit, wxMax( rotationLimit, p_pitch ) );
 	}
 
 	float Camera::distance( ) const {
@@ -109,41 +111,42 @@ namespace gw2b {
 		m_distance = p_distance;
 	}
 
-	const XMFLOAT3& Camera::pivot( ) const {
+	const glm::vec3& Camera::pivot( ) const {
 		return m_pivot;
 	}
 
 	void Camera::pan( float p_x, float p_y ) {
-		XMMATRIX rotationMatrix = this->calculateRotationMatrix( );
 
-		// Pan speed is based on distance from pivot, so the user doesn't have to move the mouse like 
+		// uugh...
+
+		auto rotationMatrix = this->calculateRotationMatrix( );
+
+		// Pan speed is based on distance from pivot, so the user doesn't have to move the mouse like
 		// a madman for big meshes
 		float panSpeed = 0.001f * m_distance;
 
 		// X axis
-		XMFLOAT4 right( 1, 0, 0, 0 );
-		XMVECTOR rightVector = ::XMLoadFloat4( &right );
-		rightVector = ::XMVector4Transform( rightVector, rotationMatrix );
+		glm::vec4 rightVector( 1, 0, 0, 0 );
+		rightVector = rotationMatrix * rightVector; // transfrom matrices
 
 		// Y axis
-		XMFLOAT4 up( 0, 0, 1, 0 );
-		XMVECTOR upVector = ::XMLoadFloat4( &up );
-		upVector = ::XMVector4Transform( upVector, rotationMatrix );
+		glm::vec4 upVector( 0, 0, 1, 0 );
+		upVector = rotationMatrix * upVector; // transfrom matrices
 
 		// Perform the panning
-		XMVECTOR pivotVector = ::XMLoadFloat3( &m_pivot );
+		glm::vec3 pivotVector = m_pivot;
 
-		rightVector = ::XMVectorScale( rightVector, p_x * panSpeed );
-		upVector = ::XMVectorScale( upVector, p_y * panSpeed );
-		pivotVector = ::XMVectorAdd( pivotVector, rightVector );
-		pivotVector = ::XMVectorAdd( pivotVector, upVector );
+		rightVector = rightVector * ( p_x * panSpeed );
+		upVector = upVector *( p_y * panSpeed );
 
-		::XMStoreFloat3( &m_pivot, pivotVector );
+		pivotVector = pivotVector + glm::vec3( rightVector );
+		pivotVector = pivotVector + glm::vec3( upVector );
+
+		m_pivot = pivotVector;
 	}
 
-	void Camera::setPivot( const XMFLOAT3& p_pivot ) {
+	void Camera::setPivot( const glm::vec3& p_pivot ) {
 		m_pivot = p_pivot;
 	}
 
-	*/
 }; // namespace gw2b

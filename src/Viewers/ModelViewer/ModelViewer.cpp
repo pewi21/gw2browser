@@ -39,6 +39,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+	//----------------------------------------------------------------------------
+	//      RenderTimer
+	//----------------------------------------------------------------------------
+
+	RenderTimer::RenderTimer( ModelViewer* canvas ) : wxTimer( ) {
+		RenderTimer::canvas = canvas;
+	}
+
+	void RenderTimer::Notify( ) {
+		canvas->Refresh( );
+	}
+
+	void RenderTimer::start( ) {
+		wxTimer::Start( 10 );
+	}
+
+	//----------------------------------------------------------------------------
+	//      ModelViewer
+	//----------------------------------------------------------------------------
+
 	namespace {
 
 		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0 };
@@ -56,49 +76,16 @@ namespace gw2b {
 
 	};
 
-	RenderTimer::RenderTimer( ModelViewer* canvas ) : wxTimer( ) {
-		RenderTimer::canvas = canvas;
-	}
-
-	void RenderTimer::Notify( ) {
-		canvas->Refresh( );
-	}
-
-	void RenderTimer::start( ) {
-		wxTimer::Start( 10 );
-	}
-
-	//============================================================================/
-
 	ModelViewer::ModelViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
 		: ViewerGLCanvas( p_parent, attrib, p_pos, p_size, style )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
-		// Create the OpenGL context
-		m_glContext = new wxGLContext( this );
-
-		SetCurrent( *m_glContext );
-
-		glewExperimental = true;
-		GLenum err = glewInit( );
-		if ( GLEW_OK != err ) {
-			wxString message;
-			message << "Error: " << glewGetErrorString( err );
-			wxMessageBox( message, wxT( "glewInit failed" ), wxICON_ERROR );
-		}
-
-		//message << "Running on a " << glGetString( GL_RENDERER ) << " from " << glGetString( GL_VENDOR ) << "\n";
-		//message << "GLEW version : " << glewGetString( GLEW_VERSION ) << "\n" << "OpenGL version " << glGetString( GL_VERSION ) << " is supported";
-		//wxMessageBox( message, wxT( "glewInit scucess" ), wxICON_INFORMATION );
-
-		if ( !GLEW_VERSION_3_3 ) {
-			wxMessageBox( wxT( "The modelviewer required OpenGL 3.3 support." ), wxT( "" ), wxICON_ERROR );
-		}
-
 		// Initialize OpenGL
-		if ( !m_gldata.initialized ) {
-			initGL( );
-			m_gldata.initialized = true;
+		if ( !m_glInitialized ) {
+			if ( !this->initGL( ) ) {
+				// error handler here
+			}
+			m_glInitialized = true;
 		}
 
 		// Todo : write shader manager
@@ -108,14 +95,14 @@ namespace gw2b {
 
 		// Load font
 
-		timer = new RenderTimer( this );
-		timer->start( );
+		m_renderTimer = new RenderTimer( this );
+		m_renderTimer->start( );
 
 		// Hook up events
 		this->Connect( wxEVT_PAINT, wxPaintEventHandler( ModelViewer::onPaintEvt ) );
-		//this->Connect( wxEVT_MOTION, wxMouseEventHandler( ModelViewer::onMotionEvt ) );
-		//this->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ModelViewer::onMouseWheelEvt ) );
-		//this->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( ModelViewer::onKeyDownEvt ) );
+		this->Connect( wxEVT_MOTION, wxMouseEventHandler( ModelViewer::onMotionEvt ) );
+		this->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ModelViewer::onMouseWheelEvt ) );
+		this->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( ModelViewer::onKeyDownEvt ) );
 		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ModelViewer::onClose ) );
 	}
 
@@ -127,9 +114,10 @@ namespace gw2b {
 		glDeleteVertexArrays( 1, &VertexArrayID );
 
 		delete m_glContext;
-		delete timer;
+		delete m_renderTimer;
 
-		/*for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
+		/*
+		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
 			if ( m_meshCache[i].indexBuffer ) {
 				m_meshCache[i].indexBuffer->Release( );
 			}
@@ -144,11 +132,13 @@ namespace gw2b {
 			//if ( m_textureCache[i].normalMap ) {
 			//	m_textureCache[i].normalMap->Release( );
 			//}
-		}*/
+		}
+		*/
 	}
 
 	void ModelViewer::clear( ) {
-		/*for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
+		/*
+		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
 			if ( m_meshCache[i].indexBuffer ) {
 				m_meshCache[i].indexBuffer->Release( );
 			}
@@ -163,7 +153,8 @@ namespace gw2b {
 			//if ( m_textureCache[i].normalMap ) {
 			//	m_textureCache[i].normalMap->Release( );
 			//}
-		}*/
+		}
+		*/
 		//m_textureCache.Clear( );
 		//m_meshCache.Clear( );
 		m_model = Model( );
@@ -279,7 +270,8 @@ namespace gw2b {
 		//m_meshCache.SetSize( m_model.numMeshes( ) );
 
 		// Load meshes
-		/*for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+		/*
+		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
@@ -297,13 +289,14 @@ namespace gw2b {
 				releasePointer( cache.vertexBuffer );
 				continue;
 			}
-		}*/
-
+		}
+		*/
 		// Create DX texture cache
 		//m_textureCache.SetSize( m_model.numMaterialData( ) );
 
 		// Load textures
-		/*for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+		/*
+		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
 			auto& cache = m_textureCache[i];
 
@@ -320,26 +313,55 @@ namespace gw2b {
 			//} else {
 			//	cache.normalMap = nullptr;
 			//}
-		}*/
-
+		}
+		*/
 		// Re-focus and re-render
-		//this->focus( );
+		this->focus( );
 		this->render( );
 	}
 
-	void ModelViewer::initGL( ) {
+	int ModelViewer::initGL( ) {
+		// Create OpenGL context
+		m_glContext = new wxGLContext( this );
+
+		SetCurrent( *m_glContext );
+
+		glewExperimental = true;
+		GLenum err = glewInit( );
+		if ( GLEW_OK != err ) {
+			wxString message;
+			message << "Error: " << glewGetErrorString( err );
+			wxMessageBox( message, wxT( "glewInit failed" ), wxICON_ERROR );
+			return false;
+		}
+
+		if ( !GLEW_VERSION_3_3 ) {
+			wxMessageBox( wxT( "The modelviewer required OpenGL 3.3 support." ), wxT( "" ), wxICON_ERROR );
+			return false;
+		}
+
 		// Enable depth test
 		glEnable( GL_DEPTH_TEST );
+
 		// Accept fragment if it closer to the camera than the former one
-		glDepthFunc( GL_LESS );
+		//glDepthFunc( GL_LESS );
+
+		// Cull triangles which normal is not towards the camera
+		//glEnable( GL_CULL_FACE );
 
 		// Generate VAO
 		glGenVertexArrays( 1, &VertexArrayID );
 		glBindVertexArray( VertexArrayID );
+
+		// Set clear background color to blue
+		glClearColor( 0.3f, 0.4f, 0.6f, 1.0f );
+
+		return true;
 	}
 
 	//createBuffers
-/*	bool ModelViewer::createBuffers( MeshCache& p_cache, uint p_vertexCount, uint p_vertexSize, uint p_indexCount, uint p_indexSize ) {
+	/*
+	bool ModelViewer::createBuffers( MeshCache& p_cache, uint p_vertexCount, uint p_vertexSize, uint p_indexCount, uint p_indexSize ) {
 		p_cache.indexBuffer = nullptr;
 		p_cache.vertexBuffer = nullptr;
 
@@ -364,9 +386,11 @@ namespace gw2b {
 		}
 
 		return true;
-	}*/
+	}
+	*/
 	//populateBuffers
-/*	bool ModelViewer::populateBuffers( const Mesh& p_mesh, MeshCache& p_cache ) {
+	/*
+	bool ModelViewer::populateBuffers( const Mesh& p_mesh, MeshCache& p_cache ) {
 		uint vertexCount = p_mesh.vertices.GetSize( );
 		uint vertexSize = sizeof( Vertex );
 		uint indexCount = p_mesh.triangles.GetSize( ) * 3;
@@ -394,20 +418,45 @@ namespace gw2b {
 		Assert( SUCCEEDED( p_cache.indexBuffer->Unlock( ) ) );
 
 		return true;
-	}*/
+	}
+	*/
 
 	void ModelViewer::render( ) {
 		// Set the OpenGL viewport according to the client size of wxGLCanvas.
 		const wxSize ClientSize = this->GetClientSize( );
 		glViewport( 0, 0, ClientSize.x, ClientSize.y );
 
-		// Set clear background color to blue
-		glClearColor( 0.3f, 0.4f, 0.6f, 1.0f );
-
 		// Get a handle for our "MVP" uniform
 		MatrixID = glGetUniformLocation( programID, "MVP" );
 
-		this->updateMatrices( );
+
+		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
+		// Calculate minZ/maxZ
+		auto bounds = m_model.bounds( );
+		auto size = bounds.size( );
+		auto distance = m_camera.distance( );
+		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
+
+		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
+		auto maxZ = ( maxSize + distance ) * 1.1f;
+		auto minZ = maxZ * 0.0001f;
+
+		// View matrix
+		auto viewMatrix = m_camera.calculateViewMatrix( );
+
+		// Projection matrix
+		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
+		// Initial Field of View
+		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
+		auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
+
+		// Model matrix : an identity matrix (model will be at the origin)
+		glm::mat4 ModelMatrix = glm::mat4( 1.0 );
+		//glm::mat4 ModelMatrix = glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.5f ) );
+
+		// ModelViewProjection : multiplication of our 3 matrices
+		MVP = projMatrix * viewMatrix * ModelMatrix;
+
 
 		// Clear background to blue
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -452,15 +501,13 @@ namespace gw2b {
 		SwapBuffers( );
 
 		/*
-		// No culling as we don't really care about render performance
-		m_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-
 		if ( statusWireframe == true ) {
 			m_device->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 		} else {
 			m_device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 		}
-
+		*/
+		/*
 		this->updateMatrices( );
 
 		uint vertexCount = 0;
@@ -538,7 +585,8 @@ namespace gw2b {
 		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
 		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
 
-		this->endFrame( );*/
+		this->endFrame( );
+		*/
 	}
 
 	void ModelViewer::paintNow( wxPaintEvent& p_event ) {
@@ -554,161 +602,11 @@ namespace gw2b {
 	}
 
 	void ModelViewer::onClose( wxCloseEvent& evt ) {
-		timer->Stop( );
+		m_renderTimer->Stop( );
 		evt.Skip( );
 	}
-
-	GLuint ModelViewer::loadShaders( const char *vertex_file_path, const char *fragment_file_path ) {
-		// Create the shaders
-		GLuint VertexShaderID = glCreateShader( GL_VERTEX_SHADER );
-		GLuint FragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
-
-		// Read the Vertex Shader code from the file
-		std::string VertexShaderCode;
-		std::ifstream VertexShaderStream( vertex_file_path );
-
-		if ( VertexShaderStream.is_open( ) ) {
-			std::string Line = "";
-			while ( getline( VertexShaderStream, Line ) ) {
-				VertexShaderCode += "\n" + Line;
-			}
-			VertexShaderStream.close( );
-		}
-
-		// Read the Fragment Shader code from the file
-		std::string FragmentShaderCode;
-		std::ifstream FragmentShaderStream( fragment_file_path );
-		if ( FragmentShaderStream.is_open( ) ) {
-			std::string Line = "";
-			while ( getline( FragmentShaderStream, Line ) ) {
-				FragmentShaderCode += "\n" + Line;
-			}
-			FragmentShaderStream.close( );
-		}
-
-		GLint isCompiled = GL_FALSE;
-		GLint InfoLogLength = 0;
-
-		// Compile Vertex Shader
-		wxString vertexPath( vertex_file_path );
-		wxLogDebug( wxT( "Compiling shader : %s\n" ), vertexPath.utf8_str( ) );
-		const GLchar *VertexSourcePointer = VertexShaderCode.c_str( );
-		glShaderSource( VertexShaderID, 1, &VertexSourcePointer, NULL );
-		glCompileShader( VertexShaderID );
-
-		// Check Vertex Shader
-		glGetShaderiv( VertexShaderID, GL_COMPILE_STATUS, &isCompiled );
-		if ( isCompiled == GL_FALSE ) {
-			glGetShaderiv( VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
-			std::vector<GLchar> VertexShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
-			glGetShaderInfoLog( VertexShaderID, InfoLogLength, &InfoLogLength, &VertexShaderErrorMessage[0] );
-
-			glDeleteShader( VertexShaderID );
-
-			wxLogDebug( wxT( "%s\n" ), &VertexShaderErrorMessage[0] );
-			//return;
-		}
-
-		// Compile Fragment Shader
-		wxString fragmentPath( fragment_file_path );
-		wxLogDebug( wxT( "Compiling shader : %s\n" ), fragmentPath.utf8_str( ) );
-		const GLchar *FragmentSourcePointer = FragmentShaderCode.c_str( );
-		glShaderSource( FragmentShaderID, 1, &FragmentSourcePointer, NULL );
-		glCompileShader( FragmentShaderID );
-
-		// Check Fragment Shader
-		glGetShaderiv( FragmentShaderID, GL_COMPILE_STATUS, &isCompiled );
-		if ( isCompiled == GL_FALSE ) {
-			glGetShaderiv( FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
-			std::vector<GLchar> FragmentShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
-			glGetShaderInfoLog( FragmentShaderID, InfoLogLength, &InfoLogLength, &FragmentShaderErrorMessage[0] );
-
-			glDeleteShader( FragmentShaderID );
-
-			wxLogDebug( wxT( "%s\n" ), &FragmentShaderErrorMessage[0] );
-			//return;
-		}
-
-		GLint isLinked = GL_FALSE;
-
-		// Link the program
-		wxLogDebug( wxT( "Linking program\n" ) );
-		GLuint ProgramID = glCreateProgram( );
-		glAttachShader( ProgramID, VertexShaderID );
-		glAttachShader( ProgramID, FragmentShaderID );
-		glLinkProgram( ProgramID );
-
-		// Check the program
-		glGetProgramiv( ProgramID, GL_LINK_STATUS, &isLinked );
-		if ( isLinked == GL_FALSE ) {
-			glGetProgramiv( ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength );
-			std::vector<GLchar> ProgramErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
-			glGetProgramInfoLog( ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0] );
-
-			glDeleteShader( VertexShaderID );
-			glDeleteShader( FragmentShaderID );
-
-			wxLogDebug( wxT( "%s\n" ), &ProgramErrorMessage[0] );
-			//return;
-		}
-
-		glDeleteShader( VertexShaderID );
-		glDeleteShader( FragmentShaderID );
-
-		return ProgramID;
-	}
-
-	void ModelViewer::updateMatrices( ) {
-		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
-
-		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-		glm::mat4 Projection = glm::perspective( 45.0f, 4.0f / 3.0f, 0.1f, 100.0f );
-		// Or, for an ortho camera :
-		//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-
-		// Camera matrix
-		glm::mat4 View = glm::lookAt(
-			glm::vec3( 4, 3, 3 ), // Camera is at (4,3,3), in World Space
-			glm::vec3( 0, 0, 0 ), // and looks at the origin
-			glm::vec3( 0, 1, 0 )  // Head is up (set to 0,-1,0 to look upside-down)
-			);
-		// Model matrix : an identity matrix (model will be at the origin)
-		glm::mat4 Model = glm::mat4( 1.0f );
-		// Our ModelViewProjection : multiplication of our 3 matrices
-		MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
-
-
-
-
-		/*
-		// Calculate minZ/maxZ
-		auto bounds = m_model.bounds( );
-		auto size = bounds.size( );
-		auto distance = m_camera.distance( );
-		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
-
-		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
-		auto maxZ = ( maxSize + distance ) * 1.1f;
-		auto minZ = maxZ * 0.0001f;
-
-		// View matrix
-		auto viewMatrix = m_camera.calculateViewMatrix( );
-
-		// Projection matrix
-		wxSize clientSize = this->GetClientSize( );
-		float aspectRatio = ( static_cast<float>( clientSize.x ) / static_cast<float>( clientSize.y ) );
-		auto projMatrix = ::XMMatrixPerspectiveFovLH( ( 5.0f / 12.0f ) * glm::pi<float>( ), aspectRatio, minZ, maxZ );
-
-		// WorldViewProjection matrix
-		XMFLOAT4X4 worldViewProjMatrix;
-		::XMStoreFloat4x4( &worldViewProjMatrix, ::XMMatrixMultiply( viewMatrix, projMatrix ) );
-
-		m_effect->SetMatrix( "g_WorldViewProjMatrix", reinterpret_cast<D3DXMATRIX*>( &worldViewProjMatrix ) );
-		*/
-
-	}
-
-/*	void ModelViewer::drawMesh( uint p_meshIndex ) {
+	/*
+	void ModelViewer::drawMesh( uint p_meshIndex ) {
 		auto& mesh = m_meshCache[p_meshIndex];
 
 		// No mesh to draw?
@@ -774,24 +672,125 @@ namespace gw2b {
 	}
 	*/
 
-// draw text function
-
-/*	void ModelViewer::drawText( uint p_x, uint p_y, const wxString& p_text ) {
+	// draw text function
+	/*
+	void ModelViewer::drawText( uint p_x, uint p_y, const wxString& p_text ) {
 		if ( m_font.get( ) ) {
 			RECT outRect;
 			::SetRect( &outRect, p_x, p_y, p_x + 0x200, p_y + 0x14 );
 			m_font->DrawTextW( NULL, p_text.wchar_str( ), -1, &outRect, DT_LEFT | DT_NOCLIP, 0xFFFFFFFF );
 		}
-	}*/
+	}
+	*/
 
-// load textures function
-/*	IDirect3DTexture9* ModelViewer::loadTexture( uint p_fileId ) {
+	GLuint ModelViewer::loadShaders( const char *vertex_file_path, const char *fragment_file_path ) {
+		// Create the shaders
+		GLuint VertexShaderID = glCreateShader( GL_VERTEX_SHADER );
+		GLuint FragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
+
+		// Read the Vertex Shader code from the file
+		std::string VertexShaderCode;
+		std::ifstream VertexShaderStream( vertex_file_path );
+
+		if ( VertexShaderStream.is_open( ) ) {
+			std::string Line = "";
+			while ( getline( VertexShaderStream, Line ) ) {
+				VertexShaderCode += "\n" + Line;
+			}
+			VertexShaderStream.close( );
+		}
+
+		// Read the Fragment Shader code from the file
+		std::string FragmentShaderCode;
+		std::ifstream FragmentShaderStream( fragment_file_path );
+		if ( FragmentShaderStream.is_open( ) ) {
+			std::string Line = "";
+			while ( getline( FragmentShaderStream, Line ) ) {
+				FragmentShaderCode += "\n" + Line;
+			}
+			FragmentShaderStream.close( );
+		}
+
+		GLint isCompiled = GL_FALSE;
+		GLint InfoLogLength = 0;
+
+		// Compile Vertex Shader
+		wxString vertexPath( vertex_file_path );
+		wxLogDebug( wxT( "Compiling shader : %s" ), vertexPath.utf8_str( ) );
+		const GLchar *VertexSourcePointer = VertexShaderCode.c_str( );
+		glShaderSource( VertexShaderID, 1, &VertexSourcePointer, NULL );
+		glCompileShader( VertexShaderID );
+
+		// Check Vertex Shader
+		glGetShaderiv( VertexShaderID, GL_COMPILE_STATUS, &isCompiled );
+		if ( isCompiled == GL_FALSE ) {
+			glGetShaderiv( VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
+			std::vector<GLchar> VertexShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
+			glGetShaderInfoLog( VertexShaderID, InfoLogLength, &InfoLogLength, &VertexShaderErrorMessage[0] );
+
+			glDeleteShader( VertexShaderID );
+
+			wxLogDebug( wxT( "%s" ), &VertexShaderErrorMessage[0] );
+			//return;
+		}
+
+		// Compile Fragment Shader
+		wxString fragmentPath( fragment_file_path );
+		wxLogDebug( wxT( "Compiling shader : %s" ), fragmentPath.utf8_str( ) );
+		const GLchar *FragmentSourcePointer = FragmentShaderCode.c_str( );
+		glShaderSource( FragmentShaderID, 1, &FragmentSourcePointer, NULL );
+		glCompileShader( FragmentShaderID );
+
+		// Check Fragment Shader
+		glGetShaderiv( FragmentShaderID, GL_COMPILE_STATUS, &isCompiled );
+		if ( isCompiled == GL_FALSE ) {
+			glGetShaderiv( FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
+			std::vector<GLchar> FragmentShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
+			glGetShaderInfoLog( FragmentShaderID, InfoLogLength, &InfoLogLength, &FragmentShaderErrorMessage[0] );
+
+			glDeleteShader( FragmentShaderID );
+
+			wxLogDebug( wxT( "%s" ), &FragmentShaderErrorMessage[0] );
+			//return;
+		}
+
+		GLint isLinked = GL_FALSE;
+
+		// Link the program
+		wxLogDebug( wxT( "Linking program" ) );
+		GLuint ProgramID = glCreateProgram( );
+		glAttachShader( ProgramID, VertexShaderID );
+		glAttachShader( ProgramID, FragmentShaderID );
+		glLinkProgram( ProgramID );
+
+		// Check the program
+		glGetProgramiv( ProgramID, GL_LINK_STATUS, &isLinked );
+		if ( isLinked == GL_FALSE ) {
+			glGetProgramiv( ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength );
+			std::vector<GLchar> ProgramErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
+			glGetProgramInfoLog( ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0] );
+
+			glDeleteShader( VertexShaderID );
+			glDeleteShader( FragmentShaderID );
+
+			wxLogDebug( wxT( "%s" ), &ProgramErrorMessage[0] );
+			//return;
+		}
+		wxLogDebug( wxT( "Done" ) );
+
+		glDeleteShader( VertexShaderID );
+		glDeleteShader( FragmentShaderID );
+
+		return ProgramID;
+	}
+
+	GLuint ModelViewer::loadTexture( uint p_fileId ) {
 		auto entryNumber = this->datFile( )->entryNumFromFileId( p_fileId );
 		auto fileData = this->datFile( )->readEntry( entryNumber );
 
 		// Bail if read failed
 		if ( fileData.GetSize( ) == 0 ) {
-			return nullptr;
+			return false;
 		}
 
 		// Convert to image
@@ -803,27 +802,28 @@ namespace gw2b {
 		auto imgReader = dynamic_cast<ImageReader*>( reader );
 		if ( !imgReader ) {
 			deletePointer( reader );
-			return nullptr;
+			return false;
 		}
 
-		// Convert to PNG and bail if invalid
-		auto pngData = imgReader->convertData( );
-		if ( pngData.GetSize( ) == 0 ) {
+		// Get image in wxImage
+		auto imageData = imgReader->getImage( );
+		if ( !imageData.IsOk( ) ) {
 			deletePointer( reader );
-			return nullptr;
+			return false;
 		}
 
 		// Finally, load texture from in-memory PNG.
-		IDirect3DTexture9* texture = nullptr;
-		::D3DXCreateTextureFromFileInMemory( m_device.get( ), pngData.GetPointer( ), pngData.GetSize( ), &texture );
+		//Load texture to OpenGL
+
+
 
 		// Delete reader and return
 		deletePointer( reader );
-		return texture;
-	}*/
+		//return textureID;
+		return true;
+	}
 
-// camera
-/*	void ModelViewer::focus( ) {
+	void ModelViewer::focus( ) {
 		float fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 		uint meshCount = m_model.numMeshes( );
 
@@ -845,17 +845,14 @@ namespace gw2b {
 
 		// Update camera and render
 		glm::vec3 glmBounds = bounds.center( );
+		m_camera.setPivot( glmBounds );
 
-		//m_camera.setPivot( dxBounds );
-		//m_camera.setPivot( glmBounds );
-
-		//m_camera.setPivot( bounds.center( ) );
-		//m_camera.setDistance( distance );
+		m_camera.setPivot( bounds.center( ) );
+		m_camera.setDistance( distance );
 		this->render( );
-	}*/
+	}
 
-// mouse related stuff below
-/*	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
+	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
 		if ( m_lastMousePos.x == std::numeric_limits<int>::min( ) &&
 			m_lastMousePos.y == std::numeric_limits<int>::min( ) ) {
 			m_lastMousePos = p_event.GetPosition( );
@@ -863,14 +860,14 @@ namespace gw2b {
 
 		// Yaw/Pitch
 		if ( p_event.LeftIsDown( ) ) {
-			float rotateSpeed = 0.5f * ( glm::pi<float>() / 180.0f );   // 0.5 degrees per pixel
+			float rotateSpeed = 0.5f * ( glm::pi<float>( ) / 180.0f );   // 0.5 degrees per pixel
 			m_camera.addYaw( rotateSpeed * -( p_event.GetX( ) - m_lastMousePos.x ) );
 			m_camera.addPitch( rotateSpeed * ( p_event.GetY( ) - m_lastMousePos.y ) );
 			this->render( );
 		}
 
 		// Pan
-		if ( p_event.MiddleIsDown( ) ) {
+		if ( p_event.RightIsDown( ) ) {
 			float xPan = -( p_event.GetX( ) - m_lastMousePos.x );
 			float yPan = -( p_event.GetY( ) - m_lastMousePos.y );
 			m_camera.pan( xPan, yPan );
@@ -878,20 +875,20 @@ namespace gw2b {
 		}
 
 		m_lastMousePos = p_event.GetPosition( );
-	}*/
+	}
 
-/*	void ModelViewer::onMouseWheelEvt( wxMouseEvent& p_event ) {
+	void ModelViewer::onMouseWheelEvt( wxMouseEvent& p_event ) {
 		float zoomSteps = static_cast<float>( p_event.GetWheelRotation( ) ) / static_cast<float>( p_event.GetWheelDelta( ) );
 		m_camera.multiplyDistance( -zoomSteps );
 		this->render( );
-	}*/
+	}
 
-/*	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
+	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
 		if ( p_event.GetKeyCode( ) == 'F' ) {
 			this->focus( );
 		} else if ( p_event.GetKeyCode( ) == 'W' ) {
 			statusWireframe = !statusWireframe;
 		}
-	}*/
+	}
 
 }; // namespace gw2b

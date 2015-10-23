@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -28,9 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIEWERS_MODELVIEWER_CAMERA_H_INCLUDED
 
 namespace gw2b {
-	/*
+
 	class Camera {
-		XMFLOAT3 m_pivot;
+		glm::vec3 m_pivot;
 		float m_distance;
 		float m_yaw;
 		float m_pitch;
@@ -38,8 +39,8 @@ namespace gw2b {
 		Camera( );
 		~Camera( );
 
-		XMMATRIX calculateViewMatrix( ) const;
-		XMMATRIX calculateRotationMatrix( ) const;
+		glm::mat4 calculateViewMatrix( ) const;
+		glm::mat4 calculateRotationMatrix( ) const;
 
 		float yaw( ) const;
 		void addYaw( float p_yaw );
@@ -54,12 +55,12 @@ namespace gw2b {
 		void multiplyDistance( float p_multiplier );
 		void setDistance( float p_distance );
 
-		const XMFLOAT3& pivot( ) const;
+		const glm::vec3& pivot( ) const;
 		void pan( float p_x, float p_y );
-		void setPivot( const XMFLOAT3& p_pivot );
+		void setPivot( const glm::vec3& p_pivot );
 
 	}; // class Camera
-	*/
+
 }; // namespace gw2b
 
 #endif // VIEWERS_MODELVIEWER_CAMERA_H_INCLUDED
