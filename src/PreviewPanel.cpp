@@ -30,7 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Viewers/BinaryViewer/BinaryViewer.h"
 #include "Viewers/ImageViewer/ImageViewer.h"
-#include "Viewers/ModelViewer/ModelViewer.h"
 
 #include "PreviewPanel.h"
 
