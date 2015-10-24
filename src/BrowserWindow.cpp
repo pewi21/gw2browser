@@ -361,7 +361,13 @@ namespace gw2b {
 				// Identify files extensions
 				auto fileType = ANFT_Unknown;
 				m_datFile.identifyFileType( entryData.GetPointer(), entryData.GetSize(), fileType );
-				auto reader = FileReader::readerForFileType( entryData, fileType );
+
+				FileReader *reader;
+				if ( p_mode ) {
+					reader = FileReader::readerForData( entryData, fileType );
+				} else {
+					reader = FileReader::readerForFileType( entryData, fileType );
+				}
 
 				auto ext = wxEmptyString;
 				if ( reader ) {
