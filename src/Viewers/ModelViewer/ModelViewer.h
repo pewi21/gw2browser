@@ -37,16 +37,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	// OpenGL view data
-	struct GLData {
-		bool initialized;           // have OpenGL been initialized?
-
-
-		//float beginx, beginy;       // position of mouse
-		//float quat[4];              // orientation of object
-		//float zoom;                 // field of view in degrees
-	};
-
 	struct MeshCache {
 		GLuint					indexBuffer;
 		GLuint					vertexBuffer;
