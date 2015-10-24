@@ -49,7 +49,8 @@ namespace gw2b {
 
 	struct MeshCache {
 		GLuint					indexBuffer;
-		GLuint					vertexbuffer;
+		GLuint					vertexBuffer;
+		GLuint					uvBuffer;
 	};
 
 	struct TextureCache {
@@ -123,11 +124,13 @@ namespace gw2b {
 
 		GLuint						VertexArrayID;
 
-		GLuint						vertexbuffer;
-		GLuint						colorbuffer;
+		GLuint						vertexBuffer;
+		GLuint						uvBuffer;
 
 		// shader ID
 		GLuint						programID;
+		GLuint						Texture;
+		GLuint						TextureID;
 
 		GLuint						MatrixID;
 		glm::mat4					MVP;

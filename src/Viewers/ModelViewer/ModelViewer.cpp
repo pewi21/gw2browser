@@ -88,13 +88,6 @@ namespace gw2b {
 			m_glInitialized = true;
 		}
 
-		// Todo : write shader manager
-		// Create and compile our GLSL program from the shaders
-		programID = loadShaders( "..//data//shader.vert", "..//data//shader.frag" );
-		//wxMessageBox( Error 0x%08x while loading shader: %s" )
-
-		// Load font
-
 		m_renderTimer = new RenderTimer( this );
 		m_renderTimer->start( );
 
@@ -108,8 +101,8 @@ namespace gw2b {
 
 	ModelViewer::~ModelViewer( ) {
 		// Cleanup VBO and shader
-		glDeleteBuffers( 1, &vertexbuffer );
-		glDeleteBuffers( 1, &colorbuffer );
+		glDeleteBuffers( 1, &vertexBuffer );
+		glDeleteBuffers( 1, &uvBuffer );
 		glDeleteProgram( programID );
 		glDeleteVertexArrays( 1, &VertexArrayID );
 
@@ -176,12 +169,12 @@ namespace gw2b {
 		// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 		// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 		static const GLfloat g_vertex_buffer_data[] = {
-			-1.0f, -1.0f, -1.0f, // triangle 1 : begin
-			-1.0f, -1.0f, 1.0f,
-			-1.0f, 1.0f, 1.0f, // triangle 1 : end
-			1.0f, 1.0f, -1.0f, // triangle 2 : begin
 			-1.0f, -1.0f, -1.0f,
-			-1.0f, 1.0f, -1.0f, // triangle 2 : end
+			-1.0f, -1.0f, 1.0f,
+			-1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, -1.0f,
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, 1.0f, -1.0f,
 			1.0f, -1.0f, 1.0f,
 			-1.0f, -1.0f, -1.0f,
 			1.0f, -1.0f, -1.0f,
@@ -214,56 +207,57 @@ namespace gw2b {
 			1.0f, -1.0f, 1.0f
 		};
 
-		// One color for each vertex. They were generated randomly.
-		static const GLfloat g_color_buffer_data[] = {
-			0.583f, 0.771f, 0.014f,
-			0.609f, 0.115f, 0.436f,
-			0.327f, 0.483f, 0.844f,
-			0.822f, 0.569f, 0.201f,
-			0.435f, 0.602f, 0.223f,
-			0.310f, 0.747f, 0.185f,
-			0.597f, 0.770f, 0.761f,
-			0.559f, 0.436f, 0.730f,
-			0.359f, 0.583f, 0.152f,
-			0.483f, 0.596f, 0.789f,
-			0.559f, 0.861f, 0.639f,
-			0.195f, 0.548f, 0.859f,
-			0.014f, 0.184f, 0.576f,
-			0.771f, 0.328f, 0.970f,
-			0.406f, 0.615f, 0.116f,
-			0.676f, 0.977f, 0.133f,
-			0.971f, 0.572f, 0.833f,
-			0.140f, 0.616f, 0.489f,
-			0.997f, 0.513f, 0.064f,
-			0.945f, 0.719f, 0.592f,
-			0.543f, 0.021f, 0.978f,
-			0.279f, 0.317f, 0.505f,
-			0.167f, 0.620f, 0.077f,
-			0.347f, 0.857f, 0.137f,
-			0.055f, 0.953f, 0.042f,
-			0.714f, 0.505f, 0.345f,
-			0.783f, 0.290f, 0.734f,
-			0.722f, 0.645f, 0.174f,
-			0.302f, 0.455f, 0.848f,
-			0.225f, 0.587f, 0.040f,
-			0.517f, 0.713f, 0.338f,
-			0.053f, 0.959f, 0.120f,
-			0.393f, 0.621f, 0.362f,
-			0.673f, 0.211f, 0.457f,
-			0.820f, 0.883f, 0.371f,
-			0.982f, 0.099f, 0.879f
+		// Two UV coordinatesfor each vertex. They were created withe Blender.
+		static const GLfloat g_uv_buffer_data[] = {
+			0.000059f, 1.0f - 0.000004f,
+			0.000103f, 1.0f - 0.336048f,
+			0.335973f, 1.0f - 0.335903f,
+			1.000023f, 1.0f - 0.000013f,
+			0.667979f, 1.0f - 0.335851f,
+			0.999958f, 1.0f - 0.336064f,
+			0.667979f, 1.0f - 0.335851f,
+			0.336024f, 1.0f - 0.671877f,
+			0.667969f, 1.0f - 0.671889f,
+			1.000023f, 1.0f - 0.000013f,
+			0.668104f, 1.0f - 0.000013f,
+			0.667979f, 1.0f - 0.335851f,
+			0.000059f, 1.0f - 0.000004f,
+			0.335973f, 1.0f - 0.335903f,
+			0.336098f, 1.0f - 0.000071f,
+			0.667979f, 1.0f - 0.335851f,
+			0.335973f, 1.0f - 0.335903f,
+			0.336024f, 1.0f - 0.671877f,
+			1.000004f, 1.0f - 0.671847f,
+			0.999958f, 1.0f - 0.336064f,
+			0.667979f, 1.0f - 0.335851f,
+			0.668104f, 1.0f - 0.000013f,
+			0.335973f, 1.0f - 0.335903f,
+			0.667979f, 1.0f - 0.335851f,
+			0.335973f, 1.0f - 0.335903f,
+			0.668104f, 1.0f - 0.000013f,
+			0.336098f, 1.0f - 0.000071f,
+			0.000103f, 1.0f - 0.336048f,
+			0.000004f, 1.0f - 0.671870f,
+			0.336024f, 1.0f - 0.671877f,
+			0.000103f, 1.0f - 0.336048f,
+			0.336024f, 1.0f - 0.671877f,
+			0.335973f, 1.0f - 0.335903f,
+			0.667969f, 1.0f - 0.671889f,
+			1.000004f, 1.0f - 0.671847f,
+			0.667979f, 1.0f - 0.335851f
 		};
 
 		// Generate 1 buffer, put the resulting identifier in vertexbuffer
-		glGenBuffers( 1, &vertexbuffer );
+		glGenBuffers( 1, &vertexBuffer );
 		// The following commands will talk about our 'vertexbuffer' buffer
-		glBindBuffer( GL_ARRAY_BUFFER, vertexbuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
 		// Give our vertices to OpenGL.
 		glBufferData( GL_ARRAY_BUFFER, sizeof( g_vertex_buffer_data ), g_vertex_buffer_data, GL_STATIC_DRAW );
 
-		glGenBuffers( 1, &colorbuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, colorbuffer );
-		glBufferData( GL_ARRAY_BUFFER, sizeof( g_color_buffer_data ), g_color_buffer_data, GL_STATIC_DRAW );
+		glGenBuffers( 1, &uvBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
+		glBufferData( GL_ARRAY_BUFFER, sizeof( g_uv_buffer_data ), g_uv_buffer_data, GL_STATIC_DRAW );
+
 
 
 		// Create DX mesh cache
@@ -291,10 +285,12 @@ namespace gw2b {
 			}
 		}
 		*/
+
 		// Create DX texture cache
 		//m_textureCache.SetSize( m_model.numMaterialData( ) );
 
 		// Load textures
+		Texture = loadTexture( 858504 );
 		/*
 		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
@@ -340,6 +336,9 @@ namespace gw2b {
 			return false;
 		}
 
+		// Set clear background color to blue
+		glClearColor( 0.3f, 0.4f, 0.6f, 1.0f );
+
 		// Enable depth test
 		glEnable( GL_DEPTH_TEST );
 
@@ -353,8 +352,18 @@ namespace gw2b {
 		glGenVertexArrays( 1, &VertexArrayID );
 		glBindVertexArray( VertexArrayID );
 
-		// Set clear background color to blue
-		glClearColor( 0.3f, 0.4f, 0.6f, 1.0f );
+		// Todo : write shader manager
+		// Create and compile our GLSL program from the shaders
+		programID = loadShaders( "..//data//shader.vert", "..//data//shader.frag" );
+		//wxMessageBox( Error 0x%08x while loading shader: %s" )
+
+		// Load font
+
+		// Get a handle for our "MVP" uniform
+		MatrixID = glGetUniformLocation( programID, "MVP" );
+
+		// Get a handle for our "myTextureSampler" uniform
+		TextureID = glGetUniformLocation( programID, "myTextureSampler" );
 
 		return true;
 	}
@@ -426,10 +435,6 @@ namespace gw2b {
 		const wxSize ClientSize = this->GetClientSize( );
 		glViewport( 0, 0, ClientSize.x, ClientSize.y );
 
-		// Get a handle for our "MVP" uniform
-		MatrixID = glGetUniformLocation( programID, "MVP" );
-
-
 		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
 		// Calculate minZ/maxZ
 		auto bounds = m_model.bounds( );
@@ -448,14 +453,20 @@ namespace gw2b {
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
 		// Initial Field of View
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
-		auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
+		//auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
+
+		// Projection matrix : 45ฐ Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+		glm::mat4 projMatrix = glm::perspective( fov, aspectRatio, 0.1f, 300.0f );
 
 		// Model matrix : an identity matrix (model will be at the origin)
-		glm::mat4 ModelMatrix = glm::mat4( 1.0 );
+		glm::mat4 ModelMatrix = glm::mat4( 1.0f );
 		//glm::mat4 ModelMatrix = glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.5f ) );
 
 		// ModelViewProjection : multiplication of our 3 matrices
 		MVP = projMatrix * viewMatrix * ModelMatrix;
+
+
+
 
 
 		// Clear background to blue
@@ -468,9 +479,15 @@ namespace gw2b {
 		// in the "MVP" uniform
 		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, &MVP[0][0] );
 
+		// Bind our texture in Texture Unit 0
+		glActiveTexture( GL_TEXTURE0 );
+		glBindTexture( GL_TEXTURE_2D, Texture );
+		// Set our "myTextureSampler" sampler to user Texture Unit 0
+		glUniform1i( TextureID, 0 );
+
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray( 0 );
-		glBindBuffer( GL_ARRAY_BUFFER, vertexbuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
 		glVertexAttribPointer(
 			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
 			3,                  // size
@@ -480,12 +497,12 @@ namespace gw2b {
 			( void* ) 0         // array buffer offset
 			);
 
-		// 2nd attribute buffer : colors
+		// 2nd attribute buffer : UVs
 		glEnableVertexAttribArray( 1 );
-		glBindBuffer( GL_ARRAY_BUFFER, colorbuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
 		glVertexAttribPointer(
 			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			3,                                // size
+			2,                                // size : U+V => 2
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
 			0,                                // stride
@@ -807,20 +824,38 @@ namespace gw2b {
 
 		// Get image in wxImage
 		auto imageData = imgReader->getImage( );
+
 		if ( !imageData.IsOk( ) ) {
 			deletePointer( reader );
 			return false;
 		}
 
-		// Finally, load texture from in-memory PNG.
-		//Load texture to OpenGL
+		// Load texture to OpenGL
 
+		// Create one OpenGL texture
+		GLuint textureID;
+		glGenTextures( 1, &textureID );
 
+		// "Bind" the newly created texture : all future texture functions will modify this texture
+		glBindTexture( GL_TEXTURE_2D, textureID );
 
-		// Delete reader and return
+		// Give the image to OpenGL
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, imageData.GetWidth( ), imageData.GetHeight( ), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData.GetData( ) );
+
+		// Poor filtering, or ...
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		// Trilinear filtering.
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+		glGenerateMipmap( GL_TEXTURE_2D );
+
 		deletePointer( reader );
-		//return textureID;
-		return true;
+
+		return textureID;
 	}
 
 	void ModelViewer::focus( ) {

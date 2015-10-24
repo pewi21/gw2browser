@@ -55,10 +55,16 @@ namespace gw2b {
 		auto upVector = glm::vec3( 0, 1, 0 );//correct
 
 		glm::mat4 ViewMatrix = glm::lookAt(
+			glm::vec3( 4, 3, 3 ), // Camera is at (4,3,3), in World Space
+			glm::vec3( 0, 0, 0 ), // and looks at the origin
+			upVector  // Head is up (set to 0,-1,0 to look upside-down)
+			);
+
+		/*glm::mat4 ViewMatrix = glm::lookAt(
 			eyePositionVector,	// the position of your camera, in world space 
 			pivotVector,		// where you want to look at, in world space
-			upVector			// probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
-			);
+			upVector			// Head is up (set to 0,-1,0 to look upside-down)
+			);*/
 
 		return ViewMatrix;
 	}
