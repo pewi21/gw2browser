@@ -61,7 +61,7 @@ namespace gw2b {
 
 	namespace {
 
-		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0 };
+		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, WX_GL_SAMPLE_BUFFERS, 1, WX_GL_SAMPLES, 4, 0 };
 		const long style = ( wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE );
 
 		bool doesUseAlpha( const wxString& p_shaderName ) {
