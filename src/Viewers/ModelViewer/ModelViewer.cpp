@@ -104,10 +104,11 @@ namespace gw2b {
 		glDeleteBuffers( 1, &vertexBuffer );
 		glDeleteBuffers( 1, &uvBuffer );
 		glDeleteProgram( programID );
+		glDeleteTextures( 1, &TextureID );
 		glDeleteVertexArrays( 1, &VertexArrayID );
 
-		delete m_glContext;
 		delete m_renderTimer;
+		delete m_glContext;
 
 		/*
 		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
