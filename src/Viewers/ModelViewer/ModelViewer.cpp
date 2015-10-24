@@ -510,21 +510,18 @@ namespace gw2b {
 			( void* ) 0                          // array buffer offset
 			);
 
-		// Draw the triangle !
-		glDrawArrays( GL_TRIANGLES, 0, 12 * 3 ); // 12*3 indices starting at 0 -> 12 triangles
+		if ( m_statusWireframe == true ) {
+			glDrawArrays( GL_LINE_STRIP, 0, 12 * 3 );
+		} else {
+			// Draw the triangle !
+			glDrawArrays( GL_TRIANGLES, 0, 12 * 3 ); // 12*3 indices starting at 0 -> 12 triangles
+		}
 
 		glDisableVertexAttribArray( 0 );
 		glDisableVertexAttribArray( 1 );
 
 		SwapBuffers( );
 
-		/*
-		if ( statusWireframe == true ) {
-			m_device->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
-		} else {
-			m_device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
-		}
-		*/
 		/*
 		this->updateMatrices( );
 
@@ -923,7 +920,7 @@ namespace gw2b {
 		if ( p_event.GetKeyCode( ) == 'F' ) {
 			this->focus( );
 		} else if ( p_event.GetKeyCode( ) == 'W' ) {
-			statusWireframe = !statusWireframe;
+			m_statusWireframe = !m_statusWireframe;
 		}
 	}
 

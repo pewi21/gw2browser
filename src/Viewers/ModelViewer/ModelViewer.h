@@ -120,7 +120,7 @@ namespace gw2b {
 
 	private:
 		bool						m_glInitialized = false;
-
+		bool						m_statusWireframe = false;
 
 		GLuint						VertexArrayID;
 
@@ -134,8 +134,6 @@ namespace gw2b {
 
 		GLuint						MatrixID;
 		glm::mat4					MVP;
-
-		bool						statusWireframe = false;
 
 	}; // class ModelViewer
 
