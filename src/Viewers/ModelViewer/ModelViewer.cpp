@@ -511,7 +511,7 @@ namespace gw2b {
 			);
 
 		if ( m_statusWireframe == true ) {
-			glDrawArrays( GL_LINE_STRIP, 0, 12 * 3 );
+			glDrawArrays( GL_LINES, 0, 12 * 3 );
 		} else {
 			// Draw the triangle !
 			glDrawArrays( GL_TRIANGLES, 0, 12 * 3 ); // 12*3 indices starting at 0 -> 12 triangles
