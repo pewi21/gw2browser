@@ -38,9 +38,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	struct MeshCache {
-		GLuint					indexBuffer;
-		GLuint					vertexBuffer;
-		GLuint					uvBuffer;
+		std::vector<glm::vec3>	verticesBuffer;
+		std::vector<glm::vec2>	uvBuffer;
+		std::vector<glm::vec3>	normalBuffer;
 	};
 
 	struct TextureCache {
@@ -112,10 +112,14 @@ namespace gw2b {
 		bool						m_glInitialized = false;
 		bool						m_statusWireframe = false;
 
+
+
+
 		GLuint						VertexArrayID;
 
 		GLuint						vertexBuffer;
 		GLuint						uvBuffer;
+		GLuint						normalBuffer;
 
 		// shader ID
 		GLuint						programID;
@@ -124,6 +128,9 @@ namespace gw2b {
 
 		GLuint						MatrixID;
 		glm::mat4					MVP;
+
+
+		size_t vertsize;
 
 	}; // class ModelViewer
 

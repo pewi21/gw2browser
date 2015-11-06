@@ -41,35 +41,27 @@ namespace gw2b {
 	}
 
 	glm::mat4 Camera::calculateViewMatrix( ) const {
-
-		// 3d math is confusing.
-
 		// Calculate camera distance
-		glm::vec4 distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f ); //correct
+		glm::vec4 distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f );
 
-		auto rotViewMat = this->calculateRotationMatrix( );//correct
+		auto rotViewMat = this->calculateRotationMatrix( ); // correct this
 
 		// Create the view matrix
-		auto pivotVector = glm::vec3( m_pivot );//correct
-		auto eyePositionVector = glm::vec3( rotViewMat * distance ) + pivotVector;
-		auto upVector = glm::vec3( 0, 1, 0 );//correct
+		auto pivotVector = glm::vec3( m_pivot );
+		auto eyePositionVector = glm::vec3( /*rotViewMat * */ distance ) + pivotVector;
+		auto upVector = glm::vec3( 0, 1, 0 );
 
 		glm::mat4 ViewMatrix = glm::lookAt(
-			glm::vec3( 4, 3, 3 ), // Camera is at (4,3,3), in World Space
-			glm::vec3( 0, 0, 0 ), // and looks at the origin
-			upVector  // Head is up (set to 0,-1,0 to look upside-down)
-			);
-
-		/*glm::mat4 ViewMatrix = glm::lookAt(
 			eyePositionVector,	// the position of your camera, in world space 
 			pivotVector,		// where you want to look at, in world space
 			upVector			// Head is up (set to 0,-1,0 to look upside-down)
-			);*/
+			);
 
 		return ViewMatrix;
 	}
 
 	glm::mat4 Camera::calculateRotationMatrix( ) const {
+		// check this if correct
 		glm::mat4 rotViewMat;
 		rotViewMat = glm::rotate( rotViewMat, m_pitch, glm::vec3( 1.0f, 0.0f, 0.0f ) );
 		rotViewMat = glm::rotate( rotViewMat, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
@@ -123,8 +115,6 @@ namespace gw2b {
 
 	void Camera::pan( float p_x, float p_y ) {
 
-		// uugh...
-
 		auto rotationMatrix = this->calculateRotationMatrix( );
 
 		// Pan speed is based on distance from pivot, so the user doesn't have to move the mouse like
@@ -136,7 +126,7 @@ namespace gw2b {
 		rightVector = rotationMatrix * rightVector; // transfrom matrices
 
 		// Y axis
-		glm::vec4 upVector( 0, 0, 1, 0 );
+		glm::vec4 upVector( 0, 1, 0, 0 );
 		upVector = rotationMatrix * upVector; // transfrom matrices
 
 		// Perform the panning

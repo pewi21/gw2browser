@@ -83,7 +83,8 @@ namespace gw2b {
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
 			if ( !this->initGL( ) ) {
-				// error handler here
+				wxMessageBox( wxT( "initGL( ) Error." ), wxT( "" ), wxICON_ERROR );
+				return;
 			}
 			m_glInitialized = true;
 		}
@@ -163,135 +164,133 @@ namespace gw2b {
 		auto reader = this->modelReader( );
 		m_model = reader->getModel( );
 
+		// Create mesh cache
+		m_meshCache.SetSize( m_model.numMeshes( ) );
 
+		// Tempoarary buffer
+		std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+		std::vector<glm::vec3> temp_vertices;
+		std::vector<glm::vec2> temp_uvs;
+		std::vector<glm::vec3> temp_normals;
 
-
-
-		// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-		// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
-		static const GLfloat g_vertex_buffer_data[] = {
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f, 1.0f,
-			-1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, -1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, 1.0f, -1.0f,
-			1.0f, -1.0f, 1.0f,
-			-1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, 1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, -1.0f,
-			1.0f, -1.0f, 1.0f,
-			-1.0f, -1.0f, 1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, 1.0f, 1.0f,
-			-1.0f, -1.0f, 1.0f,
-			1.0f, -1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, 1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, -1.0f,
-			-1.0f, 1.0f, -1.0f,
-			1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, -1.0f,
-			-1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, 1.0f
-		};
-
-		// Two UV coordinatesfor each vertex. They were created withe Blender.
-		static const GLfloat g_uv_buffer_data[] = {
-			0.000059f, 1.0f - 0.000004f,
-			0.000103f, 1.0f - 0.336048f,
-			0.335973f, 1.0f - 0.335903f,
-			1.000023f, 1.0f - 0.000013f,
-			0.667979f, 1.0f - 0.335851f,
-			0.999958f, 1.0f - 0.336064f,
-			0.667979f, 1.0f - 0.335851f,
-			0.336024f, 1.0f - 0.671877f,
-			0.667969f, 1.0f - 0.671889f,
-			1.000023f, 1.0f - 0.000013f,
-			0.668104f, 1.0f - 0.000013f,
-			0.667979f, 1.0f - 0.335851f,
-			0.000059f, 1.0f - 0.000004f,
-			0.335973f, 1.0f - 0.335903f,
-			0.336098f, 1.0f - 0.000071f,
-			0.667979f, 1.0f - 0.335851f,
-			0.335973f, 1.0f - 0.335903f,
-			0.336024f, 1.0f - 0.671877f,
-			1.000004f, 1.0f - 0.671847f,
-			0.999958f, 1.0f - 0.336064f,
-			0.667979f, 1.0f - 0.335851f,
-			0.668104f, 1.0f - 0.000013f,
-			0.335973f, 1.0f - 0.335903f,
-			0.667979f, 1.0f - 0.335851f,
-			0.335973f, 1.0f - 0.335903f,
-			0.668104f, 1.0f - 0.000013f,
-			0.336098f, 1.0f - 0.000071f,
-			0.000103f, 1.0f - 0.336048f,
-			0.000004f, 1.0f - 0.671870f,
-			0.336024f, 1.0f - 0.671877f,
-			0.000103f, 1.0f - 0.336048f,
-			0.336024f, 1.0f - 0.671877f,
-			0.335973f, 1.0f - 0.335903f,
-			0.667969f, 1.0f - 0.671889f,
-			1.000004f, 1.0f - 0.671847f,
-			0.667979f, 1.0f - 0.335851f
-		};
-
-		// Generate 1 buffer, put the resulting identifier in vertexbuffer
-		glGenBuffers( 1, &vertexBuffer );
-		// The following commands will talk about our 'vertexbuffer' buffer
-		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
-		// Give our vertices to OpenGL.
-		glBufferData( GL_ARRAY_BUFFER, sizeof( g_vertex_buffer_data ), g_vertex_buffer_data, GL_STATIC_DRAW );
-
-		glGenBuffers( 1, &uvBuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
-		glBufferData( GL_ARRAY_BUFFER, sizeof( g_uv_buffer_data ), g_uv_buffer_data, GL_STATIC_DRAW );
-
-
-
-		// Create DX mesh cache
-		//m_meshCache.SetSize( m_model.numMeshes( ) );
+		uint indexBase = 1;
 
 		// Load meshes
-		/*
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
-			// Create and populate the buffers
-			uint vertexCount = mesh.vertices.GetSize( );
-			uint vertexSize = sizeof( Vertex );
-			uint indexCount = mesh.triangles.GetSize( ) * 3;
-			uint indexSize = sizeof( uint16 );
+			//mesh.materialName.c_str( );
 
-			if ( !this->createBuffers( cache, vertexCount, vertexSize, indexCount, indexSize ) ) {
-				continue;
+			// Read positions
+			for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
+				glm::vec3 tempVertices;
+				tempVertices.x = mesh.vertices[j].position.x;
+				tempVertices.y = mesh.vertices[j].position.y;
+				tempVertices.z = mesh.vertices[j].position.z;
+				temp_vertices.push_back( tempVertices );
 			}
-			if ( !this->populateBuffers( mesh, cache ) ) {
-				releasePointer( cache.indexBuffer );
-				releasePointer( cache.vertexBuffer );
-				continue;
+
+			// Read UVs
+			if ( mesh.hasUV ) {
+				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
+					glm::vec2 tempUvs;
+					tempUvs.x = mesh.vertices[j].uv.x;
+					tempUvs.y = mesh.vertices[j].uv.y;
+					temp_uvs.push_back( tempUvs );
+				}
 			}
+
+			// Read normals
+			if ( mesh.hasNormal ) {
+				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
+					temp_normals.push_back( mesh.vertices[j].normal );
+				}
+			}
+
+			// Write faces
+			// Index ?
+			for ( uint j = 0; j < mesh.triangles.GetSize( ); j++ ) {
+				const Triangle& triangle = mesh.triangles[j];
+
+				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+
+				for ( uint k = 0; k < 3; k++ ) {
+					uint index = triangle.indices[k] + indexBase;;
+
+					vertexIndex[k] = index;
+					// UV reference
+					if ( mesh.hasUV ) {
+						uvIndex[k] = index;
+					}
+
+					// Normal reference
+					if ( mesh.hasNormal ) {
+						normalIndex[k] = index;
+					}
+				}
+
+				vertexIndices.push_back( vertexIndex[0] );
+				vertexIndices.push_back( vertexIndex[1] );
+				vertexIndices.push_back( vertexIndex[2] );
+				uvIndices.push_back( uvIndex[0] );
+				uvIndices.push_back( uvIndex[1] );
+				uvIndices.push_back( uvIndex[2] );
+				normalIndices.push_back( normalIndex[0] );
+				normalIndices.push_back( normalIndex[1] );
+				normalIndices.push_back( normalIndex[2] );
+			}
+			indexBase += mesh.vertices.GetSize( );
 		}
-		*/
+
+		std::vector<glm::vec3> out_vertices;
+		std::vector<glm::vec2> out_uvs;
+		std::vector<glm::vec3> out_normals;
+
+		// For each vertex of each triangle
+		for ( unsigned int i = 0; i < vertexIndices.size( ); i++ ) {
+
+			// Get the indices of its attributes
+			unsigned int vertexIndex = vertexIndices[i];
+			unsigned int uvIndex = uvIndices[i];
+			unsigned int normalIndex = normalIndices[i];
+
+			// Get the attributes thanks to the index
+			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
+			glm::vec2 uv = temp_uvs[uvIndex - 1];
+			glm::vec3 normal;
+			// Normal reference
+			if ( m_model.mesh(1).hasNormal ) {
+				glm::vec3 normal = temp_normals[normalIndex - 1];
+			}
+
+			// Put the attributes in buffers
+			out_vertices.push_back( vertex );
+			out_uvs.push_back( uv );
+			out_normals.push_back( normal );
+		}
+
+
+		vertsize = out_vertices.size( );
+
+		glGenBuffers( 1, &vertexBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
+		// Give our vertices to OpenGL.
+		glBufferData( GL_ARRAY_BUFFER, out_vertices.size( ) * sizeof( glm::vec3 ), &out_vertices[0], GL_STATIC_DRAW );
+
+		glGenBuffers( 1, &uvBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
+		glBufferData( GL_ARRAY_BUFFER, out_uvs.size( ) * sizeof( glm::vec2 ), &out_uvs[0], GL_STATIC_DRAW );
+
+		glGenBuffers( 1, &normalBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, normalBuffer );
+		glBufferData( GL_ARRAY_BUFFER, out_normals.size( ) * sizeof( glm::vec3 ), &out_normals[0], GL_STATIC_DRAW );
 
 		// Create DX texture cache
 		//m_textureCache.SetSize( m_model.numMaterialData( ) );
 
 		// Load textures
-		Texture = loadTexture( 858504 );
+		Texture = loadTexture( 13845 );
 		/*
 		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
@@ -327,8 +326,8 @@ namespace gw2b {
 		GLenum err = glewInit( );
 		if ( GLEW_OK != err ) {
 			wxString message;
-			message << "Error: " << glewGetErrorString( err );
-			wxMessageBox( message, wxT( "glewInit failed" ), wxICON_ERROR );
+			message << "glewInit( ) failed.\n" << "Error: " << glewGetErrorString( err );
+			wxMessageBox( message, wxT( "" ), wxICON_ERROR );
 			return false;
 		}
 
@@ -454,17 +453,14 @@ namespace gw2b {
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
 		// Initial Field of View
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
-		//auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
-
-		// Projection matrix : 45ฐ Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-		glm::mat4 projMatrix = glm::perspective( fov, aspectRatio, 0.1f, 300.0f );
+		auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
 
 		// Model matrix : an identity matrix (model will be at the origin)
 		glm::mat4 ModelMatrix = glm::mat4( 1.0f );
 		//glm::mat4 ModelMatrix = glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.5f ) );
 
 		// ModelViewProjection : multiplication of our 3 matrices
-		MVP = projMatrix * viewMatrix * ModelMatrix;
+		MVP = projMatrix * viewMatrix;//* ModelMatrix;
 
 
 
@@ -511,10 +507,10 @@ namespace gw2b {
 			);
 
 		if ( m_statusWireframe == true ) {
-			glDrawArrays( GL_LINES, 0, 12 * 3 );
+			glDrawArrays( GL_LINES, 0, vertsize );
 		} else {
 			// Draw the triangle !
-			glDrawArrays( GL_TRIANGLES, 0, 12 * 3 ); // 12*3 indices starting at 0 -> 12 triangles
+			glDrawArrays( GL_TRIANGLES, 0, vertsize ); // change this
 		}
 
 		glDisableVertexAttribArray( 0 );
