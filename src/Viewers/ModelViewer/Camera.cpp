@@ -44,11 +44,17 @@ namespace gw2b {
 		// Calculate camera distance
 		glm::vec4 distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f );
 
-		auto rotViewMat = this->calculateRotationMatrix( ); // correct this
+		auto rotViewMat = this->calculateRotationMatrix( );
 
 		// Create the view matrix
 		auto pivotVector = glm::vec3( m_pivot );
+
+		// Uugh...
 		auto eyePositionVector = glm::vec3( /*rotViewMat * */ distance ) + pivotVector;
+
+
+
+
 		auto upVector = glm::vec3( 0, 1, 0 );
 
 		glm::mat4 ViewMatrix = glm::lookAt(
@@ -61,7 +67,6 @@ namespace gw2b {
 	}
 
 	glm::mat4 Camera::calculateRotationMatrix( ) const {
-		// check this if correct
 		glm::mat4 rotViewMat;
 		rotViewMat = glm::rotate( rotViewMat, m_pitch, glm::vec3( 1.0f, 0.0f, 0.0f ) );
 		rotViewMat = glm::rotate( rotViewMat, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
