@@ -1,6 +1,8 @@
 TODO list
 =========
 
+* Finish porting ModelViewer to OpenGL.
+
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
 
@@ -24,8 +26,6 @@ models could get an *export with textures* option.
 * Support for paged image files.
 
 * External file name database, for known files (such as the exe and dll files).
-
-* Rewrite model renderer to OpenGL
 
 * Support for R32f DDS files.
 
