@@ -49,7 +49,7 @@ namespace gw2b {
 		float pitch( ) const;
 		void addPitch( float p_pitch );
 		void setPitch( float p_pitch );
-		float clampPitch( float p_pitch );
+		//float clampPitch( float p_pitch );
 
 		float distance( ) const;
 		void multiplyDistance( float p_multiplier );
