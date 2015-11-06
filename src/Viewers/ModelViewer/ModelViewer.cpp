@@ -343,7 +343,7 @@ namespace gw2b {
 		glEnable( GL_DEPTH_TEST );
 
 		// Accept fragment if it closer to the camera than the former one
-		//glDepthFunc( GL_LESS );
+		glDepthFunc( GL_LESS );
 
 		// Cull triangles which normal is not towards the camera
 		//glEnable( GL_CULL_FACE );
@@ -431,11 +431,19 @@ namespace gw2b {
 	*/
 
 	void ModelViewer::render( ) {
+
+		// Clear background to blue
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+		// Use the shader
+		glUseProgram( programID );
+
 		// Set the OpenGL viewport according to the client size of wxGLCanvas.
 		const wxSize ClientSize = this->GetClientSize( );
 		glViewport( 0, 0, ClientSize.x, ClientSize.y );
 
 		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
+
 		// Calculate minZ/maxZ
 		auto bounds = m_model.bounds( );
 		auto size = bounds.size( );
@@ -446,34 +454,16 @@ namespace gw2b {
 		auto maxZ = ( maxSize + distance ) * 1.1f;
 		auto minZ = maxZ * 0.0001f;
 
-		// View matrix
-		auto viewMatrix = m_camera.calculateViewMatrix( );
-
-		// Projection matrix
+		// Compute the MVP matrix
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
-		// Initial Field of View
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 		auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
+		auto viewMatrix = m_camera.calculateViewMatrix( );
+		auto ModelMatrix = glm::mat4( 1.0f );
 
-		// Model matrix : an identity matrix (model will be at the origin)
-		glm::mat4 ModelMatrix = glm::mat4( 1.0f );
-		//glm::mat4 ModelMatrix = glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.5f ) );
+		MVP = projMatrix * viewMatrix * ModelMatrix;
 
-		// ModelViewProjection : multiplication of our 3 matrices
-		MVP = projMatrix * viewMatrix;//* ModelMatrix;
-
-
-
-
-
-		// Clear background to blue
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-		// Use the shader
-		glUseProgram( programID );
-
-		// Send our transformation to the currently bound shader, 
-		// in the "MVP" uniform
+		// Send our transformation to the currently bound shader, in the "MVP" uniform
 		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, &MVP[0][0] );
 
 		// Bind our texture in Texture Unit 0
@@ -897,8 +887,8 @@ namespace gw2b {
 
 		// Pan
 		if ( p_event.RightIsDown( ) ) {
-			float xPan = -( p_event.GetX( ) - m_lastMousePos.x );
-			float yPan = -( p_event.GetY( ) - m_lastMousePos.y );
+			float xPan = ( p_event.GetX( ) - m_lastMousePos.x );
+			float yPan = ( p_event.GetY( ) - m_lastMousePos.y );
 			m_camera.pan( xPan, yPan );
 			this->render( );
 		}

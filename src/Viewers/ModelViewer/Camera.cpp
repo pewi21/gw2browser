@@ -23,8 +23,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// todo : need correction in this!
-
 #include "stdafx.h"
 #include "Camera.h"
 
@@ -42,35 +40,32 @@ namespace gw2b {
 
 	glm::mat4 Camera::calculateViewMatrix( ) const {
 		// Calculate camera distance
-		glm::vec4 distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f );
+		auto distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f );
 
 		auto rotViewMat = this->calculateRotationMatrix( );
 
 		// Create the view matrix
 		auto pivotVector = glm::vec3( m_pivot );
-
-		// Uugh...
-		auto eyePositionVector = glm::vec3( /*rotViewMat * */ distance ) + pivotVector;
-
-
-
-
-		auto upVector = glm::vec3( 0, 1, 0 );
+		auto eyePositionVector = glm::vec3( rotViewMat * distance ) + pivotVector;
+		auto upVector = glm::vec3( rotViewMat * glm::vec4( 0.0f, 1.0f, 0.0f, 0.0f ) );
 
 		glm::mat4 ViewMatrix = glm::lookAt(
-			eyePositionVector,	// the position of your camera, in world space 
-			pivotVector,		// where you want to look at, in world space
-			upVector			// Head is up (set to 0,-1,0 to look upside-down)
+			eyePositionVector,	// The position of camera, in world space
+			pivotVector,		// Where to look at, in world space
+			upVector			// Up vector
 			);
 
 		return ViewMatrix;
 	}
 
 	glm::mat4 Camera::calculateRotationMatrix( ) const {
-		glm::mat4 rotViewMat;
-		rotViewMat = glm::rotate( rotViewMat, m_pitch, glm::vec3( 1.0f, 0.0f, 0.0f ) );
-		rotViewMat = glm::rotate( rotViewMat, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
-		return rotViewMat;
+		glm::mat4 pitchMatrix;
+		glm::mat4 yawMatrix;
+
+		pitchMatrix = glm::rotate( pitchMatrix, m_pitch, glm::vec3( 1.0f, 0.0f, 0.0f ) );
+		yawMatrix = glm::rotate( yawMatrix, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
+
+		return pitchMatrix * yawMatrix;
 	}
 
 	float Camera::yaw( ) const {
@@ -90,16 +85,18 @@ namespace gw2b {
 	}
 
 	void Camera::addPitch( float p_pitch ) {
-		m_pitch = this->clampPitch( m_pitch + p_pitch );
+		//m_pitch = this->clampPitch( m_pitch + p_pitch );
+		m_pitch += p_pitch;
 	}
 
 	void Camera::setPitch( float p_pitch ) {
-		m_pitch = this->clampPitch( p_pitch );
+		//m_pitch = this->clampPitch( p_pitch );
+		m_pitch = p_pitch;
 	}
 
 	float Camera::clampPitch( float p_pitch ) {
 		float rotationLimit = ( 89.0f * glm::pi<float>( ) ) / 180.0f;
-		return wxMin( rotationLimit, wxMax( rotationLimit, p_pitch ) );
+		return wxMin( rotationLimit, wxMax( -rotationLimit, p_pitch ) );
 	}
 
 	float Camera::distance( ) const {
