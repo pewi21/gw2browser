@@ -280,20 +280,27 @@ namespace gw2b {
 				return 0;
 			}
 		} else {
-			uint size = wxMin( p_peekSize, inputSize );
+			uint dataSize = wxMin( p_peekSize, inputSize );
 
-			uint count = 0;
-			uint out = 0;
-
+			const int blockSize = 65532;
 			// skip 4 byte every 65532 byte
-			for ( uint i = 0; i < size; i++ ) {
-				if ( count == 65532 ) {
-					i += 4;
-					count = 0;
-				}
-				::memcpy( &po_Buffer[out], &m_inputBuffer[i], sizeof( m_inputBuffer[i] ) );
-				count++;
-				out++;
+			const int bytetoskip = 4;
+			// how many block in data?
+			// (round down so if the data less than 65532, it will skip the copy block loop)
+			int numBlock = floor( dataSize / blockSize );
+
+#pragma omp parallel for
+			for ( int i = 0; i < numBlock; i++ ) {
+				::memcpy( &po_Buffer[i * blockSize], &m_inputBuffer[( i * blockSize ) + ( i * bytetoskip )], blockSize );
+			}
+
+			int dataCopied = numBlock * 65536;
+			int dataRemain = dataSize - dataCopied;
+
+			//copy the last remaining data
+			if ( dataRemain ) {
+				int outBufferIndex = blockSize * numBlock;
+				::memcpy( &po_Buffer[outBufferIndex], &m_inputBuffer[dataCopied], dataRemain );
 			}
 
 			return sizeof( po_Buffer );

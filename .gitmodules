@@ -1,3 +1,6 @@
 [submodule "gw2DatTools"]
-	path = extern/gw2DatTools
-	url = git://github.com/kytulendu/gw2DatTools.git
+    path = extern/gw2DatTools
+    url = https://github.com/kytulendu/gw2DatTools.git
+[submodule "libbar"]
+    path = include/bar
+    url = https://github.com/kytulendu/gw2formats.git
