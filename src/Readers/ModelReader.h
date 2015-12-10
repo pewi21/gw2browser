@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -29,6 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define READERS_MODELREADER_H_INCLUDED
 
 #include <vector>
+
+#include <gw2formats/pf/ModelPackFile.h>
 
 #include "FileReader.h"
 #include "ANetStructs.h"
@@ -63,7 +65,7 @@ namespace gw2b {
 			return *this;
 		}
 
-		glm::vec3 center() const {
+		glm::vec3 center( ) const {
 			glm::vec3 min = this->min;
 			glm::vec3 max = this->max;
 			glm::vec3 center = glm::lerp( min, max, 0.5f );
@@ -71,7 +73,7 @@ namespace gw2b {
 			return retval;
 		}
 
-		glm::vec3 size() const {
+		glm::vec3 size( ) const {
 			glm::vec3 min = this->min;
 			glm::vec3 max = this->max;
 			glm::vec3 size = ( max - min );
@@ -93,10 +95,10 @@ namespace gw2b {
 	};
 
 	struct MaterialData {
+		uint32 materialFlags;
 		uint32 diffuseMap;
 		uint32 normalMap;
 		uint32 lightMap;
-		uint32 flags;
 	};
 
 	class ModelData : public wxRefCounter {
@@ -163,11 +165,11 @@ namespace gw2b {
 		Model getModel( ) const;
 
 	private:
-		void readGeometry( Model& p_model, PackFile& p_packFile ) const;
+		void readGeometry( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 		void readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const;
-		void readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indexCount ) const;
 		uint vertexSize( ANetFlexibleVertexFormat p_vertexFormat ) const;
-		void readMaterialData( Model& p_model, PackFile& p_packFile ) const;
+		void readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
+		void readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 	}; // class ModelReader
 
 }; // namespace gw2b

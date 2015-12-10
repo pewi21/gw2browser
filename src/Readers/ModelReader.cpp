@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -30,6 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sstream>
 #include <new>
 #include <vector>
+
+#include <gw2formats/pf/ModelPackFile.h>
 
 #include "ModelReader.h"
 
@@ -242,103 +244,72 @@ namespace gw2b {
 			return newModel;
 		}
 
-		// Populate the model
-		PackFile packFile( m_data );
-		this->readGeometry( newModel, packFile );
-		this->readMaterialData( newModel, packFile );
+		gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
+
+		//auto animationChunk = model.chunk<gw2f::pf::ModelChunks::Animation>( );
+		//auto propertiesChunk = model.chunk<gw2f::pf::ModelChunks::Properties>( );
+		//auto rootmotionChunk = model.chunk<gw2f::pf::ModelChunks::RootMotion>( );
+		//auto skeletonChunk = model.chunk<gw2f::pf::ModelChunks::Skeleton>( );
+
+		this->readGeometry( newModel, modelPackFile );
+		this->readMaterialData( newModel, modelPackFile );
 
 		return newModel;
 	}
 
-	void ModelReader::readGeometry( Model& p_model, PackFile& p_packFile ) const {
-		uint size;
-		auto data = p_packFile.findChunk( FCC_GEOM, size );
+	void ModelReader::readGeometry( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+		auto geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
 
 		// Bail if no data
-		if ( !data ) {
+		if ( !geometryChunk->meshes.data( ) ) {
 			return;
 		}
 
-		// Read some interesting data
-		auto header = reinterpret_cast<const ANetPfChunkHeader*>( data );
-		uint32 meshCount = *reinterpret_cast<const uint32*>( &data[sizeof( *header )] );
+		uint32 meshCount = geometryChunk->meshes.size( );
 
 		// Bail if no meshes to read
 		if ( !meshCount ) {
 			return;
 		}
 
-		uint32 meshInfoOffsetTableOffset = *reinterpret_cast<const uint32*>( &data[sizeof( *header ) + 4] );
-		auto meshInfoOffsetTable = reinterpret_cast<const uint32*>( &data[sizeof( *header ) + 4 + meshInfoOffsetTableOffset] );
-
 		// Create storage for submeshes now, so we can parallelize the loop
 		Mesh* meshes = p_model.addMeshes( meshCount );
 
-#pragma omp parallel for shared(meshes)
+#pragma omp parallel for shared( meshes )
 		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
-			auto pos = reinterpret_cast<const byte*>( &meshInfoOffsetTable[i] );
-
 			// Fetch mesh info
-			pos += meshInfoOffsetTable[i];
-			auto meshInfo = reinterpret_cast<const ANetModelMeshInfo*>( pos );
+			auto meshInfo = geometryChunk->meshes[i];
 
 			// Fetch buffer info
-			pos = reinterpret_cast<const byte*>( &meshInfo->bufferInfoOffset );
-			pos += meshInfo->bufferInfoOffset;
-			auto bufferInfo = reinterpret_cast<const ANetModelBufferInfo*>( pos );
+			auto vertexInfo = meshInfo.geometry->verts;
+			auto indicesInfo = meshInfo.geometry->indices;
 
 			// Add new mesh
 			Mesh& mesh = meshes[i];
+
 			// Material data
-			mesh.materialIndex = meshInfo->materialIndex;
-			pos = reinterpret_cast<const byte*>( &meshInfo->materialNameOffset );
-			pos += meshInfo->materialNameOffset;
-			mesh.materialName = wxString::FromUTF8( reinterpret_cast<const char*>( pos ) );
+			mesh.materialIndex = meshInfo.materialIndex;
+			mesh.materialName = wxString::FromUTF8( meshInfo.materialName.data( ) );
+
 			// Vertex data
-			if ( bufferInfo->vertexCount ) {
-				pos = reinterpret_cast<const byte*>( &bufferInfo->vertexBufferOffset );
-				pos += bufferInfo->vertexBufferOffset;
-				this->readVertexBuffer( mesh, pos, bufferInfo->vertexCount, static_cast<ANetFlexibleVertexFormat>( bufferInfo->vertexFormat ) );
+			if ( vertexInfo.vertexCount ) {
+				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexInfo.vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
 			}
+
+			auto indiceCount = indicesInfo.indices.size( );
 			// Index data
-			if ( bufferInfo->indexCount ) {
-				pos = reinterpret_cast<const byte*>( &bufferInfo->indexBufferOffset );
-				pos += bufferInfo->indexBufferOffset;
-				this->readIndexBuffer( mesh, pos, bufferInfo->indexCount );
+			if ( indiceCount ) {
+				this->readIndiceBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
 			}
+
 		}
-	}
-
-	void ModelReader::readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indexCount ) const {
-		p_mesh.triangles.SetSize( p_indexCount / 3 );
-		::memcpy( p_mesh.triangles.GetPointer( ), p_data, p_mesh.triangles.GetSize( ) * sizeof( Triangle ) );
-
-		// Calculate bounds
-		float floatMin = std::numeric_limits<float>::min( );
-		float floatMax = std::numeric_limits<float>::max( );
-		p_mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
-		p_mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
-
-		glm::vec3 min = p_mesh.bounds.min;
-		glm::vec3 max = p_mesh.bounds.max;
-
-		auto indices = reinterpret_cast<const uint16*>( p_data );
-		for ( uint i = 0; i < p_indexCount; i++ ) {
-			auto& vertex = p_mesh.vertices[indices[i]];
-			glm::vec3 position = vertex.position;
-			min = glm::min( min, position );
-			max = glm::max( max, position );
-		}
-
-		p_mesh.bounds.min = min;
-		p_mesh.bounds.max = max;
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
 		p_mesh.vertices.SetSize( p_vertexCount );
 		uint vertexSize = this->vertexSize( p_vertexFormat );
 
-		p_mesh.hasNormal = ( p_vertexFormat & ANFVF_Normal );
+		p_mesh.hasNormal = ( ( p_vertexFormat & ANFVF_Normal ) ? 1 : 0 );
 		p_mesh.hasUV = ( ( p_vertexFormat & ( ANFVF_UV32Mask | ANFVF_UV16Mask ) ) ? 1 : 0 );
 
 #pragma omp parallel for
@@ -471,27 +442,50 @@ namespace gw2b {
 			+ ( ( ( p_vertexFormat & ANFVF_Unknown4 ) >> 27 ) * 16 )
 			+ ( ( ( p_vertexFormat & ANFVF_PositionCompressed ) >> 28 ) * 6 )
 			+ ( ( ( p_vertexFormat & ANFVF_Unknown5 ) >> 29 ) * 12 );
+
 	}
 
-	void ModelReader::readMaterialData( Model& p_model, PackFile& p_packFile ) const {
-		uint size;
-		auto data = p_packFile.findChunk( FCC_MODL, size );
+	void ModelReader::readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+		p_mesh.triangles.SetSize( p_indiceCount / 3 );
+		::memcpy( p_mesh.triangles.GetPointer( ), p_data, p_mesh.triangles.GetSize( ) * sizeof( Triangle ) );
+
+		// Calculate bounds
+		float floatMin = std::numeric_limits<float>::min( );
+		float floatMax = std::numeric_limits<float>::max( );
+		p_mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
+		p_mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
+
+		glm::vec3 min = p_mesh.bounds.min;
+		glm::vec3 max = p_mesh.bounds.max;
+
+		auto indices = reinterpret_cast<const uint16*>( p_data );
+		for ( uint i = 0; i < p_indiceCount; i++ ) {
+			auto& vertex = p_mesh.vertices[indices[i]];
+			glm::vec3 position = vertex.position;
+			min = glm::min( min, position );
+			max = glm::max( max, position );
+		}
+
+		p_mesh.bounds.min = min;
+		p_mesh.bounds.max = max;
+	}
+
+	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 
 		// Bail if no data
-		if ( !data ) {
+		if ( !modelChunk->permutations.data( ) ) {
 			return;
 		}
 
 		// Read some necessary data
-		auto header = reinterpret_cast<const ANetPfChunkHeader*>( data );
-		uint32 numMaterialInfo = *reinterpret_cast<const uint32*>( &data[sizeof( *header )] );
-		uint32 materialInfoOffset = *reinterpret_cast<const uint32*>( &data[sizeof( *header ) + 4] );
-		auto materialInfoArray = reinterpret_cast<const ANetModelMaterialArray*>( &data[sizeof( *header ) + 4 + materialInfoOffset] );
+		uint32 numMaterialInfo = modelChunk->permutations.size( );
+		auto materialInfoArray = modelChunk->permutations;
 
 		// Count materials
 		uint materialCount = 0;
 		for ( uint i = 0; i < numMaterialInfo; i++ ) {
-			materialCount = wxMax( materialCount, materialInfoArray[i].materialCount );
+			materialCount = wxMax( materialCount, materialInfoArray[i].materials.size( ) );
 		}
 
 		// Bail if no materials
@@ -510,65 +504,58 @@ namespace gw2b {
 		// Loop through each material info
 #pragma omp parallel for shared(locks, materialData)
 		for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
-			// Bail if no offset or count
-			if ( !materialInfoArray[i].materialCount || !materialInfoArray[i].materialsOffset ) {
+			// Bail if no material data
+			if ( !materialInfoArray[i].materials.data( ) ) {
 				continue;
 			}
 
-			// Read the offset table for this set of materials
-			auto pos = materialInfoArray[i].materialsOffset + reinterpret_cast<const byte*>( &materialInfoArray[i].materialsOffset );
-			auto offsetTable = reinterpret_cast<const int32*>( pos );
+			auto materialsArray = materialInfoArray[i].materials;
 
 			// Loop through each material in these material infos
-			for ( uint j = 0; j < materialInfoArray[i].materialCount; j++ ) {
+			for ( uint j = 0; j < materialsArray.size( ); j++ ) {
 				auto& data = materialData[j];
-
-				// Bail if offset is NULL
-				if ( offsetTable[j] == 0 ) {
-					continue;
-				}
 
 				// Only one thread must access this material at a time
 				omp_set_lock( &locks[j] );
 
 				// Bail if this material index already has data
-				if ( data.diffuseMap && data.normalMap && data.lightMap && data.flags ) {
+				if ( data.materialFlags && data.diffuseMap && data.normalMap && data.lightMap ) {
 					omp_unset_lock( &locks[j] );
 					continue;
 				}
 
 				// Read material info
-				pos = offsetTable[j] + reinterpret_cast<const byte*>( &offsetTable[j] );
-				auto materialInfo = reinterpret_cast<const ANetModelMaterialInfo*>( pos );
+				auto materialInfo = materialsArray[i];
 
 				// We are (almost) *only* interested in textures
-				data.flags = materialInfo->flags;
-				if ( materialInfo->textureCount == 0 ) {
+				data.materialFlags = materialInfo.materialFlags;
+				if ( materialInfo.textures.size( ) == 0 ) {
 					omp_unset_lock( &locks[j] );
 					continue;
 				}
 
-				pos = materialInfo->texturesOffset + reinterpret_cast<const byte*>( &materialInfo->texturesOffset );
-				auto textures = reinterpret_cast<const ANetModelTextureReference*>( pos );
+				auto textures = materialInfo.textures;
 
 				// Out of these, we only care about the diffuse maps
-				for ( uint t = 0; t < materialInfo->textureCount; t++ ) {
+				for ( uint t = 0; t < textures.size( ); t++ ) {
 					// Get file reference
-					pos = textures[t].offsetToFileReference + reinterpret_cast<const byte*>( &textures[t].offsetToFileReference );
-					auto fileReference = reinterpret_cast<const ANetFileReference*>( pos );
+					auto fileReference = reinterpret_cast<const ANetFileReference*>( &textures[t].filename );
 
+					// todo: figure out this
 					// Diffuse?
-					if ( textures[t].hash == 0x67531924 ) {
+					if ( ( textures[t].token >> 32 ) == 0x67531924 ) {
 						data.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 					}
 
 					// Normal?
-					else if ( textures[t].hash == 0x1816c9ee || textures[t].hash == 0x8b0bbd87 || textures[t].hash == 0xa55a48b0 ) {
+					else if ( ( ( textures[t].token >> 32 ) == 0x1816c9ee )
+						|| ( ( textures[t].token >> 32 ) == 0x8b0bbd87 )
+						|| ( ( textures[t].token >> 32 ) == 0xa55a48b0 ) ) {
 						data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 					}
 
 					// Light Map ?
-					else if ( textures[t].hash == 0x680bbd87 ) {
+					else if ( ( textures[t].token >> 32 ) == 0x680bbd87 ) {
 						data.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 						break;
 					}
