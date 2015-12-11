@@ -172,31 +172,31 @@ namespace gw2b {
 			const Mesh& mesh = model.mesh( i );
 
 			// Write header
-			stream << std::endl << "# Mesh " << i << ": " << mesh.vertices.GetSize( ) << " vertices, " << mesh.triangles.GetSize( ) << " triangles" << std::endl;
+			stream << std::endl << "# Mesh " << i << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
 			stream << "g mesh" << i << std::endl;
 			stream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
 
 			// Write positions
-			for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
+			for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
 				stream << "v " << mesh.vertices[j].position.x << ' ' << mesh.vertices[j].position.y << ' ' << mesh.vertices[j].position.z << std::endl;
 			}
 
 			// Write UVs
 			if ( mesh.hasUV ) {
-				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
+				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
 					stream << "vt " << mesh.vertices[j].uv.x << ' ' << mesh.vertices[j].uv.y << std::endl;
 				}
 			}
 
 			// Write normals
 			if ( mesh.hasNormal ) {
-				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
+				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
 					stream << "vn " << mesh.vertices[j].normal.x << ' ' << mesh.vertices[j].normal.y << ' ' << mesh.vertices[j].normal.z << std::endl;
 				}
 			}
 
 			// Write faces
-			for ( uint j = 0; j < mesh.triangles.GetSize( ); j++ ) {
+			for ( uint j = 0; j < mesh.triangles.size( ); j++ ) {
 				const Triangle& triangle = mesh.triangles[j];
 
 				stream << 'f';
@@ -221,7 +221,7 @@ namespace gw2b {
 
 			// newline before next mesh!
 			stream << std::endl;
-			indexBase += mesh.vertices.GetSize( );
+			indexBase += mesh.vertices.size( );
 		}
 
 		// Close stream
@@ -301,12 +301,11 @@ namespace gw2b {
 			if ( indiceCount ) {
 				this->readIndiceBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
 			}
-
 		}
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
-		p_mesh.vertices.SetSize( p_vertexCount );
+		p_mesh.vertices.resize( p_vertexCount );
 		uint vertexSize = this->vertexSize( p_vertexFormat );
 
 		p_mesh.hasNormal = ( ( p_vertexFormat & ANFVF_Normal ) ? 1 : 0 );
@@ -446,8 +445,8 @@ namespace gw2b {
 	}
 
 	void ModelReader::readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
-		p_mesh.triangles.SetSize( p_indiceCount / 3 );
-		::memcpy( p_mesh.triangles.GetPointer( ), p_data, p_mesh.triangles.GetSize( ) * sizeof( Triangle ) );
+		p_mesh.triangles.resize( p_indiceCount / 3 );
+		::memcpy( p_mesh.triangles.data( ), p_data, p_mesh.triangles.size( ) * sizeof( Triangle ) );
 
 		// Calculate bounds
 		float floatMin = std::numeric_limits<float>::min( );

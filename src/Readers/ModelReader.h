@@ -85,8 +85,8 @@ namespace gw2b {
 #pragma pack(pop)
 
 	struct Mesh {
-		Array<Vertex>   vertices;
-		Array<Triangle> triangles;
+		std::vector<Vertex>   vertices;
+		std::vector<Triangle> triangles;
 		wxString        materialName;
 		int             materialIndex;
 		Bounds          bounds;
