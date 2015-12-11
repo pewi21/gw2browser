@@ -452,7 +452,7 @@ namespace gw2b {
 
 		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
 		auto maxZ = ( maxSize + distance ) * 10.0f;
-		auto minZ = maxZ * 0.005f;
+		auto minZ = maxZ * 0.001f;
 
 		// Compute the MVP matrix
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
