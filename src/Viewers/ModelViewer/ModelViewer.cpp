@@ -171,7 +171,7 @@ namespace gw2b {
 		std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
 		std::vector<glm::vec3> temp_vertices;
 		std::vector<glm::vec2> temp_uvs;
-		std::vector<glm::vec3> temp_normals;
+		//std::vector<glm::vec3> temp_normals;
 
 		uint indexBase = 1;
 
@@ -202,11 +202,11 @@ namespace gw2b {
 			}
 
 			// Read normals
-			if ( mesh.hasNormal ) {
+			/*if ( mesh.hasNormal ) {
 				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
 					temp_normals.push_back( mesh.vertices[j].normal );
 				}
-			}
+			}*/
 
 			// Write faces
 			// Index ?
@@ -226,7 +226,7 @@ namespace gw2b {
 
 					// Normal reference
 					if ( mesh.hasNormal ) {
-						normalIndex[k] = index;
+						//normalIndex[k] = index;
 					}
 				}
 
@@ -236,16 +236,16 @@ namespace gw2b {
 				uvIndices.push_back( uvIndex[0] );
 				uvIndices.push_back( uvIndex[1] );
 				uvIndices.push_back( uvIndex[2] );
-				normalIndices.push_back( normalIndex[0] );
-				normalIndices.push_back( normalIndex[1] );
-				normalIndices.push_back( normalIndex[2] );
+				//normalIndices.push_back( normalIndex[0] );
+				//normalIndices.push_back( normalIndex[1] );
+				//normalIndices.push_back( normalIndex[2] );
 			}
 			indexBase += mesh.vertices.GetSize( );
 		}
 
 		std::vector<glm::vec3> out_vertices;
 		std::vector<glm::vec2> out_uvs;
-		std::vector<glm::vec3> out_normals;
+		//std::vector<glm::vec3> out_normals;
 
 		// For each vertex of each triangle
 		for ( unsigned int i = 0; i < vertexIndices.size( ); i++ ) {
@@ -253,21 +253,21 @@ namespace gw2b {
 			// Get the indices of its attributes
 			unsigned int vertexIndex = vertexIndices[i];
 			unsigned int uvIndex = uvIndices[i];
-			unsigned int normalIndex = normalIndices[i];
+			//unsigned int normalIndex = normalIndices[i];
 
 			// Get the attributes thanks to the index
 			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
 			glm::vec2 uv = temp_uvs[uvIndex - 1];
-			glm::vec3 normal;
+			//glm::vec3 normal;
 			// Normal reference
-			if ( m_model.mesh(1).hasNormal ) {
-				glm::vec3 normal = temp_normals[normalIndex - 1];
-			}
+			//if ( m_model.mesh(1).hasNormal ) {
+			//	glm::vec3 normal = temp_normals[normalIndex - 1];
+			//}
 
 			// Put the attributes in buffers
 			out_vertices.push_back( vertex );
 			out_uvs.push_back( uv );
-			out_normals.push_back( normal );
+			//out_normals.push_back( normal );
 		}
 
 
@@ -282,15 +282,15 @@ namespace gw2b {
 		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
 		glBufferData( GL_ARRAY_BUFFER, out_uvs.size( ) * sizeof( glm::vec2 ), &out_uvs[0], GL_STATIC_DRAW );
 
-		glGenBuffers( 1, &normalBuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, normalBuffer );
-		glBufferData( GL_ARRAY_BUFFER, out_normals.size( ) * sizeof( glm::vec3 ), &out_normals[0], GL_STATIC_DRAW );
+		//glGenBuffers( 1, &normalBuffer );
+		//glBindBuffer( GL_ARRAY_BUFFER, normalBuffer );
+		//glBufferData( GL_ARRAY_BUFFER, out_normals.size( ) * sizeof( glm::vec3 ), &out_normals[0], GL_STATIC_DRAW );
 
 		// Create DX texture cache
 		//m_textureCache.SetSize( m_model.numMaterialData( ) );
 
 		// Load textures
-		Texture = loadTexture( 13845 );
+		Texture = loadTexture( 13851 );
 		/*
 		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
@@ -336,8 +336,8 @@ namespace gw2b {
 			return false;
 		}
 
-		// Set clear background color to blue
-		glClearColor( 0.3f, 0.4f, 0.6f, 1.0f );
+		// Set background color
+		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
 
 		// Enable depth test
 		glEnable( GL_DEPTH_TEST );
@@ -432,7 +432,7 @@ namespace gw2b {
 
 	void ModelViewer::render( ) {
 
-		// Clear background to blue
+		// Clear background
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		// Use the shader
@@ -451,8 +451,8 @@ namespace gw2b {
 		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
 
 		auto maxSize = ::sqrt( extents.x * extents.x + extents.y * extents.y + extents.z * extents.z );
-		auto maxZ = ( maxSize + distance ) * 1.1f;
-		auto minZ = maxZ * 0.0001f;
+		auto maxZ = ( maxSize + distance ) * 10.0f;
+		auto minZ = maxZ * 0.005f;
 
 		// Compute the MVP matrix
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
@@ -814,8 +814,6 @@ namespace gw2b {
 			return false;
 		}
 
-		// Load texture to OpenGL
-
 		// Create one OpenGL texture
 		GLuint textureID;
 		glGenTextures( 1, &textureID );
@@ -826,11 +824,7 @@ namespace gw2b {
 		// Give the image to OpenGL
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, imageData.GetWidth( ), imageData.GetHeight( ), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData.GetData( ) );
 
-		// Poor filtering, or ...
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		// Trilinear filtering.
+		// Trilinear texture filtering
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
