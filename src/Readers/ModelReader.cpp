@@ -303,29 +303,12 @@ namespace gw2b {
 			// Index data
 			if ( indiceCount ) {
 				this->readIndiceBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
-
-				// Calculate bounds
-				float floatMin = std::numeric_limits<float>::min( );
-				float floatMax = std::numeric_limits<float>::max( );
-				mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
-				mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
-
-				glm::vec3 min = mesh.bounds.min;
-				glm::vec3 max = mesh.bounds.max;
-
-				auto indices = reinterpret_cast<const uint16*>( reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ) );
-				for ( uint i = 0; i < indiceCount; i++ ) {
-					auto& vertex = mesh.vertices[indices[i]];
-					glm::vec3 position = vertex.position;
-					min = glm::min( min, position );
-					max = glm::max( max, position );
-				}
-				mesh.bounds.min = min;
-				mesh.bounds.max = max;
+				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 			}
 
 			if ( mesh.hasNormal ) {
 				// normalize normal
+				// todo, probaly need to convert it to OpenGL coordinate
 			} else {
 				// calculate vertex normal if not exist
 				this->computeNormal( mesh, vertexCount );
@@ -493,6 +476,27 @@ namespace gw2b {
 			normal.y += ( current.z - next.z ) * ( current.x + next.x );
 			normal.z += ( current.x - next.x ) * ( current.y + next.y );
 		}
+	}
+
+	void ModelReader::computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+		// Calculate bounds
+		float floatMin = std::numeric_limits<float>::min( );
+		float floatMax = std::numeric_limits<float>::max( );
+		p_mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
+		p_mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
+
+		glm::vec3 min = p_mesh.bounds.min;
+		glm::vec3 max = p_mesh.bounds.max;
+
+		auto indices = reinterpret_cast<const uint16*>( p_data );
+		for ( uint i = 0; i < p_indiceCount; i++ ) {
+			auto& vertex = p_mesh.vertices[indices[i]];
+			glm::vec3 position = vertex.position;
+			min = glm::min( min, position );
+			max = glm::max( max, position );
+		}
+		p_mesh.bounds.min = min;
+		p_mesh.bounds.max = max;
 	}
 
 	void ModelReader::readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {

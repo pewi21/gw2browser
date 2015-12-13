@@ -169,6 +169,7 @@ namespace gw2b {
 		void readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const;
 		uint vertexSize( ANetFlexibleVertexFormat p_vertexFormat ) const;
 		void computeNormal( Mesh& p_mesh, uint p_vertexCount ) const;
+		void computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
 		void readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
 		void readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 	}; // class ModelReader
