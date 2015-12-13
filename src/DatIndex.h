@@ -374,7 +374,7 @@ namespace gw2b {
 
 		/** Return the highest available MFT entry found in the index.
 		*  \return uint    Highest MFT entry found in the table. */
-		int highestMftEntry( ) const {
+		uint highestMftEntry( ) const {
 			return m_highestMftEntry;
 		}
 		/** Returns whether or not the data has been changed since writing to file.
