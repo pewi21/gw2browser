@@ -124,18 +124,18 @@ namespace gw2b {
 		float panSpeed = 0.001f * m_distance;
 
 		// X axis
-		glm::vec4 rightVector( 1, 0, 0, 0 );
+		glm::vec4 rightVector( 1.0f, 0.0f, 0.0f, 0.0f );
 		rightVector = rotationMatrix * rightVector; // transfrom matrices
 
 		// Y axis
-		glm::vec4 upVector( 0, 1, 0, 0 );
+		glm::vec4 upVector( 0.0f, 1.0f, 0.0f, 0.0f );
 		upVector = rotationMatrix * upVector; // transfrom matrices
 
 		// Perform the panning
 		glm::vec3 pivotVector = m_pivot;
 
 		rightVector = rightVector * ( p_x * panSpeed );
-		upVector = upVector *( p_y * panSpeed );
+		upVector = upVector * ( p_y * panSpeed );
 
 		pivotVector = pivotVector + glm::vec3( rightVector );
 		pivotVector = pivotVector + glm::vec3( upVector );
