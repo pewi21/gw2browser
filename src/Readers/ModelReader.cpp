@@ -277,7 +277,7 @@ namespace gw2b {
 		// Create storage for submeshes now, so we can parallelize the loop
 		Mesh* meshes = p_model.addMeshes( meshCount );
 
-//#pragma omp parallel for shared( meshes )
+#pragma omp parallel for shared( meshes )
 		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
 			// Fetch mesh info
 			auto meshInfo = geometryChunk->meshes[i];
