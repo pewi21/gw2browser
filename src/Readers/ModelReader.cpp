@@ -467,7 +467,8 @@ namespace gw2b {
 		auto& vertex = p_mesh.vertices;
 
 		// Compute surface normal for a triangle using Newell's method
-		for ( uint i = 0; i < p_vertexCount; i++ ) {
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( p_vertexCount ); i++ ) {
 			auto& normal = vertex[i].normal;
 			auto& current = vertex[i].position;
 			auto& next = vertex[( i + 1 ) % p_vertexCount].position;
@@ -489,7 +490,8 @@ namespace gw2b {
 		glm::vec3 max = p_mesh.bounds.max;
 
 		auto indices = reinterpret_cast<const uint16*>( p_data );
-		for ( uint i = 0; i < p_indiceCount; i++ ) {
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( p_indiceCount ); i++ ) {
 			auto& vertex = p_mesh.vertices[indices[i]];
 			glm::vec3 position = vertex.position;
 			min = glm::min( min, position );
