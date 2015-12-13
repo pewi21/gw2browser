@@ -25,11 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-//#include <iostream>
-#include <fstream>
-#include <string>
-//#include <algorithm>
-//#include <vector>
+//#include <fstream>
+//#include <string>
+#include <vector>
 
 #include "ModelViewer.h"
 
@@ -110,48 +108,11 @@ namespace gw2b {
 
 		delete m_renderTimer;
 		delete m_glContext;
-
-		/*
-		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
-			if ( m_meshCache[i].indexBuffer ) {
-				m_meshCache[i].indexBuffer->Release( );
-			}
-			if ( m_meshCache[i].vertexBuffer ) {
-				m_meshCache[i].vertexBuffer->Release( );
-			}
-		}
-		for ( uint i = 0; i < m_textureCache.GetSize( ); i++ ) {
-			if ( m_textureCache[i].diffuseMap ) {
-				m_textureCache[i].diffuseMap->Release( );
-			}
-			//if ( m_textureCache[i].normalMap ) {
-			//	m_textureCache[i].normalMap->Release( );
-			//}
-		}
-		*/
 	}
 
 	void ModelViewer::clear( ) {
-		/*
-		for ( uint i = 0; i < m_meshCache.GetSize( ); i++ ) {
-			if ( m_meshCache[i].indexBuffer ) {
-				m_meshCache[i].indexBuffer->Release( );
-			}
-			if ( m_meshCache[i].vertexBuffer ) {
-				m_meshCache[i].vertexBuffer->Release( );
-			}
-		}
-		for ( uint i = 0; i < m_textureCache.GetSize( ); i++ ) {
-			if ( m_textureCache[i].diffuseMap ) {
-				m_textureCache[i].diffuseMap->Release( );
-			}
-			//if ( m_textureCache[i].normalMap ) {
-			//	m_textureCache[i].normalMap->Release( );
-			//}
-		}
-		*/
 		//m_textureCache.Clear( );
-		//m_meshCache.Clear( );
+		m_meshCache.clear( );
 		m_model = Model( );
 		ViewerGLCanvas::clear( );
 	}
@@ -165,122 +126,29 @@ namespace gw2b {
 		m_model = reader->getModel( );
 
 		// Create mesh cache
-		m_meshCache.SetSize( m_model.numMeshes( ) );
-
-		// Tempoarary buffer
-		std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-		std::vector<glm::vec3> temp_vertices;
-		std::vector<glm::vec2> temp_uvs;
-		//std::vector<glm::vec3> temp_normals;
-
-		uint indexBase = 1;
+		m_meshCache.resize( m_model.numMeshes( ) );
 
 		// Load meshes
-		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
-			//mesh.materialName.c_str( );
-
-			// Read positions
-			for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
-				glm::vec3 tempVertices;
-				tempVertices.x = mesh.vertices[j].position.x;
-				tempVertices.y = mesh.vertices[j].position.y;
-				tempVertices.z = mesh.vertices[j].position.z;
-				temp_vertices.push_back( tempVertices );
+			// Load mesh to mesh cache
+			if ( !this->populateBuffers( mesh, cache ) ) {
+				continue;
 			}
-
-			// Read UVs
-			if ( mesh.hasUV ) {
-				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
-					glm::vec2 tempUvs;
-					tempUvs.x = mesh.vertices[j].uv.x;
-					tempUvs.y = mesh.vertices[j].uv.y;
-					temp_uvs.push_back( tempUvs );
-				}
-			}
-
-			// Read normals
-			/*if ( mesh.hasNormal ) {
-				for ( uint j = 0; j < mesh.vertices.GetSize( ); j++ ) {
-					temp_normals.push_back( mesh.vertices[j].normal );
-				}
-			}*/
-
-			// Write faces
-			// Index ?
-			for ( uint j = 0; j < mesh.triangles.GetSize( ); j++ ) {
-				const Triangle& triangle = mesh.triangles[j];
-
-				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-
-				for ( uint k = 0; k < 3; k++ ) {
-					uint index = triangle.indices[k] + indexBase;;
-
-					vertexIndex[k] = index;
-					// UV reference
-					if ( mesh.hasUV ) {
-						uvIndex[k] = index;
-					}
-
-					// Normal reference
-					if ( mesh.hasNormal ) {
-						//normalIndex[k] = index;
-					}
-				}
-
-				vertexIndices.push_back( vertexIndex[0] );
-				vertexIndices.push_back( vertexIndex[1] );
-				vertexIndices.push_back( vertexIndex[2] );
-				uvIndices.push_back( uvIndex[0] );
-				uvIndices.push_back( uvIndex[1] );
-				uvIndices.push_back( uvIndex[2] );
-				//normalIndices.push_back( normalIndex[0] );
-				//normalIndices.push_back( normalIndex[1] );
-				//normalIndices.push_back( normalIndex[2] );
-			}
-			indexBase += mesh.vertices.GetSize( );
 		}
 
-		std::vector<glm::vec3> out_vertices;
-		std::vector<glm::vec2> out_uvs;
-		//std::vector<glm::vec3> out_normals;
-
-		// For each vertex of each triangle
-		for ( unsigned int i = 0; i < vertexIndices.size( ); i++ ) {
-
-			// Get the indices of its attributes
-			unsigned int vertexIndex = vertexIndices[i];
-			unsigned int uvIndex = uvIndices[i];
-			//unsigned int normalIndex = normalIndices[i];
-
-			// Get the attributes thanks to the index
-			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
-			glm::vec2 uv = temp_uvs[uvIndex - 1];
-			//glm::vec3 normal;
-			// Normal reference
-			//if ( m_model.mesh(1).hasNormal ) {
-			//	glm::vec3 normal = temp_normals[normalIndex - 1];
-			//}
-
-			// Put the attributes in buffers
-			out_vertices.push_back( vertex );
-			out_uvs.push_back( uv );
-			//out_normals.push_back( normal );
-		}
-
-
-		vertsize = out_vertices.size( );
+		vertsize = m_meshCache[1].verticesBuffer.size( );
 
 		glGenBuffers( 1, &vertexBuffer );
 		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
 		// Give our vertices to OpenGL.
-		glBufferData( GL_ARRAY_BUFFER, out_vertices.size( ) * sizeof( glm::vec3 ), &out_vertices[0], GL_STATIC_DRAW );
+		glBufferData( GL_ARRAY_BUFFER, m_meshCache[1].verticesBuffer.size( ) * sizeof( glm::vec3 ), &m_meshCache[1].verticesBuffer[0], GL_STATIC_DRAW );
 
 		glGenBuffers( 1, &uvBuffer );
 		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
-		glBufferData( GL_ARRAY_BUFFER, out_uvs.size( ) * sizeof( glm::vec2 ), &out_uvs[0], GL_STATIC_DRAW );
+		glBufferData( GL_ARRAY_BUFFER, m_meshCache[1].uvBuffer.size( ) * sizeof( glm::vec2 ), &m_meshCache[1].uvBuffer[0], GL_STATIC_DRAW );
 
 		//glGenBuffers( 1, &normalBuffer );
 		//glBindBuffer( GL_ARRAY_BUFFER, normalBuffer );
@@ -291,6 +159,8 @@ namespace gw2b {
 
 		// Load textures
 		Texture = loadTexture( 13851 );
+
+		//mesh.materialName.c_str( );
 		/*
 		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
@@ -368,67 +238,101 @@ namespace gw2b {
 		return true;
 	}
 
-	//createBuffers
-	/*
-	bool ModelViewer::createBuffers( MeshCache& p_cache, uint p_vertexCount, uint p_vertexSize, uint p_indexCount, uint p_indexSize ) {
-		p_cache.indexBuffer = nullptr;
-		p_cache.vertexBuffer = nullptr;
-
-		// 0 indices or 0 vertices, either is an empty mesh
-		if ( !p_vertexCount || !p_indexCount ) {
-			return false;
-		}
-
-		// Allocate vertex buffer and bail if it fails
-		if ( FAILED( m_device->CreateVertexBuffer( p_vertexCount * p_vertexSize, D3DUSAGE_WRITEONLY, c_vertexFVF,
-			D3DPOOL_DEFAULT, &p_cache.vertexBuffer, nullptr ) ) ) {
-			return false;
-		}
-
-		// Allocate index buffer and bail if it fails
-		if ( FAILED( m_device->CreateIndexBuffer( p_indexCount * p_indexSize, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16,
-			D3DPOOL_DEFAULT, &p_cache.indexBuffer, nullptr ) ) ) {
-			p_cache.vertexBuffer->Release( );
-			p_cache.vertexBuffer = nullptr;
-			p_cache.indexBuffer = nullptr;
-			return false;
-		}
-
-		return true;
-	}
-	*/
-	//populateBuffers
-	/*
 	bool ModelViewer::populateBuffers( const Mesh& p_mesh, MeshCache& p_cache ) {
-		uint vertexCount = p_mesh.vertices.GetSize( );
-		uint vertexSize = sizeof( Vertex );
-		uint indexCount = p_mesh.triangles.GetSize( ) * 3;
-		uint indexSize = sizeof( uint16 );
+		// Tempoarary buffer
+		std::vector<uint> vertexIndices, uvIndices, normalIndices;
+		std::vector<glm::vec3> temp_vertices;
+		std::vector<glm::vec2> temp_uvs;
+		std::vector<glm::vec3> temp_normals;
 
-		// Lock vertex buffer
-		Vertex* vertices;
-		if ( FAILED( p_cache.vertexBuffer->Lock( 0, vertexCount * vertexSize, reinterpret_cast<void**>( &vertices ), 0 ) ) ) {
-			return false;
+		// make it to a function
+		uint indexBase = 1;
+
+		// Read positions
+		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+			auto tempVertices = p_mesh.vertices[i].position;
+			temp_vertices.push_back( tempVertices );
 		}
 
-		// Populate vertex buffer
-		std::copy_n( &p_mesh.vertices[0], vertexCount, &vertices[0] );
-
-		// Unlock vertex buffer
-		Assert( SUCCEEDED( p_cache.vertexBuffer->Unlock( ) ) );
-
-		// Lock index buffer
-		uint16* indices;
-		if ( FAILED( p_cache.indexBuffer->Lock( 0, indexCount * indexSize, reinterpret_cast<void**>( &indices ), 0 ) ) ) {
-			return false;
+		// Read UVs
+		if ( p_mesh.hasUV ) {
+			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+				auto tempUvs = p_mesh.vertices[i].uv;
+				temp_uvs.push_back( tempUvs );
+			}
 		}
-		// Copy index buffer
-		std::copy_n( &p_mesh.triangles[0].index1, indexCount, &indices[0] );
-		Assert( SUCCEEDED( p_cache.indexBuffer->Unlock( ) ) );
+
+		// Read normals
+		if ( p_mesh.hasNormal ) {
+			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+				auto tempNormals = p_mesh.vertices[i].normal;
+				temp_normals.push_back( tempNormals );
+			}
+		}
+
+		// Read faces
+		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
+			const Triangle& triangle = p_mesh.triangles[i];
+
+			uint vertexIndex[3], uvIndex[3], normalIndex[3];
+
+			for ( uint j = 0; j < 3; j++ ) {
+				uint index = triangle.indices[j] + indexBase;
+
+				vertexIndex[j] = index;
+				// UV reference
+				if ( p_mesh.hasUV ) {
+					uvIndex[j] = index;
+				}
+
+				// Normal reference
+				if ( p_mesh.hasNormal ) {
+					normalIndex[j] = index;
+				}
+			}
+
+			vertexIndices.push_back( vertexIndex[0] );
+			vertexIndices.push_back( vertexIndex[1] );
+			vertexIndices.push_back( vertexIndex[2] );
+
+			if ( p_mesh.hasUV ) {
+				uvIndices.push_back( uvIndex[0] );
+				uvIndices.push_back( uvIndex[1] );
+				uvIndices.push_back( uvIndex[2] );
+			}
+
+			if ( p_mesh.hasNormal ) {
+				normalIndices.push_back( normalIndex[0] );
+				normalIndices.push_back( normalIndex[1] );
+				normalIndices.push_back( normalIndex[2] );
+			}
+		}
+
+		// For each vertex of each triangle
+		for ( uint i = 0; i < vertexIndices.size( ); i++ ) {
+			// Get the indices of its attributes
+			unsigned int vertexIndex = vertexIndices[i];
+			// Get the indices of its attributes
+			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
+			// Put the attributes in buffers
+			p_cache.verticesBuffer.push_back( vertex );
+
+			if ( p_mesh.hasUV ) {
+				unsigned int uvIndex = uvIndices[i];
+				glm::vec2 uv = temp_uvs[uvIndex - 1];
+				p_cache.uvBuffer.push_back( uv );
+			}
+
+			if ( p_mesh.hasNormal ) {
+				unsigned int normalIndex = normalIndices[i];
+				glm::vec3 normal = temp_normals[normalIndex - 1];
+				p_cache.normalBuffer.push_back( normal );
+			}
+		}
+		indexBase += p_mesh.vertices.size( );
 
 		return true;
 	}
-	*/
 
 	void ModelViewer::render( ) {
 
@@ -476,24 +380,24 @@ namespace gw2b {
 		glEnableVertexAttribArray( 0 );
 		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
 		glVertexAttribPointer(
-			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			( void* ) 0         // array buffer offset
+			0,								// attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,								// size
+			GL_FLOAT,						// type
+			GL_FALSE,						// normalized?
+			0,								// stride
+			( void* ) 0						// array buffer offset
 			);
 
 		// 2nd attribute buffer : UVs
 		glEnableVertexAttribArray( 1 );
 		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
 		glVertexAttribPointer(
-			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			2,                                // size : U+V => 2
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			( void* ) 0                          // array buffer offset
+			1,								// attribute. No particular reason for 1, but must match the layout in the shader.
+			2,								// size : U+V => 2
+			GL_FLOAT,						// type
+			GL_FALSE,						// normalized?
+			0,								// stride
+			( void* ) 0						// array buffer offset
 			);
 
 		if ( m_statusWireframe == true ) {
@@ -846,12 +750,12 @@ namespace gw2b {
 
 		// Calculate complete bounds
 		Bounds bounds = m_model.bounds( );
-		float height = bounds.max.z - bounds.min.z;
+		float height = bounds.max.y - bounds.min.y;
 		if ( height <= 0 ) {
 			return;
 		}
 
-		float distance = bounds.min.y - ( ( height * 0.5f ) / ::tanf( fov * 0.5f ) );
+		float distance = bounds.min.z - ( ( height * 0.5f ) / ::tanf( fov * 0.5f ) );
 		if ( distance < 0 ) {
 			distance *= -1;
 		}

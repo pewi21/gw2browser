@@ -45,16 +45,9 @@ namespace gw2b {
 
 	struct TextureCache {
 		GLuint					diffuseMap;
-		//GLuint				normalMap;
+		GLuint					normalMap;
 	};
-	/*
-	struct AutoReleaser {
-	template <typename T>
-	void operator()( T* p_pointer ) const {
-	p_pointer->Release( );
-	}
-	};
-	*/
+
 	class ModelViewer;
 	class RenderTimer : public wxTimer {
 		ModelViewer* canvas;
@@ -66,8 +59,8 @@ namespace gw2b {
 
 	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
 		Model                       m_model;
-		Array<MeshCache>            m_meshCache;
-		Array<TextureCache>         m_textureCache;
+		std::vector<MeshCache>      m_meshCache;
+		std::vector<TextureCache>   m_textureCache;
 		Camera                      m_camera;
 		wxPoint                     m_lastMousePos;
 		float                       m_minDistance;
@@ -102,8 +95,7 @@ namespace gw2b {
 		void render( );
 		void focus( );
 		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
-		//bool createBuffers( MeshCache& p_cache, uint p_vertexCount, uint p_vertexSize, uint p_indexCount, uint p_indexSize );
-		//bool populateBuffers( const Mesh& p_mesh, MeshCache& p_cache );
+		bool populateBuffers( const Mesh& p_mesh, MeshCache& p_cache );
 		GLuint loadTexture( uint p_fileId );
 		//void drawMesh( uint p_meshIndex );
 		//void drawText( uint p_x, uint p_y, const wxString& p_text );
