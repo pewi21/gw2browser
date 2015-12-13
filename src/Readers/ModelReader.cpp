@@ -166,7 +166,7 @@ namespace gw2b {
 		// not work well with obj-files.
 		stream.imbue( std::locale( "C" ) );
 		stream << "# " << model.numMeshes( ) << " meshes" << std::endl;
-
+// todo : rewrite this.
 		uint indexBase = 1;
 		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
 			const Mesh& mesh = model.mesh( i );
@@ -184,7 +184,9 @@ namespace gw2b {
 			// Write UVs
 			if ( mesh.hasUV ) {
 				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
-					stream << "vt " << mesh.vertices[j].uv.x << ' ' << mesh.vertices[j].uv.y << std::endl;
+					auto u = mesh.vertices[j].uv.x;
+					auto v = 1.0f - mesh.vertices[j].uv.y;// Convert DirectX UV coordinate to OpenGL UV coordinate
+					stream << "vt " << u << ' ' << v << std::endl;
 				}
 			}
 
@@ -275,7 +277,7 @@ namespace gw2b {
 		// Create storage for submeshes now, so we can parallelize the loop
 		Mesh* meshes = p_model.addMeshes( meshCount );
 
-#pragma omp parallel for shared( meshes )
+//#pragma omp parallel for shared( meshes )
 		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
 			// Fetch mesh info
 			auto meshInfo = geometryChunk->meshes[i];
@@ -283,6 +285,8 @@ namespace gw2b {
 			// Fetch buffer info
 			auto vertexInfo = meshInfo.geometry->verts;
 			auto indicesInfo = meshInfo.geometry->indices;
+			auto vertexCount = vertexInfo.vertexCount;
+			auto indiceCount = indicesInfo.indices.size( );
 
 			// Add new mesh
 			Mesh& mesh = meshes[i];
@@ -292,14 +296,40 @@ namespace gw2b {
 			mesh.materialName = wxString::FromUTF8( meshInfo.materialName.data( ) );
 
 			// Vertex data
-			if ( vertexInfo.vertexCount ) {
-				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexInfo.vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
+			if ( vertexCount ) {
+				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
 			}
 
-			auto indiceCount = indicesInfo.indices.size( );
 			// Index data
 			if ( indiceCount ) {
 				this->readIndiceBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
+
+				// Calculate bounds
+				float floatMin = std::numeric_limits<float>::min( );
+				float floatMax = std::numeric_limits<float>::max( );
+				mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
+				mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
+
+				glm::vec3 min = mesh.bounds.min;
+				glm::vec3 max = mesh.bounds.max;
+
+				auto indices = reinterpret_cast<const uint16*>( reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ) );
+				for ( uint i = 0; i < indiceCount; i++ ) {
+					auto& vertex = mesh.vertices[indices[i]];
+					glm::vec3 position = vertex.position;
+					min = glm::min( min, position );
+					max = glm::max( max, position );
+				}
+				mesh.bounds.min = min;
+				mesh.bounds.max = max;
+			}
+
+			if ( mesh.hasNormal ) {
+				// normalize normal
+			} else {
+				// calculate vertex normal if not exist
+				this->computeNormal( mesh, vertexCount );
+				mesh.hasNormal = true;
 			}
 		}
 	}
@@ -319,7 +349,12 @@ namespace gw2b {
 
 			// Bit 0: Position
 			if ( p_vertexFormat & ANFVF_Position ) {
-				::memcpy( &vertex.position, pos, sizeof( vertex.position ) );
+				glm::vec3 vertices;
+				::memcpy( &vertices, pos, sizeof( vertices ) );
+				// Convert DirectX coordinate to OpenGL
+				vertex.position.x = vertices.x;
+				vertex.position.z = vertices.y;
+				vertex.position.y = -vertices.z;
 				pos += sizeof( vertex.position );
 			}
 			// Bit 1: Weights
@@ -332,6 +367,7 @@ namespace gw2b {
 			}
 			// Bit 3: Normal
 			if ( p_vertexFormat & ANFVF_Normal ) {
+				// need to test this
 				::memcpy( &vertex.normal, pos, sizeof( vertex.normal ) );
 				pos += sizeof( vertex.normal );
 			}
@@ -444,29 +480,24 @@ namespace gw2b {
 
 	}
 
+	void ModelReader::computeNormal( Mesh& p_mesh, uint p_vertexCount ) const {
+		auto& vertex = p_mesh.vertices;
+
+		// Compute surface normal for a triangle using Newell's method
+		for ( uint i = 0; i < p_vertexCount; i++ ) {
+			auto& normal = vertex[i].normal;
+			auto& current = vertex[i].position;
+			auto& next = vertex[( i + 1 ) % p_vertexCount].position;
+
+			normal.x += ( current.y - next.y ) * ( current.z + next.z );
+			normal.y += ( current.z - next.z ) * ( current.x + next.x );
+			normal.z += ( current.x - next.x ) * ( current.y + next.y );
+		}
+	}
+
 	void ModelReader::readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
 		p_mesh.triangles.resize( p_indiceCount / 3 );
 		::memcpy( p_mesh.triangles.data( ), p_data, p_mesh.triangles.size( ) * sizeof( Triangle ) );
-
-		// Calculate bounds
-		float floatMin = std::numeric_limits<float>::min( );
-		float floatMax = std::numeric_limits<float>::max( );
-		p_mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
-		p_mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
-
-		glm::vec3 min = p_mesh.bounds.min;
-		glm::vec3 max = p_mesh.bounds.max;
-
-		auto indices = reinterpret_cast<const uint16*>( p_data );
-		for ( uint i = 0; i < p_indiceCount; i++ ) {
-			auto& vertex = p_mesh.vertices[indices[i]];
-			glm::vec3 position = vertex.position;
-			min = glm::min( min, position );
-			max = glm::max( max, position );
-		}
-
-		p_mesh.bounds.min = min;
-		p_mesh.bounds.max = max;
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
