@@ -306,15 +306,6 @@ namespace gw2b {
 				this->readIndiceBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
 				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 			}
-
-			if ( mesh.hasNormal ) {
-				// normalize normal
-				// todo, probaly need to convert it to OpenGL coordinate
-			} else {
-				// calculate vertex normal if not exist
-				this->computeNormal( mesh, vertexCount );
-				mesh.hasNormal = true;
-			}
 		}
 	}
 
@@ -462,22 +453,6 @@ namespace gw2b {
 			+ ( ( ( p_vertexFormat & ANFVF_PositionCompressed ) >> 28 ) * 6 )
 			+ ( ( ( p_vertexFormat & ANFVF_Unknown5 ) >> 29 ) * 12 );
 
-	}
-
-	void ModelReader::computeNormal( Mesh& p_mesh, uint p_vertexCount ) const {
-		auto& vertex = p_mesh.vertices;
-
-		// Compute surface normal for a triangle using Newell's method
-#pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( p_vertexCount ); i++ ) {
-			auto& normal = vertex[i].normal;
-			auto& current = vertex[i].position;
-			auto& next = vertex[( i + 1 ) % p_vertexCount].position;
-
-			normal.x += ( current.y - next.y ) * ( current.z + next.z );
-			normal.y += ( current.z - next.z ) * ( current.x + next.x );
-			normal.z += ( current.x - next.x ) * ( current.y + next.y );
-		}
 	}
 
 	void ModelReader::computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
