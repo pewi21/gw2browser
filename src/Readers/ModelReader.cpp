@@ -210,12 +210,13 @@ namespace gw2b {
 					// UV reference
 					if ( mesh.hasUV ) {
 						stream << '/' << index;
-					} else if ( mesh.hasNormal ) {
-						stream << '/';
 					}
 
 					// Normal reference
 					if ( mesh.hasNormal ) {
+						if ( !mesh.hasUV ) {
+							stream << '/';
+						}
 						stream << '/' << index;
 					}
 				}
