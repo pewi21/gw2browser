@@ -166,14 +166,14 @@ namespace gw2b {
 		// not work well with obj-files.
 		stream.imbue( std::locale( "C" ) );
 		stream << "# " << model.numMeshes( ) << " meshes" << std::endl;
-// todo : rewrite this.
+
 		uint indexBase = 1;
 		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
 			const Mesh& mesh = model.mesh( i );
 
 			// Write header
-			stream << std::endl << "# Mesh " << i << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
-			stream << "g mesh" << i << std::endl;
+			stream << std::endl << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
+			stream << "g mesh" << i + 1 << std::endl;
 			stream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
 
 			// Write positions
@@ -185,7 +185,7 @@ namespace gw2b {
 			if ( mesh.hasUV ) {
 				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
 					auto u = mesh.vertices[j].uv.x;
-					auto v = 1.0f - mesh.vertices[j].uv.y;// Convert DirectX UV coordinate to OpenGL UV coordinate
+					auto v = 1.0f - mesh.vertices[j].uv.y; // Convert DirectX UV coordinate to OpenGL UV coordinate
 					stream << "vt " << u << ' ' << v << std::endl;
 				}
 			}
@@ -198,6 +198,7 @@ namespace gw2b {
 			}
 
 			// Write faces
+			// correct this if it wrong
 			for ( uint j = 0; j < mesh.triangles.size( ); j++ ) {
 				const Triangle& triangle = mesh.triangles[j];
 
@@ -585,8 +586,8 @@ namespace gw2b {
 
 					// Normal?
 					else if ( ( ( textures[t].token >> 32 ) == 0x1816c9ee )
-						|| ( ( textures[t].token >> 32 ) == 0x8b0bbd87 )
-						|| ( ( textures[t].token >> 32 ) == 0xa55a48b0 ) ) {
+						/*|| ( ( textures[t].token >> 32 ) == 0x8b0bbd87 )
+						|| ( ( textures[t].token >> 32 ) == 0xa55a48b0 )*/ ) {
 						data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 					}
 
