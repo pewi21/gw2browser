@@ -4,12 +4,18 @@
 in vec2 UV;
 
 // Ouput data
-out vec3 color;
+out vec4 outColor;
 
 // Values that stay constant for the whole mesh.
-uniform sampler2D myTextureSampler;
+uniform sampler2D myTexture;
+
+float cutoff = 0.1;
 
 void main( ) {
 	// Output color = color of the texture at the specified UV
-	color = texture2D( myTextureSampler, UV ).rgb;
+	vec4 texel = texture( myTexture, UV );
+	if ( texel.a < cutoff ) {
+		discard;
+	}
+	outColor = texel;
 }

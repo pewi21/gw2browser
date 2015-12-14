@@ -38,9 +38,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	struct MeshCache {
-		std::vector<glm::vec3>	verticesBuffer;
-		std::vector<glm::vec2>	uvBuffer;
-		std::vector<glm::vec3>	normalBuffer;
+		std::vector<glm::vec3>	vertices;
+		std::vector<glm::vec2>	uvs;
+		std::vector<glm::vec3>	normals;
+	};
+
+	struct BufferObject {
+		GLuint					vertexBuffer;
+		GLuint					uvBuffer;
+		GLuint					normalBuffer;
 	};
 
 	struct TextureCache {
@@ -59,7 +65,8 @@ namespace gw2b {
 
 	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
 		Model                       m_model;
-		std::vector<MeshCache>      m_meshCache;
+		std::vector<MeshCache>		m_meshCache;
+		std::vector<BufferObject>   m_meshBuffer;
 		std::vector<TextureCache>   m_textureCache;
 		Camera                      m_camera;
 		wxPoint                     m_lastMousePos;
@@ -89,8 +96,7 @@ namespace gw2b {
 		void paintNow( wxPaintEvent& p_event );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		//bool populateBuffers( const Mesh& p_mesh, MeshCache& p_cache );
-		//void drawMesh( uint p_meshIndex );
+		void drawMesh( uint p_meshIndex );
 		//void drawText( uint p_x, uint p_y, const wxString& p_text 
 		bool loadMeshes( const Mesh& p_mesh, MeshCache& p_cache, uint p_indexBase );
 		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
@@ -110,10 +116,6 @@ namespace gw2b {
 
 		GLuint						VertexArrayID;
 
-		GLuint						vertexBuffer;
-		GLuint						uvBuffer;
-		GLuint						normalBuffer;
-
 		// shader ID
 		GLuint						programID;
 		GLuint						Texture;
@@ -121,10 +123,6 @@ namespace gw2b {
 
 		GLuint						MatrixID;
 		glm::mat4					MVP;
-
-
-		size_t vertsize;
-
 	}; // class ModelViewer
 
 }; // namespace gw2b

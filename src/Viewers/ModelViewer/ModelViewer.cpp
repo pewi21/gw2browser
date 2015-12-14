@@ -99,9 +99,25 @@ namespace gw2b {
 	}
 
 	ModelViewer::~ModelViewer( ) {
-		// Cleanup VBO and shader
-		glDeleteBuffers( 1, &vertexBuffer );
-		glDeleteBuffers( 1, &uvBuffer );
+		for ( uint i = 0; i < m_meshBuffer.size( ); i++ ) {
+			if ( m_meshBuffer[i].vertexBuffer ) {
+				glDeleteBuffers( 1, &m_meshBuffer[i].vertexBuffer );
+			}
+			if ( m_meshBuffer[i].uvBuffer ) {
+				glDeleteBuffers( 1, &m_meshBuffer[i].uvBuffer );
+			}
+			if ( m_meshBuffer[i].normalBuffer ) {
+				glDeleteBuffers( 1, &m_meshBuffer[i].normalBuffer );
+			}
+		}
+		/*for ( uint i = 0; i < m_textureCache.GetSize( ); i++ ) {
+			if ( m_textureCache[i].diffuseMap ) {
+				m_textureCache[i].diffuseMap->Release( );
+			}
+			if ( m_textureCache[i].normalMap ) {
+				m_textureCache[i].normalMap->Release( );
+			}
+		}*/
 		glDeleteProgram( programID );
 		glDeleteTextures( 1, &TextureID );
 		glDeleteVertexArrays( 1, &VertexArrayID );
@@ -111,7 +127,19 @@ namespace gw2b {
 	}
 
 	void ModelViewer::clear( ) {
-		//m_textureCache.Clear( );
+		for ( uint i = 0; i < m_meshBuffer.size( ); i++ ) {
+			if ( m_meshBuffer[i].vertexBuffer ) {
+				glDeleteBuffers( 1, &m_meshBuffer[i].vertexBuffer );
+			}
+			if ( m_meshBuffer[i].uvBuffer ) {
+				glDeleteBuffers( 1, &m_meshBuffer[i].uvBuffer );
+			}
+			if ( m_meshBuffer[i].normalBuffer ) {
+				glDeleteBuffers( 1, &m_meshBuffer[i].normalBuffer );
+			}
+		}
+		glDeleteTextures( 1, &TextureID );
+
 		m_meshCache.clear( );
 		m_model = Model( );
 		ViewerGLCanvas::clear( );
@@ -125,37 +153,40 @@ namespace gw2b {
 		auto reader = this->modelReader( );
 		m_model = reader->getModel( );
 
-		// Create mesh cache
+		// Create mesh cache and BO
 		m_meshCache.resize( m_model.numMeshes( ) );
+		m_meshBuffer.resize( m_model.numMeshes( ) );
 
 		uint indexBase = 1;
 		// Load meshes
 		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
+			auto& buffer = m_meshBuffer[i];
 
 			// Load mesh to mesh cache
 			if ( !this->loadMeshes( mesh, cache, indexBase ) ) {
 				continue;
 			}
+
+			// Populate buffers
+
+			glGenBuffers( 1, &buffer.vertexBuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, buffer.vertexBuffer );
+			glBufferData( GL_ARRAY_BUFFER, cache.vertices.size( ) * sizeof( glm::vec3 ), &cache.vertices[0], GL_STATIC_DRAW );
+
+			if ( mesh.hasUV ) {
+				glGenBuffers( 1, &buffer.uvBuffer );
+				glBindBuffer( GL_ARRAY_BUFFER, buffer.uvBuffer );
+				glBufferData( GL_ARRAY_BUFFER, cache.uvs.size( ) * sizeof( glm::vec2 ), &cache.uvs[0], GL_STATIC_DRAW );
+			}
+
+			if ( mesh.hasNormal ) {
+				glGenBuffers( 1, &buffer.normalBuffer );
+				glBindBuffer( GL_ARRAY_BUFFER, buffer.normalBuffer );
+				glBufferData( GL_ARRAY_BUFFER, cache.normals.size( ) * sizeof( glm::vec3 ), &cache.normals[0], GL_STATIC_DRAW );
+			}
 		}
-
-		// popurate opengl buffer
-
-		vertsize = m_meshCache[1].verticesBuffer.size( );
-
-		glGenBuffers( 1, &vertexBuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
-		// Give our vertices to OpenGL.
-		glBufferData( GL_ARRAY_BUFFER, m_meshCache[1].verticesBuffer.size( ) * sizeof( glm::vec3 ), &m_meshCache[1].verticesBuffer[0], GL_STATIC_DRAW );
-
-		glGenBuffers( 1, &uvBuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
-		glBufferData( GL_ARRAY_BUFFER, m_meshCache[1].uvBuffer.size( ) * sizeof( glm::vec2 ), &m_meshCache[1].uvBuffer[0], GL_STATIC_DRAW );
-
-		//glGenBuffers( 1, &normalBuffer );
-		//glBindBuffer( GL_ARRAY_BUFFER, normalBuffer );
-		//glBufferData( GL_ARRAY_BUFFER, out_normals.size( ) * sizeof( glm::vec3 ), &out_normals[0], GL_STATIC_DRAW );
 
 		// Create texture cache
 		m_textureCache.resize( m_model.numMaterialData( ) );
@@ -235,8 +266,8 @@ namespace gw2b {
 		// Get a handle for our "MVP" uniform
 		MatrixID = glGetUniformLocation( programID, "MVP" );
 
-		// Get a handle for our "myTextureSampler" uniform
-		TextureID = glGetUniformLocation( programID, "myTextureSampler" );
+		// Get a handle for our "myTexture" uniform
+		TextureID = glGetUniformLocation( programID, "myTexture" );
 
 		return true;
 	}
@@ -289,41 +320,28 @@ namespace gw2b {
 		// Send our transformation to the currently bound shader, in the "MVP" uniform
 		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, &MVP[0][0] );
 
+		if ( m_statusWireframe == true ) {
+			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		} else {
+			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		}
+
+		//----- todo
+
 		// Bind our texture in Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
 		glBindTexture( GL_TEXTURE_2D, Texture );
-		// Set our "myTextureSampler" sampler to user Texture Unit 0
+		// Set our "myTexture" sampler to user Texture Unit 0
 		glUniform1i( TextureID, 0 );
+		//-----
 
-		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray( 0 );
-		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
-		glVertexAttribPointer(
-			0,								// attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,								// size
-			GL_FLOAT,						// type
-			GL_FALSE,						// normalized?
-			0,								// stride
-			( void* ) 0						// array buffer offset
-			);
+		uint vertexCount = 0;
+		uint triangleCount = 0;
 
-		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray( 1 );
-		glBindBuffer( GL_ARRAY_BUFFER, uvBuffer );
-		glVertexAttribPointer(
-			1,								// attribute. No particular reason for 1, but must match the layout in the shader.
-			2,								// size : U+V => 2
-			GL_FLOAT,						// type
-			GL_FALSE,						// normalized?
-			0,								// stride
-			( void* ) 0						// array buffer offset
-			);
-
-		if ( m_statusWireframe == true ) {
-			glDrawArrays( GL_LINES, 0, vertsize );
-		} else {
-			// Draw the triangle !
-			glDrawArrays( GL_TRIANGLES, 0, vertsize ); // change this
+		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+			this->drawMesh( i );
+			vertexCount += m_model.mesh( i ).vertices.size( );
+			triangleCount += m_model.mesh( i ).triangles.size( );
 		}
 
 		glDisableVertexAttribArray( 0 );
@@ -332,18 +350,6 @@ namespace gw2b {
 		SwapBuffers( );
 
 		/*
-		this->updateMatrices( );
-
-		uint vertexCount = 0;
-		uint triangleCount = 0;
-
-		this->beginFrame( 0x353535 );
-		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
-			this->drawMesh( i );
-			vertexCount += m_model.mesh( i ).vertices.GetSize( );
-			triangleCount += m_model.mesh( i ).triangles.GetSize( );
-		}
-
 		this->drawText( 0, 0, wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ) );
 		this->drawText( 0, 0x14, wxString::Format( wxT( "Vertices: %d" ), vertexCount ) );
 		this->drawText( 0, 0x28, wxString::Format( wxT( "Triangles: %d" ), triangleCount ) );
@@ -408,77 +414,72 @@ namespace gw2b {
 		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMap ) );
 		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
 		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
-
-		this->endFrame( );
 		*/
 	}
 
-	/*
 	void ModelViewer::drawMesh( uint p_meshIndex ) {
-		auto& mesh = m_meshCache[p_meshIndex];
-
-		// No mesh to draw?
-		if ( mesh.indexBuffer == nullptr || mesh.vertexBuffer == nullptr ) {
-			return;
-		}
-
-		// Count vertices / primitives
-		uint vertexCount = m_model.mesh( p_meshIndex ).vertices.GetSize( );
-		uint primitiveCount = m_model.mesh( p_meshIndex ).triangles.GetSize( );
-		int  materialIndex = m_model.mesh( p_meshIndex ).materialIndex;
-
-		// Set buffers
-		if ( FAILED( m_device->SetFVF( c_vertexFVF ) ) ) {
-			return;
-		}
-		if ( FAILED( m_device->SetStreamSource( 0, mesh.vertexBuffer, 0, sizeof( Vertex ) ) ) ) {
-			return;
-		}
-		if ( FAILED( m_device->SetIndices( mesh.indexBuffer ) ) ) {
-			return;
-		}
+		auto& mesh = m_meshBuffer[p_meshIndex];
+		auto vertexCount = m_meshCache[p_meshIndex].vertices.size( );
 
 		// Alpha blending, for alpha support
-		if ( doesUseAlpha( m_model.mesh( p_meshIndex ).materialName ) ) {
-			m_device->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-			m_device->SetRenderState( D3DRS_BLENDOP, D3DBLENDOP_ADD );
-			m_device->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-			m_device->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+		/*if ( doesUseAlpha( m_model.mesh( p_meshIndex ).materialName ) ) {
+
+			// Enable blending
+			//glEnable( GL_BLEND );
+			//glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
 			// Alpha testing, so we can still render behind transparent pixels
-			D3DCAPS9 caps;
-			m_device->GetDeviceCaps( &caps );
-			if ( caps.AlphaCmpCaps & D3DPCMPCAPS_GREATEREQUAL ) {
-				m_device->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
-				m_device->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );
-				m_device->SetRenderState( D3DRS_ALPHAREF, 0x7f );
-			}
+			//glAlphaFunc( GL_GEQUAL, 0x7f );
 		} else {
-			m_device->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-			m_device->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-		}
-
-		// Begin drawing
-		uint numPasses;
-		m_effect->SetTechnique( "RenderScene" );
-		m_effect->Begin( &numPasses, 0 );
+			//glDisable( GL_BLEND );
+			//glDepthFunc( GL_LESS );
+		}*/
 
 		// Update texture
-		if ( materialIndex >= 0 && m_textureCache[materialIndex].diffuseMap ) {
+		/*if ( materialIndex >= 0 && m_textureCache[materialIndex].diffuseMap ) {
 			m_effect->SetTexture( "g_DiffuseTex", m_textureCache[materialIndex].diffuseMap );
-		}
+		}*/
 
-		// Draw each shader pass
-		for ( uint i = 0; i < numPasses; i++ ) {
-			m_effect->BeginPass( i );
-			m_device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, vertexCount, 0, primitiveCount );
-			m_effect->EndPass( );
-		}
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray( 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, mesh.vertexBuffer );
+		glVertexAttribPointer(
+			0,								// attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,								// size
+			GL_FLOAT,						// type
+			GL_FALSE,						// normalized?
+			0,								// stride
+			( void* ) 0						// array buffer offset
+			);
 
-		// End
-		m_effect->End( );
+		// 2nd attribute buffer : UVs
+		glEnableVertexAttribArray( 1 );
+		glBindBuffer( GL_ARRAY_BUFFER, mesh.uvBuffer );
+		glVertexAttribPointer(
+			1,								// attribute. No particular reason for 1, but must match the layout in the shader.
+			2,								// size
+			GL_FLOAT,						// type
+			GL_FALSE,						// normalized?
+			0,								// stride
+			( void* ) 0						// array buffer offset
+			);
+
+		// 3rd attribute buffer : normals
+		/*glEnableVertexAttribArray( 2 );
+		glBindBuffer( GL_ARRAY_BUFFER, mesh.normalBuffer );
+		glVertexAttribPointer(
+			2,								// attribute
+			3,								// size
+			GL_FLOAT,						// type
+			GL_FALSE,						// normalized?
+			0,								// stride
+			( void* ) 0						// array buffer offset
+			);*/
+
+		// Draw triangle!
+		glDrawArrays( GL_TRIANGLES, 0, vertexCount );
+
 	}
-	*/
 
 	// draw text function
 	/*
@@ -562,22 +563,22 @@ namespace gw2b {
 		// For each vertex of each triangle
 		for ( uint i = 0; i < vertexIndices.size( ); i++ ) {
 			// Get the indices of its attributes
-			unsigned int vertexIndex = vertexIndices[i];
+			uint vertexIndex = vertexIndices[i];
 			// Get the indices of its attributes
 			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
 			// Put the attributes in buffers
-			p_cache.verticesBuffer.push_back( vertex );
+			p_cache.vertices.push_back( vertex );
 
 			if ( p_mesh.hasUV ) {
-				unsigned int uvIndex = uvIndices[i];
+				uint uvIndex = uvIndices[i];
 				glm::vec2 uv = temp_uvs[uvIndex - 1];
-				p_cache.uvBuffer.push_back( uv );
+				p_cache.uvs.push_back( uv );
 			}
 
 			if ( p_mesh.hasNormal ) {
-				unsigned int normalIndex = normalIndices[i];
+				uint normalIndex = normalIndices[i];
 				glm::vec3 normal = temp_normals[normalIndex - 1];
-				p_cache.normalBuffer.push_back( normal );
+				p_cache.normals.push_back( normal );
 			}
 		}
 
@@ -613,21 +614,57 @@ namespace gw2b {
 			return false;
 		}
 
+		// wxImage store seperate alpha channel if present
+		GLubyte* bitmapData = imageData.GetData( );
+		GLubyte* alphaData = imageData.GetAlpha( );
+
+		int imageWidth = imageData.GetWidth( );
+		int imageHeight = imageData.GetHeight( );
+		int bytesPerPixel = imageData.HasAlpha( ) ? 4 : 3;
+		int imageSize = imageWidth * imageHeight * bytesPerPixel;
+
+		Array<GLubyte> image( imageSize );
+
+		// Merge wxImage alpha channel to RGBA
+		for ( int y = 0; y < imageHeight; y++ ) {
+			for ( int x = 0; x < imageWidth; x++ ) {
+				image[( x + y * imageWidth ) * bytesPerPixel + 0] = bitmapData[( x + y * imageWidth ) * 3];
+				image[( x + y * imageWidth ) * bytesPerPixel + 1] = bitmapData[( x + y * imageWidth ) * 3 + 1];
+				image[( x + y * imageWidth ) * bytesPerPixel + 2] = bitmapData[( x + y * imageWidth ) * 3 + 2];
+
+				if ( bytesPerPixel == 4 ) {
+					image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
+				}
+			}
+		}
+
 		// Create one OpenGL texture
 		GLuint textureID;
 		glGenTextures( 1, &textureID );
+		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+
+		// Trilinear texture filtering
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+
 
 		// "Bind" the newly created texture : all future texture functions will modify this texture
 		glBindTexture( GL_TEXTURE_2D, textureID );
 
 		// Give the image to OpenGL
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, imageData.GetWidth( ), imageData.GetHeight( ), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData.GetData( ) );
+		glTexImage2D( GL_TEXTURE_2D,
+			0,
+			bytesPerPixel,
+			imageWidth,
+			imageHeight,
+			0,
+			imageData.HasAlpha( ) ? GL_RGBA : GL_RGB,
+			GL_UNSIGNED_BYTE,
+			image.GetPointer( ) );
 
-		// Trilinear texture filtering
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 		glGenerateMipmap( GL_TEXTURE_2D );
 
 		deletePointer( reader );
