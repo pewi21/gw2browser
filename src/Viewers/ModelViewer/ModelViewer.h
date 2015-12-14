@@ -85,20 +85,21 @@ namespace gw2b {
 		} // already asserted with a dynamic_cast
 
 	private:
+		int initGL( );
 		void paintNow( wxPaintEvent& p_event );
 		void onPaintEvt( wxPaintEvent& p_event );
-		void onClose( wxCloseEvent& evt );
+		void render( );
+		//bool populateBuffers( const Mesh& p_mesh, MeshCache& p_cache );
+		//void drawMesh( uint p_meshIndex );
+		//void drawText( uint p_x, uint p_y, const wxString& p_text 
+		bool loadMeshes( const Mesh& p_mesh, MeshCache& p_cache, uint p_indexBase );
+		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
+		GLuint loadTexture( uint p_fileId );
+		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );
 		void onMouseWheelEvt( wxMouseEvent& p_event );
 		void onKeyDownEvt( wxKeyEvent& p_event );
-		int initGL( );
-		void render( );
-		void focus( );
-		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
-		bool populateBuffers( const Mesh& p_mesh, MeshCache& p_cache );
-		GLuint loadTexture( uint p_fileId );
-		//void drawMesh( uint p_meshIndex );
-		//void drawText( uint p_x, uint p_y, const wxString& p_text );
+		void onClose( wxCloseEvent& evt );
 
 	private:
 		bool						m_glInitialized = false;

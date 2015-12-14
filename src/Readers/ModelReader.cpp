@@ -198,7 +198,6 @@ namespace gw2b {
 			}
 
 			// Write faces
-			// correct this if it wrong
 			for ( uint j = 0; j < mesh.triangles.size( ); j++ ) {
 				const Triangle& triangle = mesh.triangles[j];
 
@@ -304,7 +303,7 @@ namespace gw2b {
 
 			// Index data
 			if ( indiceCount ) {
-				this->readIndiceBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
+				this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
 				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 			}
 		}
@@ -478,7 +477,7 @@ namespace gw2b {
 		p_mesh.bounds.max = max;
 	}
 
-	void ModelReader::readIndiceBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+	void ModelReader::readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
 		p_mesh.triangles.resize( p_indiceCount / 3 );
 		::memcpy( p_mesh.triangles.data( ), p_data, p_mesh.triangles.size( ) * sizeof( Triangle ) );
 	}

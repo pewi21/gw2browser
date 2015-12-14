@@ -128,16 +128,19 @@ namespace gw2b {
 		// Create mesh cache
 		m_meshCache.resize( m_model.numMeshes( ) );
 
+		uint indexBase = 1;
 		// Load meshes
 		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
 			// Load mesh to mesh cache
-			if ( !this->populateBuffers( mesh, cache ) ) {
+			if ( !this->loadMeshes( mesh, cache, indexBase ) ) {
 				continue;
 			}
 		}
+
+		// popurate opengl buffer
 
 		vertsize = m_meshCache[1].verticesBuffer.size( );
 
@@ -154,8 +157,8 @@ namespace gw2b {
 		//glBindBuffer( GL_ARRAY_BUFFER, normalBuffer );
 		//glBufferData( GL_ARRAY_BUFFER, out_normals.size( ) * sizeof( glm::vec3 ), &out_normals[0], GL_STATIC_DRAW );
 
-		// Create DX texture cache
-		//m_textureCache.SetSize( m_model.numMaterialData( ) );
+		// Create texture cache
+		m_textureCache.resize( m_model.numMaterialData( ) );
 
 		// Load textures
 		Texture = loadTexture( 13851 );
@@ -238,100 +241,16 @@ namespace gw2b {
 		return true;
 	}
 
-	bool ModelViewer::populateBuffers( const Mesh& p_mesh, MeshCache& p_cache ) {
-		// Tempoarary buffer
-		std::vector<uint> vertexIndices, uvIndices, normalIndices;
-		std::vector<glm::vec3> temp_vertices;
-		std::vector<glm::vec2> temp_uvs;
-		std::vector<glm::vec3> temp_normals;
+	void ModelViewer::paintNow( wxPaintEvent& p_event ) {
+		wxPaintDC dc( this );
 
-		// make it to a function
-		uint indexBase = 1;
+		this->render( );
+	}
 
-		// Read positions
-		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-			auto tempVertices = p_mesh.vertices[i].position;
-			temp_vertices.push_back( tempVertices );
-		}
+	void ModelViewer::onPaintEvt( wxPaintEvent& p_event ) {
+		wxPaintDC dc( this );
 
-		// Read UVs
-		if ( p_mesh.hasUV ) {
-			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-				auto tempUvs = p_mesh.vertices[i].uv;
-				temp_uvs.push_back( tempUvs );
-			}
-		}
-
-		// Read normals
-		if ( p_mesh.hasNormal ) {
-			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-				auto tempNormals = p_mesh.vertices[i].normal;
-				temp_normals.push_back( tempNormals );
-			}
-		}
-
-		// Read faces
-		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
-			const Triangle& triangle = p_mesh.triangles[i];
-
-			uint vertexIndex[3], uvIndex[3], normalIndex[3];
-
-			for ( uint j = 0; j < 3; j++ ) {
-				uint index = triangle.indices[j] + indexBase;
-
-				vertexIndex[j] = index;
-				// UV reference
-				if ( p_mesh.hasUV ) {
-					uvIndex[j] = index;
-				}
-
-				// Normal reference
-				if ( p_mesh.hasNormal ) {
-					normalIndex[j] = index;
-				}
-			}
-
-			vertexIndices.push_back( vertexIndex[0] );
-			vertexIndices.push_back( vertexIndex[1] );
-			vertexIndices.push_back( vertexIndex[2] );
-
-			if ( p_mesh.hasUV ) {
-				uvIndices.push_back( uvIndex[0] );
-				uvIndices.push_back( uvIndex[1] );
-				uvIndices.push_back( uvIndex[2] );
-			}
-
-			if ( p_mesh.hasNormal ) {
-				normalIndices.push_back( normalIndex[0] );
-				normalIndices.push_back( normalIndex[1] );
-				normalIndices.push_back( normalIndex[2] );
-			}
-		}
-
-		// For each vertex of each triangle
-		for ( uint i = 0; i < vertexIndices.size( ); i++ ) {
-			// Get the indices of its attributes
-			unsigned int vertexIndex = vertexIndices[i];
-			// Get the indices of its attributes
-			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
-			// Put the attributes in buffers
-			p_cache.verticesBuffer.push_back( vertex );
-
-			if ( p_mesh.hasUV ) {
-				unsigned int uvIndex = uvIndices[i];
-				glm::vec2 uv = temp_uvs[uvIndex - 1];
-				p_cache.uvBuffer.push_back( uv );
-			}
-
-			if ( p_mesh.hasNormal ) {
-				unsigned int normalIndex = normalIndices[i];
-				glm::vec3 normal = temp_normals[normalIndex - 1];
-				p_cache.normalBuffer.push_back( normal );
-			}
-		}
-		indexBase += p_mesh.vertices.size( );
-
-		return true;
+		this->render( );
 	}
 
 	void ModelViewer::render( ) {
@@ -494,22 +413,6 @@ namespace gw2b {
 		*/
 	}
 
-	void ModelViewer::paintNow( wxPaintEvent& p_event ) {
-		wxPaintDC dc( this );
-
-		this->render( );
-	}
-
-	void ModelViewer::onPaintEvt( wxPaintEvent& p_event ) {
-		wxPaintDC dc( this );
-
-		this->render( );
-	}
-
-	void ModelViewer::onClose( wxCloseEvent& evt ) {
-		m_renderTimer->Stop( );
-		evt.Skip( );
-	}
 	/*
 	void ModelViewer::drawMesh( uint p_meshIndex ) {
 		auto& mesh = m_meshCache[p_meshIndex];
@@ -587,6 +490,150 @@ namespace gw2b {
 		}
 	}
 	*/
+
+	bool ModelViewer::loadMeshes( const Mesh& p_mesh, MeshCache& p_cache, uint p_indexBase ) {
+		// Tempoarary buffer
+		std::vector<uint> vertexIndices, uvIndices, normalIndices;
+		std::vector<glm::vec3> temp_vertices;
+		std::vector<glm::vec2> temp_uvs;
+		std::vector<glm::vec3> temp_normals;
+
+		// Read positions
+		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+			auto tempVertices = p_mesh.vertices[i].position;
+			temp_vertices.push_back( tempVertices );
+		}
+
+		// Read UVs
+		if ( p_mesh.hasUV ) {
+			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+				auto tempUvs = p_mesh.vertices[i].uv;
+				temp_uvs.push_back( tempUvs );
+			}
+		}
+
+		// Read normals
+		if ( p_mesh.hasNormal ) {
+			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+				auto tempNormals = p_mesh.vertices[i].normal;
+				temp_normals.push_back( tempNormals );
+			}
+		}
+
+		// Read faces
+		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
+			const Triangle& triangle = p_mesh.triangles[i];
+
+			uint vertexIndex[3], uvIndex[3], normalIndex[3];
+
+			for ( uint j = 0; j < 3; j++ ) {
+				uint index = triangle.indices[j] + p_indexBase;
+
+				vertexIndex[j] = index;
+				// UV reference
+				if ( p_mesh.hasUV ) {
+					uvIndex[j] = index;
+				}
+
+				// Normal reference
+				if ( p_mesh.hasNormal ) {
+					normalIndex[j] = index;
+				}
+			}
+
+			vertexIndices.push_back( vertexIndex[0] );
+			vertexIndices.push_back( vertexIndex[1] );
+			vertexIndices.push_back( vertexIndex[2] );
+
+			if ( p_mesh.hasUV ) {
+				uvIndices.push_back( uvIndex[0] );
+				uvIndices.push_back( uvIndex[1] );
+				uvIndices.push_back( uvIndex[2] );
+			}
+
+			if ( p_mesh.hasNormal ) {
+				normalIndices.push_back( normalIndex[0] );
+				normalIndices.push_back( normalIndex[1] );
+				normalIndices.push_back( normalIndex[2] );
+			}
+		}
+		p_indexBase += p_mesh.vertices.size( );
+
+		// For each vertex of each triangle
+		for ( uint i = 0; i < vertexIndices.size( ); i++ ) {
+			// Get the indices of its attributes
+			unsigned int vertexIndex = vertexIndices[i];
+			// Get the indices of its attributes
+			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
+			// Put the attributes in buffers
+			p_cache.verticesBuffer.push_back( vertex );
+
+			if ( p_mesh.hasUV ) {
+				unsigned int uvIndex = uvIndices[i];
+				glm::vec2 uv = temp_uvs[uvIndex - 1];
+				p_cache.uvBuffer.push_back( uv );
+			}
+
+			if ( p_mesh.hasNormal ) {
+				unsigned int normalIndex = normalIndices[i];
+				glm::vec3 normal = temp_normals[normalIndex - 1];
+				p_cache.normalBuffer.push_back( normal );
+			}
+		}
+
+		return true;
+	}
+
+	GLuint ModelViewer::loadTexture( uint p_fileId ) {
+		auto entryNumber = this->datFile( )->entryNumFromFileId( p_fileId );
+		auto fileData = this->datFile( )->readEntry( entryNumber );
+
+		// Bail if read failed
+		if ( fileData.GetSize( ) == 0 ) {
+			return false;
+		}
+
+		// Convert to image
+		ANetFileType fileType;
+		this->datFile( )->identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
+		auto reader = FileReader::readerForData( fileData, fileType );
+
+		// Bail if not an image
+		auto imgReader = dynamic_cast<ImageReader*>( reader );
+		if ( !imgReader ) {
+			deletePointer( reader );
+			return false;
+		}
+
+		// Get image in wxImage
+		auto imageData = imgReader->getImage( );
+
+		if ( !imageData.IsOk( ) ) {
+			deletePointer( reader );
+			return false;
+		}
+
+		// Create one OpenGL texture
+		GLuint textureID;
+		glGenTextures( 1, &textureID );
+
+		// "Bind" the newly created texture : all future texture functions will modify this texture
+		glBindTexture( GL_TEXTURE_2D, textureID );
+
+		// Give the image to OpenGL
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, imageData.GetWidth( ), imageData.GetHeight( ), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData.GetData( ) );
+
+		// Trilinear texture filtering
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+		glGenerateMipmap( GL_TEXTURE_2D );
+
+		deletePointer( reader );
+
+		return textureID;
+	}
 
 	GLuint ModelViewer::loadShaders( const char *vertex_file_path, const char *fragment_file_path ) {
 		// Create the shaders
@@ -689,57 +736,6 @@ namespace gw2b {
 		return ProgramID;
 	}
 
-	GLuint ModelViewer::loadTexture( uint p_fileId ) {
-		auto entryNumber = this->datFile( )->entryNumFromFileId( p_fileId );
-		auto fileData = this->datFile( )->readEntry( entryNumber );
-
-		// Bail if read failed
-		if ( fileData.GetSize( ) == 0 ) {
-			return false;
-		}
-
-		// Convert to image
-		ANetFileType fileType;
-		this->datFile( )->identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
-		auto reader = FileReader::readerForData( fileData, fileType );
-
-		// Bail if not an image
-		auto imgReader = dynamic_cast<ImageReader*>( reader );
-		if ( !imgReader ) {
-			deletePointer( reader );
-			return false;
-		}
-
-		// Get image in wxImage
-		auto imageData = imgReader->getImage( );
-
-		if ( !imageData.IsOk( ) ) {
-			deletePointer( reader );
-			return false;
-		}
-
-		// Create one OpenGL texture
-		GLuint textureID;
-		glGenTextures( 1, &textureID );
-
-		// "Bind" the newly created texture : all future texture functions will modify this texture
-		glBindTexture( GL_TEXTURE_2D, textureID );
-
-		// Give the image to OpenGL
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, imageData.GetWidth( ), imageData.GetHeight( ), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData.GetData( ) );
-
-		// Trilinear texture filtering
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-		glGenerateMipmap( GL_TEXTURE_2D );
-
-		deletePointer( reader );
-
-		return textureID;
-	}
-
 	void ModelViewer::focus( ) {
 		float fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 		uint meshCount = m_model.numMeshes( );
@@ -806,6 +802,11 @@ namespace gw2b {
 		} else if ( p_event.GetKeyCode( ) == 'W' ) {
 			m_statusWireframe = !m_statusWireframe;
 		}
+	}
+
+	void ModelViewer::onClose( wxCloseEvent& evt ) {
+		m_renderTimer->Stop( );
+		evt.Skip( );
 	}
 
 }; // namespace gw2b
