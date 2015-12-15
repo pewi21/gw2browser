@@ -555,19 +555,19 @@ namespace gw2b {
 
 					// todo: figure out this
 					// Diffuse?
-					if ( ( textures[t].token >> 32 ) == 0x67531924 ) {
+					if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
 						data.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 					}
 
 					// Normal?
-					else if ( ( ( textures[t].token >> 32 ) == 0x1816c9ee )
-						/*|| ( ( textures[t].token >> 32 ) == 0x8b0bbd87 )
-						|| ( ( textures[t].token >> 32 ) == 0xa55a48b0 )*/ ) {
+					else if ( ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee )
+						/*|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
+						|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )*/ ) {
 						data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 					}
 
 					// Light Map ?
-					else if ( ( textures[t].token >> 32 ) == 0x680bbd87 ) {
+					else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
 						data.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 						break;
 					}
