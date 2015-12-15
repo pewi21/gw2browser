@@ -25,8 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-//#include <fstream>
-//#include <string>
 #include <vector>
 
 #include "ModelViewer.h"
@@ -59,7 +57,14 @@ namespace gw2b {
 
 	namespace {
 
-		const int attrib[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, WX_GL_SAMPLE_BUFFERS, 1, WX_GL_SAMPLES, 4, 0 };
+		const int attrib[] = {
+			WX_GL_RGBA,
+			WX_GL_DOUBLEBUFFER,
+			WX_GL_DEPTH_SIZE, 16,
+			WX_GL_SAMPLE_BUFFERS, 1,
+			WX_GL_SAMPLES, 4,
+			0
+		};
 		const long style = ( wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE );
 
 		bool doesUseAlpha( const wxString& p_shaderName ) {
@@ -99,6 +104,7 @@ namespace gw2b {
 	}
 
 	ModelViewer::~ModelViewer( ) {
+		// Clean VBO
 		for ( uint i = 0; i < m_meshBuffer.size( ); i++ ) {
 			if ( m_meshBuffer[i].vertexBuffer ) {
 				glDeleteBuffers( 1, &m_meshBuffer[i].vertexBuffer );
@@ -110,16 +116,13 @@ namespace gw2b {
 				glDeleteBuffers( 1, &m_meshBuffer[i].normalBuffer );
 			}
 		}
-		/*for ( uint i = 0; i < m_textureCache.GetSize( ); i++ ) {
-			if ( m_textureCache[i].diffuseMap ) {
-				m_textureCache[i].diffuseMap->Release( );
-			}
-			if ( m_textureCache[i].normalMap ) {
-				m_textureCache[i].normalMap->Release( );
-			}
-		}*/
+
+		// Clean TBO
+		for ( std::map<uint, GLuint>::iterator it = m_textureBuffer.begin( ); it != m_textureBuffer.end( ); ++it ) {
+			glDeleteBuffers( 1, &it->second );
+		}
+
 		glDeleteProgram( programID );
-		glDeleteTextures( 1, &TextureID );
 		glDeleteVertexArrays( 1, &VertexArrayID );
 
 		delete m_renderTimer;
@@ -127,6 +130,7 @@ namespace gw2b {
 	}
 
 	void ModelViewer::clear( ) {
+		// Clean VBO
 		for ( uint i = 0; i < m_meshBuffer.size( ); i++ ) {
 			if ( m_meshBuffer[i].vertexBuffer ) {
 				glDeleteBuffers( 1, &m_meshBuffer[i].vertexBuffer );
@@ -138,8 +142,12 @@ namespace gw2b {
 				glDeleteBuffers( 1, &m_meshBuffer[i].normalBuffer );
 			}
 		}
-		glDeleteTextures( 1, &TextureID );
 
+		// Clean TBO
+		for ( std::map<uint, GLuint>::iterator it = m_textureBuffer.begin( ); it != m_textureBuffer.end( ); ++it ) {
+			glDeleteBuffers( 1, &it->second );
+		}
+		m_textureBuffer.clear( );
 		m_meshCache.clear( );
 		m_model = Model( );
 		ViewerGLCanvas::clear( );
@@ -165,56 +173,54 @@ namespace gw2b {
 			auto& buffer = m_meshBuffer[i];
 
 			// Load mesh to mesh cache
-			if ( !this->loadMeshes( mesh, cache, indexBase ) ) {
+			if ( !this->loadMeshes( cache, mesh, indexBase ) ) {
+				continue;
+			} else
+
+			// Populate VBO
+			if ( !this->populateBuffers( buffer, cache ) ) {
 				continue;
 			}
-
-			// Populate buffers
-
-			glGenBuffers( 1, &buffer.vertexBuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, buffer.vertexBuffer );
-			glBufferData( GL_ARRAY_BUFFER, cache.vertices.size( ) * sizeof( glm::vec3 ), &cache.vertices[0], GL_STATIC_DRAW );
-
-			if ( mesh.hasUV ) {
-				glGenBuffers( 1, &buffer.uvBuffer );
-				glBindBuffer( GL_ARRAY_BUFFER, buffer.uvBuffer );
-				glBufferData( GL_ARRAY_BUFFER, cache.uvs.size( ) * sizeof( glm::vec2 ), &cache.uvs[0], GL_STATIC_DRAW );
-			}
-
-			if ( mesh.hasNormal ) {
-				glGenBuffers( 1, &buffer.normalBuffer );
-				glBindBuffer( GL_ARRAY_BUFFER, buffer.normalBuffer );
-				glBufferData( GL_ARRAY_BUFFER, cache.normals.size( ) * sizeof( glm::vec3 ), &cache.normals[0], GL_STATIC_DRAW );
-			}
 		}
 
-		// Create texture cache
-		m_textureCache.resize( m_model.numMaterialData( ) );
+		// Read materials
 
-		// Load textures
-		Texture = loadTexture( 13851 );
+		// Texture file id list (temporary)
+		std::vector<uint32> textureFileList;
 
-		//mesh.materialName.c_str( );
-		/*
+		// Copy texture file id to textureFileList.
+		// Also copy each mesh texture file id to mesh cache,
+		// later will use it to compare with texture buffer index when maping texture.
 		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
 			auto& material = m_model.materialData( i );
-			auto& cache = m_textureCache[i];
+			auto& cache = m_meshCache[i];
 
-			// Load diffuse texture
 			if ( material.diffuseMap ) {
-				cache.diffuseMap = this->loadTexture( material.diffuseMap );
-			} else {
-				cache.diffuseMap = nullptr;
+				textureFileList.push_back( material.diffuseMap );
+				cache.diffuseMap = material.diffuseMap;
 			}
-
-			// Load normal map
-			//if ( material.normalMap ) {
-			//	cache.normalMap = this->loadTexture( material.normalMap );
-			//} else {
-			//	cache.normalMap = nullptr;
-			//}
+			if ( material.normalMap ) {
+				textureFileList.push_back( material.normalMap );
+				cache.normalMap = material.normalMap;
+			}
+			if ( material.lightMap ) {
+				textureFileList.push_back( material.lightMap );
+				cache.lightMap = material.lightMap;
+			}
 		}
-		*/
+
+		std::vector<uint32>::iterator temp;
+
+		// Sort texture list
+		std::sort( textureFileList.begin( ), textureFileList.end( ) );
+		temp = std::unique( textureFileList.begin( ), textureFileList.end( ) );
+		textureFileList.resize( std::distance( textureFileList.begin( ), temp ) );
+
+		// Load textures from texture file id list to texture buffer table
+		for ( uint i = 0; i < textureFileList.size( ); i++ ) {
+			m_textureBuffer.insert( std::pair<uint, GLuint>( textureFileList[i], this->loadTexture( textureFileList[i] ) ) );
+		}
+
 		// Re-focus and re-render
 		this->focus( );
 		this->render( );
@@ -243,6 +249,9 @@ namespace gw2b {
 		// Set background color
 		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
 
+		// Enable multisampling, redunant
+		glEnable( GL_MULTISAMPLE );
+
 		// Enable depth test
 		glEnable( GL_DEPTH_TEST );
 
@@ -262,12 +271,13 @@ namespace gw2b {
 		//wxMessageBox( Error 0x%08x while loading shader: %s" )
 
 		// Load font
+		// todo
 
 		// Get a handle for our "MVP" uniform
 		MatrixID = glGetUniformLocation( programID, "MVP" );
 
 		// Get a handle for our "myTexture" uniform
-		TextureID = glGetUniformLocation( programID, "myTexture" );
+		TextureArrayID = glGetUniformLocation( programID, "myTexture" );
 
 		return true;
 	}
@@ -326,19 +336,26 @@ namespace gw2b {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 
-		//----- todo
-
-		// Bind our texture in Texture Unit 0
-		glActiveTexture( GL_TEXTURE0 );
-		glBindTexture( GL_TEXTURE_2D, Texture );
-		// Set our "myTexture" sampler to user Texture Unit 0
-		glUniform1i( TextureID, 0 );
-		//-----
-
 		uint vertexCount = 0;
 		uint triangleCount = 0;
 
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+			// Update texture
+			/*if ( materialIndex >= 0 && m_textureCache[materialIndex].diffuseMap ) {
+				m_effect->SetTexture( "g_DiffuseTex", m_textureCache[materialIndex].diffuseMap );
+			}*/
+
+			// Map diffuse only
+			std::map<uint, GLuint>::iterator it = m_textureBuffer.find( m_meshCache[i].diffuseMap );
+			if ( it != m_textureBuffer.end( ) ) {
+				// Bind our texture in Texture Unit 0
+				glActiveTexture( GL_TEXTURE0 );
+				glBindTexture( GL_TEXTURE_2D, it->second );
+			}
+
+			// Set our "myTexture" sampler to user Texture Unit 0
+			glUniform1i( TextureArrayID, 0 );
+
 			this->drawMesh( i );
 			vertexCount += m_model.mesh( i ).vertices.size( );
 			triangleCount += m_model.mesh( i ).triangles.size( );
@@ -417,28 +434,9 @@ namespace gw2b {
 		*/
 	}
 
-	void ModelViewer::drawMesh( uint p_meshIndex ) {
+	void ModelViewer::drawMesh( const uint p_meshIndex ) {
 		auto& mesh = m_meshBuffer[p_meshIndex];
 		auto vertexCount = m_meshCache[p_meshIndex].vertices.size( );
-
-		// Alpha blending, for alpha support
-		/*if ( doesUseAlpha( m_model.mesh( p_meshIndex ).materialName ) ) {
-
-			// Enable blending
-			//glEnable( GL_BLEND );
-			//glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-
-			// Alpha testing, so we can still render behind transparent pixels
-			//glAlphaFunc( GL_GEQUAL, 0x7f );
-		} else {
-			//glDisable( GL_BLEND );
-			//glDepthFunc( GL_LESS );
-		}*/
-
-		// Update texture
-		/*if ( materialIndex >= 0 && m_textureCache[materialIndex].diffuseMap ) {
-			m_effect->SetTexture( "g_DiffuseTex", m_textureCache[materialIndex].diffuseMap );
-		}*/
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray( 0 );
@@ -478,7 +476,6 @@ namespace gw2b {
 
 		// Draw triangle!
 		glDrawArrays( GL_TRIANGLES, 0, vertexCount );
-
 	}
 
 	// draw text function
@@ -492,7 +489,8 @@ namespace gw2b {
 	}
 	*/
 
-	bool ModelViewer::loadMeshes( const Mesh& p_mesh, MeshCache& p_cache, uint p_indexBase ) {
+	bool ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
+
 		// Tempoarary buffer
 		std::vector<uint> vertexIndices, uvIndices, normalIndices;
 		std::vector<glm::vec3> temp_vertices;
@@ -585,7 +583,28 @@ namespace gw2b {
 		return true;
 	}
 
-	GLuint ModelViewer::loadTexture( uint p_fileId ) {
+	bool ModelViewer::populateBuffers( VBO& p_buffer, const MeshCache& p_cache ) {
+
+		glGenBuffers( 1, &p_buffer.vertexBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, p_buffer.vertexBuffer );
+		glBufferData( GL_ARRAY_BUFFER, p_cache.vertices.size( ) * sizeof( glm::vec3 ), &p_cache.vertices[0], GL_STATIC_DRAW );
+
+		if ( p_cache.uvs.data( ) ) {
+			glGenBuffers( 1, &p_buffer.uvBuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, p_buffer.uvBuffer );
+			glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
+		}
+
+		if ( p_cache.normals.data( ) ) {
+			glGenBuffers( 1, &p_buffer.normalBuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, p_buffer.normalBuffer );
+			glBufferData( GL_ARRAY_BUFFER, p_cache.normals.size( ) * sizeof( glm::vec3 ), &p_cache.normals[0], GL_STATIC_DRAW );
+		}
+
+		return true;
+	}
+
+	GLuint ModelViewer::loadTexture( const uint p_fileId ) {
 		auto entryNumber = this->datFile( )->entryNumFromFileId( p_fileId );
 		auto fileData = this->datFile( )->readEntry( entryNumber );
 
@@ -639,9 +658,8 @@ namespace gw2b {
 		}
 
 		// Create one OpenGL texture
-		GLuint textureID;
-		glGenTextures( 1, &textureID );
-		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+		GLuint Texture;
+		glGenTextures( 1, &Texture );
 
 		// Trilinear texture filtering
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
@@ -650,9 +668,11 @@ namespace gw2b {
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
+		// Anisotropic texture filtering
+		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 8 );
 
 		// "Bind" the newly created texture : all future texture functions will modify this texture
-		glBindTexture( GL_TEXTURE_2D, textureID );
+		glBindTexture( GL_TEXTURE_2D, Texture );
 
 		// Give the image to OpenGL
 		glTexImage2D( GL_TEXTURE_2D,
@@ -669,7 +689,7 @@ namespace gw2b {
 
 		deletePointer( reader );
 
-		return textureID;
+		return Texture;
 	}
 
 	GLuint ModelViewer::loadShaders( const char *vertex_file_path, const char *fragment_file_path ) {

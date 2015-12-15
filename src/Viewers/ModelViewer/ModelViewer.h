@@ -28,6 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 #define VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 
+#include <map>
+
 #include "Camera.h"
 
 #include "Readers/ModelReader.h"
@@ -41,17 +43,15 @@ namespace gw2b {
 		std::vector<glm::vec3>	vertices;
 		std::vector<glm::vec2>	uvs;
 		std::vector<glm::vec3>	normals;
+		uint					diffuseMap;	// Diffuse map texture file id
+		uint					normalMap;	// Normal map texture file id
+		uint					lightMap;	// Light map texture file id
 	};
 
-	struct BufferObject {
+	struct VBO {
 		GLuint					vertexBuffer;
 		GLuint					uvBuffer;
 		GLuint					normalBuffer;
-	};
-
-	struct TextureCache {
-		GLuint					diffuseMap;
-		GLuint					normalMap;
 	};
 
 	class ModelViewer;
@@ -66,8 +66,8 @@ namespace gw2b {
 	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
 		Model                       m_model;
 		std::vector<MeshCache>		m_meshCache;
-		std::vector<BufferObject>   m_meshBuffer;
-		std::vector<TextureCache>   m_textureCache;
+		std::vector<VBO>			m_meshBuffer;		// Vertex Buffer Object
+		std::map<uint, GLuint>		m_textureBuffer;	// Texture Buffer Object
 		Camera                      m_camera;
 		wxPoint                     m_lastMousePos;
 		float                       m_minDistance;
@@ -96,11 +96,12 @@ namespace gw2b {
 		void paintNow( wxPaintEvent& p_event );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		void drawMesh( uint p_meshIndex );
+		void drawMesh( const uint p_meshIndex );
 		//void drawText( uint p_x, uint p_y, const wxString& p_text 
-		bool loadMeshes( const Mesh& p_mesh, MeshCache& p_cache, uint p_indexBase );
+		bool loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
+		bool populateBuffers( VBO& p_buffer, const MeshCache& p_cache );
+		GLuint loadTexture( const uint p_fileId );
 		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
-		GLuint loadTexture( uint p_fileId );
 		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );
 		void onMouseWheelEvt( wxMouseEvent& p_event );
@@ -111,18 +112,12 @@ namespace gw2b {
 		bool						m_glInitialized = false;
 		bool						m_statusWireframe = false;
 
-
-
-
-		GLuint						VertexArrayID;
-
-		// shader ID
-		GLuint						programID;
-		GLuint						Texture;
-		GLuint						TextureID;
-
 		GLuint						MatrixID;
 		glm::mat4					MVP;
+		GLuint						programID;
+		GLuint						VertexArrayID;
+		GLuint						TextureArrayID;
+
 	}; // class ModelViewer
 
 }; // namespace gw2b
