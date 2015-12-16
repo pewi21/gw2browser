@@ -166,18 +166,25 @@ namespace gw2b {
 		m_meshBuffer.resize( m_model.numMeshes( ) );
 
 		uint indexBase = 1;
-		// Load meshes
+		// Load mesh to mesh cache
 		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
 			auto& mesh = m_model.mesh( i );
+			auto& cache = m_meshCache[i];
+
+			if ( !this->loadMeshes( cache, mesh, indexBase ) ) {
+				continue;
+			}
+		}
+
+		// Populate VBO
+		//for ( std::map<uint, GLuint>::iterator it = m_textureBuffer.begin( ); it != m_textureBuffer.end( ); ++it ) {
+		//	glDeleteBuffers( 1, &it->second );
+		//}
+		for ( int i = 0; i < static_cast<int>( m_meshCache.size( ) ); i++ ) {
 			auto& cache = m_meshCache[i];
 			auto& buffer = m_meshBuffer[i];
 
 			// Load mesh to mesh cache
-			if ( !this->loadMeshes( cache, mesh, indexBase ) ) {
-				continue;
-			} else
-
-			// Populate VBO
 			if ( !this->populateBuffers( buffer, cache ) ) {
 				continue;
 			}
@@ -191,7 +198,8 @@ namespace gw2b {
 		// Copy texture file id to textureFileList.
 		// Also copy each mesh texture file id to mesh cache,
 		// later will use it to compare with texture buffer index when maping texture.
-		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+		//for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+		for ( uint i = 0; i < m_meshCache.size( ); i++ ) {
 			auto& material = m_model.materialData( i );
 			auto& cache = m_meshCache[i];
 
@@ -338,27 +346,37 @@ namespace gw2b {
 
 		uint vertexCount = 0;
 		uint triangleCount = 0;
+		GLuint texture = 0;
 
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
-			// Update texture
-			/*if ( materialIndex >= 0 && m_textureCache[materialIndex].diffuseMap ) {
-				m_effect->SetTexture( "g_DiffuseTex", m_textureCache[materialIndex].diffuseMap );
-			}*/
+			// No texture
+			// todo : use dummy white texture
+			if ( !m_textureBuffer.size( ) ) {
+				continue;
+			}
 
 			// Map diffuse only
 			std::map<uint, GLuint>::iterator it = m_textureBuffer.find( m_meshCache[i].diffuseMap );
 			if ( it != m_textureBuffer.end( ) ) {
 				// Bind our texture in Texture Unit 0
-				glActiveTexture( GL_TEXTURE0 );
-				glBindTexture( GL_TEXTURE_2D, it->second );
+				texture = it->second;
 			}
+
+			// Bind texture to Texture Unit 0
+			glActiveTexture( GL_TEXTURE0 );
+			glEnable( GL_TEXTURE_2D );
+			glBindTexture( GL_TEXTURE_2D, texture );
 
 			// Set our "myTexture" sampler to user Texture Unit 0
 			glUniform1i( TextureArrayID, 0 );
 
 			this->drawMesh( i );
+
 			vertexCount += m_model.mesh( i ).vertices.size( );
 			triangleCount += m_model.mesh( i ).triangles.size( );
+
+			// Unbind texture from Texture Unit 0
+			glBindTexture( GL_TEXTURE_2D, 0 );
 		}
 
 		glDisableVertexAttribArray( 0 );
