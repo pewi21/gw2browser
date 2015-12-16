@@ -247,6 +247,8 @@ namespace gw2b {
 			return newModel;
 		}
 
+		wxLogDebug( wxT( "> Reading model file..." ) );
+
 		gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
 		//auto animationChunk = model.chunk<gw2f::pf::ModelChunks::Animation>( );
@@ -257,14 +259,18 @@ namespace gw2b {
 		this->readGeometry( newModel, modelPackFile );
 		this->readMaterialData( newModel, modelPackFile );
 
+		wxLogDebug( wxT( "Finish reading model file." ) );
+
 		return newModel;
 	}
 
 	void ModelReader::readGeometry( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+		wxLogDebug( wxT( "> Reading model geometry data..." ) );
 		auto geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
 
 		// Bail if no data
 		if ( !geometryChunk->meshes.data( ) ) {
+			wxLogDebug( wxT( "No geometry data." ) );
 			return;
 		}
 
@@ -272,16 +278,24 @@ namespace gw2b {
 
 		// Bail if no meshes to read
 		if ( !meshCount ) {
+			wxLogDebug( wxT( "No meshes to read." ) );
 			return;
 		}
+
+		wxLogDebug( wxT( "This model file have %d Mesh(es)." ), meshCount );
 
 		// Create storage for submeshes now, so we can parallelize the loop
 		Mesh* meshes = p_model.addMeshes( meshCount );
 
+		auto& meshInfoArray = geometryChunk->meshes;
+#ifdef _DEBUG
+		clock_t begin = clock( );
+#endif
 #pragma omp parallel for shared( meshes )
-		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
+		for ( int i = 0; i < static_cast< int >( meshCount ); i++ ) {
+			wxLogDebug( wxT( "> Reading mesh %d..." ), i + 1 );
 			// Fetch mesh info
-			auto meshInfo = geometryChunk->meshes[i];
+			auto meshInfo = meshInfoArray[i];
 
 			// Fetch buffer info
 			auto vertexInfo = meshInfo.geometry->verts;
@@ -289,24 +303,34 @@ namespace gw2b {
 			auto vertexCount = vertexInfo.vertexCount;
 			auto indiceCount = indicesInfo.indices.size( );
 
+			wxLogDebug( wxT( "%d Vertices." ), vertexCount );
+			wxLogDebug( wxT( "%d Indices." ), indiceCount );
+
 			// Add new mesh
 			Mesh& mesh = meshes[i];
 
 			// Material data
 			mesh.materialIndex = meshInfo.materialIndex;
+			wxLogDebug( wxT( "materialIndex = \"%d\"." ), mesh.materialIndex );
 			mesh.materialName = wxString::FromUTF8( meshInfo.materialName.data( ) );
+			wxLogDebug( wxT( "materialName = \"%s\"." ), mesh.materialName );
 
 			// Vertex data
 			if ( vertexCount ) {
-				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
+				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast< ANetFlexibleVertexFormat >( vertexInfo.mesh.fvf ) );
 			}
 
 			// Index data
 			if ( indiceCount ) {
-				this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
+				this->readIndexBuffer( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 			}
+			wxLogDebug( wxT( "Finished Reading mesh %d." ), i + 1 );
 		}
+#ifdef _DEBUG
+		clock_t end = clock( );
+#endif
+		wxLogDebug( wxT( "Reading %d mesh(es) in %f seconds." ), meshCount, ( double( end - begin ) ) / CLOCKS_PER_SEC );
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
@@ -483,6 +507,7 @@ namespace gw2b {
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+		wxLogDebug( wxT( "> Reading materia data..." ) );
 		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 
 		// Bail if no data
@@ -582,6 +607,7 @@ namespace gw2b {
 		for ( auto iter = std::begin( locks ); iter != std::end( locks ); iter++ ) {
 			omp_destroy_lock( &( *iter ) );
 		}
+		wxLogDebug( wxT( "Done." ) );
 	}
 
 }; // namespace gw2b
