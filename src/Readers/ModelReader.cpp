@@ -268,8 +268,8 @@ namespace gw2b {
 		wxLogDebug( wxT( "> Reading model geometry data..." ) );
 		auto geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
 
-		// Bail if no data
-		if ( !geometryChunk->meshes.data( ) ) {
+		// Bail if no geometry data
+		if ( !geometryChunk ) {
 			wxLogDebug( wxT( "No geometry data." ) );
 			return;
 		}
@@ -329,8 +329,8 @@ namespace gw2b {
 		}
 #ifdef _DEBUG
 		clock_t end = clock( );
-#endif
 		wxLogDebug( wxT( "Reading %d mesh(es) in %f seconds." ), meshCount, ( double( end - begin ) ) / CLOCKS_PER_SEC );
+#endif
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
@@ -556,16 +556,19 @@ namespace gw2b {
 				omp_set_lock( &locks[j] );
 
 				// Bail if this material index already has data
-				if ( data.materialFlags && data.diffuseMap && data.normalMap && data.lightMap ) {
+				if ( data.materialId && data.materialFlags && data.diffuseMap && data.normalMap && data.lightMap ) {
 					omp_unset_lock( &locks[j] );
 					continue;
 				}
 
 				// Read material info
-				auto materialInfo = materialsArray[i];
+				auto materialInfo = materialsArray[j];
 
+				// Copy the data
 				// We are (almost) *only* interested in textures
+				data.materialId = materialInfo.materialId;
 				data.materialFlags = materialInfo.materialFlags;
+
 				if ( materialInfo.textures.size( ) == 0 ) {
 					omp_unset_lock( &locks[j] );
 					continue;

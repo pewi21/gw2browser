@@ -43,15 +43,19 @@ namespace gw2b {
 		std::vector<glm::vec3>	vertices;
 		std::vector<glm::vec2>	uvs;
 		std::vector<glm::vec3>	normals;
-		uint					diffuseMap;	// Diffuse map texture file id
-		uint					normalMap;	// Normal map texture file id
-		uint					lightMap;	// Light map texture file id
+
 	};
 
 	struct VBO {
 		GLuint					vertexBuffer;
 		GLuint					uvBuffer;
 		GLuint					normalBuffer;
+	};
+
+	struct TBO {
+		GLuint					diffuseMap;
+		//GLuint					normalMap;
+		//GLuint					lightMap;
 	};
 
 	class ModelViewer;
@@ -67,7 +71,7 @@ namespace gw2b {
 		Model                       m_model;
 		std::vector<MeshCache>		m_meshCache;
 		std::vector<VBO>			m_meshBuffer;		// Vertex Buffer Object
-		std::map<uint, GLuint>		m_textureBuffer;	// Texture Buffer Object
+		std::vector<TBO>			m_textureBuffer;	// Texture Buffer Object
 		Camera                      m_camera;
 		wxPoint                     m_lastMousePos;
 		float                       m_minDistance;
@@ -100,6 +104,7 @@ namespace gw2b {
 		//void drawText( uint p_x, uint p_y, const wxString& p_text 
 		bool loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
 		bool populateBuffers( VBO& p_buffer, const MeshCache& p_cache );
+		GLuint createDummyTexture( const GLubyte *p_data );
 		GLuint loadTexture( const uint p_fileId );
 		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
 		void focus( );
@@ -111,9 +116,11 @@ namespace gw2b {
 	private:
 		bool						m_glInitialized = false;
 		bool						m_statusWireframe = false;
-
-		GLuint						MatrixID;
+		bool						m_statusTextured = true;
+		GLuint						dummyBlackTexture;
+		GLuint						dummyWhiteTexture;
 		glm::mat4					MVP;
+		GLuint						MatrixID;
 		GLuint						programID;
 		GLuint						VertexArrayID;
 		GLuint						TextureArrayID;
