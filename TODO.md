@@ -1,13 +1,14 @@
 TODO list
 =========
 
-* Finish porting ModelViewer to OpenGL.
+* Text status in model viewer like old D3D9 version.
+
+* Rewrite Gw2Browser to use wxAUI for UI management.
+
+* COLLADA, Wavefront .obj model export with texture and materials.
 
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
-
-* Use wxLogDebug( wxT( "Something Happened" ) ); to check in some place when
-debug.
 
 * "Find by fileId" dialog.
 
@@ -32,3 +33,5 @@ models could get an *export with textures* option.
 * Support NPOT textures.
 
 * Support map files, map renderer.
+
+* Support Guild Wars (1) files.
