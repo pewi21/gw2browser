@@ -4,15 +4,25 @@ Change log
 Gw2Browser_2015-xx-xx
 ---------------------
 Change:
-- Improved texture id info in model viewer, now remove duplicate file id
-from the list.
+- Model viewer now use OpenGL, require OpenGL 3.3 support.
+- Faster extraction of uncompressed files.
+- Wavefront .obj model export improvement.
+No need to rotate the exported model file in Blender, may need to
+rotate it to face the camera in Blender tho.
+- Improved model viewer's wireframe view.
+- Khral is now really confused, since he have taken 25 stack of confusion
+during the development of OpenGL model viewer. (really, he's not good at math)
 - Change string file reader csv export delimiter from comma (,) to semicolon (;).
+since comma some times use in the strings.
 - Categorized string files by language.
 - Merged Packed Ogg and MP3 reader.
 - Merge onTreeExtractConverted and onTreeExtractRaw to onTreeExtractFile.
+- Model file now have it's own icon.
 
 Fix:
 - Fix some texture not in it's sub category.
+- Fix Wavefront .obj formating if the model not have uv.
+- Eliminate z-fighting (hopefully).
 
 Gw2Browser_2014-10-06
 ---------------------
