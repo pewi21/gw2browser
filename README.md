@@ -1,12 +1,3 @@
-On the break
-------------
-
-Due to I have been conscripted to do military services for 2 years (1/5/2014 - 1/5/2016)
-I may or may not continue to develop Gw2Browser during that time. If you think waiting
-is long and want to continue this project, feel free to folk it ;)
-
-See you later! * waves *
-
 Gw2Browser
 ==========
 
@@ -27,10 +18,10 @@ For people who can't run Gw2Browser, download and Install
 [Visual C++ Redistributable Packages for Visual Studio 2013](http://www.microsoft.com/en-us/download/details.aspx?id=40784)
 choose vcredist_x64.exe for 64bit and vcredist_x86.exe for 32bit executable.
 
-And if it still didn't run, download and install
-[DirectX End-User Runtimes (June 2010)](http://www.microsoft.com/en-us/download/details.aspx?id=8109)
-
-Future version of Gw2Browser will use OpenGL for model rendering, it will not require DirectX. And hopefully, make a Mac OSX version too.
+The modelviewer required OpenGL 3.3 support. If your computer can run Guild Wars 2,
+you can run Gw2Browser's modelviewer too. If the model viewer doesn't display the model,
+for example not display model file 13854, Check if your GPU is support OpenGL 3.3
+or make Gw2Browser to use dedicated GPU on laptop by GPU control panel.
 
 Usage
 -----
@@ -59,18 +50,16 @@ Probably they use custom format for NPOT texture.
 Restart Gw2Browser will fix this issue.
 
 * **The code architect is messy**
-Need to work on it some day once I understand about it.
+Need to work on it some day once I understand about code architect thing.
 
 Libraries and restrictions
 --------------------------
 
-The application is written specifically for MSVC10+, as it links with DirectX 9
-and gw2DatTools. It also uses some C++11 features available in said compiler,
-since gw2DatTools won't compile without those features anyway.
+The application used some C++11 features, so it required C++11 capable
+compilier to compile it.
 
 ### Required libraries
 
-* [DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
 * [gw2formats](https://github.com/kytulendu/gw2formats)
 * [wxWidgets 3.0.1](http://wxwidgets.org/)
@@ -163,7 +152,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-### OpenGL Mathematics (GLM)
+### OpenGL Extension Wrangler Library (GLEW)
 
 -----------------------------------------------------------------------------
 
