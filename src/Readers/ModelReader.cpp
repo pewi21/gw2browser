@@ -552,6 +552,7 @@ namespace gw2b {
 		for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
 			// Bail if no material data
 			if ( !materialInfoArray[i].materials.data( ) ) {
+				wxLogDebug( wxT( "No material data in material array." ) );
 				continue;
 			}
 
