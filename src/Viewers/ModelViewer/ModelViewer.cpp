@@ -198,9 +198,8 @@ namespace gw2b {
 		auto reader = this->modelReader( );
 		m_model = reader->getModel( );
 
-		// Create mesh cache and BO
+		// Create mesh cache
 		m_meshCache.resize( m_model.numMeshes( ) );
-		m_vertexBuffer.resize( m_model.numMeshes( ) );
 
 		uint indexBase = 1;
 		// Load mesh to mesh cache
@@ -213,7 +212,11 @@ namespace gw2b {
 			}
 		}
 
-		// Populate VBO
+		// Create VBO and IBO
+		m_vertexBuffer.resize( m_model.numMeshes( ) );
+		m_indexBuffer.resize( m_model.numMeshes( ) );
+
+		// Populate BO
 		for ( int i = 0; i < static_cast<int>( m_meshCache.size( ) ); i++ ) {
 			auto& cache = m_meshCache[i];
 			auto& vbo = m_vertexBuffer[i];
@@ -229,7 +232,7 @@ namespace gw2b {
 		m_textureBuffer.resize( m_model.numMaterialData( ) );
 
 		// Load textures
-		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+		for ( int i = 0; i < static_cast<int>( m_model.numMaterialData( ) ); i++ ) {
 			auto& material = m_model.materialData( i );
 			auto& cache = m_textureBuffer[i];
 
@@ -512,7 +515,7 @@ namespace gw2b {
 		glDrawElements(
 			GL_TRIANGLES,					// mode
 			cache.indices.size( ),			// indice count
-			GL_UNSIGNED_SHORT,				// type
+			GL_UNSIGNED_INT,				// type
 			( void* ) 0						// element array buffer offset
 			);
 
@@ -673,7 +676,7 @@ namespace gw2b {
 				out_vertices.push_back( in_vertices[i] );
 				out_uvs.push_back( in_uvs[i] );
 				//out_normals.push_back( in_normals[i] );
-				uint16 newindex = ( uint ) out_vertices.size( ) - 1;
+				uint newindex = ( uint ) out_vertices.size( ) - 1;
 				out_indices.push_back( newindex );
 				VertexToOutIndex[packed] = newindex;
 			}
@@ -808,7 +811,7 @@ namespace gw2b {
 		return Texture;
 	}
 
-	bool ModelViewer::loadShaders( GLint p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath ) {
+	bool ModelViewer::loadShaders( GLuint& p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath ) {
 		// Read the Vertex Shader code from the file
 		std::string VertexShaderCode;
 		std::ifstream VertexShaderStream( p_vertexShaderFilePath );

@@ -129,7 +129,7 @@ namespace gw2b {
 		bool populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
 		GLuint createDummyTexture( const GLubyte *p_data );
 		GLuint loadTexture( const uint p_fileId );
-		bool loadShaders( GLint p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath );
+		bool loadShaders( GLuint& p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath );
 		void updateMatrices( );
 		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );
