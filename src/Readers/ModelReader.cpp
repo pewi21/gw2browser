@@ -507,11 +507,18 @@ namespace gw2b {
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
-		wxLogDebug( wxT( "> Reading materia data..." ) );
+		wxLogDebug( wxT( "> Reading model data..." ) );
 		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 
 		// Bail if no data
+		if ( !modelChunk ) {
+			wxLogDebug( wxT( "No model data." ) );
+			return;
+		}
+
+		// Bail if no data
 		if ( !modelChunk->permutations.data( ) ) {
+			wxLogDebug( wxT( "No permutations data." ) );
 			return;
 		}
 
@@ -527,8 +534,10 @@ namespace gw2b {
 
 		// Bail if no materials
 		if ( !materialCount ) {
+			wxLogDebug( wxT( "No material to read." ) );
 			return;
 		}
+		wxLogDebug( wxT( "Have %d materials." ), materialCount );
 
 		// Prepare parallel loop
 		std::vector<omp_lock_t> locks( materialCount );
