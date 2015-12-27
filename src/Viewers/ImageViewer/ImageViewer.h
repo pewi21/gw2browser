@@ -27,8 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_IMAGEVIEWER_H_INCLUDED
 #define VIEWERS_IMAGEVIEWER_H_INCLUDED
 
-#include "Viewer.h"
 #include <vector>
+
+#include "Viewer.h"
 
 namespace gw2b {
 	class ImageControl;
