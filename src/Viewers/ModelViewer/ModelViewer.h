@@ -43,7 +43,7 @@ namespace gw2b {
 		std::vector<glm::vec3>	vertices;
 		std::vector<glm::vec2>	uvs;
 		std::vector<glm::vec3>	normals;
-
+		std::vector<uint>		indices;
 	};
 
 	struct VBO {
@@ -52,10 +52,24 @@ namespace gw2b {
 		GLuint					normalBuffer;
 	};
 
+	struct IBO {
+		GLuint					elementBuffer;
+	};
+
 	struct TBO {
 		GLuint					diffuseMap;
 		//GLuint					normalMap;
 		//GLuint					lightMap;
+	};
+
+	struct PackedVertex {
+		glm::vec3 position;
+		glm::vec2 uv;
+		//glm::vec3 normal;
+
+		bool operator < ( const PackedVertex that ) const {
+			return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
+		};
 	};
 
 	class ModelViewer;
@@ -70,7 +84,8 @@ namespace gw2b {
 	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
 		Model                       m_model;
 		std::vector<MeshCache>		m_meshCache;
-		std::vector<VBO>			m_meshBuffer;		// Vertex Buffer Object
+		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
+		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
 		std::vector<TBO>			m_textureBuffer;	// Texture Buffer Object
 		Camera                      m_camera;
 		wxPoint                     m_lastMousePos;
@@ -103,10 +118,19 @@ namespace gw2b {
 		void drawMesh( const uint p_meshIndex );
 		//void drawText( uint p_x, uint p_y, const wxString& p_text 
 		bool loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
-		bool populateBuffers( VBO& p_buffer, const MeshCache& p_cache );
+		bool getSimilarVertexIndex( PackedVertex& packed, std::map<PackedVertex, uint>& VertexToOutIndex, uint& result );
+		void indexVBO( const std::vector<glm::vec3>& in_vertices,
+			const std::vector<glm::vec2>& in_uvs,
+			const std::vector<glm::vec3>& in_normals,
+			std::vector<uint>& out_indices,
+			std::vector<glm::vec3>& out_vertices,
+			std::vector<glm::vec2>& out_uvs,
+			std::vector<glm::vec3>& out_normals );
+		bool populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
 		GLuint createDummyTexture( const GLubyte *p_data );
 		GLuint loadTexture( const uint p_fileId );
-		GLuint loadShaders( const char *vertex_file_path, const char *fragment_file_path );
+		bool loadShaders( GLint p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath );
+		void updateMatrices( );
 		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );
 		void onMouseWheelEvt( wxMouseEvent& p_event );
