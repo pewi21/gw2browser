@@ -5,6 +5,12 @@ TODO list
 
 * Rewrite Gw2Browser to use wxAUI for UI management.
 
+* Optimize model viewer's loadMeshes function.
+
+* Shading.
+
+* Use C++11 or wxThread for multi-threading.
+
 * COLLADA, Wavefront .obj model export with texture and materials.
 
 * Some restructuring. Decouple views from their data, for instance. Clean up 
