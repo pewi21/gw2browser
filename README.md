@@ -66,6 +66,7 @@ compilier to compile it.
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
 * [The OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
 * [libwebp](https://developers.google.com/speed/webp/download) *Included*
+* [FreeType](http://www.freetype.org/) *Included*
 
 ### Optional libraries
 
@@ -86,7 +87,6 @@ by use these command at extern\libweb directory.
 `nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
 
 * Compile wxWidgets.
-* Compile glew.
 * Compile Gw2Browser.
 
 Authors
@@ -265,3 +265,14 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+### FreeType
+
+-----------------------------------------------------------------------------
+
+extern/freetype/*
+
+    Portions of this software are copyright (C) 2015 The FreeType
+    Project (www.freetype.org).  All rights reserved.
+
+See extern/freetype/docs/FTL.TXT for more details.
