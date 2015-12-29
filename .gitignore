@@ -1,11 +1,13 @@
 bin
 ipch
 obj
+objs
 *.bak
 *.sdf
 *.suo
 *.user
 *.opensdf
+*.diagsession
 Debug_x86
 Debug_x64
 Release_x86
