@@ -184,6 +184,7 @@ namespace gw2b {
 		}
 
 		m_vertexBuffer.clear( );
+		m_indexBuffer.clear( );
 		m_textureBuffer.clear( );
 		m_meshCache.clear( );
 		m_model = Model( );
