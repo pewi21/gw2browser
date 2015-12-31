@@ -1,8 +1,6 @@
 TODO list
 =========
 
-* Text status in model viewer like old D3D9 version.
-
 * Rewrite Gw2Browser to use wxAUI for UI management.
 
 * Optimize model viewer's loadMeshes function.
@@ -41,3 +39,5 @@ models could get an *export with textures* option.
 * Support map files, map renderer.
 
 * Support Guild Wars (1) files.
+
+* Mac OS X and Linux port
