@@ -18,10 +18,7 @@ For people who can't run Gw2Browser, download and Install
 [Visual C++ Redistributable Packages for Visual Studio 2013](http://www.microsoft.com/en-us/download/details.aspx?id=40784)
 choose vcredist_x64.exe for 64bit and vcredist_x86.exe for 32bit executable.
 
-The modelviewer required OpenGL 3.3 support. If your computer can run Guild Wars 2,
-you can run Gw2Browser's modelviewer too. If the model viewer doesn't display the model,
-for example not display model file 13854, Check if your GPU is support OpenGL 3.3
-or make Gw2Browser to use dedicated GPU on laptop by GPU control panel.
+The modelviewer required GPU with OpenGL 3.3 support.
 
 Usage
 -----
@@ -43,20 +40,20 @@ second UV channel for rendering while the shader in the browser only uses the
 first. Loading any model is also *far* from optimized!
 
 * **Non-power-of-two textures are unsupported at the moment.**
-Decompressing one produces garbage blocks. well, except 126x64 ATEX files.
+Decompressing one produces garbage blocks. Well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
 * **Some times after the finish re-index .dat file, some of catalog is missing**
 Restart Gw2Browser will fix this issue.
 
 * **The code architect is messy**
-Need to work on it some day once I understand about code architect thing.
+Need to work on it someday once I understand about code architect thing.
 
 Libraries and restrictions
 --------------------------
 
 The application used some C++11 features, so it required C++11 capable
-compilier to compile it.
+compiler to compile it.
 
 ### Required libraries
 
@@ -102,6 +99,7 @@ Authors
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
 * [Loumie](https://github.com/ahom) : gw2DatTools
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
+* [Liberation Sans Regular](https://fedorahosted.org/liberation-fonts/) : Font used by the model viewer
 * [Till034](https://github.com/Till034) : OnCompareItems function overload
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
 * [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
