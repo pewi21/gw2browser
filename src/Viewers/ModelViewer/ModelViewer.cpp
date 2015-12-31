@@ -85,10 +85,13 @@ namespace gw2b {
 		: ViewerGLCanvas( p_parent, attrib, p_pos, p_size, style )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
+		// Avoid flashing on MSW
+		SetBackgroundStyle( wxBG_STYLE_CUSTOM );
+
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
 			if ( !this->initGL( ) ) {
-				wxMessageBox( wxT( "initGL( ) Error." ), wxT( "" ), wxICON_ERROR );
+				// todo, return blank viewer
 				return;
 			}
 			m_glInitialized = true;
@@ -268,17 +271,18 @@ namespace gw2b {
 
 		SetCurrent( *m_glContext );
 
+		// Initialize GLEW to setup the OpenGL Function pointers
 		glewExperimental = true;
 		GLenum err = glewInit( );
 		if ( GLEW_OK != err ) {
 			wxString message;
-			message << "glewInit( ) failed.\n" << "Error: " << glewGetErrorString( err );
+			message << "Could not initialize GLEW library.\n" << "Error: " << glewGetErrorString( err );
 			wxMessageBox( message, wxT( "" ), wxICON_ERROR );
 			return false;
 		}
 
 		if ( !GLEW_VERSION_3_3 ) {
-			wxMessageBox( wxT( "The modelviewer required OpenGL 3.3 support." ), wxT( "" ), wxICON_ERROR );
+			wxMessageBox( wxT( "GLEW: The modelviewer required OpenGL 3.3 support!" ), wxT( "" ), wxICON_ERROR );
 			return false;
 		}
 
@@ -301,14 +305,24 @@ namespace gw2b {
 		glGenVertexArrays( 1, &VertexArrayID );
 		glBindVertexArray( VertexArrayID );
 
-		// Create and compile our GLSL program from the shaders
-		if ( !loadShaders( programID, "..//data//shader.vert", "..//data//shader.frag" ) ) {
+		// Default shader
+		if ( !loadShaders( programID, "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
 			wxMessageBox( wxT( "Fail to load shaders." ), wxT( "" ), wxICON_ERROR );
 			return false;
 		}
 
+		// Text shader
+		if ( !loadShaders( programIDText, "..//data//shaders//text.vert", "..//data//shaders//text.frag" ) ) {
+			wxMessageBox( wxT( "Fail to load text shaders." ), wxT( "" ), wxICON_ERROR );
+			return false;
+		}
+
+		FT_UInt fontsize = 12;
 		// Load font
-		// todo
+		if ( !loadFont( characterTextureMap, "..//data//fonts//LiberationSans-Regular.ttf", fontsize ) ) {
+			wxMessageBox( wxT( "loadFont() fail." ), wxT( "" ), wxICON_ERROR );
+			return false;
+		}
 
 		// Get a handle for our "MVP" uniform
 		MatrixID = glGetUniformLocation( programID, "MVP" );
@@ -340,7 +354,7 @@ namespace gw2b {
 
 	void ModelViewer::render( ) {
 		// Set the OpenGL viewport according to the client size of wxGLCanvas.
-		const wxSize ClientSize = this->GetClientSize( );
+		wxSize ClientSize = this->GetClientSize( );
 		glViewport( 0, 0, ClientSize.x, ClientSize.y );
 
 		// Clear background
@@ -349,6 +363,7 @@ namespace gw2b {
 		// Use the shader
 		glUseProgram( programID );
 
+		// Update view matrix
 		this->updateMatrices( );
 
 		if ( m_statusWireframe == true ) {
@@ -357,86 +372,24 @@ namespace gw2b {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 
-		//uint vertexCount = 0;
-		//uint triangleCount = 0;
+		uint vertexCount = 0;
+		uint triangleCount = 0;
 
+		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			this->drawMesh( i );
 
-			//vertexCount += m_model.mesh( i ).vertices.size( );
-			//triangleCount += m_model.mesh( i ).triangles.size( );
+			vertexCount += m_model.mesh( i ).vertices.size( );
+			triangleCount += m_model.mesh( i ).triangles.size( );
 		}
 
-		//drawtext
+		if ( m_statusWireframe == true ) {
+			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		}
+		// Draw status text
+		this->displayStatusText( programIDText, vertexCount, triangleCount );
 
 		SwapBuffers( );
-
-		/*
-		this->drawText( 0, 0, wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ) );
-		this->drawText( 0, 0x14, wxString::Format( wxT( "Vertices: %d" ), vertexCount ) );
-		this->drawText( 0, 0x28, wxString::Format( wxT( "Triangles: %d" ), triangleCount ) );
-
-		wxSize clientSize = this->GetClientSize( );
-		this->drawText( 0, clientSize.y - 0x64, wxT( "Toggle Wireframe: W" ) );
-		this->drawText( 0, clientSize.y - 0x50, wxT( "Focus: F button" ) );
-		this->drawText( 0, clientSize.y - 0x3c, wxT( "Pan: Middle mouse button" ) );
-		this->drawText( 0, clientSize.y - 0x28, wxT( "Rotate: Left mouse button" ) );
-		this->drawText( 0, clientSize.y - 0x14, wxT( "Zoom: Scroll wheel" ) );
-
-		wxString diffuseMap = wxString( wxT( "diffuseMap:\n" ) );
-		wxString normalMap = wxString( wxT( "normalMap:\n" ) );
-		wxString lightMap = wxString( wxT( "lightMap:\n" ) );
-
-		// TODO : Move this else where, no need to update file list each render
-		// Texture That need to extract manualy.
-		std::vector<uint32> diffuseMapFileList;
-		std::vector<uint32> normalMapFileList;
-		std::vector<uint32> lightMapFileList;
-
-		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
-			auto& material = m_model.materialData( i );
-
-			if ( material.diffuseMap ) {
-				diffuseMapFileList.push_back( material.diffuseMap );
-			}
-			if ( material.normalMap ) {
-				normalMapFileList.push_back( material.normalMap );
-			}
-			if ( material.lightMap ) {
-				lightMapFileList.push_back( material.lightMap );
-			}
-		}
-
-		std::vector<uint32>::iterator temp;
-
-		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
-
-		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
-
-		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
-
-		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
-			diffuseMap << *it << "\n";
-		}
-		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
-			normalMap << *it << "\n";
-		}
-		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
-			lightMap << *it << "\n";
-		}
-
-		this->drawText( clientSize.x - 0x11c, 0, wxT( "Textures" ) );
-
-		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMap ) );
-		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
-		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
-		*/
 	}
 
 	void ModelViewer::drawMesh( const uint p_meshIndex ) {
@@ -446,11 +399,8 @@ namespace gw2b {
 
 		auto materialIndex = m_model.mesh( p_meshIndex ).materialIndex;
 
-		// Update texture
-
-		// Bind texture to Texture Unit 0
+		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
-		glEnable( GL_TEXTURE_2D );
 
 		if ( m_statusTextured && !m_textureBuffer.empty( ) ) {
 			if ( m_statusWireframe ) {
@@ -528,16 +478,139 @@ namespace gw2b {
 		//glDisableVertexAttribArray( 2 );
 	}
 
-	// draw text function
-	/*
-	void ModelViewer::drawText( uint p_x, uint p_y, const wxString& p_text ) {
-		if ( m_font.get( ) ) {
-			RECT outRect;
-			::SetRect( &outRect, p_x, p_y, p_x + 0x200, p_y + 0x14 );
-			m_font->DrawTextW( NULL, p_text.wchar_str( ), -1, &outRect, DT_LEFT | DT_NOCLIP, 0xFFFFFFFF );
+	void ModelViewer::drawText( const GLuint &p_shader, const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color ) {
+		// Activate corresponding render state
+		glUseProgram( p_shader );
+		glUniform3f( glGetUniformLocation( programIDText, "textColor" ), p_color.x, p_color.y, p_color.z );
+
+		glActiveTexture( GL_TEXTURE0 );
+		glBindVertexArray( textVAO );
+
+		// Iterate through all characters
+		wxString::const_iterator c;
+		for ( c = p_text.begin( ); c != p_text.end( ); c++ ) {
+			Character ch = characterTextureMap[*c];
+
+			GLfloat xpos = p_x + ch.Bearing.x * p_scale;
+			GLfloat ypos = p_y - ( ch.Size.y - ch.Bearing.y ) * p_scale;
+
+			GLfloat w = ch.Size.x * p_scale;
+			GLfloat h = ch.Size.y * p_scale;
+			// Update VBO for each character
+			GLfloat vertices[6][4] = {
+				{ xpos, ypos + h, 0.0, 0.0 },
+				{ xpos, ypos, 0.0, 1.0 },
+				{ xpos + w, ypos, 1.0, 1.0 },
+
+				{ xpos, ypos + h, 0.0, 0.0 },
+				{ xpos + w, ypos, 1.0, 1.0 },
+				{ xpos + w, ypos + h, 1.0, 0.0 }
+			};
+			// Render glyph texture over quad
+			glBindTexture( GL_TEXTURE_2D, ch.TextureID );
+			// Update content of VBO memory
+			glBindBuffer( GL_ARRAY_BUFFER, textVBO );
+			glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof( vertices ), vertices ); // Be sure to use glBufferSubData and not glBufferData
+
+			glBindBuffer( GL_ARRAY_BUFFER, 0 );
+			// Render quad
+			glDrawArrays( GL_TRIANGLES, 0, 6 );
+			// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+			p_x += ( ch.Advance >> 6 ) * p_scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
 		}
+		glBindVertexArray( 0 );
+		glBindTexture( GL_TEXTURE_2D, 0 );
 	}
-	*/
+
+	void ModelViewer::displayStatusText( const GLuint &p_shader, const uint p_vertexCount, const uint p_triangleCount ) {
+		wxSize ClientSize = this->GetClientSize( );
+
+		// Use text shader
+		glUseProgram( p_shader );
+		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( ClientSize.x ), 0.0f, static_cast<GLfloat>( ClientSize.y ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+
+		// Enable blending
+		glEnable( GL_BLEND );
+		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+		glm::vec3 color = glm::vec3( 1.0f );
+		GLfloat scale = 1.0f;
+
+		// Top-left text
+		this->drawText( p_shader, wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ), 0.0f, ClientSize.y - 12.0f, scale, color );
+		this->drawText( p_shader, wxString::Format( wxT( "Vertices: %d" ), p_vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
+		this->drawText( p_shader, wxString::Format( wxT( "Triangles: %d" ), p_triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
+
+		// Bottom-left text
+		this->drawText( p_shader, wxT( "Zoom: Scroll wheel" ), 0.0f, 12.0f, scale, color );
+		this->drawText( p_shader, wxT( "Rotate: Left mouse button" ), 0.0f, 24.0f, scale, color );
+		this->drawText( p_shader, wxT( "Pan: Right mouse button" ), 0.0f, 36.0f, scale, color );
+		this->drawText( p_shader, wxT( "Focus: F button" ), 0.0f, 48.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle wireframe: W button" ), 0.0f, 60.0f, scale, color );
+
+		// Top-right text
+		// todo : texture id list?
+
+		// Disable blending
+		glDisable( GL_BLEND );
+
+		/*
+		wxString diffuseMap = wxString( wxT( "diffuseMap:\n" ) );
+		wxString normalMap = wxString( wxT( "normalMap:\n" ) );
+		wxString lightMap = wxString( wxT( "lightMap:\n" ) );
+
+		// TODO : Move this else where, no need to update file list each render
+		// Texture That need to extract manualy.
+		std::vector<uint32> diffuseMapFileList;
+		std::vector<uint32> normalMapFileList;
+		std::vector<uint32> lightMapFileList;
+
+		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+		auto& material = m_model.materialData( i );
+
+		if ( material.diffuseMap ) {
+		diffuseMapFileList.push_back( material.diffuseMap );
+		}
+		if ( material.normalMap ) {
+		normalMapFileList.push_back( material.normalMap );
+		}
+		if ( material.lightMap ) {
+		lightMapFileList.push_back( material.lightMap );
+		}
+		}
+
+		std::vector<uint32>::iterator temp;
+
+		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
+
+		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
+
+		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
+
+		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
+		diffuseMap << *it << "\n";
+		}
+		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
+		normalMap << *it << "\n";
+		}
+		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
+		lightMap << *it << "\n";
+		}
+
+		this->drawText( clientSize.x - 0x11c, 0, wxT( "Textures" ) );
+
+		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMap ) );
+		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
+		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
+		*/
+	}
 
 	bool ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
 		// Tempoarary buffer
@@ -640,12 +713,12 @@ namespace gw2b {
 		return true;
 	}
 
-	bool ModelViewer::getSimilarVertexIndex( PackedVertex & packed, std::map<PackedVertex, uint>& VertexToOutIndex, uint& result ) {
-		std::map<PackedVertex, uint>::iterator it = VertexToOutIndex.find( packed );
-		if ( it == VertexToOutIndex.end( ) ) {
+	bool ModelViewer::getSimilarVertexIndex( PackedVertex & p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result ) {
+		std::map<PackedVertex, uint>::iterator it = p_vertexToOutIndex.find( p_packed );
+		if ( it == p_vertexToOutIndex.end( ) ) {
 			return false;
 		} else {
-			result = it->second;
+			p_result = it->second;
 			return true;
 		}
 	}
@@ -721,6 +794,8 @@ namespace gw2b {
 		// Give the image to OpenGL
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, p_data );
 
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
 		return Texture;
 	}
 
@@ -777,22 +852,12 @@ namespace gw2b {
 			}
 		}
 
-		// Create one OpenGL texture
-		GLuint Texture;
-		glGenTextures( 1, &Texture );
+		// Generate texture ID
+		GLuint TextureID;
+		glGenTextures( 1, &TextureID );
 
-		// Trilinear texture filtering
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
-		// Anisotropic texture filtering
-		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 8 );
-
-		// "Bind" the newly created texture
-		glBindTexture( GL_TEXTURE_2D, Texture );
+		// Assign texture to ID
+		glBindTexture( GL_TEXTURE_2D, TextureID );
 
 		// Give the image to OpenGL
 		glTexImage2D( GL_TEXTURE_2D,
@@ -807,9 +872,24 @@ namespace gw2b {
 
 		glGenerateMipmap( GL_TEXTURE_2D );
 
+		// Texture parameters
+
+		// Use GL_CLAMP_TO_EDGE to prevent semi-transparent borders. Due to interpolation it takes value from next repeat
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, imageData.HasAlpha( ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, imageData.HasAlpha( ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
+
+		// Trilinear texture filtering
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+
+		// Anisotropic texture filtering
+		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 8 );
+
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
 		deletePointer( reader );
 
-		return Texture;
+		return TextureID;
 	}
 
 	bool ModelViewer::loadShaders( GLuint& p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath ) {
@@ -923,6 +1003,90 @@ namespace gw2b {
 		return true;
 	}
 
+	bool ModelViewer::loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height ) {
+		// FreeType
+		FT_Library ft;
+
+		// All functions return a value different than 0 whenever an error occurred
+		if ( FT_Init_FreeType( &ft ) ) {
+			wxMessageBox( wxT( "Could not initialize FreeType library." ), wxT( "" ), wxICON_ERROR );
+			return false;
+		}
+
+		// Load font as face
+		FT_Face face;
+		if ( FT_New_Face( ft, p_fontFile, 0, &face ) ) {
+			wxMessageBox( wxT( "FreeType: Failed to load font." ), wxT( "" ), wxICON_ERROR );
+			return false;
+		}
+
+		// Set size to load glyphs as
+		FT_Set_Pixel_Sizes( face, 0, p_height );
+
+		// Disable byte-alignment restriction
+		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+
+		// Load first 128 characters of ASCII set
+		for ( GLubyte c = 0; c < 128; c++ ) {
+			// Load character glyph
+			if ( FT_Load_Char( face, c, FT_LOAD_RENDER ) ) {
+				wxMessageBox( wxT( "FreeType: Failed to load Glyph." ), wxT( "" ), wxICON_ERROR );
+				continue;
+			}
+
+			// Generate texture
+			GLuint texture;
+			glGenTextures( 1, &texture );
+			glBindTexture( GL_TEXTURE_2D, texture );
+			glTexImage2D(
+				GL_TEXTURE_2D,
+				0,
+				GL_RED,
+				face->glyph->bitmap.width,
+				face->glyph->bitmap.rows,
+				0,
+				GL_RED,
+				GL_UNSIGNED_BYTE,
+				face->glyph->bitmap.buffer
+				);
+
+			// Set texture options
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+			// Now store character for later use
+			Character character = {
+				texture,
+				glm::ivec2( face->glyph->bitmap.width, face->glyph->bitmap.rows ),
+				glm::ivec2( face->glyph->bitmap_left, face->glyph->bitmap_top ),
+				face->glyph->advance.x
+			};
+			p_characters.insert( std::pair<GLchar, Character>( c, character ) );
+		}
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
+		// Destroy FreeType once we're finished
+		FT_Done_Face( face );
+		FT_Done_FreeType( ft );
+
+		// Configure VAO/VBO for texture quads
+		glGenVertexArrays( 1, &textVAO );
+		glBindVertexArray( textVAO );
+
+		glGenBuffers( 1, &textVBO );
+		glBindBuffer( GL_ARRAY_BUFFER, textVBO );
+		glBufferData( GL_ARRAY_BUFFER, sizeof( GLfloat ) * 6 * 4, NULL, GL_DYNAMIC_DRAW );
+
+		glEnableVertexAttribArray( 0 );
+		glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof( GLfloat ), 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, 0 );
+		glBindVertexArray( 0 );
+
+		return true;
+	}
+
 	void ModelViewer::updateMatrices( ) {
 		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
 
@@ -953,7 +1117,7 @@ namespace gw2b {
 		MVP = projMatrix * viewMatrix * ModelMatrix;
 
 		// Send our transformation to the currently bound shader, in the "MVP" uniform
-		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, &MVP[0][0] );
+		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, glm::value_ptr( MVP ) );
 	}
 
 	void ModelViewer::focus( ) {

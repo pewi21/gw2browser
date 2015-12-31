@@ -110,6 +110,8 @@
   <ItemGroup>
     <None Include="..\data\shader.frag" />
     <None Include="..\data\shader.vert" />
+    <None Include="..\data\text.frag" />
+    <None Include="..\data\text.vert" />
     <None Include="..\src\Imported\half.inl" />
   </ItemGroup>
   <ItemGroup>

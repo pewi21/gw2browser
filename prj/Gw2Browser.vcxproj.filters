@@ -319,6 +319,12 @@
     <None Include="..\data\shader.vert">
       <Filter>Data Files</Filter>
     </None>
+    <None Include="..\data\text.frag">
+      <Filter>Data Files</Filter>
+    </None>
+    <None Include="..\data\text.vert">
+      <Filter>Data Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\src\Gw2Browser.ico">
