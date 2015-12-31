@@ -1,10 +1,10 @@
 Change log
 ----------
 
-Gw2Browser_2015-xx-xx
+Gw2Browser_2016-01-01
 ---------------------
 Change:
-- Model viewer now use OpenGL, require OpenGL 3.3 support.
+- Model viewer now use OpenGL for rendering the model, require OpenGL 3.3 support.
 - Faster extraction of uncompressed files.
 - Wavefront .obj model export improvement.
 No need to rotate the exported model file in Blender, may need to
@@ -41,7 +41,7 @@ Fix:
 - Fix MP3 files doesn't have icon.
 
 Issue:
-- Some textures not go to it's sub category. *Fixed in Gw2Browser_2015-xx-xx*
+- Some textures not go to it's sub category. *Fixed in Gw2Browser_2016-01-01*
 
 Gw2Browser_2014-04-24
 ---------------------
