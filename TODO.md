@@ -1,6 +1,8 @@
 TODO list
 =========
 
+* Add a icon for Gw2Browser.
+
 * Rewrite Gw2Browser to use wxAUI for UI management.
 
 * Optimize model viewer's loadMeshes function.
