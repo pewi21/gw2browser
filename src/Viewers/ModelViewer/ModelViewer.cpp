@@ -886,9 +886,8 @@ namespace gw2b {
 
 		// Texture parameters
 
-		// Use GL_CLAMP_TO_EDGE to prevent semi-transparent borders. Due to interpolation it takes value from next repeat
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, imageData.HasAlpha( ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, imageData.HasAlpha( ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
 		// Trilinear texture filtering
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
