@@ -142,17 +142,35 @@ namespace gw2b {
 			}*/
 		}
 
-		glDeleteBuffers( 1, &dummyBlackTexture );
-		glDeleteBuffers( 1, &dummyWhiteTexture );
+		// Clean character textures
+		for ( std::map<GLchar, Character>::iterator it = m_characterTextureMap.begin( ); it != m_characterTextureMap.end( ); ++it ) {
+			if ( &it->first ) {
+				glDeleteBuffers( 1, &it->second.TextureID );
+			}
+		}
 
+		// Clean dummy textures
+		glDeleteBuffers( 1, &m_dummyBlackTexture );
+		glDeleteBuffers( 1, &m_dummyWhiteTexture );
+
+		// Clean shaders
 		glDeleteProgram( programID );
+		glDeleteProgram( programIDText );
+
+		// Clean VAO
 		glDeleteVertexArrays( 1, &VertexArrayID );
+		glDeleteVertexArrays( 1, &textVAO );
 
 		delete m_renderTimer;
 		delete m_glContext;
 	}
 
 	void ModelViewer::clear( ) {
+		// Clean texture file name list
+		diffuseMapFileList.clear( );
+		normalMapFileList.clear( );
+		lightMapFileList.clear( );
+
 		// Clean VBO
 		for ( std::vector<VBO>::iterator it = m_vertexBuffer.begin( ); it != m_vertexBuffer.end( ); ++it ) {
 			if ( &it->vertexBuffer ) {
@@ -260,6 +278,37 @@ namespace gw2b {
 			}*/
 		}
 
+		// Texture That need to extract manualy use in texture file list status
+		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
+			auto& material = m_model.materialData( i );
+
+			if ( material.diffuseMap ) {
+				diffuseMapFileList.push_back( material.diffuseMap );
+			}
+			if ( material.normalMap ) {
+				normalMapFileList.push_back( material.normalMap );
+			}
+			if ( material.lightMap ) {
+				lightMapFileList.push_back( material.lightMap );
+			}
+		}
+
+		std::vector<uint32>::iterator temp;
+
+		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
+
+		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
+
+		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
+
+
+
 		// Re-focus and re-render
 		this->focus( );
 		this->render( );
@@ -319,7 +368,7 @@ namespace gw2b {
 
 		FT_UInt fontsize = 12;
 		// Load font
-		if ( !loadFont( characterTextureMap, "..//data//fonts//LiberationSans-Regular.ttf", fontsize ) ) {
+		if ( !loadFont( m_characterTextureMap, "..//data//fonts//LiberationSans-Regular.ttf", fontsize ) ) {
 			wxMessageBox( wxT( "loadFont() fail." ), wxT( "" ), wxICON_ERROR );
 			return false;
 		}
@@ -332,10 +381,10 @@ namespace gw2b {
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
-		dummyBlackTexture = createDummyTexture( blackTextureData );
+		m_dummyBlackTexture = createDummyTexture( blackTextureData );
 
 		GLubyte whiteTextureData[] = { 255, 255, 255, 255 };
-		dummyWhiteTexture = createDummyTexture( whiteTextureData );
+		m_dummyWhiteTexture = createDummyTexture( whiteTextureData );
 
 		return true;
 	}
@@ -405,7 +454,7 @@ namespace gw2b {
 		if ( m_statusTextured && !m_textureBuffer.empty( ) ) {
 			if ( m_statusWireframe ) {
 				// Black texture, for wireframe view
-				glBindTexture( GL_TEXTURE_2D, dummyBlackTexture );
+				glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
 			} else if ( materialIndex >= 0 && m_textureBuffer[materialIndex].diffuseMap ) {
 				// "Bind" the texture : all future texture functions will modify this texture
 				glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].diffuseMap );
@@ -413,10 +462,10 @@ namespace gw2b {
 		} else {
 			if ( m_statusWireframe ) {
 				// Black texture, for wireframe view
-				glBindTexture( GL_TEXTURE_2D, dummyBlackTexture );
+				glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
 			} else {
 				// White texture, no texture
-				glBindTexture( GL_TEXTURE_2D, dummyWhiteTexture );
+				glBindTexture( GL_TEXTURE_2D, m_dummyWhiteTexture );
 			}
 		}
 
@@ -462,7 +511,7 @@ namespace gw2b {
 		// Index buffer
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo.elementBuffer );
 
-		// Draw the triangles !
+		// Draw the triangles!
 		glDrawElements(
 			GL_TRIANGLES,					// mode
 			cache.indices.size( ),			// indice count
@@ -489,7 +538,7 @@ namespace gw2b {
 		// Iterate through all characters
 		wxString::const_iterator c;
 		for ( c = p_text.begin( ); c != p_text.end( ); c++ ) {
-			Character ch = characterTextureMap[*c];
+			Character ch = m_characterTextureMap[*c];
 
 			GLfloat xpos = p_x + ch.Bearing.x * p_scale;
 			GLfloat ypos = p_y - ( ch.Size.y - ch.Bearing.y ) * p_scale;
@@ -543,73 +592,36 @@ namespace gw2b {
 		this->drawText( p_shader, wxString::Format( wxT( "Triangles: %d" ), p_triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
 
 		// Bottom-left text
-		this->drawText( p_shader, wxT( "Zoom: Scroll wheel" ), 0.0f, 12.0f, scale, color );
-		this->drawText( p_shader, wxT( "Rotate: Left mouse button" ), 0.0f, 24.0f, scale, color );
-		this->drawText( p_shader, wxT( "Pan: Right mouse button" ), 0.0f, 36.0f, scale, color );
-		this->drawText( p_shader, wxT( "Focus: F button" ), 0.0f, 48.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle wireframe: W button" ), 0.0f, 60.0f, scale, color );
+		this->drawText( p_shader, wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Focus: F button" ), 0.0f, 36.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle wireframe: W button" ), 0.0f, 48.0f + 2.0f, scale, color );
 
 		// Top-right text
-		// todo : texture id list?
+		this->drawText( p_shader, wxT( "Textures" ), ClientSize.x - 260.0f, ClientSize.y - 12.0f, scale, color );
+		this->drawText( p_shader, wxT( "diffuseMap:" ), ClientSize.x - 200.0f, ClientSize.y - 12.0f, scale, color );
+		this->drawText( p_shader, wxT( "normalMap:" ), ClientSize.x - 130.0f, ClientSize.y - 12.0f, scale, color );
+		this->drawText( p_shader, wxT( "lightMap:" ), ClientSize.x - 60.0f, ClientSize.y - 12.0f, scale, color );
+
+		int line = 1;
+		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 60.0f, ClientSize.y - ( 24.0f * line ), scale, color );
+			line++;
+		}
+		line = 1;
+		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 130.0f, ClientSize.y - ( 24.0f * line ), scale, color );
+			line++;
+		}
+		line = 1;
+		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 200.0f, ClientSize.y - ( 24.0f * line ), scale, color );
+			line++;
+		}
 
 		// Disable blending
 		glDisable( GL_BLEND );
-
-		/*
-		wxString diffuseMap = wxString( wxT( "diffuseMap:\n" ) );
-		wxString normalMap = wxString( wxT( "normalMap:\n" ) );
-		wxString lightMap = wxString( wxT( "lightMap:\n" ) );
-
-		// TODO : Move this else where, no need to update file list each render
-		// Texture That need to extract manualy.
-		std::vector<uint32> diffuseMapFileList;
-		std::vector<uint32> normalMapFileList;
-		std::vector<uint32> lightMapFileList;
-
-		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
-		auto& material = m_model.materialData( i );
-
-		if ( material.diffuseMap ) {
-		diffuseMapFileList.push_back( material.diffuseMap );
-		}
-		if ( material.normalMap ) {
-		normalMapFileList.push_back( material.normalMap );
-		}
-		if ( material.lightMap ) {
-		lightMapFileList.push_back( material.lightMap );
-		}
-		}
-
-		std::vector<uint32>::iterator temp;
-
-		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
-
-		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
-
-		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
-
-		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
-		diffuseMap << *it << "\n";
-		}
-		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
-		normalMap << *it << "\n";
-		}
-		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
-		lightMap << *it << "\n";
-		}
-
-		this->drawText( clientSize.x - 0x11c, 0, wxT( "Textures" ) );
-
-		this->drawText( clientSize.x - 0x4f, 0, wxString( diffuseMap ) );
-		this->drawText( clientSize.x - 0x9e, 0, wxString( normalMap ) );
-		this->drawText( clientSize.x - 0xdd, 0, wxString( lightMap ) );
-		*/
 	}
 
 	bool ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {

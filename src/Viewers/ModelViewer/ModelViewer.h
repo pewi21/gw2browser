@@ -93,6 +93,9 @@ namespace gw2b {
 	}; // class RenderTimer
 
 	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
+		wxGLContext*				m_glContext;
+		RenderTimer*				m_renderTimer;
+
 		Model                       m_model;
 		std::vector<MeshCache>		m_meshCache;
 		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
@@ -102,8 +105,6 @@ namespace gw2b {
 		wxPoint                     m_lastMousePos;
 		float                       m_minDistance;
 		float                       m_maxDistance;
-		wxGLContext*				m_glContext;
-		RenderTimer*				m_renderTimer;
 	public:
 		ModelViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		virtual ~ModelViewer( );
@@ -155,9 +156,9 @@ namespace gw2b {
 		bool						m_statusWireframe = false;
 		bool						m_statusTextured = true;
 
-		GLuint						dummyBlackTexture;
-		GLuint						dummyWhiteTexture;
-		std::map<GLchar, Character> characterTextureMap;
+		std::map<GLchar, Character> m_characterTextureMap;
+		GLuint						m_dummyBlackTexture;
+		GLuint						m_dummyWhiteTexture;
 
 		glm::mat4					MVP;
 		GLuint						MatrixID;
@@ -165,9 +166,13 @@ namespace gw2b {
 		GLuint						programIDText;
 		GLuint						VertexArrayID;
 		GLuint						TextureArrayID;
+		GLuint						textVAO;
+		GLuint						textVBO;
 
-
-		GLuint textVAO, textVBO;
+		// Texture file name list (for display on status text)
+		std::vector<uint32>			diffuseMapFileList;
+		std::vector<uint32>			normalMapFileList;
+		std::vector<uint32>			lightMapFileList;
 
 	}; // class ModelViewer
 
