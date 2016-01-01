@@ -28,8 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <wx/mstream.h>
 
 #include <webp/decode.h> // libwebp
-#include <gw2DatTools/compression/inflateTextureFileBuffer.h>
-#include <gw2formats/TextureFile.h>
 
 #include "ImageReader.h"
 
@@ -330,17 +328,14 @@ namespace gw2b {
 	}
 
 	bool ImageReader::readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
+		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
+		auto atex = reinterpret_cast<const ANetAtexHeader*>( m_data.GetPointer( ) );
 
-		gw2f::TextureFile file( m_data.GetPointer( ), m_data.GetSize( ) );
+		// Determine mipmap0 size and bail if the file is too small
+		if ( m_data.GetSize( ) >= sizeof( ANetAtexHeader ) + sizeof( uint32 ) ) {
+			auto mipMap0Size = *reinterpret_cast<const uint32*>( &m_data[sizeof( ANetAtexHeader )] );
 
-		// Read mipmap 0
-		auto& atex = file.mipMapLevel( 0 );
-
-		// Determine atex size and bail if too small
-		if ( atex.data( ) ) {
-			auto mipMap0Size = atex.size( );
-
-			if ( mipMap0Size > m_data.GetSize( ) ) {
+			if ( mipMap0Size + sizeof( ANetAtexHeader ) > m_data.GetSize( ) ) {
 				po_size.Set( 0, 0 );
 				return false;
 			}
@@ -350,62 +345,68 @@ namespace gw2b {
 		}
 
 		// Init some fields
+		auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
 		po_colors = nullptr;
 		po_alphas = nullptr;
-		uint16 width = atex.width( );
-		uint16 height = atex.height( );
-		uint32 format = atex.format( );
-		uint32 atex_size = atex.size( );
-		uint32 bufferSize = atex.uncompressedSize( );
 
-		// Allocate buffer
-		auto buffer = allocate<BGRA>( bufferSize );
+		uint16 width = atex->width;
+		uint16 height = atex->height;
 
 		// Hack for read 126x64 ATEX
 		if ( width == 126 && height == 64 ) {
 			width = 128;
 		}
 
-		// Uncompress ATEX
-		if ( gw2dt::compression::inflateTextureBlockBuffer( width, height, format, atex_size, atex.data( ),
-			bufferSize, reinterpret_cast<uint8*>( buffer ) )
-			) {
+		// Allocate output
+		auto output = allocate<BGRA>( width * height );
+		uint32_t outputBufferSize;
 
-			switch ( format ) {
-			case FCC_DXT1:
-				this->processDXT1( buffer, width, height, po_colors, po_alphas );
-				break;
-			case FCC_DXT2:
-			case FCC_DXT3:
-			case FCC_DXTN:
-				this->processDXT3( buffer, width, height, po_colors, po_alphas );
-				break;
-			case FCC_DXT4:
-			case FCC_DXT5:
-				this->processDXT5( buffer, width, height, po_colors, po_alphas );
-				break;
-			case FCC_DXTA:
-				this->processDXTA( reinterpret_cast<uint64*>( buffer ), width, height, po_colors );
-				break;
-			case FCC_DXTL:
-				this->processDXT5( buffer, width, height, po_colors, po_alphas );
-
+		// Uncompress
+		switch ( atex->formatInteger ) {
+		case FCC_DXT1:
+			if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, outputBufferSize, reinterpret_cast<uint8_t*>( output ) ) ) {
+				this->processDXT1( output, width, height, po_colors, po_alphas );
+			}
+			break;
+		case FCC_DXT2:
+		case FCC_DXT3:
+		case FCC_DXTN:
+			if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, outputBufferSize, reinterpret_cast< uint8_t* >( output ) ) ) {
+				this->processDXT3( output, width, height, po_colors, po_alphas );
+			}
+			break;
+		case FCC_DXT4:
+		case FCC_DXT5:
+			if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, outputBufferSize, reinterpret_cast< uint8_t* >( output ) ) ) {
+				this->processDXT5( output, width, height, po_colors, po_alphas );
+			}
+			break;
+		case FCC_DXTA:
+			if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, outputBufferSize, reinterpret_cast< uint8_t* >( output ) ) ) {
+				this->processDXTA( reinterpret_cast< uint64* >( output ), width, height, po_colors );
+			}
+			break;
+		case FCC_DXTL:
+			if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, outputBufferSize, reinterpret_cast<uint8_t*>( output ) ) ) {
+				this->processDXT5( output, width, height, po_colors, po_alphas );
 				for ( uint i = 0; i < ( static_cast<uint>( width ) * static_cast<uint>( height ) ); i++ ) {
 					po_colors[i].r = ( po_colors[i].r * po_alphas[i] ) / 0xff;
 					po_colors[i].g = ( po_colors[i].g * po_alphas[i] ) / 0xff;
 					po_colors[i].b = ( po_colors[i].b * po_alphas[i] ) / 0xff;
 				}
-				break;
-			case FCC_3DCX:
-				this->process3DCX( reinterpret_cast<RGBA*>( buffer ), width, height, po_colors, po_alphas );
-				break;
-			default:
-				freePointer( buffer );
-				return false;
 			}
+			break;
+		case FCC_3DCX:
+			if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, outputBufferSize, reinterpret_cast< uint8_t* >( output ) ) ) {
+				this->process3DCX( reinterpret_cast<RGBA*>( output ), width, height, po_colors, po_alphas );
+			}
+			break;
+		default:
+			freePointer( output );
+			return false;
 		}
 
-		freePointer( buffer );
+		freePointer( output );
 
 		if ( po_colors ) {
 			po_size.Set( width, height );
