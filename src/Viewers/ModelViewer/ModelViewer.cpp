@@ -606,17 +606,17 @@ namespace gw2b {
 
 		int line = 1;
 		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 60.0f, ClientSize.y - ( 24.0f * line ), scale, color );
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 200.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
 			line++;
 		}
 		line = 1;
 		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 130.0f, ClientSize.y - ( 24.0f * line ), scale, color );
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 130.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
 			line++;
 		}
 		line = 1;
 		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 200.0f, ClientSize.y - ( 24.0f * line ), scale, color );
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 60.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
 			line++;
 		}
 
