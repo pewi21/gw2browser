@@ -45,7 +45,6 @@
 
 // gw2DatTools
 #include <gw2DatTools/compression/inflateDatFileBuffer.h>
-#include <gw2DatTools/compression/inflateTextureFileBuffer.h>
 
 // OpenGL Mathematics
 #include <glm/glm.hpp>
