@@ -124,7 +124,6 @@ namespace gw2b {
 
 	private:
 		int initGL( );
-		void paintNow( wxPaintEvent& p_event );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
 		void drawMesh( const uint p_meshIndex );

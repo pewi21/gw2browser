@@ -88,7 +88,7 @@ namespace gw2b {
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
 			if ( !this->initGL( ) ) {
-				wxMessageBox( wxT( "Could not initialize OpenGL" ), wxT( "" ), wxICON_ERROR );
+				wxMessageBox( wxT( "ModelViewer: Could not initialize OpenGL." ), wxT( "" ), wxICON_ERROR );
 				return;
 			}
 			m_glInitialized = true;
@@ -320,6 +320,10 @@ namespace gw2b {
 	int ModelViewer::initGL( ) {
 		// Create OpenGL context
 		m_glContext = new wxGLContext( this );
+		if ( !m_glContext ) {
+			wxMessageBox( wxT( "ModelViewer: Unable to create OpenGL context." ), wxT( "" ), wxICON_ERROR );
+			return false;
+		}
 
 		SetCurrent( *m_glContext );
 
@@ -328,7 +332,7 @@ namespace gw2b {
 		GLenum err = glewInit( );
 		if ( GLEW_OK != err ) {
 			wxString message;
-			message << "Could not initialize GLEW library.\n" << "Error: " << glewGetErrorString( err );
+			message << "GLEW: Could not initialize GLEW library.\n" << "Error: " << glewGetErrorString( err );
 			wxMessageBox( message, wxT( "" ), wxICON_ERROR );
 			return false;
 		}
@@ -390,12 +394,6 @@ namespace gw2b {
 		m_dummyWhiteTexture = createDummyTexture( whiteTextureData );
 
 		return true;
-	}
-
-	void ModelViewer::paintNow( wxPaintEvent& p_event ) {
-		wxPaintDC dc( this );
-
-		this->render( );
 	}
 
 	void ModelViewer::onPaintEvt( wxPaintEvent& p_event ) {
