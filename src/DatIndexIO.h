@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DATINDEXREADER_H_INCLUDED
 
 #include <wx/file.h>
+
 #include "DatIndex.h"
 
 namespace gw2b {

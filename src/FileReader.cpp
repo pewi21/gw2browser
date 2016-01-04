@@ -25,13 +25,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-#include "FileReader.h"
 
 #include "Readers/StringReader.h"
 #include "Readers/ImageReader.h"
 #include "Readers/ModelReader.h"
 #include "Readers/PackedSoundReader.h"
 #include "Readers/asndMP3Reader.h"
+
+#include "FileReader.h"
 
 namespace gw2b {
 
