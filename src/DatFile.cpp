@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -24,8 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-#include "DatFile.h"
+
 #include "FileReader.h"
+
+#include "DatFile.h"
 
 namespace gw2b {
 
@@ -357,15 +359,14 @@ namespace gw2b {
 	}
 
 	DatFile::IdentificationResult DatFile::identifyFileType( const byte* p_data, size_t p_size, ANetFileType& po_fileType ) {
+		po_fileType = ANFT_Unknown;
+
 		if ( p_size < 4 ) {
-			po_fileType = ANFT_Unknown;
 			return IR_Failure;
 		}
 
 		// start with fourcc
 		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
-		po_fileType = ANFT_Unknown;
-
 		switch ( fourcc ) {
 		case FCC_ATEX:
 			po_fileType = ANFT_ATEX;
@@ -394,7 +395,7 @@ namespace gw2b {
 		case FCC_asnd:
 			po_fileType = ANFT_Sound;
 			if ( p_size >= 12 ) {
-				auto format = *reinterpret_cast< const byte* >( p_data + 8 );
+				auto format = *reinterpret_cast<const byte*>( p_data + 8 );
 
 				// all of files of this type is MP3 format, but who know.
 				switch ( format ) {
@@ -415,15 +416,17 @@ namespace gw2b {
 		case FCC_TTF:
 			po_fileType = ANFT_FontFile;
 			break;
-		case FCC_RIFF:	// Identify RIFF files
+		case FCC_RIFF:
+		{
 			po_fileType = ANFT_RIFF;
-			fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
-			switch ( fourcc ) {
+			auto format = *reinterpret_cast<const uint32*>( p_data + 8 );
+			switch ( format ) {
 			case FCC_WEBP:
 				po_fileType = ANFT_WEBP;
 				break;
 			}
 			break;
+		}
 		case FCC_ARAP:
 			po_fileType = ANFT_ARAP;
 			break;
@@ -465,8 +468,9 @@ namespace gw2b {
 						po_fileType = ANFT_PackedOgg;
 						break;
 					}
+				} else {
+					return IR_NotEnoughData;
 				}
-
 				break;
 			case FCC_ABNK:
 				po_fileType = ANFT_Bank;

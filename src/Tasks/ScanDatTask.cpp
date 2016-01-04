@@ -1,10 +1,10 @@
-/* \file       ReadIndexTask.cpp
+/* \file       ScanDatTask.cpp
 *  \brief      Contains declaration of the ScanDatTask class.
 *  \author     Rhoot
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -56,12 +56,13 @@ namespace gw2b {
 	}
 
 	void ScanDatTask::perform( ) {
+		uint bytetoread = 32;
 		// Make sure the output buffer is big enough
-		this->ensureBufferSize( 128 );
+		this->ensureBufferSize( bytetoread );
 
 		// Read file
 		uint32 entryNumber = this->currentProgress( );
-		uint size = m_datFile.peekFile( entryNumber, 128, m_outputBuffer.GetPointer( ) );
+		uint size = m_datFile.peekFile( entryNumber, bytetoread, m_outputBuffer.GetPointer( ) );
 
 		// Skip if empty
 		if ( !size ) {
@@ -74,7 +75,7 @@ namespace gw2b {
 		auto results = m_datFile.identifyFileType( m_outputBuffer.GetPointer( ), size, fileType );
 
 		// Enough data to identify the file type?
-		uint lastRequestedSize = 128;
+		uint lastRequestedSize = bytetoread;
 		while ( results == DatFile::IR_NotEnoughData ) {
 			uint sizeRequired = this->requiredIdentificationSize( m_outputBuffer.GetPointer( ), size, fileType );
 
@@ -129,7 +130,7 @@ namespace gw2b {
 				return 0x140;   // Seems true for most of them
 			}
 		case ANFT_Sound:
-			return 0x160;
+			return 0x80;		// 128 byte
 		default:
 			return 0x20;
 		}
@@ -244,8 +245,6 @@ namespace gw2b {
 
 			gw2f::StringsFile stringFile( buffer, size );
 
-			//wxLogDebug( wxT( "%d" ), entryNumber );
-
 			switch ( stringFile.language( ) ) {
 			case gw2f::language::English:
 				MakeSubCategory( wxT( "English" ) );
@@ -264,12 +263,11 @@ namespace gw2b {
 				break;
 			default:
 				MakeSubCategory( wxT( "Unknown" ) );
+				MakeSubCategory( wxString::Format( wxT( "%u" ), stringFile.language( ) ) );
 			}
 			freePointer( buffer );
-
 			break;
 		}
-
 		case ANFT_Manifest:
 			MakeCategory( wxT( "Manifests" ) );
 			break;
