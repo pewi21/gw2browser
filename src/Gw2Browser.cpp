@@ -4,6 +4,7 @@
 */
 
 /*
+Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -57,8 +58,14 @@ namespace gw2b {
 	bool Gw2Browser::OnInit( ) {
 		::wxInitAllImageHandlers( );
 
-		auto window = new BrowserWindow( wxT( "Gw2Browser" ) );
+		auto window = new BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
+		SetTopWindow( window );
 		window->Show( );
+
+		// Set BrowserWindow to center of screen
+		window->Centre( );
+		// Set window icon
+		window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
 
 		auto options = parseArguments( this->argc, this->argv );
 		if ( !options.datPath.IsEmpty( ) ) {

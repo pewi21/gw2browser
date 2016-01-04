@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef BROWSERWINDOW_H_INCLUDED
 #define BROWSERWINDOW_H_INCLUDED
 
+#include <wx/aui/aui.h>
 #include <wx/filename.h>
 #include <wx/splitter.h>
 
@@ -39,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 	class DatIndex;
 	class PreviewPanel;
+	class PreviewGLCanvas;
 	class ProgressStatusBar;
 	class Task;
 
@@ -49,16 +51,16 @@ namespace gw2b {
 		std::shared_ptr<DatIndex>   m_index;
 		ProgressStatusBar*          m_progress;
 		Task*                       m_currentTask;
-		wxSplitterWindow*           m_splitter;
+		wxAuiManager				m_uiManager;
 		CategoryTree*               m_catTree;
 		PreviewPanel*				m_previewPanel;
 		PreviewGLCanvas*			m_previewGLCanvas;
-	private:
-		bool						m_isGLCanvasSplit;
+
 	public:
-		/** Constructs the frame with the given title.
-		*  \param[in]  p_title  Title of window. */
-		BrowserWindow( const wxString& p_title );
+		/** Constructs the frame with the given title and size.
+		*  \param[in]  p_title	Title of window.
+		*  \param[in]  p_size	Size of window. */
+		BrowserWindow( const wxString& p_title, const wxSize p_size );
 		/** Destructor. */
 		~BrowserWindow( );
 		/** Opens the given .dat file for browsing.
@@ -100,6 +102,9 @@ namespace gw2b {
 		/** Performs the currently active task repeatedly until it is complete.
 		*  \param[in]  p_event  Idle event object used to request more idle events. */
 		void onPerformTaskEvt( wxIdleEvent& p_event );
+		/** Executed when the user clicks <em>View -> Menu</em> in the menu.
+		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
+		void onToggleDockEvt( wxCommandEvent &p_event );
 
 		/** Raised when the index has been read. */
 		void onReadIndexComplete( );

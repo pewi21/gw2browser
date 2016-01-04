@@ -111,9 +111,6 @@
     <ClInclude Include="..\src\Util\Array.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Tasks\ReadIndexTask.h">
       <Filter>Header Files\Tasks</Filter>
     </ClInclude>
@@ -201,6 +198,9 @@
     <ClInclude Include="..\src\INeedDatFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -281,9 +281,6 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\Camera.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Task.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Viewers\BinaryViewer\BinaryViewer.cpp">
       <Filter>Source Files\Viewers\BinaryViewer</Filter>
     </ClCompile>
@@ -306,6 +303,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ViewerGLCanvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

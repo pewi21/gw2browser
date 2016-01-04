@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <wx/aui/aui.h>
 #include <wx/filedlg.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
@@ -32,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Imported/crc.h"
 
 #include "AboutBox.h"
-#include "DatIndexIO.h"
+#include "CategoryTree.h"
 #include "ExtractFilesWindow.h"
 #include "FileReader.h"
 #include "ProgressStatusBar.h"
@@ -47,36 +48,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	BrowserWindow::BrowserWindow( const wxString& p_title )
-		: wxFrame( nullptr, wxID_ANY, p_title, wxDefaultPosition, wxSize( 820, 512 ) )
+	namespace {
+		enum {
+			ID_ShowFileList = wxID_HIGHEST + 1,
+			//ID_ShowLog,		// Show log panel
+			//ID_ResetLayout,
+			//ID_SetBackgroundColor,
+			//ID_ShowGrid,		// Show grid on PreviewGLCanvas
+			//ID_ShowMask,		// Apply white texture with black background, no shader
+			//ID_SetCanvasSize,	// Set PreviewGLCanvas size
+		};
+	};
+
+	BrowserWindow::BrowserWindow( const wxString& p_title, const wxSize p_size )
+		: wxFrame( nullptr, wxID_ANY, p_title, wxDefaultPosition, p_size )
 		, m_index( std::make_shared<DatIndex>( ) )
 		, m_progress( nullptr )
 		, m_currentTask( nullptr )
-		, m_splitter( nullptr )
 		, m_catTree( nullptr )
-		, m_previewPanel( nullptr ) {
+		, m_previewPanel( nullptr )
+		, m_previewGLCanvas( nullptr ) {
+		// Notify wxAUI which frame to use
+		m_uiManager.SetManagedWindow( this );
 
-		m_isGLCanvasSplit = false;
-
-		// Set BrowserWindow to center of screen
-		Centre( );
-		// Set window icon
-		SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
-
-		auto menuBar = new wxMenuBar( );
+		auto menuBar = new wxMenuBar;
 
 		// File menu
-		auto fileMenu = new wxMenu( );
+		auto fileMenu = new wxMenu;
 		wxAcceleratorEntry accel( wxACCEL_CTRL, 'O' );
 		fileMenu->Append( wxID_OPEN, wxT( "&Open" ), wxT( "Open a file for browsing" ) )->SetAccel( &accel );
 		fileMenu->AppendSeparator( );
 		fileMenu->Append( wxID_EXIT, wxT( "E&xit\tAlt+F4" ) );
+		// View menu
+		auto viewMenu = new wxMenu;
+		viewMenu->Append( ID_ShowFileList, wxT( "&Show File List" ) );
+		//viewMenu->Append( ID_ShowLog, wxT( "&Show Log" ) );
+		//viewMenu->Append( ID_ResetLayout, wxT( "&Reset Layout" ) );
+		//viewMenu->AppendSeparator( );
+		//viewMenu->Append( ID_SetBackgroundColor, wxT( "&Set Background color" ) );
+		//viewMenu->AppendCheckItem( ID_ShowGrid, wxT( "&Show Grid" ) );
+		//viewMenu->AppendSeparator( );
+		//viewMenu->Append( ID_SetCanvasSize, wxT( "&Set GLCanvas Size" ) );
 		// Help menu
 		auto helpMenu = new wxMenu( );
 		helpMenu->Append( wxID_ABOUT, wxT( "&About Gw2Browser" ) );
 
 		// Attach menu
 		menuBar->Append( fileMenu, wxT( "&File" ) );
+		menuBar->Append( viewMenu, wxT( "&View" ) );
+		//menuBar->Append( settingsMenu, wxT( "&Settings" ) );
 		menuBar->Append( helpMenu, wxT( "&Help" ) );
 		this->SetMenuBar( menuBar );
 
@@ -84,30 +104,33 @@ namespace gw2b {
 		m_progress = new ProgressStatusBar( this );
 		this->SetStatusBar( m_progress );
 
-		// Splitter
-		m_splitter = new wxSplitterWindow( this );
-
 		// Category tree
-		m_catTree = new CategoryTree( m_splitter );
+		m_catTree = new CategoryTree( this );
 		m_catTree->setDatIndex( m_index );
 		m_catTree->addListener( this );
 
 		// Preview panel
-		m_previewPanel = new PreviewPanel( m_splitter );
-		m_previewPanel->Hide( );
+		m_previewPanel = new PreviewPanel( this );
 
 		// Model Viewer
-		m_previewGLCanvas = new PreviewGLCanvas( m_splitter );
-		m_previewGLCanvas->SetBackgroundColour( GetBackgroundColour( ) );
-		m_previewGLCanvas->Hide( );
+		m_previewGLCanvas = new PreviewGLCanvas( this );
 
-		// Initialize splitter
-		m_splitter->Initialize( m_catTree );
+		// Add the panes to the manager
+		// CategoryTree
+		m_uiManager.AddPane( m_catTree, wxAuiPaneInfo( ).Name( wxT( "CategoryTree" ) ).Caption( wxT( "File List" ) ).BestSize( wxSize( 170, 500 ) ).Left( ) );
+		// Main content window
+		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ).CenterPane( ).Hide( ) );
+		m_uiManager.AddPane( m_previewGLCanvas, wxAuiPaneInfo( ).Name( wxT( "gl_content" ) ).CenterPane( ).Hide( ) );
+
+		// Tell the manager to "commit" all the changes just made
+		m_uiManager.Update( );
 
 		// Hook up events
 		this->Connect( wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onOpenEvt ) );
 		this->Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onExitEvt ) );
 		this->Connect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onAboutEvt ) );
+		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleDockEvt ) );
+
 		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( BrowserWindow::onCloseEvt ) );
 	}
 
@@ -115,6 +138,8 @@ namespace gw2b {
 
 	BrowserWindow::~BrowserWindow( ) {
 		deletePointer( m_currentTask );
+		// Deinitialize the frame manager
+		m_uiManager.UnInit( );
 	}
 
 	//============================================================================/
@@ -174,47 +199,25 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::viewEntry( const DatIndexEntry& p_entry ) {
-		// This seems terible :P
 		switch ( p_entry.fileType( ) ) {
 		case ANFT_Model:
 			if ( m_previewGLCanvas->previewFile( m_datFile, p_entry ) ) {
-				if ( !m_isGLCanvasSplit ) {
-					if ( m_splitter->IsSplit( ) ) {
-						m_splitter->Unsplit( );
-					}
-				}
-				m_isGLCanvasSplit = true;
-
-				m_previewGLCanvas->Show( );
-				m_previewPanel->Hide( );
-				// Split it!
-				m_splitter->SetMinimumPaneSize( 100 );
-				m_splitter->SplitVertically( m_catTree, m_previewGLCanvas, m_splitter->GetClientSize( ).x / 4 );
+				m_uiManager.GetPane( wxT( "panel_content" ) ).Hide( );
+				m_uiManager.GetPane( wxT( "gl_content" ) ).Show( );
 			}
 			break;
 		default:
 			if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
-				if ( m_isGLCanvasSplit ) {
-					if ( m_splitter->IsSplit( ) ) {
-						m_splitter->Unsplit( );
-					}
-				}
-				m_isGLCanvasSplit = false;
-
-				m_previewPanel->Show( );
-				m_previewGLCanvas->Hide( );
-				// Split it!
-				m_splitter->SetMinimumPaneSize( 100 );
-				m_splitter->SplitVertically( m_catTree, m_previewPanel, m_splitter->GetClientSize( ).x / 4 );
-
+				m_uiManager.GetPane( wxT( "panel_content" ) ).Show( );
+				m_uiManager.GetPane( wxT( "gl_content" ) ).Hide( );
 			}
 		}
+		m_uiManager.Update( );
 	}
 
 	//============================================================================/
 
 	wxFileName BrowserWindow::findDatIndex( ) {
-
 		wxStandardPathsBase& stdp = wxStandardPaths::Get( );
 		auto configPath = stdp.GetDataDir( );
 
@@ -226,18 +229,18 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::reIndexDat( ) {
-		m_index->clear( );
-		m_index->setDatTimestamp( wxFileModificationTime( m_datPath ) );
-		this->indexDat( );
-	}
-
-	//============================================================================/
-
 	void BrowserWindow::indexDat( ) {
 		auto scanTask = new ScanDatTask( m_index, m_datFile );
 		scanTask->addOnCompleteHandler( [this] ( ) { this->onScanTaskComplete( ); } );
 		this->performTask( scanTask );
+	}
+
+	//============================================================================/
+
+	void BrowserWindow::reIndexDat( ) {
+		m_index->clear( );
+		m_index->setDatTimestamp( wxFileModificationTime( m_datPath ) );
+		this->indexDat( );
 	}
 
 	//============================================================================/
@@ -325,6 +328,18 @@ namespace gw2b {
 			oldTask->invokeOnCompleteHandler( );
 			deletePointer( oldTask );
 		}
+	}
+
+	//============================================================================/
+
+	void BrowserWindow::onToggleDockEvt( wxCommandEvent &event ) {
+		int id = event.GetId( );
+
+		// wxAUI Stuff
+		if ( id == ID_ShowFileList ) {
+			m_uiManager.GetPane( m_catTree ).Show( true );
+		}
+		m_uiManager.Update( );
 	}
 
 	//============================================================================/
