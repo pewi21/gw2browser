@@ -85,13 +85,10 @@ namespace gw2b {
 		: ViewerGLCanvas( p_parent, attrib, p_pos, p_size, style )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
-		// Avoid flashing on MSW
-		SetBackgroundStyle( wxBG_STYLE_CUSTOM );
-
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
 			if ( !this->initGL( ) ) {
-				// todo, return blank viewer
+				wxMessageBox( wxT( "Could not initialize OpenGL" ), wxT( "" ), wxICON_ERROR );
 				return;
 			}
 			m_glInitialized = true;
@@ -162,6 +159,7 @@ namespace gw2b {
 		glDeleteVertexArrays( 1, &textVAO );
 
 		delete m_renderTimer;
+
 		delete m_glContext;
 	}
 
@@ -213,6 +211,11 @@ namespace gw2b {
 	}
 
 	void ModelViewer::setReader( FileReader* p_reader ) {
+		if ( !m_glInitialized ) {
+			// Could not initialize OpenGL
+			return;
+		}
+
 		Ensure::isOfType<ModelReader>( p_reader );
 		ViewerGLCanvas::setReader( p_reader );
 
