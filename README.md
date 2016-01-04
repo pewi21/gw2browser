@@ -97,7 +97,7 @@ Authors
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
-* [Loumie](https://github.com/ahom) : gw2DatTools
+* [Antoine Hom](https://github.com/ahom) : gw2DatTools
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
 * [Liberation Sans Regular](https://fedorahosted.org/liberation-fonts/) : Font used by the model viewer
 * [Till034](https://github.com/Till034) : OnCompareItems function overload
