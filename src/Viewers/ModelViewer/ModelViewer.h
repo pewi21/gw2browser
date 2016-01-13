@@ -43,46 +43,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	struct MeshCache {
-		std::vector<glm::vec3>	vertices;
-		std::vector<glm::vec2>	uvs;
-		std::vector<glm::vec3>	normals;
-		std::vector<uint>		indices;
-	};
-
-	struct VBO {
-		GLuint					vertexBuffer;
-		GLuint					uvBuffer;
-		GLuint					normalBuffer;
-	};
-
-	struct IBO {
-		GLuint					elementBuffer;
-	};
-
-	struct TBO {
-		GLuint					diffuseMap;
-		//GLuint					normalMap;
-		//GLuint					lightMap;
-	};
-
-	struct PackedVertex {
-		glm::vec3 position;
-		glm::vec2 uv;
-		//glm::vec3 normal;
-
-		bool operator < ( const PackedVertex that ) const {
-			return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
-		};
-	};
-
-	struct Character {
-		GLuint TextureID;		// ID handle of the glyph texture
-		glm::ivec2 Size;		// Size of glyph
-		glm::ivec2 Bearing;		// Offset from baseline to left/top of glyph
-		GLuint Advance;			// Horizontal offset to advance to next glyph
-	};
-
 	class ModelViewer;
 	class RenderTimer : public wxTimer {
 		ModelViewer* canvas;
@@ -93,6 +53,13 @@ namespace gw2b {
 	}; // class RenderTimer
 
 	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
+		struct MeshCache;
+		struct VBO;
+		struct IBO;
+		struct TBO;
+		struct PackedVertex;
+		struct Character;
+
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
 

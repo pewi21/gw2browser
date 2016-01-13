@@ -36,106 +36,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-#pragma pack(push, 1)
-
-	union BGRA {
-		struct {
-			uint8 b;
-			uint8 g;
-			uint8 r;
-			uint8 a;
-		};
-		uint8 parts[4];
-		uint32 color;
-	};
-
-	union RGBA {
-		struct {
-			uint8 r;
-			uint8 g;
-			uint8 b;
-			uint8 a;
-		};
-		uint8 parts[4];
-		uint32 color;
-	};
-
-	struct BGR {
-		uint8   b;
-		uint8   g;
-		uint8   r;
-	};
-
-	struct RGB {
-		uint8   r;
-		uint8   g;
-		uint8   b;
-	};
-
-	union DXTColor {
-		struct {
-			uint16 red1 : 5;
-			uint16 green1 : 6;
-			uint16 blue1 : 5;
-			uint16 red2 : 5;
-			uint16 green2 : 6;
-			uint16 blue2 : 5;
-		};
-		struct {
-			uint16 color1;
-			uint16 color2;
-		};
-	};
-
-	struct DXT1Block {
-		DXTColor colors;
-		uint32   indices;
-	};
-
-	struct DXT3Block {
-		uint64   alpha;
-		DXTColor colors;
-		uint32   indices;
-	};
-
-	struct DCXBlock     // Should be 3DCXBlock, but names can't start with a number D:
-	{
-		uint64  green;
-		uint64  red;
-	};
-
-	struct DDSPixelFormat {
-		uint32          size;                   /**< Structure size; set to 32 (bytes). */
-		uint32          flags;                  /**< Values which indicate what type of data is in the surface. */
-		uint32          fourCC;                 /**< Four-character codes for specifying compressed or custom formats. */
-		uint32          rgbBitCount;            /**< Number of bits in an RGB (possibly including alpha) format. */
-		uint32          rBitMask;               /**< Red (or lumiannce or Y) mask for reading color data. */
-		uint32          gBitMask;               /**< Green (or U) mask for reading color data. */
-		uint32          bBitMask;               /**< Blue (or V) mask for reading color data. */
-		uint32          aBitMask;               /**< Alpha mask for reading alpha data. */
-	};
-
-	struct DDSHeader {
-		uint32          magic;                  /**< Identifies a DDS file. This member must be set to 0x20534444. */
-		uint32          size;                   /**< Size of structure. This member must be set to 124. */
-		uint32          flags;                  /**< Flags to indicate which members contain valid data. */
-		uint32          height;                 /**< Surface height (in pixels). */
-		uint32          width;                  /**< Surface width (in pixels). */
-		uint32          pitchOrLinearSize;      /**< The pitch or number of bytes per scan line in an uncompressed texture; the total number of bytes in the top level texture for a compressed texture. */
-		uint32          depth;                  /**< Depth of a volume texture (in pixels), otherwise unused. */
-		uint32          mipMapCount;            /**< Number of mipmap levels, otherwise unused. */
-		uint32          reserved1[11];          /**< Unused. */
-		DDSPixelFormat  pixelFormat;            /**< The pixel format. */
-		uint32          caps;                   /**< Specifies the complexity of the surfaces stored. */
-		uint32          caps2;                  /**< Additional detail about the surfaces stored. */
-		uint32          caps3;                  /**< Unused. */
-		uint32          caps4;                  /**< Unused. */
-		uint32          reserved2;              /**< Unused. */
-	};
-
-#pragma pack(pop)
-
 	class ImageReader : public FileReader {
+		union BGRA;
+		union RGBA;
+		struct BGR;
+		struct RGB;
+		union DXTColor;
+		struct DXT1Block;
+		struct DXT3Block;
+		struct DCXBlock;
+		struct DDSPixelFormat;
+		struct DDSHeader;
+
 	public:
 		/** Constructor.
 		*  \param[in]  p_data       Data to be handled by this reader.

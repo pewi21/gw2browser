@@ -246,20 +246,6 @@ namespace gw2b {
 		uint16 parts[3];                /**< Part1 is always above 0x100, Part2 is always between 0x100 and 0x101, Part3 is always 0x00 */
 	};
 
-	/** ATEX file header. */
-	struct ANetAtexHeader {
-		union {
-			byte identifier[4];         /**< File identifier (FourCC). */
-			uint32 identifierInteger;   /**< File identifier (FourCC), as integer. */
-		};
-		union {
-			byte format[4];             /**< Format of the contained data. */
-			uint32 formatInteger;       /**< Format of the contained data, as integer. */
-		};
-		uint16 width;                   /**< Width of the texture, in pixels. */
-		uint16 height;                  /**< Height of the texture, in pixels. */
-	};
-
 	/** PF file header. */
 	struct ANetPfHeader {
 		byte identifier[2];             /**< Always 'PF'. */

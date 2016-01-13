@@ -56,6 +56,46 @@ namespace gw2b {
 	//      ModelViewer
 	//----------------------------------------------------------------------------
 
+	struct ModelViewer::MeshCache {
+		std::vector<glm::vec3>	vertices;
+		std::vector<glm::vec2>	uvs;
+		std::vector<glm::vec3>	normals;
+		std::vector<uint>		indices;
+	};
+
+	struct ModelViewer::VBO {
+		GLuint					vertexBuffer;
+		GLuint					uvBuffer;
+		GLuint					normalBuffer;
+	};
+
+	struct ModelViewer::IBO {
+		GLuint					elementBuffer;
+	};
+
+	struct ModelViewer::TBO {
+		GLuint					diffuseMap;
+		//GLuint					normalMap;
+		//GLuint					lightMap;
+	};
+
+	struct ModelViewer::PackedVertex {
+		glm::vec3 position;
+		glm::vec2 uv;
+		//glm::vec3 normal;
+
+		bool operator < ( const PackedVertex that ) const {
+			return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
+		};
+	};
+
+	struct ModelViewer::Character {
+		GLuint TextureID;		// ID handle of the glyph texture
+		glm::ivec2 Size;		// Size of glyph
+		glm::ivec2 Bearing;		// Offset from baseline to left/top of glyph
+		GLuint Advance;			// Horizontal offset to advance to next glyph
+	};
+
 	namespace {
 
 		const int attrib[] = {

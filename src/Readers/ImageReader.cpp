@@ -39,6 +39,101 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+	union ImageReader::BGRA {
+		struct {
+			uint8 b;
+			uint8 g;
+			uint8 r;
+			uint8 a;
+		};
+		uint8 parts[4];
+		uint32 color;
+	};
+
+	union ImageReader::RGBA {
+		struct {
+			uint8 r;
+			uint8 g;
+			uint8 b;
+			uint8 a;
+		};
+		uint8 parts[4];
+		uint32 color;
+	};
+
+	struct ImageReader::BGR {
+		uint8   b;
+		uint8   g;
+		uint8   r;
+	};
+
+	struct ImageReader::RGB {
+		uint8   r;
+		uint8   g;
+		uint8   b;
+	};
+
+	union ImageReader::DXTColor {
+		struct {
+			uint16 red1 : 5;
+			uint16 green1 : 6;
+			uint16 blue1 : 5;
+			uint16 red2 : 5;
+			uint16 green2 : 6;
+			uint16 blue2 : 5;
+		};
+		struct {
+			uint16 color1;
+			uint16 color2;
+		};
+	};
+
+	struct ImageReader::DXT1Block {
+		DXTColor colors;
+		uint32   indices;
+	};
+
+	struct ImageReader::DXT3Block {
+		uint64   alpha;
+		DXTColor colors;
+		uint32   indices;
+	};
+
+	struct ImageReader::DCXBlock     // Should be 3DCXBlock, but names can't start with a number D:
+	{
+		uint64  green;
+		uint64  red;
+	};
+
+	struct ImageReader::DDSPixelFormat {
+		uint32          size;                   /**< Structure size; set to 32 (bytes). */
+		uint32          flags;                  /**< Values which indicate what type of data is in the surface. */
+		uint32          fourCC;                 /**< Four-character codes for specifying compressed or custom formats. */
+		uint32          rgbBitCount;            /**< Number of bits in an RGB (possibly including alpha) format. */
+		uint32          rBitMask;               /**< Red (or lumiannce or Y) mask for reading color data. */
+		uint32          gBitMask;               /**< Green (or U) mask for reading color data. */
+		uint32          bBitMask;               /**< Blue (or V) mask for reading color data. */
+		uint32          aBitMask;               /**< Alpha mask for reading alpha data. */
+	};
+
+	struct ImageReader::DDSHeader {
+		uint32          magic;                  /**< Identifies a DDS file. This member must be set to 0x20534444. */
+		uint32          size;                   /**< Size of structure. This member must be set to 124. */
+		uint32          flags;                  /**< Flags to indicate which members contain valid data. */
+		uint32          height;                 /**< Surface height (in pixels). */
+		uint32          width;                  /**< Surface width (in pixels). */
+		uint32          pitchOrLinearSize;      /**< The pitch or number of bytes per scan line in an uncompressed texture; the total number of bytes in the top level texture for a compressed texture. */
+		uint32          depth;                  /**< Depth of a volume texture (in pixels), otherwise unused. */
+		uint32          mipMapCount;            /**< Number of mipmap levels, otherwise unused. */
+		uint32          reserved1[11];          /**< Unused. */
+		DDSPixelFormat  pixelFormat;            /**< The pixel format. */
+		uint32          caps;                   /**< Specifies the complexity of the surfaces stored. */
+		uint32          caps2;                  /**< Additional detail about the surfaces stored. */
+		uint32          caps3;                  /**< Unused. */
+		uint32          caps4;                  /**< Unused. */
+		uint32          reserved2;              /**< Unused. */
+	};
+
 	ImageReader::ImageReader( const Array<byte>& p_data, ANetFileType p_fileType )
 		: FileReader( p_data, p_fileType ) {
 	}
@@ -265,7 +360,7 @@ namespace gw2b {
 		auto& atex = file.mipMapLevel( 0 );
 
 		// Determine atex size and bail if too small
-		if ( m_data.GetSize( ) >= sizeof( ANetAtexHeader ) + sizeof( uint32 ) ) {
+		if ( atex.data( ) ) {
 			auto mipMap0Size = atex.size( );
 
 			if ( mipMap0Size > m_data.GetSize( ) ) {
@@ -451,8 +546,8 @@ namespace gw2b {
 			return ( isCompressedRgb || ( isLuminanceTexture && is8Bit ) || ( isUncompressedRgb && is32Bit ) );
 		}
 
-		auto atex = reinterpret_cast<const ANetAtexHeader*>( p_data );
-		auto compression = atex->formatInteger;
+		gw2f::TextureFile atex( p_data, p_size );
+		auto compression = atex.format( );
 
 		// The compression algorithm for non-power-of-two textures is unknown
 		//if ( !isPowerOfTwo( atex->width ) || !isPowerOfTwo( atex->height ) ) {
