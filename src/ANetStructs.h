@@ -32,6 +32,74 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+	/** Contains the various four-character code for identify files in the dat. */
+	enum FourCC {
+		// Offset 0
+		FCC_ATEX = 0x58455441,
+		FCC_ATTX = 0x58545441,
+		FCC_ATEC = 0x43455441,
+		FCC_ATEP = 0x50455441,
+		FCC_ATEU = 0x55455441,
+		FCC_ATET = 0x54455441,
+		FCC_3DCX = 0x58434433,
+		FCC_DXT = 0x00545844,
+		FCC_DDS = 0x20534444,
+		FCC_strs = 0x73727473,
+		FCC_asnd = 0x646e7361,
+		FCC_RIFF = 0x46464952,	// resource interchange file format
+		FCC_TTF = 0x00000100,	// files with this signature seems to be ttf but it is Embedded OpenType fonts with ttf header
+		FCC_OggS = 0x5367674f,
+		FCC_ARAP = 0x50415241,	// relate to temp folder name of Awesomium
+
+		// Texture codec
+		FCC_DXT1 = 0x31545844,
+		FCC_DXT2 = 0x32545844,
+		FCC_DXT3 = 0x33545844,
+		FCC_DXT4 = 0x34545844,
+		FCC_DXT5 = 0x35545844,
+		FCC_DXTN = 0x4e545844,
+		FCC_DXTL = 0x4c545844,
+		FCC_DXTA = 0x41545844,
+		FCC_R32F = 0x00000072,
+
+		// RIFF FourCC
+		FCC_WEBP = 0x50424557,
+
+		// PF FourCC
+		FCC_ARMF = 0x464d5241,
+		FCC_ASND = 0x444e5341,
+		FCC_ABNK = 0x4b4e4241,
+		FCC_ABIX = 0x58494241,
+		FCC_AMSP = 0x50534d41,
+		FCC_CDHS = 0x53484443,
+		FCC_CINP = 0x504e4943,
+		FCC_cntc = 0x63746e63,
+		FCC_MODL = 0x4c444f4d,
+		FCC_GEOM = 0x4d4f4547,
+		FCC_DEPS = 0x53504544,
+		FCC_EULA = 0x616c7565,
+		FCC_hvkC = 0x436b7668,
+		FCC_locl = 0x6c636f6c,	// store config, e-mail and hashed password
+		FCC_mapc = 0x6370616d,
+		FCC_mpsd = 0x6473706d,
+		FCC_PIMG = 0x474d4950,
+		FCC_AMAT = 0x54414d41,
+		FCC_anic = 0x63696e61,
+		FCC_emoc = 0x636f6d65,
+		FCC_prlt = 0x746c7270,
+		FCC_cmpc = 0x63706d63,
+		FCC_txtm = 0x6d747874,
+		FCC_txtV = 0x56747874,
+		FCC_txtv = 0x76747874,
+
+		// Not quite FourCC
+		FCC_MZ = 0x5a4d,		// Executable or Dynamic Link Library
+		FCC_PF = 0x4650,
+		FCC_JPEG = 0xffd8ff,
+		FCC_ID3 = 0x334449,		// MP3
+		FCC_BINK2 = 0x32424b,	// Bink 2 video
+	};
+
 	/** Contains the various (known) file formats in the dat. */
 	enum ANetFileType {
 		ANFT_Unknown,					/**< Unknown format. */
