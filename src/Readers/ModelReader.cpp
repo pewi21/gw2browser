@@ -184,8 +184,9 @@ namespace gw2b {
 			// Write UVs
 			if ( mesh.hasUV ) {
 				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
+					// Flip UV coordinate
 					auto u = mesh.vertices[j].uv.x;
-					auto v = 1.0f - mesh.vertices[j].uv.y; // Convert DirectX UV coordinate to OpenGL UV coordinate
+					auto v = 1.0f - mesh.vertices[j].uv.y;
 					stream << "vt " << u << ' ' << v << std::endl;
 				}
 			}
@@ -352,8 +353,8 @@ namespace gw2b {
 				::memcpy( &vertices, pos, sizeof( vertices ) );
 				// Convert DirectX coordinate to OpenGL
 				vertex.position.x = vertices.x;
-				vertex.position.z = vertices.y;
-				vertex.position.y = -vertices.z;
+				vertex.position.z = 1.0f - vertices.y;
+				vertex.position.y = 1.0f - vertices.z;
 				pos += sizeof( vertex.position );
 			}
 			// Bit 1: Weights
@@ -503,7 +504,14 @@ namespace gw2b {
 
 	void ModelReader::readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
 		p_mesh.triangles.resize( p_indiceCount / 3 );
-		::memcpy( p_mesh.triangles.data( ), p_data, p_mesh.triangles.size( ) * sizeof( Triangle ) );
+		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
+			auto pos = &p_data[i * sizeof( Triangle )];
+			Triangle& triangle = p_mesh.triangles[i];
+			// Flip the order of the faces of the triangle
+			triangle.index1 = *reinterpret_cast<const uint16*>( pos + 0 * sizeof( uint16 ) );
+			triangle.index2 = *reinterpret_cast<const uint16*>( pos + 2 * sizeof( uint16 ) );
+			triangle.index3 = *reinterpret_cast<const uint16*>( pos + 1 * sizeof( uint16 ) );
+		}
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {

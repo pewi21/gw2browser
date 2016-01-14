@@ -1158,15 +1158,15 @@ namespace gw2b {
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 
 		// Projection matrix
-		auto projMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
+		auto ProjMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
 
 		// View matrix
-		auto viewMatrix = m_camera.calculateViewMatrix( );
+		auto ViewMatrix = m_camera.calculateViewMatrix( );
 
 		// Model matrix
 		auto ModelMatrix = glm::mat4( 1.0f );
 
-		MVP = projMatrix * viewMatrix * ModelMatrix;
+		MVP = ProjMatrix * ViewMatrix * ModelMatrix;
 
 		// Send our transformation to the currently bound shader, in the "MVP" uniform
 		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, glm::value_ptr( MVP ) );

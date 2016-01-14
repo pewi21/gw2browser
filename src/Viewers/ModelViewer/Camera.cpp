@@ -40,15 +40,15 @@ namespace gw2b {
 
 	glm::mat4 Camera::calculateViewMatrix( ) const {
 		// Calculate camera distance
-		auto distance = glm::vec4( 0.0f, 0.0f, -m_distance, 0.0f );
+		auto distance = glm::vec4( 0.0f, 0.0f, m_distance, 0.0f );
 
 		auto rotViewMat = this->calculateRotationMatrix( );
 
-		// Create the view matrix
 		auto pivotVector = glm::vec3( m_pivot );
 		auto eyePositionVector = glm::vec3( rotViewMat * distance ) + pivotVector;
 		auto upVector = glm::vec3( rotViewMat * glm::vec4( 0.0f, 1.0f, 0.0f, 0.0f ) );
 
+		// Create the view matrix
 		glm::mat4 ViewMatrix = glm::lookAt(
 			eyePositionVector,	// The position of camera, in world space
 			pivotVector,		// Where to look at, in world space
@@ -62,7 +62,7 @@ namespace gw2b {
 		glm::mat4 pitchMatrix;
 		glm::mat4 yawMatrix;
 
-		pitchMatrix = glm::rotate( pitchMatrix, m_pitch, glm::vec3( 1.0f, 0.0f, 0.0f ) );
+		pitchMatrix = glm::rotate( pitchMatrix, m_pitch, glm::vec3( -1.0f, 0.0f, 0.0f ) );
 		yawMatrix = glm::rotate( yawMatrix, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
 
 		return pitchMatrix * yawMatrix;
@@ -124,7 +124,7 @@ namespace gw2b {
 		float panSpeed = 0.001f * m_distance;
 
 		// X axis
-		glm::vec4 rightVector( 1.0f, 0.0f, 0.0f, 0.0f );
+		glm::vec4 rightVector( -1.0f, 0.0f, 0.0f, 0.0f );
 		rightVector = rotationMatrix * rightVector; // transfrom matrices
 
 		// Y axis
