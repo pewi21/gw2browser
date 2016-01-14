@@ -27,7 +27,6 @@
     <ClInclude Include="..\src\DatIndexIO.h" />
     <ClInclude Include="..\src\Documentation\Namespaces.h" />
     <ClInclude Include="..\src\ExtractFilesWindow.h" />
-    <ClInclude Include="..\src\fcc.h" />
     <ClInclude Include="..\src\FileReader.h" />
     <ClInclude Include="..\src\DatFile.h" />
     <ClInclude Include="..\src\DatIndex.h" />
