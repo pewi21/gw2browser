@@ -134,6 +134,10 @@ namespace gw2b {
 		uint32          reserved2;              /**< Unused. */
 	};
 
+	//----------------------------------------------------------------------------
+	//      ImageReader
+	//----------------------------------------------------------------------------
+
 	ImageReader::ImageReader( const Array<byte>& p_data, ANetFileType p_fileType )
 		: FileReader( p_data, p_fileType ) {
 	}
@@ -372,14 +376,6 @@ namespace gw2b {
 			return false;
 		}
 
-		// Allocate buffer
-		std::vector<BGRA> buffer;
-
-		// Allocate output buffer, if needed
-		if ( buffer.size( ) < atex.uncompressedSize( ) ) {
-			buffer.resize( atex.uncompressedSize( ) );
-		}
-
 		// Init some fields
 		po_colors = nullptr;
 		po_alphas = nullptr;
@@ -387,7 +383,10 @@ namespace gw2b {
 		uint16 height = atex.height( );
 		uint32 format = atex.format( );
 		uint32 atex_size = atex.size( );
-		uint32 bufferSize = buffer.size( );
+		uint32 bufferSize = atex.uncompressedSize( );
+
+		// Allocate buffer
+		auto buffer = allocate<BGRA>( bufferSize );
 
 		// Hack for read 126x64 ATEX
 		if ( width == 126 && height == 64 ) {
@@ -396,27 +395,27 @@ namespace gw2b {
 
 		// Uncompress ATEX
 		if ( gw2dt::compression::inflateTextureBlockBuffer( width, height, format, atex_size, atex.data( ),
-			bufferSize, reinterpret_cast<uint8*>( buffer.data( ) ) )
+			bufferSize, reinterpret_cast<uint8*>( buffer ) )
 			) {
 
 			switch ( format ) {
 			case FCC_DXT1:
-				this->processDXT1( buffer.data( ), width, height, po_colors, po_alphas );
+				this->processDXT1( buffer, width, height, po_colors, po_alphas );
 				break;
 			case FCC_DXT2:
 			case FCC_DXT3:
 			case FCC_DXTN:
-				this->processDXT3( buffer.data( ), width, height, po_colors, po_alphas );
+				this->processDXT3( buffer, width, height, po_colors, po_alphas );
 				break;
 			case FCC_DXT4:
 			case FCC_DXT5:
-				this->processDXT5( buffer.data( ), width, height, po_colors, po_alphas );
+				this->processDXT5( buffer, width, height, po_colors, po_alphas );
 				break;
 			case FCC_DXTA:
-				this->processDXTA( reinterpret_cast<uint64*>( buffer.data( ) ), width, height, po_colors );
+				this->processDXTA( reinterpret_cast<uint64*>( buffer ), width, height, po_colors );
 				break;
 			case FCC_DXTL:
-				this->processDXT5( buffer.data( ), width, height, po_colors, po_alphas );
+				this->processDXT5( buffer, width, height, po_colors, po_alphas );
 
 				for ( uint i = 0; i < ( static_cast<uint>( width ) * static_cast<uint>( height ) ); i++ ) {
 					po_colors[i].r = ( po_colors[i].r * po_alphas[i] ) / 0xff;
@@ -425,12 +424,15 @@ namespace gw2b {
 				}
 				break;
 			case FCC_3DCX:
-				this->process3DCX( reinterpret_cast<RGBA*>( buffer.data( ) ), width, height, po_colors, po_alphas );
+				this->process3DCX( reinterpret_cast<RGBA*>( buffer ), width, height, po_colors, po_alphas );
 				break;
 			default:
+				freePointer( buffer );
 				return false;
 			}
 		}
+
+		freePointer( buffer );
 
 		if ( po_colors ) {
 			po_size.Set( width, height );
@@ -495,7 +497,7 @@ namespace gw2b {
 			}
 		}
 
-		freePointer( decoded_data );
+		WebPFree( decoded_data );
 
 		if ( po_colors ) {
 			po_size.Set( bitstream->width, bitstream->height );
