@@ -129,7 +129,7 @@ namespace gw2b {
 		this->Connect( wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onOpenEvt ) );
 		this->Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onExitEvt ) );
 		this->Connect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onAboutEvt ) );
-		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleDockEvt ) );
+		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onMenuEvt ) );
 
 		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( BrowserWindow::onCloseEvt ) );
 	}
@@ -332,7 +332,7 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::onToggleDockEvt( wxCommandEvent &event ) {
+	void BrowserWindow::onMenuEvt( wxCommandEvent &event ) {
 		int id = event.GetId( );
 
 		// wxAUI Stuff

@@ -104,7 +104,7 @@ namespace gw2b {
 		void onPerformTaskEvt( wxIdleEvent& p_event );
 		/** Executed when the user clicks <em>View -> Menu</em> in the menu.
 		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
-		void onToggleDockEvt( wxCommandEvent &p_event );
+		void onMenuEvt( wxCommandEvent &p_event );
 
 		/** Raised when the index has been read. */
 		void onReadIndexComplete( );
