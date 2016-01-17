@@ -66,18 +66,10 @@ namespace gw2b {
 		virtual DataType dataType( ) const {
 			return DT_Binary;
 		}
-		/** Gets an appropriate file extension for the contents of this reader.
-		*  \return wxString    File extension. */
-		virtual const wxChar* extension() const;
-		/** Converts the data associated with this file into a usable format.
-		*  \return Array<byte> converted data. */
-		virtual Array<byte> convertData( ) const;
 
-		/** Dummy FileReader
-		*  \param[in]  p_data      Data to read.
-		*  \param[in]  p_fileType   File type of the given data.
-		*  \return FileReader* Newly created FileReader for the data. */
-		static FileReader* FileReader::readerForFileType( const Array<byte>& p_data, ANetFileType p_fileType );
+		/** Gets unconverted data for the contents of this reader.
+		*  \return Array<byte> unconverted file data. */
+		Array<byte> rawData( ) const;
 
 		/** Analyzes the given data and creates an appropriate subclass of
 		*  FileReader to handle it. Caller is responsible for freeing the reader.

@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AboutBox.h"
 #include "CategoryTree.h"
-#include "ExtractFilesWindow.h"
+#include "Exporter.h"
 #include "FileReader.h"
 #include "ProgressStatusBar.h"
 #include "PreviewPanel.h"
@@ -404,65 +404,10 @@ namespace gw2b {
 		auto entries = p_tree.getSelectedEntries( );
 
 		if ( entries.GetSize( ) ) {
-			// If it's just one file, we could handle it here
-			if ( entries.GetSize( ) == 1 ) {
-				auto entry = entries[0];
-				auto entryData = m_datFile.readFile( entry->mftEntry( ) );
-
-				// Valid data?
-				if ( !entryData.GetSize( ) ) {
-					wxMessageBox( wxT( "Failed to extract the file, most likely due to a decompression error." ), wxT( "Error" ), wxOK | wxICON_ERROR );
-					return;
-				}
-
-				// Identify files extensions
-				auto fileType = ANFT_Unknown;
-				m_datFile.identifyFileType( entryData.GetPointer(), entryData.GetSize(), fileType );
-
-				FileReader *reader;
-				if ( p_mode ) {
-					reader = FileReader::readerForData( entryData, fileType );
-				} else {
-					reader = FileReader::readerForFileType( entryData, fileType );
-				}
-
-				auto ext = wxEmptyString;
-				if ( reader ) {
-					if ( p_mode ) {
-						entryData = reader->convertData( );
-					}
-					ext = reader->extension();
-				}
-
-				// Ask for location
-				wxFileDialog dialog( this,
-					wxString::Format( wxT( "Extract %s%s..." ), entry->name(), ext ),
-					wxEmptyString,
-					entry->name() + ext,
-					wxFileSelectorDefaultWildcardStr,
-					wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
-
-				if ( dialog.ShowModal( ) == wxID_OK ) {
-					wxFile file( dialog.GetPath( ), wxFile::write );
-					if ( file.IsOpened( ) ) {
-						file.Write( entryData.GetPointer( ), entryData.GetSize( ) );
-						file.Close( );
-					} else {
-						wxMessageBox( wxT( "Failed to open the file for writing." ), wxT( "Error" ), wxOK | wxICON_ERROR );
-					}
-				}
-				deletePointer( reader );
-
-			// More than one files
+			if ( p_mode ) {
+				Exporter::Exporter( entries, m_datFile, Exporter::EM_Converted );
 			} else {
-				wxDirDialog dialog( this, wxT( "Select output folder" ) );
-				if ( dialog.ShowModal( ) == wxID_OK ) {
-					if ( p_mode ) {
-						new ExtractFilesWindow( entries, m_datFile, dialog.GetPath( ), ExtractFilesWindow::EM_Converted );
-					} else {
-						new ExtractFilesWindow( entries, m_datFile, dialog.GetPath( ), ExtractFilesWindow::EM_Raw );
-					}
-				}
+				Exporter::Exporter( entries, m_datFile, Exporter::EM_Raw );
 			}
 		}
 	}

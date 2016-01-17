@@ -25,9 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
-#include <sstream>
 #include <new>
 #include <vector>
 
@@ -156,88 +153,6 @@ namespace gw2b {
 	}
 
 	ModelReader::~ModelReader( ) {
-	}
-
-	Array<byte> ModelReader::convertData( ) const {
-		Model model = this->getModel( );
-		std::ostringstream stream;
-
-		// Note: wxWidgets only does locale-specific number formatting. This does
-		// not work well with obj-files.
-		stream.imbue( std::locale( "C" ) );
-		stream << "# " << model.numMeshes( ) << " meshes" << std::endl;
-
-		uint indexBase = 1;
-		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
-			const Mesh& mesh = model.mesh( i );
-
-			// Write header
-			stream << std::endl << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
-			stream << "g mesh" << i + 1 << std::endl;
-			stream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
-
-			// Write positions
-			for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
-				stream << "v " << mesh.vertices[j].position.x << ' ' << mesh.vertices[j].position.y << ' ' << mesh.vertices[j].position.z << std::endl;
-			}
-
-			// Write UVs
-			if ( mesh.hasUV ) {
-				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
-					// Flip UV coordinate
-					auto u = mesh.vertices[j].uv.x;
-					auto v = 1.0f - mesh.vertices[j].uv.y;
-					stream << "vt " << u << ' ' << v << std::endl;
-				}
-			}
-
-			// Write normals
-			if ( mesh.hasNormal ) {
-				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
-					stream << "vn " << mesh.vertices[j].normal.x << ' ' << mesh.vertices[j].normal.y << ' ' << mesh.vertices[j].normal.z << std::endl;
-				}
-			}
-
-			// Write faces
-			for ( uint j = 0; j < mesh.triangles.size( ); j++ ) {
-				const Triangle& triangle = mesh.triangles[j];
-
-				stream << 'f';
-				for ( uint k = 0; k < 3; k++ ) {
-					uint index = triangle.indices[k] + indexBase;
-					stream << ' ' << index;
-
-					// UV reference
-					if ( mesh.hasUV ) {
-						stream << '/' << index;
-					}
-
-					// Normal reference
-					if ( mesh.hasNormal ) {
-						if ( !mesh.hasUV ) {
-							stream << '/';
-						}
-						stream << '/' << index;
-					}
-				}
-				stream << std::endl;
-			}
-
-			// newline before next mesh!
-			stream << std::endl;
-			indexBase += mesh.vertices.size( );
-		}
-
-		// Close stream
-		stream.flush( );
-		std::string output = stream.str( );
-		stream.clear( );
-
-		// Convert string to byte array
-		Array<byte> outputData( output.length( ) );
-		::memcpy( outputData.GetPointer( ), output.c_str( ), output.length( ) );
-
-		return outputData;
 	}
 
 	Model ModelReader::getModel( ) const {

@@ -46,14 +46,6 @@ namespace gw2b {
 		virtual DataType dataType( ) const override {
 			return DT_Sound;
 		}
-		/** Gets an appropriate file extension for the contents of this reader.
-		*  \return wxString    File extension. */
-		virtual const wxChar* extension( ) const override {
-			return wxT( ".mp3" );
-		}
-		/** Converts the data associated with this file into MP3 file.
-		*  \return Array<byte> converted data. */
-		virtual Array<byte> convertData( ) const;
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     MP3 format. */
 		Array<byte> getMP3( ) const;

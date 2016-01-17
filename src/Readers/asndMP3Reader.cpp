@@ -50,8 +50,4 @@ namespace gw2b {
 		return outputArray;
 	}
 
-	Array<byte> asndMP3Reader::convertData( ) const {
-		return( this->getMP3( ) );
-	}
-
 }; // namespace gw2b

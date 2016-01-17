@@ -1,0 +1,88 @@
+/* \file       Exporter.h
+*  \brief      Contains the declaration of the base class of exporters for the
+*              various file types.
+*  \author     Khral Steelforge
+*/
+
+/*
+Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2012 Rhoot <https://github.com/rhoot>
+
+This file is part of Gw2Browser.
+
+Gw2Browser is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#pragma once
+
+#ifndef EXPORTER_H_INCLUDED
+#define EXPORTER_H_INCLUDED
+
+#include <wx/filename.h>
+#include <wx/mstream.h>
+
+#include "Util/Array.h"
+#include "ANetStructs.h"
+#include "FileReader.h"
+
+namespace gw2b {
+	class DatFile;
+	class DatIndexCategory;
+	class DatIndexEntry;
+
+	class Exporter : public wxFrame {
+	public:
+		enum ExtractionMode {
+			EM_Raw,
+			EM_Converted,
+		};
+	private:
+		DatFile&                    m_datFile;
+		Array<const DatIndexEntry*> m_entries;
+		//uint                        m_currentProgress;
+		//wxString                    m_path;
+		ExtractionMode				m_mode;
+		ANetFileType				m_fileType;
+	public:
+		/** Constructor.
+		*  \param[in]  p_entries       Entry to extract.
+		*  \param[in]  p_datFile       .dat file containing the file.
+		*  \param[in]  p_mode          File extract mode. */
+		Exporter( const Array<const DatIndexEntry*>& p_entries, DatFile& p_datFile, ExtractionMode p_mode );
+		/** Destructor. Clears all data. */
+		virtual ~Exporter( );
+
+	private:
+		/** Gets an appropriate file extension for the contents.
+		*  \param[in]  p_mode			Extract mode.
+		*  \return wxString				File extension. */
+		const wxChar* GetExtension( const ExtractionMode p_mode ) const;
+		/** Gets an appropriate wildcard for the contents.
+		*  \param[in]  p_mode			Extract mode.
+		*  \return wxString				File extension. */
+		const char* getWildCard( const ExtractionMode p_mode ) const;
+		void extractFile( const DatIndexEntry& p_entry );
+		void extractFiles( const Array<const DatIndexEntry*>& p_entries );
+		void exportImage( FileReader* p_reader, const wxString& p_directory, const wxString& p_fileId );
+		void exportString( FileReader* p_reader, const wxString& p_filePath );
+		void exportSound( FileReader* p_reader, const wxString& p_filePath );
+		void exportModel( FileReader* p_reader, const wxString& p_directory, const wxString& p_fileId );
+		bool writeFile( const Array<byte>& p_data, const wxString& p_filePath );
+		void appendPaths( wxFileName& p_path, const DatIndexCategory& p_category );
+
+	};
+
+}; // namespace gw2b
+
+#endif // EXPORTER_H_INCLUDED

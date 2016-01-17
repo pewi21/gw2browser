@@ -62,20 +62,13 @@ namespace gw2b {
 		virtual DataType dataType( ) const override {
 			return DT_Image;
 		}
-		/** Gets an appropriate file extension for the contents of this reader.
-		*  \return wxString    File extension. */
-		virtual const wxChar* extension( ) const override {
-			return wxT( ".png" );
-		}
-		/** Converts the data associated with this file into PNG.
-		*  \return Array<byte> converted data. */
-		virtual Array<byte> convertData( ) const;
 		/** Gets the image contained in the data owned by this reader.
 		*  \return wxImage     Newly created image. */
 		wxImage getImage( ) const;
 		/** Determines whether the header of this image is valid.
 		*  \return bool    true if valid, false if not. */
 		static bool isValidHeader( const byte* p_data, size_t p_size );
+
 	private:
 		bool readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 		bool readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;

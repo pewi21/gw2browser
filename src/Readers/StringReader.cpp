@@ -89,18 +89,6 @@ namespace gw2b {
 		return string;
 	}
 
-	Array<byte> StringReader::convertData( ) const {
-		auto string = this->getString( );
-
-		wxString output = string.utf8_str( );
-
-		// Convert string to byte array
-		Array<byte> outputData( output.length( ) );
-		::memcpy( outputData.GetPointer( ), output.utf8_str( ), output.length( ) );
-
-		return outputData;
-	}
-
 	bool StringReader::isValidHeader( const byte* p_data ) {
 		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
 

@@ -46,14 +46,6 @@ namespace gw2b {
 		virtual DataType dataType( ) const override {
 			return DT_String;
 		}
-		/** Gets an appropriate file extension for the contents of this reader.
-		*  \return wxString    File extension. */
-		virtual const wxChar* extension( ) const override {
-			return wxT( ".csv" );
-		}
-		/** Converts the data associated with this file into CSV file.
-		*  \return Array<byte> converted data. */
-		virtual Array<byte> convertData( ) const;
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     CSV format of strings. */
 		wxString getString( ) const;

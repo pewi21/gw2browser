@@ -190,32 +190,6 @@ namespace gw2b {
 		}
 	}
 
-	Array<byte> ImageReader::convertData( ) const {
-		auto image = this->getImage( );
-
-		// Bail if invalid
-		if ( !image.IsOk( ) ) {
-			return Array<byte>( );
-		}
-
-		// Write the png to memory
-		wxMemoryOutputStream stream;
-		if ( !image.SaveFile( stream, wxBITMAP_TYPE_PNG ) ) {
-			return Array<byte>( );
-		}
-
-		// Reset the position of the stream
-		auto buffer = stream.GetOutputStreamBuffer( );
-		buffer->Seek( 0, wxFromStart );
-
-		// Read the data from the stream and into a buffer
-		Array<byte> data( buffer->GetBytesLeft( ) );
-		buffer->Read( data.GetPointer( ), data.GetSize( ) );
-
-		// Return the PNG data
-		return data;
-	}
-
 	bool ImageReader::readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
 		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
 		// Get header

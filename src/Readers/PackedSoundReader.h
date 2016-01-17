@@ -46,23 +46,6 @@ namespace gw2b {
 		virtual DataType dataType( ) const override {
 			return DT_Sound;
 		}
-		/** Gets an appropriate file extension for the contents of this reader.
-		*  \return wxString    File extension. */
-		virtual const wxChar* extension( ) const override {
-			switch ( m_fileType ) {
-			case ANFT_PackedMP3:
-				return wxT( ".mp3" );
-				break;
-			case ANFT_PackedOgg:
-				return wxT( ".ogg" );
-				break;
-			default:
-				return wxT( ".asnd" );
-			}
-		}
-		/** Converts the data associated with this file into ogg file.
-		*  \return Array<byte> converted data. */
-		virtual Array<byte> convertData( ) const;
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     ogg format. */
 		Array<byte> getSound( ) const;

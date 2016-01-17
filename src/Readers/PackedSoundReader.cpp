@@ -54,8 +54,4 @@ namespace gw2b {
 		return outputArray;
 	}
 
-	Array<byte> PackedSoundReader::convertData( ) const {
-		return( this->getSound( ) );
-	}
-
 }; // namespace gw2b

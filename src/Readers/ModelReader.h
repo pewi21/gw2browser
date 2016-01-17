@@ -153,14 +153,6 @@ namespace gw2b {
 		virtual DataType dataType( ) const override {
 			return DT_Model;
 		}
-		/** Gets an appropriate file extension for the contents of this reader.
-		*  \return wxString    File extension. */
-		virtual const wxChar* extension( ) const override {
-			return wxT( ".obj" );
-		}
-		/** Converts the data associated with this file into OBJ.
-		*  \return Array<byte> converted data. */
-		virtual Array<byte> convertData( ) const override;
 		/** Gets the model represented by this data.
 		*  \return Model   model. */
 		Model getModel( ) const;

@@ -58,7 +58,7 @@ namespace gw2b {
 		Viewer::setReader( pReader );
 
 		if ( pReader ) {
-			m_binaryData = pReader->convertData( );
+			m_binaryData = pReader->rawData( );
 			m_hexControl->setData( m_binaryData.GetPointer( ), m_binaryData.GetSize( ) );
 		}
 	}
