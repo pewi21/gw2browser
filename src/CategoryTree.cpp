@@ -26,9 +26,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include "CategoryTree.h"
-
 #include "Data.h"
+#include "Exporter.h"
+
+#include "CategoryTree.h"
 
 namespace gw2b {
 
@@ -573,7 +574,7 @@ namespace gw2b {
 
 	void CategoryTree::onExtractRawFiles( wxCommandEvent& p_event ) {
 		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeExtractFile( *this, false );
+			( *it )->onTreeExtractFile( *this, Exporter::EM_Raw );
 		}
 	}
 
@@ -581,7 +582,7 @@ namespace gw2b {
 
 	void CategoryTree::onExtractConvertedFiles( wxCommandEvent& p_event ) {
 		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeExtractFile( *this, true );
+			( *it )->onTreeExtractFile( *this, Exporter::EM_Converted );
 		}
 	}
 

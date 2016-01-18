@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <wx/filename.h>
 #include <wx/mstream.h>
+#include <wx/progdlg.h>
 
 #include "Util/Array.h"
 #include "ANetStructs.h"
@@ -47,13 +48,17 @@ namespace gw2b {
 			EM_Raw,
 			EM_Converted,
 		};
+
 	private:
 		DatFile&                    m_datFile;
 		Array<const DatIndexEntry*> m_entries;
-		//uint                        m_currentProgress;
-		//wxString                    m_path;
+		wxProgressDialog*           m_progress;
+		uint                        m_currentProgress;
+		wxString                    m_path;
+		wxFileName					m_filename;
 		ExtractionMode				m_mode;
 		ANetFileType				m_fileType;
+
 	public:
 		/** Constructor.
 		*  \param[in]  p_entries       Entry to extract.
@@ -65,20 +70,15 @@ namespace gw2b {
 
 	private:
 		/** Gets an appropriate file extension for the contents.
-		*  \param[in]  p_mode			Extract mode.
 		*  \return wxString				File extension. */
-		const wxChar* GetExtension( const ExtractionMode p_mode ) const;
-		/** Gets an appropriate wildcard for the contents.
-		*  \param[in]  p_mode			Extract mode.
-		*  \return wxString				File extension. */
-		const char* getWildCard( const ExtractionMode p_mode ) const;
+		const wxChar* GetExtension( ) const;
 		void extractFile( const DatIndexEntry& p_entry );
-		void extractFiles( const Array<const DatIndexEntry*>& p_entries );
-		void exportImage( FileReader* p_reader, const wxString& p_directory, const wxString& p_fileId );
-		void exportString( FileReader* p_reader, const wxString& p_filePath );
-		void exportSound( FileReader* p_reader, const wxString& p_filePath );
-		void exportModel( FileReader* p_reader, const wxString& p_directory, const wxString& p_fileId );
-		bool writeFile( const Array<byte>& p_data, const wxString& p_filePath );
+		void extractFiles( const DatIndexEntry& p_entry );
+		void exportImage( FileReader* p_reader, const wxString& p_entryname );
+		void exportString( FileReader* p_reader, const wxString& p_entryname );
+		void exportSound( FileReader* p_reader, const wxString& p_entryname );
+		void exportModel( FileReader* p_reader, const wxString& p_entryname );
+		bool writeFile( const Array<byte>& p_data );
 		void appendPaths( wxFileName& p_path, const DatIndexCategory& p_category );
 
 	};

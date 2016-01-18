@@ -26,7 +26,7 @@
     <ClInclude Include="..\src\Data.h" />
     <ClInclude Include="..\src\DatIndexIO.h" />
     <ClInclude Include="..\src\Documentation\Namespaces.h" />
-    <ClInclude Include="..\src\ExtractFilesWindow.h" />
+    <ClInclude Include="..\src\Exporter.h" />
     <ClInclude Include="..\src\FileReader.h" />
     <ClInclude Include="..\src\DatFile.h" />
     <ClInclude Include="..\src\DatIndex.h" />
@@ -70,7 +70,7 @@
     <ClCompile Include="..\src\CategoryTree.cpp" />
     <ClCompile Include="..\src\Data.cpp" />
     <ClCompile Include="..\src\DatIndexIO.cpp" />
-    <ClCompile Include="..\src\ExtractFilesWindow.cpp" />
+    <ClCompile Include="..\src\Exporter.cpp" />
     <ClCompile Include="..\src\FileReader.cpp" />
     <ClCompile Include="..\src\DatFile.cpp" />
     <ClCompile Include="..\src\DatIndex.cpp" />

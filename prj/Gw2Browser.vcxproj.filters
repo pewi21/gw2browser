@@ -129,9 +129,6 @@
     <ClInclude Include="..\src\Viewers\BinaryViewer\HexControl.h">
       <Filter>Header Files\Viewers\BinaryViewer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ExtractFilesWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Readers\ImageReader.h">
       <Filter>Header Files\Readers</Filter>
     </ClInclude>
@@ -250,9 +247,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\BinaryViewer\HexControl.cpp">
       <Filter>Source Files\Viewers\BinaryViewer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ExtractFilesWindow.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Readers\ImageReader.cpp">
       <Filter>Source Files\Readers</Filter>
