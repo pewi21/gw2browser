@@ -49,29 +49,6 @@ namespace gw2b {
 
 		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-#ifdef _DEBUG
-		auto language = stringFile.language( );
-		switch ( language ) {
-		case gw2f::language::English:
-			wxLogDebug( wxT( "English String." ) );
-			break;
-		case gw2f::language::French:
-			wxLogDebug( wxT( "French String." ) );
-			break;
-		case gw2f::language::German:
-			wxLogDebug( wxT( "German String." ) );
-			break;
-		case gw2f::language::Korean:
-			wxLogDebug( wxT( "Korean String." ) );
-			break;
-		case gw2f::language::Spanish:
-			wxLogDebug( wxT( "Spanish String." ) );
-			break;
-		default:
-			wxLogDebug( wxT( "Unknown Language: %d" ), language );
-		}
-#endif
-
 		for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
 			auto& entry = stringFile.entry( i );
 
