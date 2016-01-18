@@ -69,6 +69,7 @@
     </Filter>
     <Filter Include="Data Files">
       <UniqueIdentifier>{23b9757c-35cd-4b7f-aed7-714e50ee51f1}</UniqueIdentifier>
+      <ParseFiles>true</ParseFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +142,6 @@
     <ClInclude Include="..\src\Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\AboutBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Util\Misc.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
@@ -196,6 +194,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Exporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -255,9 +256,6 @@
       <Filter>Source Files\Viewers\ImageViewer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\AboutBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Util\Misc.cpp">

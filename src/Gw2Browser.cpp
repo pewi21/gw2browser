@@ -56,23 +56,24 @@ namespace gw2b {
 	//============================================================================/
 
 	bool Gw2Browser::OnInit( ) {
-		::wxInitAllImageHandlers( );
+		bool wxsOK = true;
+		wxInitAllImageHandlers( );
+		if ( wxsOK ) {
+			auto window = new BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
+			window->Show( );
+			SetTopWindow( window );
 
-		auto window = new BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
-		SetTopWindow( window );
-		window->Show( );
+			// Set BrowserWindow to center of screen
+			window->Centre( );
+			// Set window icon
+			window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
 
-		// Set BrowserWindow to center of screen
-		window->Centre( );
-		// Set window icon
-		window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
-
-		auto options = parseArguments( this->argc, this->argv );
-		if ( !options.datPath.IsEmpty( ) ) {
-			window->openFile( options.datPath );
+			auto options = parseArguments( this->argc, this->argv );
+			if ( !options.datPath.IsEmpty( ) ) {
+				window->openFile( options.datPath );
+			}
 		}
-
-		return true;
+		return wxsOK;
 	}
 
 	//============================================================================/

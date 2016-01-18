@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <wx/aui/aui.h>
 #include <wx/filename.h>
 #include <wx/splitter.h>
+#include <wx/aboutdlg.h>
 
 #include "CategoryTree.h"
 #include "DatFile.h"
@@ -128,6 +129,9 @@ namespace gw2b {
 		*  \param[in]  p_tree	category tree invoking the callback.
 		*  \param[in]  p_mode	if false extract raw file, if true extract converted file. */
 		virtual void onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) override;
+
+		void InitAboutInfo( wxAboutDialogInfo& info );
+
 	}; // class BrowserWindow
 
 }; // namespace gw2b

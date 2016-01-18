@@ -32,13 +32,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Imported/crc.h"
 
-#include "AboutBox.h"
 #include "CategoryTree.h"
 #include "Exporter.h"
 #include "FileReader.h"
 #include "ProgressStatusBar.h"
 #include "PreviewPanel.h"
 #include "PreviewGLCanvas.h"
+#include "Version.h"
 
 #include "Tasks/ReadIndexTask.h"
 #include "Tasks/ScanDatTask.h"
@@ -263,8 +263,10 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::onAboutEvt( wxCommandEvent& WXUNUSED( p_event ) ) {
-		AboutBox about( this );
-		about.ShowModal( );
+		wxAboutDialogInfo info;
+		InitAboutInfo( info );
+
+		wxAboutBox( info, this );
 	}
 
 	//============================================================================/
@@ -410,6 +412,57 @@ namespace gw2b {
 				Exporter::Exporter( entries, m_datFile, Exporter::EM_Raw );
 			}
 		}
+	}
+
+	//============================================================================/
+
+	void BrowserWindow::InitAboutInfo( wxAboutDialogInfo& info ) {
+		info.SetName( wxT( "Gw2Browser" ) );
+		info.SetVersion( wxString::Format(
+			" %d.%d.%d.%d\n%s",
+			gw2bMAJOR_VERSION,
+			gw2bMINOR_VERSION,
+			gw2bRELEASE_NUMBER,
+			gw2bSUBRELEASE_NUMBER,
+			gw2bSUBRELEASE_NUMBER ? "Release" : "Development" ) );
+
+		info.SetCopyright( wxString::FromAscii(
+			"Copyright (C) 2014-2016 Khral Steelforge - https://github.com/kytulendu\n"
+			"Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
+			"\n"
+			"Guild Wars 2 (C)2010-2015 ArenaNet, LLC. All rights reserved.\n"
+			"Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet,\n"
+			"NCSOFT, the Interlocking NC Logo, and all associated logos and designs\n"
+			"are trademarks or registered trademarks of NCSOFT Corporation.\n"
+			"All other trademarks are the property of their respective owners.\n"
+			) );
+
+		info.SetDescription( wxString::FromAscii(
+			"Opens a Guild Wars 2 .dat file and allows the user to browse and extract\n"
+			"its content.\n"
+			) );
+
+		info.SetWebSite( wxT( "https://github.com/kytulendu/Gw2Browser" ) );
+
+		info.SetLicence( wxString::FromAscii(
+			"Gw2Browser is free software: you can redistribute it and/or modify\n"
+			"it under the terms of the GNU General Public License as published by\n"
+			"the Free Software Foundation, either version 3 of the License,\n"
+			"or ( at your option ) any later version.\n"
+			"\n"
+			"This program is distributed in the hope that it will be useful,\n"
+			"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+			"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n"
+			"GNU General Public License for more details.\n"
+			"\n"
+			"You should have received a copy of the GNU General Public License\n"
+			"along with this program.If not, see <http://www.gnu.org/licenses/>.\n"
+			"\n"
+			"See README.md for code license exceptions."
+			) );
+
+		info.AddDeveloper( wxT( "Khral Steelforge" ) );
+		info.AddDeveloper( wxT( "Rhoot" ) );
 	}
 
 }; // namespace gw2b
