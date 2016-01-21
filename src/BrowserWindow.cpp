@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ProgressStatusBar.h"
 #include "PreviewPanel.h"
 #include "PreviewGLCanvas.h"
-#include "Version.h"
+#include "version.h"
 
 #include "Tasks/ReadIndexTask.h"
 #include "Tasks/ScanDatTask.h"

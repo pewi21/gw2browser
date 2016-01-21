@@ -44,8 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	Exporter::Exporter( const Array<const DatIndexEntry*>& p_entries, DatFile& p_datFile, ExtractionMode p_mode )
-		: wxFrame( nullptr, wxID_ANY, wxT( "ExporterWindow" ) )
-		, m_datFile( p_datFile )
+		: m_datFile( p_datFile )
 		, m_entries( p_entries )
 		, m_progress( nullptr )
 		, m_currentProgress( 0 )
@@ -93,8 +92,7 @@ namespace gw2b {
 				for ( uint i = 0; i < m_entries.GetSize( ); i++ ) {
 					// DONE
 					if ( m_currentProgress >= m_entries.GetSize( ) ) {
-						deletePointer( m_progress );
-						return;
+						break;
 					}
 
 					// Extract current file
@@ -111,10 +109,6 @@ namespace gw2b {
 				deletePointer( m_progress );
 			}
 		}
-	}
-
-	Exporter::~Exporter( ) {
-
 	}
 
 	const wxChar* Exporter::GetExtension( ) const {
@@ -311,46 +305,52 @@ namespace gw2b {
 		// Identify file type
 		m_datFile.identifyFileType( entryData.GetPointer( ), entryData.GetSize( ), m_fileType );
 
-		// Set file extension
-		m_filename.SetExt( wxString( this->GetExtension( ) ) );
-
 		auto reader = FileReader::readerForData( entryData, m_fileType );
 
-		// Should we convert the file?
-		if ( m_mode == EM_Converted ) {
-			switch ( m_fileType ) {
-			case ANFT_ATEX:
-			case ANFT_ATTX:
-			case ANFT_ATEC:
-			case ANFT_ATEP:
-			case ANFT_ATEU:
-			case ANFT_ATET:
-			case ANFT_DDS:
-			case ANFT_JPEG:
-			case ANFT_WEBP:
-				this->exportImage( reader, p_entry.name( ) );
-				break;
-			case ANFT_StringFile:
-				this->exportString( reader, p_entry.name( ) );
-				break;
-			case ANFT_PackedMP3:
-			case ANFT_PackedOgg:
-			case ANFT_asndMP3:
-				this->exportSound( reader, p_entry.name( ) );
-				break;
-			case ANFT_Model:
-				this->exportModel( reader, p_entry.name( ) );
-				break;
-			default:
-				entryData = reader->rawData( );
+		if ( reader ) {
+			// Set file extension
+			m_filename.SetExt( wxString( this->GetExtension( ) ) );
+
+			// Should we convert the file?
+			if ( m_mode == EM_Converted ) {
+				switch ( m_fileType ) {
+				case ANFT_ATEX:
+				case ANFT_ATTX:
+				case ANFT_ATEC:
+				case ANFT_ATEP:
+				case ANFT_ATEU:
+				case ANFT_ATET:
+				case ANFT_DDS:
+				case ANFT_JPEG:
+				case ANFT_WEBP:
+					this->exportImage( reader, p_entry.name( ) );
+					break;
+				case ANFT_StringFile:
+					this->exportString( reader, p_entry.name( ) );
+					break;
+				case ANFT_PackedMP3:
+				case ANFT_PackedOgg:
+				case ANFT_asndMP3:
+					this->exportSound( reader, p_entry.name( ) );
+					break;
+				case ANFT_Model:
+					this->exportModel( reader, p_entry.name( ) );
+					break;
+				default:
+					//entryData = reader->rawData( );
+					this->writeFile( entryData );
+					break;
+				}
+			} else {
+				//entryData = reader->rawData( );
 				this->writeFile( entryData );
-				break;
 			}
+
+			deletePointer( reader );
+
 		} else {
-			entryData = reader->rawData( );
 			this->writeFile( entryData );
 		}
-		deletePointer( reader );
 	}
 
 	void Exporter::extractFiles( const DatIndexEntry& p_entry ) {
@@ -472,7 +472,7 @@ namespace gw2b {
 		auto modlReader = dynamic_cast<ModelReader*>( p_reader );
 		if ( !modlReader ) {
 			wxString message;
-			message << "Entry " << p_entryname << " is not a model file.";
+			message << "Entry " << p_entryname << " is in wrong format.";
 			wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
 			return;
 		}

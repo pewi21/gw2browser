@@ -65,8 +65,6 @@ namespace gw2b {
 		*  \param[in]  p_datFile       .dat file containing the file.
 		*  \param[in]  p_mode          File extract mode. */
 		Exporter( const Array<const DatIndexEntry*>& p_entries, DatFile& p_datFile, ExtractionMode p_mode );
-		/** Destructor. Clears all data. */
-		virtual ~Exporter( );
 
 	private:
 		/** Gets an appropriate file extension for the contents.
