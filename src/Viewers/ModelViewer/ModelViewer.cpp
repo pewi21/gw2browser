@@ -82,7 +82,7 @@ namespace gw2b {
 	struct ModelViewer::PackedVertex {
 		glm::vec3 position;
 		glm::vec2 uv;
-		//glm::vec3 normal;
+		glm::vec3 normal;
 
 		bool operator < ( const PackedVertex that ) const {
 			return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
@@ -790,8 +790,21 @@ namespace gw2b {
 
 		// For each input vertex
 		for ( uint i = 0; i < in_vertices.size( ); i++ ) {
+			glm::vec3 vertices;
+			glm::vec2 uvs;
+			glm::vec3 normals;
 
-			PackedVertex packed = { in_vertices[i], in_uvs[i]/*, in_normals[i]*/ };
+			vertices = in_vertices[i];
+
+			if ( !in_uvs.empty( ) ) {
+				uvs = in_uvs[i];
+			}
+
+			if ( !in_normals.empty( ) ) {
+				normals = in_normals[i];
+			}
+
+			PackedVertex packed = { vertices, uvs, normals };
 
 			// Try to find a similar vertex in out_XXXX
 			uint index;
@@ -801,8 +814,14 @@ namespace gw2b {
 				out_indices.push_back( index );
 			} else { // If not, it needs to be added in the output data.
 				out_vertices.push_back( in_vertices[i] );
-				out_uvs.push_back( in_uvs[i] );
-				//out_normals.push_back( in_normals[i] );
+
+				if ( !in_uvs.empty( ) ) {
+					out_uvs.push_back( in_uvs[i] );
+				}
+
+				if ( !in_normals.empty( ) ) {
+					out_normals.push_back( in_normals[i] );
+				}
 				uint newindex = ( uint ) out_vertices.size( ) - 1;
 				out_indices.push_back( newindex );
 				VertexToOutIndex[packed] = newindex;
