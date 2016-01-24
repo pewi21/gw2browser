@@ -53,7 +53,7 @@ Libraries and restrictions
 --------------------------
 
 The application used some C++11 features, so it required C++11 capable
-compiler to compile it.
+compiler in order to compile it.
 
 ### Required libraries
 
@@ -116,10 +116,30 @@ For contributions, please go to [this project's page on GitHub](https://github.c
 Legal Disclaimer
 ----------------
 
-Guild Wars 2 © ArenaNet, LLC. and NC Interactive, LLC. All rights reserved.
-Guild Wars, Guild Wars 2, ArenaNet, NCSOFT, the Interlocking NC Logo,
-and all associated logos and designs are trademarks or registered trademarks of NCSOFT Corporation.
+Guild Wars 2 © 2010-2015 ArenaNet, LLC. All rights reserved.
+Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet, NCSOFT,
+the Interlocking NC Logo, and all associated logos and designs are trademarks
+or registered trademarks of NCSOFT Corporation.
 All other trademarks are the property of their respective owners.
+
+License
+-------
+
+Copyright © 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright © 2012 Rhoot <https://github.com/rhoot>
+
+Gw2Browser is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Code License Exceptions
 -----------------------
