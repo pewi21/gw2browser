@@ -327,9 +327,14 @@ namespace gw2b {
 			}
 			// Bit 28: Compressed position
 			if ( p_vertexFormat & ANFVF_PositionCompressed ) {
-				vertex.position.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
-				vertex.position.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
-				vertex.position.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
+				glm::vec3 vertices;
+				vertices.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
+				vertices.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
+				vertices.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
+				// Convert DirectX coordinate to OpenGL
+				vertex.position.x = vertices.x;
+				vertex.position.z = 1.0f - vertices.y;
+				vertex.position.y = 1.0f - vertices.z;
 				pos += 3 * sizeof( half );
 			}
 			// Bit 29: Unknown 12-byte value
