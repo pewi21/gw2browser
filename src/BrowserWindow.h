@@ -56,6 +56,8 @@ namespace gw2b {
 		CategoryTree*               m_catTree;
 		PreviewPanel*				m_previewPanel;
 		PreviewGLCanvas*			m_previewGLCanvas;
+		wxTextCtrl*					m_log;
+		wxLog*						m_logTarget;
 
 	public:
 		/** Constructs the frame with the given title and size.
@@ -129,8 +131,10 @@ namespace gw2b {
 		*  \param[in]  p_tree	category tree invoking the callback.
 		*  \param[in]  p_mode	if false extract raw file, if true extract converted file. */
 		virtual void onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) override;
-
+		/** Initialize about dialog data.*/
 		void InitAboutInfo( wxAboutDialogInfo& info );
+		/** Set menu default settings.*/
+		void SetDefaults( );
 
 	}; // class BrowserWindow
 

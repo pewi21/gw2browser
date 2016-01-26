@@ -160,8 +160,11 @@ namespace gw2b {
 
 		// Bail if there is no data to read
 		if ( m_data.GetSize( ) == 0 ) {
+			wxLogMessage( wxT( "No data." ) );
 			return newModel;
 		}
+
+		wxLogMessage( wxT( "Reading model file..." ) );
 
 		gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
@@ -173,14 +176,18 @@ namespace gw2b {
 		this->readGeometry( newModel, modelPackFile );
 		this->readMaterialData( newModel, modelPackFile );
 
+		wxLogMessage( wxT( "Finished reading model file." ) );
+
 		return newModel;
 	}
 
 	void ModelReader::readGeometry( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+		wxLogMessage( wxT( "Reading GOEM chunk..." ) );
 		auto geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
 
 		// Bail if no geometry data
 		if ( !geometryChunk ) {
+			wxLogMessage( wxT( "No data." ) );
 			return;
 		}
 
@@ -188,13 +195,21 @@ namespace gw2b {
 
 		// Bail if no meshes to read
 		if ( !meshCount ) {
+			wxLogMessage( wxT( "No mesh." ) );
 			return;
 		}
+
+		wxLogMessage( wxT( "%d mesh(es)." ), meshCount );
 
 		// Create storage for submeshes now, so we can parallelize the loop
 		Mesh* meshes = p_model.addMeshes( meshCount );
 
 		auto& meshInfoArray = geometryChunk->meshes;
+
+		uint verticesCount = 0;
+		uint trianglesCount = 0;
+
+		clock_t begin = clock( );
 
 #pragma omp parallel for shared( meshes )
 		for ( int i = 0; i < static_cast< int >( meshCount ); i++ ) {
@@ -224,7 +239,15 @@ namespace gw2b {
 				this->readIndexBuffer( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 			}
+
+			// Count the vertices and triangles
+			verticesCount += vertexCount;
+			trianglesCount += indiceCount;
 		}
+		clock_t end = clock( );
+		wxLogMessage( wxT( "Reading %d mesh(es) in %f seconds." ), meshCount, ( double( end - begin ) ) / CLOCKS_PER_SEC );
+		wxLogMessage( wxT( "%d vertices." ), verticesCount );
+		wxLogMessage( wxT( "%d triangles." ), trianglesCount );
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
@@ -413,18 +436,18 @@ namespace gw2b {
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
-		wxLogDebug( wxT( "> Reading model data..." ) );
+		wxLogMessage( wxT( "Reading MODL chunk..." ) );
 		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 
 		// Bail if no data
 		if ( !modelChunk ) {
-			wxLogDebug( wxT( "No model data." ) );
+			wxLogMessage( wxT( "No data." ) );
 			return;
 		}
 
 		// Bail if no data
 		if ( !modelChunk->permutations.data( ) ) {
-			wxLogDebug( wxT( "No permutations data." ) );
+			wxLogMessage( wxT( "No permutations data." ) );
 			return;
 		}
 
@@ -440,10 +463,10 @@ namespace gw2b {
 
 		// Bail if no materials
 		if ( !materialCount ) {
-			wxLogDebug( wxT( "No material to read." ) );
+			wxLogMessage( wxT( "No material to read." ) );
 			return;
 		}
-		wxLogDebug( wxT( "Have %d materials." ), materialCount );
+		wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
 		// Prepare parallel loop
 		std::vector<omp_lock_t> locks( materialCount );
@@ -458,7 +481,7 @@ namespace gw2b {
 		for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
 			// Bail if no material data
 			if ( !materialInfoArray[i].materials.data( ) ) {
-				wxLogDebug( wxT( "No material data in material array." ) );
+				wxLogMessage( wxT( "No material data in material array %d." ), i );
 				continue;
 			}
 
@@ -526,7 +549,7 @@ namespace gw2b {
 		for ( auto iter = std::begin( locks ); iter != std::end( locks ); iter++ ) {
 			omp_destroy_lock( &( *iter ) );
 		}
-		wxLogDebug( wxT( "Done." ) );
+		wxLogMessage( wxT( "Finished reading MODL chunk." ) );
 	}
 
 }; // namespace gw2b

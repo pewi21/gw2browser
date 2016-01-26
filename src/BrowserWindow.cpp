@@ -51,7 +51,7 @@ namespace gw2b {
 	namespace {
 		enum {
 			ID_ShowFileList = wxID_HIGHEST + 1,
-			//ID_ShowLog,		// Show log panel
+			ID_ShowLog,							// Show log panel
 			//ID_ResetLayout,
 			//ID_SetBackgroundColor,
 			//ID_ShowGrid,		// Show grid on PreviewGLCanvas
@@ -81,8 +81,8 @@ namespace gw2b {
 		fileMenu->Append( wxID_EXIT, wxT( "E&xit\tAlt+F4" ) );
 		// View menu
 		auto viewMenu = new wxMenu;
-		viewMenu->Append( ID_ShowFileList, wxT( "&Show File List" ) );
-		//viewMenu->Append( ID_ShowLog, wxT( "&Show Log" ) );
+		viewMenu->AppendCheckItem( ID_ShowFileList, wxT( "&Show File List" ) );
+		viewMenu->AppendCheckItem( ID_ShowLog, wxT( "&Show Log" ) );
 		//viewMenu->Append( ID_ResetLayout, wxT( "&Reset Layout" ) );
 		//viewMenu->AppendSeparator( );
 		//viewMenu->Append( ID_SetBackgroundColor, wxT( "&Set Background color" ) );
@@ -115,12 +115,21 @@ namespace gw2b {
 		// Model Viewer
 		m_previewGLCanvas = new PreviewGLCanvas( this );
 
+		// Text control use for loging
+		m_log = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 600, 70 ), wxTE_MULTILINE );
+		m_logTarget = wxLog::SetActiveTarget( new wxLogTextCtrl( m_log ) );
+
 		// Add the panes to the manager
 		// CategoryTree
 		m_uiManager.AddPane( m_catTree, wxAuiPaneInfo( ).Name( wxT( "CategoryTree" ) ).Caption( wxT( "File List" ) ).BestSize( wxSize( 170, 500 ) ).Left( ) );
+		// Log window
+		m_uiManager.AddPane( m_log, wxAuiPaneInfo( ).Name( wxT( "LogWindow" ) ).Caption( wxT( "Log" ) ).Bottom( ).Layer( 1 ).Position( 1 ).Hide( ) );
 		// Main content window
 		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ).CenterPane( ).Hide( ) );
 		m_uiManager.AddPane( m_previewGLCanvas, wxAuiPaneInfo( ).Name( wxT( "gl_content" ) ).CenterPane( ).Hide( ) );
+
+		// Set default settings
+		this->SetDefaults( );
 
 		// Tell the manager to "commit" all the changes just made
 		m_uiManager.Update( );
@@ -130,6 +139,7 @@ namespace gw2b {
 		this->Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onExitEvt ) );
 		this->Connect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onAboutEvt ) );
 		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onMenuEvt ) );
+		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onMenuEvt ) );
 
 		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( BrowserWindow::onCloseEvt ) );
 	}
@@ -138,6 +148,7 @@ namespace gw2b {
 
 	BrowserWindow::~BrowserWindow( ) {
 		deletePointer( m_currentTask );
+		deletePointer( m_logTarget );
 		// Deinitialize the frame manager
 		m_uiManager.UnInit( );
 	}
@@ -182,6 +193,7 @@ namespace gw2b {
 				wxMessageBoxCaptionStr, wxOK | wxCENTER | wxICON_ERROR );
 			return;
 		}
+		wxLogMessage( wxT( "Open dat file: %s" ), p_path );
 		m_datPath = p_path;
 
 		// Open the index file
@@ -338,9 +350,18 @@ namespace gw2b {
 		int id = event.GetId( );
 
 		// wxAUI Stuff
-		if ( id == ID_ShowFileList ) {
-			m_uiManager.GetPane( m_catTree ).Show( true );
+		if ( GetMenuBar( )->IsChecked( ID_ShowFileList ) ) {
+			m_uiManager.GetPane( wxT( "CategoryTree" ) ).Show( );
+		} else {
+			m_uiManager.GetPane( wxT( "CategoryTree" ) ).Hide( );
 		}
+
+		if ( GetMenuBar( )->IsChecked( ID_ShowLog ) ) {
+			m_uiManager.GetPane( wxT( "LogWindow" ) ).Show( );
+		} else {
+			m_uiManager.GetPane( wxT( "LogWindow" ) ).Hide( );
+		}
+
 		m_uiManager.Update( );
 	}
 
@@ -385,6 +406,7 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::onTreeEntryClicked( CategoryTree& p_tree, const DatIndexEntry& p_entry ) {
+		wxLogMessage( wxT( "View Entry: %s" ), p_entry.name( ) );
 		this->viewEntry( p_entry );
 	}
 
@@ -417,14 +439,15 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::InitAboutInfo( wxAboutDialogInfo& info ) {
-		info.SetName( wxT( "Gw2Browser" ) );
+		info.SetName( APP_TITLE );
 		info.SetVersion( wxString::Format(
 			" %d.%d.%d.%d\n%s",
-			gw2bMAJOR_VERSION,
-			gw2bMINOR_VERSION,
-			gw2bRELEASE_NUMBER,
-			gw2bSUBRELEASE_NUMBER,
-			gw2bSUBRELEASE_NUMBER ? "Release" : "Development" ) );
+			APP_MAJOR_VERSION,
+			APP_MINOR_VERSION,
+			APP_RELEASE_NUMBER,
+			APP_SUBRELEASE_NUMBER,
+			APP_SUBRELEASE_NUMBER ? wxT( "Release" ) : wxT( "Development" )
+			) );
 
 		info.SetCopyright( wxString::FromAscii(
 			"Copyright (C) 2014-2016 Khral Steelforge - https://github.com/kytulendu\n"
@@ -463,6 +486,13 @@ namespace gw2b {
 
 		info.AddDeveloper( wxT( "Khral Steelforge" ) );
 		info.AddDeveloper( wxT( "Rhoot" ) );
+	}
+
+	//============================================================================/
+
+	void BrowserWindow::SetDefaults( ) {
+		GetMenuBar( )->Check( ID_ShowFileList, true );
+		GetMenuBar( )->Check( ID_ShowLog, false );
 	}
 
 }; // namespace gw2b
