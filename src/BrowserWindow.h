@@ -107,7 +107,10 @@ namespace gw2b {
 		void onPerformTaskEvt( wxIdleEvent& p_event );
 		/** Executed when the user clicks <em>View -> Menu</em> in the menu.
 		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
-		void onMenuEvt( wxCommandEvent &p_event );
+		void onToggleWindowEvt( wxCommandEvent &p_event );
+		/** Executed when the user clicks <em>View -> Clear Log</em> in the menu.
+		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
+		void onClearLogEvt( wxCommandEvent &event );
 
 		/** Raised when the index has been read. */
 		void onReadIndexComplete( );

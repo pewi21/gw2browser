@@ -52,6 +52,7 @@ namespace gw2b {
 		enum {
 			ID_ShowFileList = wxID_HIGHEST + 1,
 			ID_ShowLog,							// Show log panel
+			ID_ClearLog,
 			//ID_ResetLayout,
 			//ID_SetBackgroundColor,
 			//ID_ShowGrid,		// Show grid on PreviewGLCanvas
@@ -84,6 +85,8 @@ namespace gw2b {
 		viewMenu->AppendCheckItem( ID_ShowFileList, wxT( "&Show File List" ) );
 		viewMenu->AppendCheckItem( ID_ShowLog, wxT( "&Show Log" ) );
 		//viewMenu->Append( ID_ResetLayout, wxT( "&Reset Layout" ) );
+		viewMenu->AppendSeparator( );
+		viewMenu->Append( ID_ClearLog, wxT( "&Clear Log" ) );
 		//viewMenu->AppendSeparator( );
 		//viewMenu->Append( ID_SetBackgroundColor, wxT( "&Set Background color" ) );
 		//viewMenu->AppendCheckItem( ID_ShowGrid, wxT( "&Show Grid" ) );
@@ -138,8 +141,9 @@ namespace gw2b {
 		this->Connect( wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onOpenEvt ) );
 		this->Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onExitEvt ) );
 		this->Connect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onAboutEvt ) );
-		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onMenuEvt ) );
-		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onMenuEvt ) );
+		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleWindowEvt ) );
+		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleWindowEvt ) );
+		this->Connect( ID_ClearLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onClearLogEvt ) );
 
 		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( BrowserWindow::onCloseEvt ) );
 	}
@@ -346,9 +350,7 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::onMenuEvt( wxCommandEvent &event ) {
-		int id = event.GetId( );
-
+	void BrowserWindow::onToggleWindowEvt( wxCommandEvent &event ) {
 		// wxAUI Stuff
 		if ( GetMenuBar( )->IsChecked( ID_ShowFileList ) ) {
 			m_uiManager.GetPane( wxT( "CategoryTree" ) ).Show( );
@@ -363,6 +365,12 @@ namespace gw2b {
 		}
 
 		m_uiManager.Update( );
+	}
+
+	//============================================================================/
+
+	void BrowserWindow::onClearLogEvt( wxCommandEvent &event ) {
+		m_log->Clear( );
 	}
 
 	//============================================================================/
