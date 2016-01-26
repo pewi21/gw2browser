@@ -69,7 +69,10 @@
     </Filter>
     <Filter Include="Data Files">
       <UniqueIdentifier>{23b9757c-35cd-4b7f-aed7-714e50ee51f1}</UniqueIdentifier>
-      <ParseFiles>true</ParseFiles>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Data Files\shaders">
+      <UniqueIdentifier>{5d45f878-b02e-455e-b595-2c6265e14fdc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -308,17 +311,17 @@
     <None Include="..\src\Imported\half.inl">
       <Filter>Header Files\Imported</Filter>
     </None>
-    <None Include="..\data\shader.frag">
-      <Filter>Data Files</Filter>
+    <None Include="..\data\shaders\text.frag">
+      <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\shader.vert">
-      <Filter>Data Files</Filter>
+    <None Include="..\data\shaders\text.vert">
+      <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\text.frag">
-      <Filter>Data Files</Filter>
+    <None Include="..\data\shaders\shader.frag">
+      <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\text.vert">
-      <Filter>Data Files</Filter>
+    <None Include="..\data\shaders\shader.vert">
+      <Filter>Data Files\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
