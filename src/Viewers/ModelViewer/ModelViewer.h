@@ -72,6 +72,36 @@ namespace gw2b {
 		wxPoint                     m_lastMousePos;
 		float                       m_minDistance;
 		float                       m_maxDistance;
+
+		bool						m_glInitialized = false;
+		bool						m_statusWireframe = false;
+		bool						m_statusTextured = true;
+
+		// Dummy textures
+		GLuint						m_dummyBlackTexture;
+		GLuint						m_dummyWhiteTexture;
+
+		GLuint						TextureArrayID;
+
+		// Character rendering stuff
+		std::map<GLchar, Character> m_characterTextureMap;
+		GLuint						textShader;
+		GLuint						textVAO;
+		GLuint						textVBO;
+
+		// Texture file name list (for display on status text)
+		std::vector<uint32>			diffuseMapFileList;
+		std::vector<uint32>			normalMapFileList;
+		std::vector<uint32>			lightMapFileList;
+
+		// Shader stuff
+		GLuint						projectionMatrixID;
+		GLuint						viewMatrixID;
+		GLuint						modelMatrixID;
+		GLuint						programID;
+
+		GLuint						modelVAO;
+
 	public:
 		ModelViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		virtual ~ModelViewer( );
@@ -116,29 +146,6 @@ namespace gw2b {
 		void onMouseWheelEvt( wxMouseEvent& p_event );
 		void onKeyDownEvt( wxKeyEvent& p_event );
 		void onClose( wxCloseEvent& evt );
-
-	private:
-		bool						m_glInitialized = false;
-		bool						m_statusWireframe = false;
-		bool						m_statusTextured = true;
-
-		std::map<GLchar, Character> m_characterTextureMap;
-		GLuint						m_dummyBlackTexture;
-		GLuint						m_dummyWhiteTexture;
-
-		glm::mat4					MVP;
-		GLuint						MatrixID;
-		GLuint						programID;
-		GLuint						programIDText;
-		GLuint						VertexArrayID;
-		GLuint						TextureArrayID;
-		GLuint						textVAO;
-		GLuint						textVBO;
-
-		// Texture file name list (for display on status text)
-		std::vector<uint32>			diffuseMapFileList;
-		std::vector<uint32>			normalMapFileList;
-		std::vector<uint32>			lightMapFileList;
 
 	}; // class ModelViewer
 

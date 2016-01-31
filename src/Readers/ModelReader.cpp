@@ -240,12 +240,22 @@ namespace gw2b {
 				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
 			}
 
+			if ( mesh.hasNormal ) {
+				// Normalize normal, may need to convert to OpenGL coordinate
+				//normalize normal
+			} else {
+				// calculate vertex normal if not exist
+				// smooth shading
+				//this->computeNormal( mesh );
+				//mesh.hasNormal = true;
+			}
+
 			// Count the vertices and triangles
 			verticesCount += vertexCount;
 			trianglesCount += indiceCount;
 		}
 		clock_t end = clock( );
-		wxLogMessage( wxT( "Reading %d mesh(es) in %f seconds." ), meshCount, ( double( end - begin ) ) / CLOCKS_PER_SEC );
+		wxLogMessage( wxT( "Read %d mesh(es) in %f seconds." ), meshCount, ( double( end - begin ) ) / CLOCKS_PER_SEC );
 		wxLogMessage( wxT( "%d vertices." ), verticesCount );
 		wxLogMessage( wxT( "%d triangles." ), trianglesCount );
 	}

@@ -128,7 +128,8 @@ namespace gw2b {
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
 			if ( !this->initGL( ) ) {
-				wxMessageBox( wxT( "ModelViewer: Could not initialize OpenGL." ), wxT( "" ), wxICON_ERROR );
+				wxLogMessage( wxT( "Could not initialize OpenGL!" ) );
+				wxMessageBox( wxT( "Could not initialize OpenGL!" ), wxT( "" ), wxICON_ERROR );
 				return;
 			}
 			m_glInitialized = true;
@@ -192,10 +193,10 @@ namespace gw2b {
 
 		// Clean shaders
 		glDeleteProgram( programID );
-		glDeleteProgram( programIDText );
+		glDeleteProgram( textShader );
 
 		// Clean VAO
-		glDeleteVertexArrays( 1, &VertexArrayID );
+		glDeleteVertexArrays( 1, &modelVAO );
 		glDeleteVertexArrays( 1, &textVAO );
 
 		delete m_renderTimer;
@@ -277,11 +278,11 @@ namespace gw2b {
 			}
 		}
 
-		// Create VBO and IBO
+		// Create Vertex Buffer Object and Index Buffer Object
 		m_vertexBuffer.resize( m_model.numMeshes( ) );
 		m_indexBuffer.resize( m_model.numMeshes( ) );
 
-		// Populate BO
+		// Populate Buffer Object
 		for ( int i = 0; i < static_cast<int>( m_meshCache.size( ) ); i++ ) {
 			auto& cache = m_meshCache[i];
 			auto& vbo = m_vertexBuffer[i];
@@ -293,7 +294,7 @@ namespace gw2b {
 			}
 		}
 
-		// Create TBO
+		// Create Texture Buffer Object
 		m_textureBuffer.resize( m_model.numMaterialData( ) );
 
 		// Load textures
@@ -350,18 +351,17 @@ namespace gw2b {
 		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
 		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
 
-
-
 		// Re-focus and re-render
 		this->focus( );
 		this->render( );
 	}
 
 	int ModelViewer::initGL( ) {
+		wxLogMessage( wxT( "Initializing OpenGL..." ) );
 		// Create OpenGL context
 		m_glContext = new wxGLContext( this );
 		if ( !m_glContext ) {
-			wxMessageBox( wxT( "ModelViewer: Unable to create OpenGL context." ), wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "Unable to create OpenGL context." ) );
 			return false;
 		}
 
@@ -371,16 +371,19 @@ namespace gw2b {
 		glewExperimental = true;
 		GLenum err = glewInit( );
 		if ( GLEW_OK != err ) {
-			wxString message;
-			message << "GLEW: Could not initialize GLEW library.\n" << "Error: " << glewGetErrorString( err );
-			wxMessageBox( message, wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( err ) ) );
 			return false;
 		}
 
 		if ( !GLEW_VERSION_3_3 ) {
+			wxLogMessage( wxT( "GLEW: The modelviewer required OpenGL 3.3 support!" ) );
 			wxMessageBox( wxT( "GLEW: The modelviewer required OpenGL 3.3 support!" ), wxT( "" ), wxICON_ERROR );
 			return false;
 		}
+
+		wxLogMessage( wxT( "GLEW version %s" ), wxString( glewGetString( GLEW_VERSION ) ) );
+		wxLogMessage( wxT( "Running on a %s from %s" ), wxString( glGetString( GL_RENDERER ) ), wxString( glGetString( GL_VENDOR ) ) );
+		wxLogMessage( wxT( "OpenGL version %s" ), wxString( glGetString( GL_VERSION ) ) );
 
 		// Set background color
 		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
@@ -397,34 +400,37 @@ namespace gw2b {
 		// Cull triangles which normal is not towards the camera
 		//glEnable( GL_CULL_FACE );
 
-		// Generate VAO
-		glGenVertexArrays( 1, &VertexArrayID );
-		glBindVertexArray( VertexArrayID );
+		// Generate Vertex Array Object
+		glGenVertexArrays( 1, &modelVAO );
+		// Bind Vertex Array Object
+		glBindVertexArray( modelVAO );
 
 		// Default shader
 		if ( !loadShaders( programID, "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
-			wxMessageBox( wxT( "Fail to load shaders." ), wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "Fail to load shaders." ) );
 			return false;
 		}
 
 		// Text shader
-		if ( !loadShaders( programIDText, "..//data//shaders//text.vert", "..//data//shaders//text.frag" ) ) {
-			wxMessageBox( wxT( "Fail to load text shaders." ), wxT( "" ), wxICON_ERROR );
+		if ( !loadShaders( textShader, "..//data//shaders//text.vert", "..//data//shaders//text.frag" ) ) {
+			wxLogMessage( wxT( "Fail to load text shaders." ) );
 			return false;
 		}
 
 		FT_UInt fontsize = 12;
 		// Load font
 		if ( !loadFont( m_characterTextureMap, "..//data//fonts//LiberationSans-Regular.ttf", fontsize ) ) {
-			wxMessageBox( wxT( "loadFont() fail." ), wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "Fail to load font." ) );
 			return false;
 		}
 
 		// Get a handle for our "MVP" uniform
-		MatrixID = glGetUniformLocation( programID, "MVP" );
+		projectionMatrixID = glGetUniformLocation( programID, "projection" );
+		viewMatrixID = glGetUniformLocation( programID, "view" );
+		modelMatrixID = glGetUniformLocation( programID, "model" );
 
 		// Get a handle for our "myTexture" uniform
-		TextureArrayID = glGetUniformLocation( programID, "myTexture" );
+		TextureArrayID = glGetUniformLocation( programID, "texture1" );
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
@@ -447,7 +453,7 @@ namespace gw2b {
 		wxSize ClientSize = this->GetClientSize( );
 		glViewport( 0, 0, ClientSize.x, ClientSize.y );
 
-		// Clear background
+		// Clear color buffer and depth buffer
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		// Use the shader
@@ -465,6 +471,11 @@ namespace gw2b {
 		uint vertexCount = 0;
 		uint triangleCount = 0;
 
+		// Model matrix
+		glm::mat4 ModelMatrix;
+
+		// Draw each model
+
 		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			this->drawMesh( i );
@@ -473,11 +484,17 @@ namespace gw2b {
 			triangleCount += m_model.mesh( i ).triangles.size( );
 		}
 
+		// Transform the model
+		ModelMatrix = glm::translate( ModelMatrix, glm::vec3( 0.0f, 0.0f, 0.0f ) );
+
+		// Send model transformation to the currently bound shader
+		glUniformMatrix4fv( modelMatrixID, 1, GL_FALSE, glm::value_ptr( ModelMatrix ) );
+
 		if ( m_statusWireframe == true ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 		// Draw status text
-		this->displayStatusText( programIDText, vertexCount, triangleCount );
+		this->displayStatusText( textShader, vertexCount, triangleCount );
 
 		SwapBuffers( );
 	}
@@ -513,65 +530,36 @@ namespace gw2b {
 		// Set our "myTexture" sampler to user Texture Unit 0
 		glUniform1i( TextureArrayID, 0 );
 
-		// 1rst attribute buffer : vertices
+		// Vertices attribute
 		glEnableVertexAttribArray( 0 );
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.vertexBuffer );
-		glVertexAttribPointer(
-			0,								// attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,								// size
-			GL_FLOAT,						// type
-			GL_FALSE,						// normalized?
-			0,								// stride
-			( void* ) 0						// array buffer offset
-			);
+		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
-		// 2nd attribute buffer : UVs
+		// UVs attribute
 		glEnableVertexAttribArray( 1 );
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.uvBuffer );
-		glVertexAttribPointer(
-			1,								// attribute. No particular reason for 1, but must match the layout in the shader.
-			2,								// size
-			GL_FLOAT,						// type
-			GL_FALSE,						// normalized?
-			0,								// stride
-			( void* ) 0						// array buffer offset
-			);
+		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
-		// 3rd attribute buffer : normals
-		/*glEnableVertexAttribArray( 2 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
-		glVertexAttribPointer(
-			2,								// attribute
-			3,								// size
-			GL_FLOAT,						// type
-			GL_FALSE,						// normalized?
-			0,								// stride
-			( void* ) 0						// array buffer offset
-			);*/
+		// Normals attribute
+		//glEnableVertexAttribArray( 2 );
+		//glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
+		//glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
 		// Index buffer
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo.elementBuffer );
 
 		// Draw the triangles!
-		glDrawElements(
-			GL_TRIANGLES,					// mode
-			cache.indices.size( ),			// indice count
-			GL_UNSIGNED_INT,				// type
-			( void* ) 0						// element array buffer offset
-			);
+		glDrawElements( GL_TRIANGLES, cache.indices.size( ), GL_UNSIGNED_INT, ( void* ) 0 );
 
 		// Unbind texture from Texture Unit 0
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
-		glDisableVertexAttribArray( 0 );
-		glDisableVertexAttribArray( 1 );
-		//glDisableVertexAttribArray( 2 );
 	}
 
 	void ModelViewer::drawText( const GLuint &p_shader, const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color ) {
 		// Activate corresponding render state
 		glUseProgram( p_shader );
-		glUniform3f( glGetUniformLocation( programIDText, "textColor" ), p_color.x, p_color.y, p_color.z );
+		glUniform3f( glGetUniformLocation( textShader, "textColor" ), p_color.x, p_color.y, p_color.z );
 
 		glActiveTexture( GL_TEXTURE0 );
 		glBindVertexArray( textVAO );
@@ -598,7 +586,7 @@ namespace gw2b {
 			};
 			// Render glyph texture over quad
 			glBindTexture( GL_TEXTURE_2D, ch.TextureID );
-			// Update content of VBO memory
+			// Update content of Vertex Buffer Object memory
 			glBindBuffer( GL_ARRAY_BUFFER, textVBO );
 			glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof( vertices ), vertices ); // Be sure to use glBufferSubData and not glBufferData
 
@@ -975,9 +963,7 @@ namespace gw2b {
 			}
 			VertexShaderStream.close( );
 		} else {
-			wxString message;
-			message << "Vertex shader : " << p_vertexShaderFilePath << " not found.";
-			wxMessageBox( message, wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "Vertex shader : %s not found." ), p_vertexShaderFilePath );
 			return false;
 		}
 
@@ -991,9 +977,7 @@ namespace gw2b {
 			}
 			FragmentShaderStream.close( );
 		} else {
-			wxString message;
-			message << "Fragment shader : " << p_fragmentShaderFilePath << " not found.";
-			wxMessageBox( message, wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "Fragment shader : %s not found." ), p_fragmentShaderFilePath );
 			return false;
 		}
 
@@ -1005,8 +989,7 @@ namespace gw2b {
 		GLint InfoLogLength = 0;
 
 		// Compile Vertex Shader
-		wxString vertexPath( p_vertexShaderFilePath );
-		wxLogDebug( wxT( "Compiling shader : %s" ), vertexPath.utf8_str( ) );
+		wxLogMessage( wxT( "Compiling vertex shader : %s" ), p_vertexShaderFilePath );
 		const GLchar *VertexSourcePointer = VertexShaderCode.c_str( );
 		glShaderSource( VertexShaderID, 1, &VertexSourcePointer, NULL );
 		glCompileShader( VertexShaderID );
@@ -1019,14 +1002,12 @@ namespace gw2b {
 			glGetShaderInfoLog( VertexShaderID, InfoLogLength, &InfoLogLength, &VertexShaderErrorMessage[0] );
 
 			glDeleteShader( VertexShaderID );
-
-			wxLogDebug( wxT( "%s" ), &VertexShaderErrorMessage[0] );
+			wxLogMessage( wxT( "Vertex shader compile error : %s" ), &VertexShaderErrorMessage[0] );
 			return false;
 		}
 
 		// Compile Fragment Shader
-		wxString fragmentPath( p_fragmentShaderFilePath );
-		wxLogDebug( wxT( "Compiling shader : %s" ), fragmentPath.utf8_str( ) );
+		wxLogMessage( wxT( "Compiling vertex shader : %s" ), p_fragmentShaderFilePath );
 		const GLchar *FragmentSourcePointer = FragmentShaderCode.c_str( );
 		glShaderSource( FragmentShaderID, 1, &FragmentSourcePointer, NULL );
 		glCompileShader( FragmentShaderID );
@@ -1039,15 +1020,14 @@ namespace gw2b {
 			glGetShaderInfoLog( FragmentShaderID, InfoLogLength, &InfoLogLength, &FragmentShaderErrorMessage[0] );
 
 			glDeleteShader( FragmentShaderID );
-
-			wxLogDebug( wxT( "%s" ), &FragmentShaderErrorMessage[0] );
+			wxLogMessage( wxT( "Fragment shader compile error : %s" ), &FragmentShaderErrorMessage[0] );
 			return false;
 		}
 
 		GLint isLinked = GL_FALSE;
 
 		// Link the program
-		wxLogDebug( wxT( "Linking program" ) );
+		wxLogMessage( wxT( "Linking shader program..." ) );
 		p_programId = glCreateProgram( );
 		glAttachShader( p_programId, VertexShaderID );
 		glAttachShader( p_programId, FragmentShaderID );
@@ -1063,10 +1043,10 @@ namespace gw2b {
 			glDeleteShader( VertexShaderID );
 			glDeleteShader( FragmentShaderID );
 
-			wxLogDebug( wxT( "%s" ), &ProgramErrorMessage[0] );
+			wxLogMessage( wxT( "Shader program linking error : %s" ), &ProgramErrorMessage[0] );
 			return false;
 		}
-		wxLogDebug( wxT( "Done." ) );
+		wxLogMessage( wxT( "Done." ) );
 
 		glDeleteShader( VertexShaderID );
 		glDeleteShader( FragmentShaderID );
@@ -1080,14 +1060,14 @@ namespace gw2b {
 
 		// All functions return a value different than 0 whenever an error occurred
 		if ( FT_Init_FreeType( &ft ) ) {
-			wxMessageBox( wxT( "Could not initialize FreeType library." ), wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "FreeType: Could not initialize FreeType library." ) );
 			return false;
 		}
 
 		// Load font as face
 		FT_Face face;
 		if ( FT_New_Face( ft, p_fontFile, 0, &face ) ) {
-			wxMessageBox( wxT( "FreeType: Failed to load font." ), wxT( "" ), wxICON_ERROR );
+			wxLogMessage( wxT( "FreeType: Failed to load font." ) );
 			return false;
 		}
 
@@ -1101,7 +1081,7 @@ namespace gw2b {
 		for ( GLubyte c = 0; c < 128; c++ ) {
 			// Load character glyph
 			if ( FT_Load_Char( face, c, FT_LOAD_RENDER ) ) {
-				wxMessageBox( wxT( "FreeType: Failed to load Glyph." ), wxT( "" ), wxICON_ERROR );
+				wxLogMessage( wxT( "FreeType: Failed to load Glyph." ) );
 				continue;
 			}
 
@@ -1171,24 +1151,21 @@ namespace gw2b {
 		auto maxZ = ( maxSize + distance ) * 10.0f;
 		auto minZ = maxZ * 0.001f;
 
-		// Compute the MVP matrix
+		//minZ 0.1f
+		//maxZ 100.0f
+
 		const wxSize ClientSize = this->GetClientSize( );
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 
 		// Projection matrix
 		auto ProjMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
-
 		// View matrix
 		auto ViewMatrix = m_camera.calculateViewMatrix( );
 
-		// Model matrix
-		auto ModelMatrix = glm::mat4( 1.0f );
-
-		MVP = ProjMatrix * ViewMatrix * ModelMatrix;
-
-		// Send our transformation to the currently bound shader, in the "MVP" uniform
-		glUniformMatrix4fv( MatrixID, 1, GL_FALSE, glm::value_ptr( MVP ) );
+		// Send our transformation to the currently bound shader
+		glUniformMatrix4fv( viewMatrixID, 1, GL_FALSE, glm::value_ptr( ViewMatrix ) );
+		glUniformMatrix4fv( projectionMatrixID, 1, GL_FALSE, glm::value_ptr( ProjMatrix ) );
 	}
 
 	void ModelViewer::focus( ) {
