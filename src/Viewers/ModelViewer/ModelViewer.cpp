@@ -148,42 +148,42 @@ namespace gw2b {
 
 	ModelViewer::~ModelViewer( ) {
 		// Clean VBO
-		for ( std::vector<VBO>::iterator it = m_vertexBuffer.begin( ); it != m_vertexBuffer.end( ); ++it ) {
-			if ( &it->vertexBuffer ) {
-				glDeleteBuffers( 1, &it->vertexBuffer );
+		for ( auto& it : m_vertexBuffer ) {
+			if ( it.vertexBuffer ) {
+				glDeleteBuffers( 1, &it.vertexBuffer );
 			}
-			if ( &it->uvBuffer ) {
-				glDeleteBuffers( 1, &it->uvBuffer );
+			if ( it.uvBuffer ) {
+				glDeleteBuffers( 1, &it.uvBuffer );
 			}
-			if ( &it->normalBuffer ) {
-				glDeleteBuffers( 1, &it->normalBuffer );
+			if ( it.normalBuffer ) {
+				glDeleteBuffers( 1, &it.normalBuffer );
 			}
 		}
 
 		// Clean IBO
-		for ( std::vector<IBO>::iterator it = m_indexBuffer.begin( ); it != m_indexBuffer.end( ); ++it ) {
-			if ( &it->elementBuffer ) {
-				glDeleteBuffers( 1, &it->elementBuffer );
+		for ( auto& it : m_indexBuffer ) {
+			if ( it.elementBuffer ) {
+				glDeleteBuffers( 1, &it.elementBuffer );
 			}
 		}
 
 		// Clean TBO
-		for ( std::vector<TBO>::iterator it = m_textureBuffer.begin( ); it != m_textureBuffer.end( ); ++it ) {
-			if ( &it->diffuseMap ) {
-				glDeleteBuffers( 1, &it->diffuseMap );
+		for ( auto& it : m_textureBuffer ) {
+			if ( it.diffuseMap ) {
+				glDeleteBuffers( 1, &it.diffuseMap );
 			}
-			/*if ( &it->normalMap ) {
-				glDeleteBuffers( 1, &it->normalMap );
+			/*if ( it.normalMap ) {
+				glDeleteBuffers( 1, &it.normalMap );
 			}
-			if ( &it->lightMap ) {
-				glDeleteBuffers( 1, &it->lightMap );
+			if ( it.lightMap ) {
+				glDeleteBuffers( 1, &it.lightMap );
 			}*/
 		}
 
 		// Clean character textures
-		for ( std::map<GLchar, Character>::iterator it = m_characterTextureMap.begin( ); it != m_characterTextureMap.end( ); ++it ) {
-			if ( &it->first ) {
-				glDeleteBuffers( 1, &it->second.TextureID );
+		for ( auto& it : m_characterTextureMap ) {
+			if ( it.first ) {
+				glDeleteBuffers( 1, &it.second.TextureID );
 			}
 		}
 
@@ -211,35 +211,35 @@ namespace gw2b {
 		lightMapFileList.clear( );
 
 		// Clean VBO
-		for ( std::vector<VBO>::iterator it = m_vertexBuffer.begin( ); it != m_vertexBuffer.end( ); ++it ) {
-			if ( &it->vertexBuffer ) {
-				glDeleteBuffers( 1, &it->vertexBuffer );
+		for ( auto& it : m_vertexBuffer ) {
+			if ( it.vertexBuffer ) {
+				glDeleteBuffers( 1, &it.vertexBuffer );
 			}
-			if ( &it->uvBuffer ) {
-				glDeleteBuffers( 1, &it->uvBuffer );
+			if ( it.uvBuffer ) {
+				glDeleteBuffers( 1, &it.uvBuffer );
 			}
-			if ( &it->normalBuffer ) {
-				glDeleteBuffers( 1, &it->normalBuffer );
+			if ( it.normalBuffer ) {
+				glDeleteBuffers( 1, &it.normalBuffer );
 			}
 		}
 
 		// Clean IBO
-		for ( std::vector<IBO>::iterator it = m_indexBuffer.begin( ); it != m_indexBuffer.end( ); ++it ) {
-			if ( &it->elementBuffer ) {
-				glDeleteBuffers( 1, &it->elementBuffer );
+		for ( auto& it : m_indexBuffer ) {
+			if ( it.elementBuffer ) {
+				glDeleteBuffers( 1, &it.elementBuffer );
 			}
 		}
 
 		// Clean TBO
-		for ( std::vector<TBO>::iterator it = m_textureBuffer.begin( ); it != m_textureBuffer.end( ); ++it ) {
-			if ( &it->diffuseMap ) {
-				glDeleteBuffers( 1, &it->diffuseMap );
+		for ( auto& it : m_textureBuffer ) {
+			if ( it.diffuseMap ) {
+				glDeleteBuffers( 1, &it.diffuseMap );
 			}
-			/*if ( &it->normalMap ) {
-				glDeleteBuffers( 1, &it->normalMap );
+			/*if ( it.normalMap ) {
+				glDeleteBuffers( 1, &it.normalMap );
 			}
-			if ( &it->lightMap ) {
-				glDeleteBuffers( 1, &it->lightMap );
+			if ( it.lightMap ) {
+				glDeleteBuffers( 1, &it.lightMap );
 			}*/
 		}
 
@@ -565,9 +565,8 @@ namespace gw2b {
 		glBindVertexArray( textVAO );
 
 		// Iterate through all characters
-		wxString::const_iterator c;
-		for ( c = p_text.begin( ); c != p_text.end( ); c++ ) {
-			Character ch = m_characterTextureMap[*c];
+		for ( auto& c : p_text ) {
+			Character ch = m_characterTextureMap[c];
 
 			GLfloat xpos = p_x + ch.Bearing.x * p_scale;
 			GLfloat ypos = p_y - ( ch.Size.y - ch.Bearing.y ) * p_scale;
@@ -634,18 +633,18 @@ namespace gw2b {
 		this->drawText( p_shader, wxT( "lightMap:" ), ClientSize.x - 60.0f, ClientSize.y - 12.0f, scale, color );
 
 		int line = 1;
-		for ( std::vector<uint32>::iterator it = diffuseMapFileList.begin( ); it != diffuseMapFileList.end( ); ++it ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 200.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
+		for ( auto& it : diffuseMapFileList ) {
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), it ), ClientSize.x - 200.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
 			line++;
 		}
 		line = 1;
-		for ( std::vector<uint32>::iterator it = normalMapFileList.begin( ); it != normalMapFileList.end( ); ++it ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 130.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
+		for ( auto& it : normalMapFileList ) {
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), it ), ClientSize.x - 130.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
 			line++;
 		}
 		line = 1;
-		for ( std::vector<uint32>::iterator it = lightMapFileList.begin( ); it != lightMapFileList.end( ); ++it ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), *it ), ClientSize.x - 60.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
+		for ( auto& it : lightMapFileList ) {
+			this->drawText( p_shader, wxString::Format( wxT( "%d" ), it ), ClientSize.x - 60.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
 			line++;
 		}
 

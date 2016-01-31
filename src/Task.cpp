@@ -37,8 +37,8 @@ namespace gw2b {
 	}
 
 	void Task::invokeOnCompleteHandler( ) {
-		for ( auto iter = m_onComplete.begin( ); iter != m_onComplete.end( ); iter++ ) {
-			( *iter )( );
+		for ( auto& iter : m_onComplete ) {
+			iter( );
 		}
 	}
 

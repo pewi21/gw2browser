@@ -129,8 +129,8 @@ namespace gw2b {
 		this->clear( );
 
 		// Notify listeners, so they can clear pointers etc
-		for ( auto it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onIndexDestruction( *this );
+		for ( auto& it : m_listeners ) {
+			it->onIndexDestruction( *this );
 		}
 	}
 
@@ -153,8 +153,8 @@ namespace gw2b {
 		m_numCategories = 0;
 
 		// Notify listeners
-		for ( auto it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onIndexCleared( *this );
+		for ( auto& it : m_listeners ) {
+			it->onIndexCleared( *this );
 		}
 	}
 
@@ -195,8 +195,8 @@ namespace gw2b {
 		auto& category = *m_categories[index];
 
 		// Notify listeners
-		for ( auto it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onIndexCategoryAdded( *this, category );
+		for ( auto& it : m_listeners ) {
+			it->onIndexCategoryAdded( *this, category );
 		}
 
 		m_isDirty = ( m_isDirty || p_setDirty );
@@ -241,8 +241,8 @@ namespace gw2b {
 		}
 
 		// Notify listeners
-		for ( auto it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onIndexFileAdded( *this, p_entry );
+		for ( auto& it : m_listeners ) {
+			it->onIndexFileAdded( *this, p_entry );
 		}
 	}
 

@@ -480,8 +480,8 @@ namespace gw2b {
 
 		// Prepare parallel loop
 		std::vector<omp_lock_t> locks( materialCount );
-		for ( auto iter = std::begin( locks ); iter != std::end( locks ); iter++ ) {
-			omp_init_lock( &( *iter ) );
+		for ( auto& iter : locks) {
+			omp_init_lock( &iter );
 		}
 
 		MaterialData* materialData = p_model.addMaterialData( materialCount );
@@ -556,8 +556,8 @@ namespace gw2b {
 		}
 
 		// Destroy locks
-		for ( auto iter = std::begin( locks ); iter != std::end( locks ); iter++ ) {
-			omp_destroy_lock( &( *iter ) );
+		for ( auto& iter : locks ) {
+			omp_destroy_lock( &iter );
 		}
 		wxLogMessage( wxT( "Finished reading MODL chunk." ) );
 	}

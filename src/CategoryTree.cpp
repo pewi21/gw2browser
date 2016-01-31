@@ -89,8 +89,8 @@ namespace gw2b {
 			m_index->removeListener( this );
 		}
 
-		for ( auto it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeDestruction( *this );
+		for ( auto& it : m_listeners ) {
+			it->onTreeDestruction( *this );
 		}
 	}
 
