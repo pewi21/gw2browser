@@ -134,6 +134,20 @@ namespace gw2b {
 		uint32          reserved2;              /**< Unused. */
 	};
 
+	/** ATEX file header. */
+	struct ImageReader::ANetAtexHeader {
+		union {
+			byte identifier[4];         /**< File identifier (FourCC). */
+			uint32 identifierInteger;   /**< File identifier (FourCC), as integer. */
+		};
+		union {
+			byte format[4];             /**< Format of the contained data. */
+			uint32 formatInteger;       /**< Format of the contained data, as integer. */
+		};
+		uint16 width;                   /**< Width of the texture, in pixels. */
+		uint16 height;                  /**< Height of the texture, in pixels. */
+	};
+
 	//----------------------------------------------------------------------------
 	//      ImageReader
 	//----------------------------------------------------------------------------
@@ -147,6 +161,7 @@ namespace gw2b {
 
 	wxImage ImageReader::getImage( ) const {
 		Assert( m_data.GetSize( ) >= 4 );
+		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
 
 		// Read the correct type of data
 		auto fourcc = *reinterpret_cast<const uint32*>( m_data.GetPointer( ) );
@@ -191,11 +206,7 @@ namespace gw2b {
 	}
 
 	bool ImageReader::readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
-		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
 		// Get header
-		if ( m_data.GetSize( ) < sizeof( DDSHeader ) ) {
-			return false;
-		}
 		auto header = reinterpret_cast<const DDSHeader*>( m_data.GetPointer( ) );
 
 		// Ensure some of the values are correct
@@ -330,7 +341,6 @@ namespace gw2b {
 	}
 
 	bool ImageReader::readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
-		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
 
 		gw2f::TextureFile file( m_data.GetPointer( ), m_data.GetSize( ) );
 
@@ -417,8 +427,6 @@ namespace gw2b {
 	}
 
 	bool ImageReader::readWebP( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
-		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
-
 		// Init some fields
 		auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
 		size_t data_size = m_data.GetSize( );
@@ -522,16 +530,9 @@ namespace gw2b {
 			return ( isCompressedRgb || ( isLuminanceTexture && is8Bit ) || ( isUncompressedRgb && is32Bit ) );
 		}
 
-		gw2f::TextureFile atex( p_data, p_size );
-		auto compression = atex.format( );
-
-		// The compression algorithm for non-power-of-two textures is unknown
-		//if ( !isPowerOfTwo( atex->width ) || !isPowerOfTwo( atex->height ) ) {
-		//	return false;
-		//}
-
 		if ( ( fourcc == FCC_ATEX ) || ( fourcc == FCC_ATTX ) || ( fourcc == FCC_ATEP ) ||
 			( fourcc == FCC_ATEU ) || ( fourcc == FCC_ATEC ) || ( fourcc == FCC_ATET ) ) {
+			auto compression = *reinterpret_cast<const uint32*>( p_data + 4 );
 			return ( compression == FCC_DXT1 ) ||
 				( compression == FCC_DXT2 ) ||
 				( compression == FCC_DXT3 ) ||
