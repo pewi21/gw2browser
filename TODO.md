@@ -3,13 +3,20 @@ TODO list
 
 * Add a icon for Gw2Browser.
 
-* Rewrite Gw2Browser to use wxAUI for UI management.
+* When close filelist or log window, un check the checker menu.
+
+* Seperate ModelViewer function to smaller files.
 
 * Optimize model viewer's loadMeshes function.
 
-* Shading.
+* Lighting, normal maping, etc.
 
-* Use C++11 or wxThread for multi-threading.
+* Fix crash when ModelReader read some model that have material in other version.
+(cause by out of range, file in difference version?)
+
+* Improve performance of ModelViewer's drawText function.
+
+* Use C++11 std::thread for multi-threading in Task.
 
 * COLLADA, Wavefront .obj model export with texture and materials.
 

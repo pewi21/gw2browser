@@ -59,7 +59,7 @@ compiler in order to compile it.
 
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
 * [gw2formats](https://github.com/kytulendu/gw2formats)
-* [wxWidgets 3.0.1](http://wxwidgets.org/)
+* [wxWidgets 3.0.2](http://wxwidgets.org/)
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
 * [The OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
 * [libwebp](https://developers.google.com/speed/webp/download) *Included*
