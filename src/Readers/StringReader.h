@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
 
 This file is part of Gw2Browser.
 

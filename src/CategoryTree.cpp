@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2013 Till034 <https://github.com/Till034>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
