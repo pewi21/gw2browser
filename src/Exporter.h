@@ -74,6 +74,7 @@ namespace gw2b {
 		void extractFiles( const DatIndexEntry& p_entry );
 		void exportImage( FileReader* p_reader, const wxString& p_entryname );
 		void exportString( FileReader* p_reader, const wxString& p_entryname );
+		void exportEula( FileReader* p_reader, const wxString& p_entryname );
 		void exportSound( FileReader* p_reader, const wxString& p_entryname );
 		void exportSoundBank( FileReader* p_reader, const wxString& p_entryname );
 		void exportModel( FileReader* p_reader, const wxString& p_entryname );

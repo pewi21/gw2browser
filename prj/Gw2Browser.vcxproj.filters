@@ -205,6 +205,9 @@
     <ClInclude Include="..\src\Readers\SoundBankReader.h">
       <Filter>Header Files\Readers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Readers\EulaReader.h">
+      <Filter>Header Files\Readers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -310,6 +313,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Readers\SoundBankReader.cpp">
+      <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\EulaReader.cpp">
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>

@@ -39,6 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/PackedSoundReader.h"
 #include "Readers/asndMP3Reader.h"
 #include "Readers/SoundBankReader.h"
+#include "Readers/EulaReader.h"
 
 #include "Exporter.h"
 
@@ -141,6 +142,9 @@ namespace gw2b {
 			case ANFT_MP3:
 			case ANFT_Bank:
 				return wxT( "mp3" );
+				break;
+			case ANFT_EULA:
+				return wxT( "txt" );
 				break;
 			default:
 				return wxT( "raw" ); // todo
@@ -333,6 +337,9 @@ namespace gw2b {
 				case ANFT_StringFile:
 					this->exportString( reader, p_entry.name( ) );
 					break;
+				case ANFT_EULA:
+					this->exportEula( reader, p_entry.name( ) );
+					break;
 				case ANFT_PackedMP3:
 				case ANFT_PackedOgg:
 				case ANFT_asndMP3:
@@ -440,6 +447,32 @@ namespace gw2b {
 
 		// Write to file
 		this->writeFile( data );
+	}
+
+	void Exporter::exportEula( FileReader* p_reader, const wxString& p_entryname ) {
+		auto eulaReader = dynamic_cast<EulaReader*>( p_reader );
+		if ( !eulaReader ) {
+			wxLogMessage( wxString::Format( wxT( "Entry %s is not a eula file." ), p_entryname ) );
+			return;
+		}
+
+		// Get eula
+		auto eula = eulaReader->getString( );
+		// Get file name
+		auto filename = m_filename.GetName( );
+		// Write each record
+		for ( size_t i = 0; i < eula.size( ); i++ ) {
+			wxString StringOut;
+			StringOut << eula[i];
+
+			// Convert string to byte array
+			Array<byte> data( StringOut.length( ) );
+			::memcpy( data.GetPointer( ), StringOut.utf8_str( ), StringOut.length( ) );
+
+			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), filename, i ) );
+			// Write to file
+			this->writeFile( data );
+		}
 	}
 
 	void Exporter::exportSound( FileReader* p_reader, const wxString& p_entryname ) {
