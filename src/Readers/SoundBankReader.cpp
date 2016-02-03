@@ -54,8 +54,14 @@ namespace gw2b {
 				gw2f::pf::AudioPackFile asndFile( asnd.audioData.data( ), asndSize );
 
 				auto asndChunk = asndFile.chunk<gw2f::pf::AudioChunks::Waveform>( );
-				auto audioDataSize = asndChunk->audioData.size( );
 
+				uint16 format = *reinterpret_cast<const uint16*>( asndChunk->audioData.data( ) );
+				// the data is either compressed or encrypted or not mp3 format
+				if ( format != FCC_MP3 ) {
+					continue;
+				}
+
+				auto audioDataSize = asndChunk->audioData.size( );
 				Array<byte> soundData( audioDataSize );
 				::memcpy( soundData.GetPointer( ), asndChunk->audioData.data( ), audioDataSize );
 

@@ -447,7 +447,7 @@ namespace gw2b {
 		if ( m_fileType == ANFT_asndMP3 ) {
 			auto asndMP3 = dynamic_cast<asndMP3Reader*>( p_reader );
 			if ( !asndMP3 ) {
-				wxMessageBox( wxString::Format( wxT( "Entry %s is not a sound file." ), p_entryname ), wxT( "" ), wxOK | wxICON_WARNING );
+				wxLogMessage( wxString::Format( wxT( "Entry %s is not a sound file." ), p_entryname ) );
 				return;
 			}
 			// Get sound data
@@ -460,7 +460,7 @@ namespace gw2b {
 			auto packedSound = dynamic_cast<PackedSoundReader*>( p_reader );
 
 			if ( !packedSound ) {
-				wxMessageBox( wxString::Format( wxT( "Entry %s is not a sound file." ), p_entryname ), wxT( "" ), wxOK | wxICON_WARNING );
+				wxLogMessage( wxString::Format( wxT( "Entry %s is not a sound file." ), p_entryname ) );
 				return;
 			}
 			// Get sound data
@@ -472,16 +472,23 @@ namespace gw2b {
 
 	void Exporter::exportSoundBank( FileReader* p_reader, const wxString& p_entryname ) {
 		auto sound = dynamic_cast<SoundBankReader*>( p_reader );
+		if ( !sound ) {
+			wxLogMessage( wxString::Format( wxT( "Entry %s is not a sound bank file." ), p_entryname ) );
+			return;
+		}
+
 		auto data = sound->getSoundData( );
+		auto filename = m_filename.GetName( );
 
 		for ( auto& it : data ) {
-			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), p_entryname, it.voiceId ) );
+			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), filename, it.voiceId ) );
 
-			uint16 sound = *reinterpret_cast<const uint16*>( it.data.GetPointer( ) );
+			//uint16 format = *reinterpret_cast<const uint16*>( it.data.GetPointer( ) );
 			// the data is either compressed or encrypted or not mp3 format
-			if ( sound != FCC_MP3 ) {
-				m_filename.SetExt( wxT( "raw" ) );
-			}
+			//if ( format != FCC_MP3 ) {
+			//	//m_filename.SetExt( wxT( "raw" ) );
+			//	continue;
+			//}
 
 			// Write to file
 			this->writeFile( it.data );

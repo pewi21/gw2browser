@@ -51,11 +51,13 @@ namespace gw2b {
 
 			StringFile str;
 			if ( entry.isEncrypted( ) ) {
-				str.string = wxT( "Encrypted string" );
+				//str.string = wxT( "Encrypted string" );
+				continue;
 			} else {
 				str.string = entry.get( );
 				if ( str.string.IsEmpty( ) ) {
-					str.string = wxT( "Empty string" );
+					//str.string = wxT( "Empty string" );
+					continue;
 				}
 			}
 			str.id = i;
