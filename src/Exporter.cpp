@@ -383,9 +383,7 @@ namespace gw2b {
 		// Bail if not an image
 		auto imgReader = dynamic_cast<ImageReader*>( p_reader );
 		if ( !imgReader ) {
-			wxString message;
-			message << "Entry " << p_entryname << " is not an image.";
-			wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
+			wxLogMessage( wxString::Format( wxT( "Entry %s is not an image." ), p_entryname ) );
 			return;
 		}
 
@@ -420,24 +418,25 @@ namespace gw2b {
 		// Bail if not a string
 		auto strReader = dynamic_cast<StringReader*>( p_reader );
 		if ( !strReader ) {
-			wxString message;
-			message << "Entry " << p_entryname << " is not a string file.";
-			wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
+			wxLogMessage( wxString::Format( wxT( "Entry %s is not a string file." ), p_entryname ) );
 			return;
 		}
 
 		// Get string
 		auto string = strReader->getString( );
-		if ( string.IsEmpty( ) ) {
-			wxString message;
-			message << "Entry " << p_entryname << " is an empty string file.";
-			wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
+		if ( string.empty( ) ) {
+			wxLogMessage( wxString::Format( wxT( "Entry %s is an empty string file." ), p_entryname ) );
 			return;
 		}
 
+		wxString StringOut;
+		for ( auto& it : string ) {
+			StringOut << wxT( "\"" ) << it.id << wxT( "\";\"" ) << it.string << L"\"\r\n";
+		}
+
 		// Convert string to byte array
-		Array<byte> data( string.length( ) );
-		::memcpy( data.GetPointer( ), string.utf8_str( ), string.length( ) );
+		Array<byte> data( StringOut.length( ) );
+		::memcpy( data.GetPointer( ), StringOut.utf8_str( ), StringOut.length( ) );
 
 		// Write to file
 		this->writeFile( data );
@@ -448,9 +447,7 @@ namespace gw2b {
 		if ( m_fileType == ANFT_asndMP3 ) {
 			auto asndMP3 = dynamic_cast<asndMP3Reader*>( p_reader );
 			if ( !asndMP3 ) {
-				wxString message;
-				message << "Entry " << p_entryname << " is not a sound file.";
-				wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
+				wxMessageBox( wxString::Format( wxT( "Entry %s is not a sound file." ), p_entryname ), wxT( "" ), wxOK | wxICON_WARNING );
 				return;
 			}
 			// Get sound data
@@ -463,9 +460,7 @@ namespace gw2b {
 			auto packedSound = dynamic_cast<PackedSoundReader*>( p_reader );
 
 			if ( !packedSound ) {
-				wxString message;
-				message << "Entry " << p_entryname << " is not a sound file.";
-				wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
+				wxMessageBox( wxString::Format( wxT( "Entry %s is not a sound file." ), p_entryname ), wxT( "" ), wxOK | wxICON_WARNING );
 				return;
 			}
 			// Get sound data
@@ -497,9 +492,7 @@ namespace gw2b {
 		// Bail if not a model
 		auto modlReader = dynamic_cast<ModelReader*>( p_reader );
 		if ( !modlReader ) {
-			wxString message;
-			message << "Entry " << p_entryname << " is in wrong format.";
-			wxMessageBox( message, wxT( "" ), wxOK | wxICON_WARNING );
+			wxMessageBox( wxString::Format( wxT( "Entry %s is in wrong format." ), p_entryname ), wxT( "" ), wxOK | wxICON_WARNING );
 			return;
 		}
 
@@ -600,9 +593,9 @@ namespace gw2b {
 		if ( file.IsOpened( ) ) {
 			file.Write( p_data.GetPointer( ), p_data.GetSize( ) );
 		} else {
-			wxString message;
-			message << "Failed to open the file " << m_filename.GetFullPath( ) << " for writing.";
-			wxMessageBox( message, wxT( "Error" ), wxOK | wxICON_ERROR );
+			wxMessageBox( wxString::Format( wxT( "Failed to open the file %s for writing." ), m_filename.GetFullPath( ) ),
+				wxT( "Error" ),
+				wxOK | wxICON_ERROR );
 			return false;
 		}
 		file.Close( );

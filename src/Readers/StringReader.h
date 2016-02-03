@@ -27,9 +27,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef READERS_STRINGREADER_H_INCLUDED
 #define READERS_STRINGREADER_H_INCLUDED
 
+#include <vector>
+
 #include "FileReader.h"
 
 namespace gw2b {
+
+	struct StringFile {
+		uint32					id;
+		wxString				string;
+	};
 
 	class StringReader : public FileReader {
 	public:
@@ -47,8 +54,8 @@ namespace gw2b {
 			return DT_String;
 		}
 		/** Gets the strings contained in the data owned by this reader.
-		*  \return wxString     CSV format of strings. */
-		wxString getString( ) const;
+		*  \return std::vector<StringFile>	Strings. */
+		std::vector<StringFile> getString( ) const;
 		/** Determines whether the header is valid.
 		*  \return bool    true if valid, false if not. */
 		static bool isValidHeader( const byte* p_data );

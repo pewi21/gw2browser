@@ -41,28 +41,27 @@ namespace gw2b {
 	StringReader::~StringReader( ) {
 	}
 
-	wxString StringReader::getString( ) const {
-		wxString string;
-
-		// Table header.
-		string << L"Entry;String" << L"\r\n";
-
+	std::vector<StringFile> StringReader::getString( ) const {
 		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
+
+		std::vector<StringFile> string;
 
 		for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
 			auto& entry = stringFile.entry( i );
 
-			wxString str;
+			StringFile str;
 			if ( entry.isEncrypted( ) ) {
-				str = L"Encrypted string";
+				str.string = wxT( "Encrypted string" );
 			} else {
-				str = entry.get( );
-				if ( str.IsEmpty( ) ) {
-					str = L"Empty string";
+				str.string = entry.get( );
+				if ( str.string.IsEmpty( ) ) {
+					str.string = wxT( "Empty string" );
 				}
 			}
-			string << i << L";\"" << str << L"\"\r\n";
+			str.id = i;
+			string.push_back( str );
 		}
+
 		return string;
 	}
 

@@ -261,6 +261,9 @@ namespace gw2b {
 			case gw2f::language::Spanish:
 				MakeSubCategory( wxT( "Spanish" ) );
 				break;
+			case gw2f::language::Chinese:
+				MakeSubCategory( wxT( "Chinese" ) );
+				break;
 			default:
 				MakeSubCategory( wxT( "Unknown" ) );
 				MakeSubCategory( wxString::Format( wxT( "%u" ), stringFile.language( ) ) );
