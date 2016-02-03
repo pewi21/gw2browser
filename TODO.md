@@ -25,13 +25,12 @@ headers, etc.
 
 * "Find by fileId" dialog.
 
-* Support for sub-items, where a file in the .dat can contain child-entries in
-the index. This is needed for soundbank files, EULA.
-
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
 
 * String viewer, sound player.
+
+* Support for EULA files.
 
 * Support for model LODs, collision mesh rendering, bone, animation and more.
 
