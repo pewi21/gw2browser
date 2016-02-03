@@ -3,7 +3,7 @@ Gw2Browser
 
 Opens a Guild Wars 2 .dat file and allows the user to browse and extract its
 files. Currently it supports power-of-two textures, JPEG and WebP Images, models,
-126x64 ATEX textures, sound, strings and binary files.
+126x64 ATEX textures, sound, sound bank, eula, strings and binary files.
 
 When a .dat file is opened, it will first index the file. This makes it *a lot*
 faster to re-open the same .dat. Unfortunately, every time the .dat changes it
@@ -42,6 +42,12 @@ first. Loading any model is also *far* from optimized!
 * **Non-power-of-two textures are unsupported at the moment.**
 Decompressing one produces garbage blocks. Well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
+
+* **Some sound data in bank file(s) is unsupported.**
+The data seems to be compressed or encrypted.
+
+* **Gw2Browser not export some entry in string file(s).*
+Some string entry are either empty or encrypted.
 
 * **Some times after the finish re-index .dat file, some of catalog is missing**
 Restart Gw2Browser will fix this issue.

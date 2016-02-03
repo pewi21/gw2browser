@@ -3,7 +3,7 @@ TODO list
 
 * Add a icon for Gw2Browser.
 
-* When close filelist or log window, un check the checker menu.
+* When close filelist or log window, uncheck the checker menu.
 
 * Seperate ModelViewer function to smaller files.
 
@@ -29,8 +29,6 @@ headers, etc.
 models could get an *export with textures* option.
 
 * String viewer, sound player.
-
-* Support for EULA files.
 
 * Support for model LODs, collision mesh rendering, bone, animation and more.
 
