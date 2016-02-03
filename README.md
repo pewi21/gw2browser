@@ -46,7 +46,7 @@ Probably they use custom format for NPOT texture.
 * **Some sound data in bank file(s) is unsupported.**
 The data seems to be compressed or encrypted.
 
-* **Gw2Browser not export some entry in string file(s).*
+* **Gw2Browser not export some entry in string file(s).**
 Some string entry are either empty or encrypted.
 
 * **Some times after the finish re-index .dat file, some of catalog is missing**
