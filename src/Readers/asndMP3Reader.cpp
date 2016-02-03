@@ -35,7 +35,7 @@ namespace gw2b {
 	asndMP3Reader::~asndMP3Reader( ) {
 	}
 
-	Array<byte> asndMP3Reader::getMP3( ) const {
+	Array<byte> asndMP3Reader::getMP3Data( ) const {
 		auto asnd = m_data;
 		int size = m_data.GetSize( );
 

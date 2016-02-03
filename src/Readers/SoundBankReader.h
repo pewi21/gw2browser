@@ -1,10 +1,10 @@
-/* \file       Readers/PackedSoundReader.h
-*  \brief      Contains the declaration of the packed Ogg reader class.
+/* \file       Readers/SoundBankReader.h
+*  \brief      Contains the declaration of the sound bank reader class.
 *  \author     Khral Steelforge
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
 
 This file is part of Gw2Browser.
 
@@ -24,21 +24,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef READERS_PACKEDSOUNDREADER_H_INCLUDED
-#define READERS_PACKEDSOUNDREADER_H_INCLUDED
+#ifndef READERS_SOUNDBANKREADER_H_INCLUDED
+#define READERS_SOUNDBANKREADER_H_INCLUDED
 
 #include "FileReader.h"
 
 namespace gw2b {
 
-	class PackedSoundReader : public FileReader {
+	struct SoundBank {
+		uint32						voiceId;
+		Array<byte>					data;
+	};
+
+	class SoundBankReader : public FileReader {
 	public:
 		/** Constructor.
 		*  \param[in]  p_data		Data to be handled by this reader.
 		*  \param[in]  p_fileType	File type of the given data. */
-		PackedSoundReader( const Array<byte>& p_data, ANetFileType p_fileType );
+		SoundBankReader( const Array<byte>& p_data, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */
-		virtual ~PackedSoundReader( );
+		virtual ~SoundBankReader( );
 
 		/** Gets the type of data contained in this file. Not to be confused with
 		*  file type.
@@ -47,11 +52,11 @@ namespace gw2b {
 			return DT_Sound;
 		}
 		/** Gets the sound data contained in the data owned by this reader.
-		*  \return Array<byte>		Sound data in Ogg or MP3 format. */
-		Array<byte> getSoundData( ) const;
+		*  \return std::vector<SoundBank>		Sound data in MP3 or unknown format. */
+		std::vector<SoundBank> getSoundData( ) const;
 
-	}; // class PackedSoundReader
+	}; // class SoundBankReader
 
 }; // namespace gw2b
 
-#endif // READERS_PACKEDSOUNDREADER_H_INCLUDED
+#endif // READERS_SOUNDBANKREADER_H_INCLUDED

@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/ModelReader.h"
 #include "Readers/PackedSoundReader.h"
 #include "Readers/asndMP3Reader.h"
+#include "Readers/SoundBankReader.h"
 
 #include "FileReader.h"
 
@@ -82,6 +83,9 @@ namespace gw2b {
 			break;
 		case ANFT_asndMP3:
 			return new asndMP3Reader( p_data, p_fileType );
+			break;
+		case ANFT_Bank:
+			return new SoundBankReader( p_data, p_fileType );
 			break;
 		default:
 			break;

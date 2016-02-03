@@ -37,7 +37,7 @@ namespace gw2b {
 	PackedSoundReader::~PackedSoundReader( ) {
 	}
 
-	Array<byte> PackedSoundReader::getSound( ) const {
+	Array<byte> PackedSoundReader::getSoundData( ) const {
 		gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
 
 		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );

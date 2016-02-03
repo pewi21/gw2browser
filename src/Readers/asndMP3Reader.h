@@ -48,7 +48,7 @@ namespace gw2b {
 		}
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return wxString     MP3 format. */
-		Array<byte> getMP3( ) const;
+		Array<byte> getMP3Data( ) const;
 
 	}; // class MP3Reader
 

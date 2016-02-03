@@ -95,8 +95,9 @@ namespace gw2b {
 		// Not quite FourCC
 		FCC_MZ = 0x5a4d,		// Executable or Dynamic Link Library
 		FCC_PF = 0x4650,
+		FCC_MP3 = 0xfbff,		// MPEG-1 Layer 3
 		FCC_JPEG = 0xffd8ff,
-		FCC_ID3 = 0x334449,		// MP3
+		FCC_ID3 = 0x334449,		// MP3 with an ID3v2 container
 		FCC_BINK2 = 0x32424b,	// Bink 2 video
 	};
 

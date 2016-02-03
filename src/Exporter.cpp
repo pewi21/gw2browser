@@ -38,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/ModelReader.h"
 #include "Readers/PackedSoundReader.h"
 #include "Readers/asndMP3Reader.h"
+#include "Readers/SoundBankReader.h"
 
 #include "Exporter.h"
 
@@ -138,6 +139,7 @@ namespace gw2b {
 			case ANFT_PackedMP3:
 			case ANFT_asndMP3:
 			case ANFT_MP3:
+			case ANFT_Bank:
 				return wxT( "mp3" );
 				break;
 			default:
@@ -336,6 +338,9 @@ namespace gw2b {
 				case ANFT_asndMP3:
 					this->exportSound( reader, p_entry.name( ) );
 					break;
+				case ANFT_Bank:
+					this->exportSoundBank( reader, p_entry.name( ) );
+					break;
 				case ANFT_Model:
 					this->exportModel( reader, p_entry.name( ) );
 					break;
@@ -449,7 +454,7 @@ namespace gw2b {
 				return;
 			}
 			// Get sound data
-			data = asndMP3->getMP3( );
+			data = asndMP3->getMP3Data( );
 
 		} else if (
 			( m_fileType == ANFT_PackedMP3 ) ||
@@ -464,10 +469,28 @@ namespace gw2b {
 				return;
 			}
 			// Get sound data
-			data = packedSound->getSound( );
+			data = packedSound->getSoundData( );
 		}
 		// Write to file
 		this->writeFile( data );
+	}
+
+	void Exporter::exportSoundBank( FileReader* p_reader, const wxString& p_entryname ) {
+		auto sound = dynamic_cast<SoundBankReader*>( p_reader );
+		auto data = sound->getSoundData( );
+
+		for ( auto& it : data ) {
+			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), p_entryname, it.voiceId ) );
+
+			uint16 sound = *reinterpret_cast<const uint16*>( it.data.GetPointer( ) );
+			// the data is either compressed or encrypted or not mp3 format
+			if ( sound != FCC_MP3 ) {
+				m_filename.SetExt( wxT( "raw" ) );
+			}
+
+			// Write to file
+			this->writeFile( it.data );
+		}
 	}
 
 	void Exporter::exportModel( FileReader* p_reader, const wxString& p_entryname ) {
