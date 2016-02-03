@@ -1,6 +1,20 @@
 Change log
 ----------
 
+Gw2Browser_2016-xx-xx
+---------------------
+Change:
+- Use wxAUI for interface manager.
+- New about box.
+- Sound Bank and Eula file support.
+- Improve string file support, add support for Chinese language string.
+- Wavefront .obj model export improvement.
+No need to rotate the exported model file in Blender any more.
+It can be import using default blender Wavefront .obj import settings.
+
+Fix:
+- More stability, less crash.
+
 Gw2Browser_2016-01-01
 ---------------------
 Change:
