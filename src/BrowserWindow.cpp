@@ -459,7 +459,7 @@ namespace gw2b {
 
 		info.SetCopyright( wxString::FromAscii(
 			"Copyright (C) 2014-2016 Khral Steelforge - https://github.com/kytulendu\n"
-			"Copyright (C) 2013 Till034 - https://github.com/Till034"
+			"Copyright (C) 2013 Till034 - https://github.com/Till034\n"
 			"Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
 			"\n"
 			"Guild Wars 2 (C)2010-2015 ArenaNet, LLC. All rights reserved.\n"
