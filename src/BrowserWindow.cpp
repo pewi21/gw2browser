@@ -262,7 +262,7 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::onOpenEvt( wxCommandEvent& WXUNUSED( p_event ) ) {
-		wxFileDialog dialog( this, wxFileSelectorPromptStr, wxT( "" ), wxT( "Gw2.dat" ),
+		wxFileDialog dialog( this, wxFileSelectorPromptStr, wxEmptyString, wxT( "Gw2.dat" ),
 			wxT( "Guild Wars 2 DAT|*.dat" ), wxFD_OPEN | wxFD_FILE_MUST_EXIST );
 
 		if ( dialog.ShowModal( ) == wxID_OK ) {

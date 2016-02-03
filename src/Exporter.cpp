@@ -247,6 +247,9 @@ namespace gw2b {
 			case ANFT_Ogg:
 				return wxT( "ogg" );
 				break;
+			case ANFT_Bank:
+				return wxT( "abnk" );
+				break;
 
 				// Audio script
 			case ANFT_AudioScript:
