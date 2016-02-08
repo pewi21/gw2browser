@@ -298,8 +298,8 @@ namespace gw2b {
 		this->DeleteAllItems( );
 		this->AddRoot( wxT( "Root" ) );
 
-		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeCleared( *this );
+		for ( auto it : m_listeners ) {
+			it->onTreeCleared( *this );
 		}
 	}
 
@@ -517,13 +517,13 @@ namespace gw2b {
 			// raise the correct event
 			switch ( itemData->dataType( ) ) {
 			case CategoryTreeItem::DT_Category:
-				for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-					( *it )->onTreeCategoryClicked( *this, *static_cast<const DatIndexCategory*>( itemData->data( ) ) );
+				for ( auto it : m_listeners ) {
+					it->onTreeCategoryClicked( *this, *static_cast<const DatIndexCategory*>( itemData->data( ) ) );
 				}
 				break;
 			case CategoryTreeItem::DT_Entry:
-				for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-					( *it )->onTreeEntryClicked( *this, *static_cast<const DatIndexEntry*>( itemData->data( ) ) );
+				for ( auto it : m_listeners ) {
+					it->onTreeEntryClicked( *this, *static_cast<const DatIndexEntry*>( itemData->data( ) ) );
 				}
 			}
 		}
@@ -573,16 +573,16 @@ namespace gw2b {
 	//============================================================================/
 
 	void CategoryTree::onExtractRawFiles( wxCommandEvent& p_event ) {
-		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeExtractFile( *this, Exporter::EM_Raw );
+		for ( auto it : m_listeners ) {
+			it->onTreeExtractFile( *this, Exporter::EM_Raw );
 		}
 	}
 
 	//============================================================================/
 
 	void CategoryTree::onExtractConvertedFiles( wxCommandEvent& p_event ) {
-		for ( ListenerSet::iterator it = m_listeners.begin( ); it != m_listeners.end( ); it++ ) {
-			( *it )->onTreeExtractFile( *this, Exporter::EM_Converted );
+		for ( auto it : m_listeners ) {
+			it->onTreeExtractFile( *this, Exporter::EM_Converted );
 		}
 	}
 
