@@ -146,7 +146,7 @@ namespace gw2b {
 		/** Removes the item residing at the given index.
 		*  \param[in]  pIndex  Index of element to remove. */
 		void RemoveAt( size_t pIndex ) {
-			Assert( pIndex >= 0 && pIndex < mData.get( )->mSize );
+			Assert( pIndex < mData.get( )->mSize );
 			this->UnShare( );
 
 			size_t& size = mData.get( )->mSize;
