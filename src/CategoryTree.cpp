@@ -543,7 +543,7 @@ namespace gw2b {
 				auto itemData = static_cast<const CategoryTreeItem*>( this->GetItemData( ids[i] ) );
 				if ( itemData->dataType( ) == CategoryTreeItem::DT_Entry ) {
 					if ( !firstEntry ) {
-						firstEntry = ( const DatIndexEntry* ) itemData->data( );
+						firstEntry = static_cast<const DatIndexEntry*>( itemData->data( ) );
 					}
 					count++;
 				} else if ( itemData->dataType( ) == CategoryTreeItem::DT_Category ) {
