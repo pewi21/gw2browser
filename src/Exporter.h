@@ -78,6 +78,7 @@ namespace gw2b {
 		void exportSound( FileReader* p_reader, const wxString& p_entryname );
 		void exportSoundBank( FileReader* p_reader, const wxString& p_entryname );
 		void exportModel( FileReader* p_reader, const wxString& p_entryname );
+		void exportModelTexture( uint32 p_fileid );
 		bool writeFile( const Array<byte>& p_data );
 		void appendPaths( wxFileName& p_path, const DatIndexCategory& p_category );
 

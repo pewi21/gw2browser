@@ -543,6 +543,9 @@ namespace gw2b {
 		// Export meshes
 		// -------------
 
+		// Export to Wavefront .obj file
+		// https://en.wikipedia.org/wiki/Wavefront_.obj_file
+
 		// Note: wxWidgets only does locale-specific number formatting. This does
 		// not work well with obj-files.
 		std::ostringstream modlStream;
@@ -625,6 +628,88 @@ namespace gw2b {
 
 		// Write to file
 		this->writeFile( meshData );
+
+		// ----------------
+		// Export Materials
+		// ----------------
+
+		// texture is in [Model Id]/Texture.png
+
+		// ---------------
+		// Export Textures
+		// ---------------
+		std::vector<uint32> diffuseMapFileList;
+		std::vector<uint32> normalMapFileList;
+		std::vector<uint32> lightMapFileList;
+
+		for ( uint i = 0; i < model.numMaterialData( ); i++ ) {
+			auto material = model.materialData( i );
+			if ( material.diffuseMap ) {
+				diffuseMapFileList.push_back( material.diffuseMap );
+			}
+			if ( material.normalMap ) {
+				normalMapFileList.push_back( material.normalMap );
+			}
+			if ( material.lightMap ) {
+				lightMapFileList.push_back( material.lightMap );
+			}
+		}
+
+		std::vector<uint32>::iterator temp;
+
+		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
+		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
+
+		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
+		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
+
+		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
+		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
+
+		// Set path of texture to model id
+		m_filename.AppendDir( p_entryname );
+
+		// Create directory if not exist
+		if ( !m_filename.DirExists( ) ) {
+			m_filename.Mkdir( 511, wxPATH_MKDIR_FULL );
+		}
+
+		// Extract textures
+		for ( auto& it : diffuseMapFileList ) {
+			this->exportModelTexture( it );
+		}
+		for ( auto& it : normalMapFileList ) {
+			this->exportModelTexture( it );
+		}
+		for ( auto& it : lightMapFileList ) {
+			this->exportModelTexture( it );
+		}
+
+	}
+
+	void Exporter::exportModelTexture( uint32 p_fileid ) {
+		auto entryNumber = m_datFile.entryNumFromFileId( p_fileid );
+		auto fileData = m_datFile.readEntry( entryNumber );
+
+		// Bail if read failed
+		if ( fileData.GetSize( ) == 0 ) {
+			return;
+		}
+
+		// Convert to image
+		ANetFileType fileType;
+		m_datFile.identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
+		auto reader = FileReader::readerForData( fileData, fileType );
+
+		m_filename.SetName( wxString::Format( wxT( "%d" ), p_fileid ) );
+		m_filename.SetExt( wxT( "png" ) );
+
+		this->exportImage( reader, wxT( "Dummy" ) );
+
+		deletePointer( reader );
 	}
 
 	bool Exporter::writeFile( const Array<byte>& p_data ) {
