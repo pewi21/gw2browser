@@ -11,6 +11,7 @@ Change:
 - Wavefront .obj model export improvement.
 No need to rotate the exported model file in Blender any more.
 It can be import using default blender Wavefront .obj import settings.
+- Model now export with texture.
 
 Fix:
 - More stability, less crash.
