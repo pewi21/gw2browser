@@ -95,8 +95,9 @@ namespace gw2b {
 	};
 
 	struct MaterialData {
-		uint32 materialId;		// Unknown
-		uint32 materialFlags;	// Unknown
+		uint32 materialId;			// Unknown
+		uint32 materialFlags;		// Unknown
+		uint32 materialFile;		// File Id for material file
 		uint32 diffuseMap;
 		uint32 normalMap;
 		uint32 lightMap;

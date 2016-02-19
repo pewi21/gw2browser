@@ -462,14 +462,10 @@ namespace gw2b {
 		}
 
 		// Read some necessary data
-		uint32 numMaterialInfo = modelChunk->permutations.size( );
-		auto materialInfoArray = modelChunk->permutations;
-
+		auto materialInfoArray = modelChunk->permutations[0];
+		auto materialsArray = materialInfoArray.materials;
 		// Count materials
-		uint materialCount = 0;
-		for ( uint i = 0; i < numMaterialInfo; i++ ) {
-			materialCount = wxMax( materialCount, materialInfoArray[i].materials.size( ) );
-		}
+		auto materialCount = materialsArray.size( );
 
 		// Bail if no materials
 		if ( !materialCount ) {
@@ -478,81 +474,75 @@ namespace gw2b {
 		}
 		wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
+		MaterialData* materialData = p_model.addMaterialData( materialCount );
+
 		// Prepare parallel loop
 		std::vector<omp_lock_t> locks( materialCount );
 		for ( auto& iter : locks) {
 			omp_init_lock( &iter );
 		}
 
-		MaterialData* materialData = p_model.addMaterialData( materialCount );
-
-		// Loop through each material info
+		// Loop through each material
 #pragma omp parallel for shared(locks, materialData)
-		for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
-			// Bail if no material data
-			if ( !materialInfoArray[i].materials.data( ) ) {
-				wxLogMessage( wxT( "No material data in material array %d." ), i );
+		for ( int j = 0; j < static_cast<int>( materialCount ); j++ ) {
+			auto& data = materialData[j];
+
+			// Only one thread must access this material at a time
+			omp_set_lock( &locks[j] );
+
+			// Bail if this material index already has data
+			if ( data.materialId && data.materialFlags && data.diffuseMap && data.normalMap && data.lightMap && data.materialFile ) {
+				omp_unset_lock( &locks[j] );
 				continue;
 			}
 
-			auto materialsArray = materialInfoArray[i].materials;
+			// Read material info
+			auto materialInfo = materialsArray[j];
 
-			// Loop through each material in these material infos
-			for ( uint j = 0; j < materialsArray.size( ); j++ ) {
-				auto& data = materialData[j];
+			// Copy the data
+			// We are (almost) *only* interested in textures
+			data.materialId = materialInfo.materialId;
+			data.materialFlags = materialInfo.materialFlags;
 
-				// Only one thread must access this material at a time
-				omp_set_lock( &locks[j] );
+			auto ref = reinterpret_cast<const ANetFileReference*>( &materialInfo.filename );
 
-				// Bail if this material index already has data
-				if ( data.materialId && data.materialFlags && data.diffuseMap && data.normalMap && data.lightMap ) {
-					omp_unset_lock( &locks[j] );
-					continue;
-				}
+			// Get material filename from each materials
+			data.materialFile = DatFile::fileIdFromFileReference( *ref );
 
-				// Read material info
-				auto materialInfo = materialsArray[j];
-
-				// Copy the data
-				// We are (almost) *only* interested in textures
-				data.materialId = materialInfo.materialId;
-				data.materialFlags = materialInfo.materialFlags;
-
-				if ( materialInfo.textures.size( ) == 0 ) {
-					omp_unset_lock( &locks[j] );
-					continue;
-				}
-
-				auto textures = materialInfo.textures;
-
-				// Out of these, we only care about the diffuse maps
-				for ( uint t = 0; t < textures.size( ); t++ ) {
-					// Get file reference
-					auto fileReference = reinterpret_cast<const ANetFileReference*>( &textures[t].filename );
-
-					// todo: figure out this
-					// Diffuse?
-					if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
-						data.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-					}
-
-					// Normal?
-					else if ( ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee )
-						/*|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
-						|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )*/ ) {
-						data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-					}
-
-					// Light Map ?
-					else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
-						data.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-						break;
-					}
-				}
-
-				// Let other threads access this material now that we're done
+			if ( materialInfo.textures.size( ) == 0 ) {
 				omp_unset_lock( &locks[j] );
+				continue;
 			}
+
+			auto textures = materialInfo.textures;
+
+			// Out of these, we only care about the diffuse maps
+			for ( uint t = 0; t < textures.size( ); t++ ) {
+				// Get file reference
+				auto fileReference = reinterpret_cast<const ANetFileReference*>( &textures[t].filename );
+
+				// todo: figure out this
+				// Diffuse?
+				if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
+					data.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+				}
+
+				// Normal?
+				else if ( ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee )
+					/*|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
+					|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )*/ ) {
+					data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+				}
+
+				// Light Map ?
+				else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
+					data.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					break;
+				}
+			}
+
+			// Let other threads access this material now that we're done
+			omp_unset_lock( &locks[j] );
 		}
 
 		// Destroy locks
