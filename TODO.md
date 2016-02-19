@@ -18,7 +18,7 @@ TODO list
 
 * Use C++11 std::thread for multi-threading in Task.
 
-* COLLADA, Wavefront .obj model export with texture and materials.
+* COLLADA, Wavefront .obj model export with materials.
 
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
