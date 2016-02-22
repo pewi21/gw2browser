@@ -638,36 +638,27 @@ namespace gw2b {
 		// ---------------
 		// Export Textures
 		// ---------------
-		std::vector<uint32> diffuseMapFileList;
-		std::vector<uint32> normalMapFileList;
-		std::vector<uint32> lightMapFileList;
+
+		std::vector<uint32> textureFileList;
 
 		for ( uint i = 0; i < model.numMaterialData( ); i++ ) {
 			auto material = model.materialData( i );
 			if ( material.diffuseMap ) {
-				diffuseMapFileList.push_back( material.diffuseMap );
+				textureFileList.push_back( material.diffuseMap );
 			}
 			if ( material.normalMap ) {
-				normalMapFileList.push_back( material.normalMap );
+				textureFileList.push_back( material.normalMap );
 			}
 			if ( material.lightMap ) {
-				lightMapFileList.push_back( material.lightMap );
+				textureFileList.push_back( material.lightMap );
 			}
 		}
 
 		std::vector<uint32>::iterator temp;
 
-		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
-
-		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
-
-		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
+		std::sort( textureFileList.begin( ), textureFileList.end( ) );
+		temp = std::unique( textureFileList.begin( ), textureFileList.end( ) );
+		textureFileList.resize( std::distance( textureFileList.begin( ), temp ) );
 
 		// Set path of texture to model id
 		m_filename.AppendDir( p_entryname );
@@ -678,16 +669,9 @@ namespace gw2b {
 		}
 
 		// Extract textures
-		for ( auto& it : diffuseMapFileList ) {
+		for ( auto& it : textureFileList ) {
 			this->exportModelTexture( it );
 		}
-		for ( auto& it : normalMapFileList ) {
-			this->exportModelTexture( it );
-		}
-		for ( auto& it : lightMapFileList ) {
-			this->exportModelTexture( it );
-		}
-
 	}
 
 	void Exporter::exportModelTexture( uint32 p_fileid ) {
