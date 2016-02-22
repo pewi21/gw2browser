@@ -204,11 +204,6 @@ namespace gw2b {
 	}
 
 	void ModelViewer::clear( ) {
-		// Clean texture file name list
-		diffuseMapFileList.clear( );
-		normalMapFileList.clear( );
-		lightMapFileList.clear( );
-
 		// Clean VBO
 		for ( auto& it : m_vertexBuffer ) {
 			if ( it.vertexBuffer ) {
@@ -320,35 +315,6 @@ namespace gw2b {
 				cache.lightMap = 0;
 			}*/
 		}
-
-		// Texture That need to extract manualy use in texture file list status
-		for ( uint i = 0; i < m_model.numMaterialData( ); i++ ) {
-			auto& material = m_model.materialData( i );
-
-			if ( material.diffuseMap ) {
-				diffuseMapFileList.push_back( material.diffuseMap );
-			}
-			if ( material.normalMap ) {
-				normalMapFileList.push_back( material.normalMap );
-			}
-			if ( material.lightMap ) {
-				lightMapFileList.push_back( material.lightMap );
-			}
-		}
-
-		std::vector<uint32>::iterator temp;
-
-		std::sort( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		temp = std::unique( diffuseMapFileList.begin( ), diffuseMapFileList.end( ) );
-		diffuseMapFileList.resize( std::distance( diffuseMapFileList.begin( ), temp ) );
-
-		std::sort( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		temp = std::unique( normalMapFileList.begin( ), normalMapFileList.end( ) );
-		normalMapFileList.resize( std::distance( normalMapFileList.begin( ), temp ) );
-
-		std::sort( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		temp = std::unique( lightMapFileList.begin( ), lightMapFileList.end( ) );
-		lightMapFileList.resize( std::distance( lightMapFileList.begin( ), temp ) );
 
 		// Re-focus and re-render
 		this->focus( );
@@ -493,7 +459,9 @@ namespace gw2b {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 		// Draw status text
-		this->displayStatusText( textShader, vertexCount, triangleCount );
+		if ( m_statusText == true ) {
+			this->displayStatusText( textShader, vertexCount, triangleCount );
+		}
 
 		SwapBuffers( );
 	}
@@ -622,30 +590,10 @@ namespace gw2b {
 		this->drawText( p_shader, wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
 		this->drawText( p_shader, wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
 		this->drawText( p_shader, wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Focus: F button" ), 0.0f, 36.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle wireframe: W button" ), 0.0f, 48.0f + 2.0f, scale, color );
-
-		// Top-right text
-		this->drawText( p_shader, wxT( "Textures" ), ClientSize.x - 260.0f, ClientSize.y - 12.0f, scale, color );
-		this->drawText( p_shader, wxT( "diffuseMap:" ), ClientSize.x - 200.0f, ClientSize.y - 12.0f, scale, color );
-		this->drawText( p_shader, wxT( "normalMap:" ), ClientSize.x - 130.0f, ClientSize.y - 12.0f, scale, color );
-		this->drawText( p_shader, wxT( "lightMap:" ), ClientSize.x - 60.0f, ClientSize.y - 12.0f, scale, color );
-
-		int line = 1;
-		for ( auto& it : diffuseMapFileList ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), it ), ClientSize.x - 200.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
-			line++;
-		}
-		line = 1;
-		for ( auto& it : normalMapFileList ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), it ), ClientSize.x - 130.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
-			line++;
-		}
-		line = 1;
-		for ( auto& it : lightMapFileList ) {
-			this->drawText( p_shader, wxString::Format( wxT( "%d" ), it ), ClientSize.x - 60.0f, ClientSize.y - ( 12.0f + ( 12.0f * line ) ), scale, color );
-			line++;
-		}
+		this->drawText( p_shader, wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle status text: press 1" ), 0.0f, 48.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle wireframe: press 2" ), 0.0f, 60.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle texture: press 3" ), 0.0f, 72.0f + 2.0f, scale, color );
 
 		// Disable blending
 		glDisable( GL_BLEND );
@@ -1229,9 +1177,11 @@ namespace gw2b {
 	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
 		if ( p_event.GetKeyCode( ) == 'F' ) {
 			this->focus( );
-		} else if ( p_event.GetKeyCode( ) == 'W' ) {
+		} else if ( p_event.GetKeyCode( ) == '1' ) {
+			m_statusText = !m_statusText;
+		} else if ( p_event.GetKeyCode( ) == '2' ) {
 			m_statusWireframe = !m_statusWireframe;
-		} else if ( p_event.GetKeyCode( ) == 'T' ) {
+		} else if ( p_event.GetKeyCode( ) == '3' ) {
 			m_statusTextured = !m_statusTextured;
 		}
 	}

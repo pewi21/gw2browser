@@ -76,6 +76,7 @@ namespace gw2b {
 		bool						m_glInitialized = false;
 		bool						m_statusWireframe = false;
 		bool						m_statusTextured = true;
+		bool						m_statusText = true;
 
 		// Dummy textures
 		GLuint						m_dummyBlackTexture;
@@ -88,11 +89,6 @@ namespace gw2b {
 		GLuint						textShader;
 		GLuint						textVAO;
 		GLuint						textVBO;
-
-		// Texture file name list (for display on status text)
-		std::vector<uint32>			diffuseMapFileList;
-		std::vector<uint32>			normalMapFileList;
-		std::vector<uint32>			lightMapFileList;
 
 		// Shader stuff
 		GLuint						projectionMatrixID;
