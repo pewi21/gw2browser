@@ -27,8 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef READERS_EULAREADER_H_INCLUDED
 #define READERS_EULAREADER_H_INCLUDED
 
-#include <vector>
-
 #include "FileReader.h"
 
 namespace gw2b {

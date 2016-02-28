@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	struct StringFile {
+	struct StringStruct {
 		uint32					id;
 		wxString				string;
 	};
@@ -54,8 +54,8 @@ namespace gw2b {
 			return DT_String;
 		}
 		/** Gets the strings contained in the data owned by this reader.
-		*  \return std::vector<StringFile>	Strings. */
-		std::vector<StringFile> getString( ) const;
+		*  \return std::vector<StringStruct>	Strings. */
+		std::vector<StringStruct> getString( ) const;
 		/** Determines whether the header is valid.
 		*  \return bool    true if valid, false if not. */
 		static bool isValidHeader( const byte* p_data );

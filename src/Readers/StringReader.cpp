@@ -24,10 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <wx/string.h>
-#include <wx/sstream.h>
-#include <sstream>
-
 #include <gw2formats/StringsFile.h>
 
 #include "StringReader.h"
@@ -41,15 +37,15 @@ namespace gw2b {
 	StringReader::~StringReader( ) {
 	}
 
-	std::vector<StringFile> StringReader::getString( ) const {
+	std::vector<StringStruct> StringReader::getString( ) const {
 		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		std::vector<StringFile> string;
+		std::vector<StringStruct> string;
 
 		for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
 			auto& entry = stringFile.entry( i );
 
-			StringFile str;
+			StringStruct str;
 			if ( entry.isEncrypted( ) ) {
 				//str.string = wxT( "Encrypted string" );
 				continue;

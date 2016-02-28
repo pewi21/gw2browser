@@ -24,10 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <wx/string.h>
-#include <wx/sstream.h>
-#include <sstream>
-
 #include <gw2formats/pf/EulaPackFile.h>
 
 #include "EulaReader.h"
