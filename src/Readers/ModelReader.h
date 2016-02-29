@@ -94,7 +94,7 @@ namespace gw2b {
 		byte            hasUV : 1;
 	};
 
-	struct MaterialData {
+	struct Material {
 		uint32 materialId;			// Unknown
 		uint32 materialFlags;		// Unknown
 		uint32 materialFile;		// File Id for material file
@@ -105,8 +105,8 @@ namespace gw2b {
 
 	class ModelData : public wxRefCounter {
 	public:
-		std::vector<Mesh>         meshes;
-		std::vector<MaterialData> materialData;
+		std::vector<Mesh>			meshes;
+		std::vector<Material>		material;
 	public:
 		ModelData( );
 		ModelData( const ModelData& p_other );
@@ -128,10 +128,10 @@ namespace gw2b {
 		Mesh* addMeshes( uint p_amount );
 
 		// Material data
-		uint numMaterialData( ) const;
-		MaterialData& materialData( uint p_index );
-		const MaterialData& materialData( uint p_index ) const;
-		MaterialData* addMaterialData( uint p_amount );
+		uint numMaterial( ) const;
+		Material& material( uint p_index );
+		const Material& material( uint p_index ) const;
+		Material* addMaterial( uint p_amount );
 
 		// helpers
 		Bounds bounds( ) const;

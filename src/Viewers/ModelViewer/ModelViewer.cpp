@@ -289,11 +289,11 @@ namespace gw2b {
 		}
 
 		// Create Texture Buffer Object
-		m_textureBuffer.resize( m_model.numMaterialData( ) );
+		m_textureBuffer.resize( m_model.numMaterial( ) );
 
 		// Load textures
-		for ( int i = 0; i < static_cast<int>( m_model.numMaterialData( ) ); i++ ) {
-			auto& material = m_model.materialData( i );
+		for ( int i = 0; i < static_cast<int>( m_model.numMaterial( ) ); i++ ) {
+			auto& material = m_model.material( i );
 			auto& cache = m_textureBuffer[i];
 
 			// Load diffuse texture

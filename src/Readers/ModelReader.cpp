@@ -46,7 +46,7 @@ namespace gw2b {
 
 	ModelData::ModelData( const ModelData& p_other ) {
 		meshes.assign( p_other.meshes.begin( ), p_other.meshes.end( ) );
-		materialData.assign( p_other.materialData.begin( ), p_other.materialData.end( ) );
+		material.assign( p_other.material.begin( ), p_other.material.end( ) );
 	}
 
 	ModelData::~ModelData( ) {
@@ -90,30 +90,30 @@ namespace gw2b {
 		return &( m_data->meshes[oldSize] );
 	}
 
-	uint Model::numMaterialData( ) const {
-		return m_data->materialData.size( );
+	uint Model::numMaterial( ) const {
+		return m_data->material.size( );
 	}
 
-	MaterialData& Model::materialData( uint p_index ) {
-		Assert( p_index < this->numMaterialData( ) );
-		return m_data->materialData[p_index];
+	Material& Model::material( uint p_index ) {
+		Assert( p_index < this->numMaterial( ) );
+		return m_data->material[p_index];
 	}
 
-	const MaterialData& Model::materialData( uint p_index ) const {
-		Assert( p_index < this->numMaterialData( ) );
-		return m_data->materialData[p_index];
+	const Material& Model::material( uint p_index ) const {
+		Assert( p_index < this->numMaterial( ) );
+		return m_data->material[p_index];
 	}
 
-	MaterialData* Model::addMaterialData( uint p_amount ) {
+	Material* Model::addMaterial( uint p_amount ) {
 		this->unShare( );
 
-		MaterialData emptyData;
+		Material emptyData;
 		::memset( &emptyData, 0, sizeof( emptyData ) );
 
-		uint oldSize = m_data->materialData.size( );
-		m_data->materialData.resize( oldSize + p_amount, emptyData );
+		uint oldSize = m_data->material.size( );
+		m_data->material.resize( oldSize + p_amount, emptyData );
 
-		return &( m_data->materialData[oldSize] );
+		return &( m_data->material[oldSize] );
 	}
 
 	void Model::unShare( ) {
@@ -474,7 +474,7 @@ namespace gw2b {
 		}
 		wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
-		MaterialData* materialData = p_model.addMaterialData( materialCount );
+		Material* material = p_model.addMaterial( materialCount );
 
 		// Prepare parallel loop
 		std::vector<omp_lock_t> locks( materialCount );
@@ -483,9 +483,9 @@ namespace gw2b {
 		}
 
 		// Loop through each material
-#pragma omp parallel for shared(locks, materialData)
+#pragma omp parallel for shared(locks, material)
 		for ( int j = 0; j < static_cast<int>( materialCount ); j++ ) {
-			auto& data = materialData[j];
+			auto& data = material[j];
 
 			// Only one thread must access this material at a time
 			omp_set_lock( &locks[j] );
