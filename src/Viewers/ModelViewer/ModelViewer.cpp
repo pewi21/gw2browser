@@ -591,9 +591,9 @@ namespace gw2b {
 		this->drawText( p_shader, wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
 		this->drawText( p_shader, wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
 		this->drawText( p_shader, wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle status text: press 1" ), 0.0f, 48.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle texture: press 3" ), 0.0f, 48.0f + 2.0f, scale, color );
 		this->drawText( p_shader, wxT( "Toggle wireframe: press 2" ), 0.0f, 60.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle texture: press 3" ), 0.0f, 72.0f + 2.0f, scale, color );
+		this->drawText( p_shader, wxT( "Toggle status text: press 1" ), 0.0f, 72.0f + 2.0f, scale, color );
 
 		// Disable blending
 		glDisable( GL_BLEND );
