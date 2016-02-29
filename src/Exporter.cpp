@@ -546,21 +546,25 @@ namespace gw2b {
 		// Export to Wavefront .obj file
 		// https://en.wikipedia.org/wiki/Wavefront_.obj_file
 
+		wxLogMessage( wxString::Format( wxT( "Writing %s OBJ file..." ), m_filename.GetName( ) ) );
+
 		// Note: wxWidgets only does locale-specific number formatting. This does
 		// not work well with obj-files.
 		std::ostringstream modlStream;
 
 		modlStream.imbue( std::locale( "C" ) );
 
+		modlStream << "# Gw2Browser OBJ File: \'" << m_filename.GetName( ) << "\'" << std::endl;
 		modlStream << "# Mesh Count : " << model.numMeshes( ) << std::endl;
-		//modlStream << "mtllib " << m_filename.GetName( ) << ".mtl" << std::endl;
+		modlStream << "mtllib " << m_filename.GetName( ) << ".mtl" << std::endl;
+		modlStream << std::endl;
 
 		uint indexBase = 1;
 		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
 			const Mesh& mesh = model.mesh( i );
 
 			// Write header
-			modlStream << std::endl << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
+			modlStream << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
 			modlStream << "g mesh" << i + 1 << std::endl;
 
 			// Write positions
@@ -585,7 +589,17 @@ namespace gw2b {
 				}
 			}
 
-			modlStream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
+			// If no material, use None material
+			if ( mesh.materialName.empty( ) ) {
+				modlStream << "usemtl None" << std::endl;
+			} else {
+				//modlStream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
+				modlStream << "usemtl " << "None" << std::endl;
+			}
+
+			// Enable/disable smooth shading
+			//modlStream << "s off" << std::endl;
+			//modlStream << "s 1" << std::endl;
 
 			// Write faces
 			for ( uint j = 0; j < mesh.triangles.size( ); j++ ) {
@@ -633,16 +647,82 @@ namespace gw2b {
 		// Export Materials
 		// ----------------
 
-		// texture is in [Model Id]/Texture.png
+		wxLogMessage( wxString::Format( wxT( "Writing %s MTL file..." ), m_filename.GetName( ) ) );
+
+		std::ostringstream matStream;
+
+		matStream.imbue( std::locale( "C" ) );
+
+		matStream << "# Gw2Browser MTL File: \'" << m_filename.GetName( ) << "\'" << std::endl;
+		matStream << "# Material Count : " << model.numMaterial( ) << std::endl;
+		matStream << std::endl;
+		/*
+		for ( uint i = 0; i < model.numMaterial( ); i++ ) {
+			const Material& material = model.material( i );
+
+			// Define new material
+			matStream << "newmtl " << "name" << std::endl;
+
+			// Ambient color
+			matStream << "Ka 1.000 1.000 1.000" << std::endl;
+			// Diffuse color
+			matStream << "Kd 1.000 1.000 1.000" << std::endl;
+			// Specular color
+			matStream << "Ks 0.000 0.000 0.000" << std::endl;
+			// Specular exponent (ranges between 0 and 1000)
+			matStream << "Ns 0" << std::endl;
+			// Transparent
+			matStream << "d 1" << std::endl;
+			// Illumination model
+			matStream << "illum 2" << std::endl;
+			// Ambient texture map
+			matStream << "map_Ka " << "filename" << std::endl;
+			// Diffuse texture map ( most of the time, it will be the same as the ambient texture map )
+			matStream << "map_Kd " << "filename" << std::endl;
+			// Specular color texture map
+			matStream << "map_Ks " << "filename" << std::endl;
+
+			// newline before next material!
+			matStream << std::endl;
+		}
+		*/
+
+		// Material None
+		matStream << "newmtl " << "None" << std::endl;
+		matStream << "Ka 1.000 1.000 1.000" << std::endl;
+		matStream << "Kd 1.000 1.000 1.000" << std::endl;
+		matStream << "Ks 0.000 0.000 0.000" << std::endl;
+		matStream << "Ns 0" << std::endl;
+		matStream << "d 1" << std::endl;
+		matStream << "illum 2" << std::endl;
+
+		// Close stream
+		matStream.flush( );
+		wxString matString( matStream.str( ) );
+		matStream.clear( );
+
+		// Convert string to byte array
+		Array<byte> matData( matString.length( ) );
+		::memcpy( matData.GetPointer( ), matString.c_str( ), matString.length( ) );
+
+		// Set file extension to .mtl
+		m_filename.SetExt( wxT( "mtl" ) );
+
+		// Write to file
+		this->writeFile( matData );
 
 		// ---------------
 		// Export Textures
 		// ---------------
 
+		// Exported texture(s) is in same name of exported model name directory.
+
+		wxLogMessage( wxString::Format( wxT( "Exporting %s's textures..." ), m_filename.GetName( ) ) );
+
 		std::vector<uint32> textureFileList;
 
-		for ( uint i = 0; i < model.numMaterialData( ); i++ ) {
-			auto material = model.materialData( i );
+		for ( uint i = 0; i < model.numMaterial( ); i++ ) {
+			auto material = model.material( i );
 			if ( material.diffuseMap ) {
 				textureFileList.push_back( material.diffuseMap );
 			}
@@ -672,6 +752,8 @@ namespace gw2b {
 		for ( auto& it : textureFileList ) {
 			this->exportModelTexture( it );
 		}
+
+		wxLogMessage( wxString::Format( wxT( "Finish export model %s." ), m_filename.GetName( ) ) );
 	}
 
 	void Exporter::exportModelTexture( uint32 p_fileid ) {
@@ -679,7 +761,8 @@ namespace gw2b {
 		auto fileData = m_datFile.readEntry( entryNumber );
 
 		// Bail if read failed
-		if ( fileData.GetSize( ) == 0 ) {
+		if ( !fileData.GetSize( ) ) {
+			wxLogMessage( wxString::Format( wxT( "File id %d is empty or not exist." ), p_fileid ) );
 			return;
 		}
 
@@ -690,6 +773,8 @@ namespace gw2b {
 
 		m_filename.SetName( wxString::Format( wxT( "%d" ), p_fileid ) );
 		m_filename.SetExt( wxT( "png" ) );
+
+		wxLogMessage( wxString::Format( wxT( "Writing texture file %s." ), m_filename.GetFullPath( ) ) );
 
 		this->exportImage( reader, wxT( "Dummy" ) );
 
@@ -705,6 +790,7 @@ namespace gw2b {
 			wxMessageBox( wxString::Format( wxT( "Failed to open the file %s for writing." ), m_filename.GetFullPath( ) ),
 				wxT( "Error" ),
 				wxOK | wxICON_ERROR );
+			wxLogMessage( wxString::Format( wxT( "Failed to open the file %s for writing." ), m_filename.GetFullPath( ) ) );
 			return false;
 		}
 		file.Close( );
