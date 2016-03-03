@@ -213,7 +213,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype262d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_adv.lib;wxmsw30ud_aui.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype263d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_adv.lib;wxmsw30ud_aui.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -233,7 +233,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype262d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_adv.lib;wxmsw30ud_aui.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype263d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libwebpdecoder_debug.lib;wxbase30ud.lib;wxjpegd.lib;wxmsw30ud_adv.lib;wxmsw30ud_aui.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -255,7 +255,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype262.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_adv.lib;wxmsw30u_aui.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype263.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_adv.lib;wxmsw30u_aui.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
@@ -277,7 +277,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype262.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_adv.lib;wxmsw30u_aui.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype263.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libwebpdecoder.lib;wxbase30u.lib;wxjpeg.lib;wxmsw30u_adv.lib;wxmsw30u_aui.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
