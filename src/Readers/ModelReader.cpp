@@ -241,13 +241,13 @@ namespace gw2b {
 			}
 
 			if ( mesh.hasNormal ) {
-				// Normalize normal, may need to convert to OpenGL coordinate
-				//normalize normal
+				// Normalize normal
+				// Todo: may need to convert to OpenGL coordinate
+				//this->normalizeNormals( mesh );
 			} else {
-				// calculate vertex normal if not exist
-				// smooth shading
-				//this->computeNormal( mesh );
-				//mesh.hasNormal = true;
+				// Calculate the vertex normal if it not exist
+				this->computeVertexNormals( mesh );
+				mesh.hasNormal = true;
 			}
 
 			// Count the vertices and triangles
@@ -442,6 +442,39 @@ namespace gw2b {
 			triangle.index1 = *reinterpret_cast<const uint16*>( pos + 0 * sizeof( uint16 ) );
 			triangle.index2 = *reinterpret_cast<const uint16*>( pos + 2 * sizeof( uint16 ) );
 			triangle.index3 = *reinterpret_cast<const uint16*>( pos + 1 * sizeof( uint16 ) );
+		}
+	}
+
+	void ModelReader::computeVertexNormals( Mesh& p_mesh ) const {
+
+		// Claculate vertex normals
+		// http://www.iquilezles.org/www/articles/normals/normals.htm
+
+		auto& vert = p_mesh.vertices;
+		auto& face = p_mesh.triangles;
+
+		// May remove this loop since vert[i].normal is zero if the model have no normals
+		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+			vert[i].normal = glm::vec3( 0.0f );
+		}
+
+		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
+			// Re-flip the order of the faces of the triangle to original order
+			const int ia = face[i].indices[0];
+			const int ib = face[i].indices[2];
+			const int ic = face[i].indices[1];
+
+			const glm::vec3 e1 = vert[ia].position - vert[ib].position;
+			const glm::vec3 e2 = vert[ic].position - vert[ib].position;
+			const glm::vec3 no = glm::cross( e1, e2 );
+
+			vert[ia].normal += no;
+			vert[ib].normal += no;
+			vert[ic].normal += no;
+		}
+
+		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+			vert[i].normal = glm::normalize( vert[i].normal );
 		}
 	}
 
