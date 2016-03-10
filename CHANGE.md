@@ -1,8 +1,8 @@
 Change log
 ----------
 
-Gw2Browser_2016-xx-xx
----------------------
+Gw2Browser_2016-xx-xx (1.0.7.1)
+-------------------------------
 Change:
 - Use wxAUI for interface manager.
 - New about box.
