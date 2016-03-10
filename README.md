@@ -59,7 +59,9 @@ Libraries and restrictions
 --------------------------
 
 The application used some C++11 features, so it required C++11 capable
-compiler in order to compile it.
+compiler in order to compile it. And if you use Visual Studio, since
+Gw2Browser use ranged-base for loop in some area, you need Visual Studio 2012
+or newer in order to compile it.
 
 ### Required libraries
 
@@ -132,6 +134,7 @@ License
 -------
 
 Copyright © 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright © 2013 Till034 <https://github.com/Till034>
 Copyright © 2012 Rhoot <https://github.com/rhoot>
 
 Gw2Browser is free software: you can redistribute it and/or modify
