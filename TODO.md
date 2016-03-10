@@ -1,24 +1,41 @@
 TODO list
 =========
 
+1.0.7.1
+-------
+
 * Add a icon for Gw2Browser.
 
 * When close filelist or log window, uncheck the checker menu.
 
-* Seperate ModelViewer function to smaller files.
+* Wavefront .obj model export with materials.
+(Unfinish, no texture maping in materials yet)
+
+1.0.8.1
+-------
 
 * Optimize model viewer's loadMeshes function.
 
-* Lighting, normal maping, etc.
+* Seperate ModelViewer function to smaller files.
+
+* Model Viewer Lighting, normal maping, normals visualizer, z-buffer visualizer, etc.
+
+Further plans
+-------------
+
+* Scale the exported model. (or scale it in ModelReader?)
+
+* In ModelReader make new function material( ) that return Material vector
+for use by range-base loop.
 
 * Fix crash when ModelReader read some model that have material in other version.
-(cause by out of range, file in difference version?)
+(cause by out of range or file is in difference version?)
 
 * Improve performance of ModelViewer's drawText function.
 
 * Use C++11 std::thread for multi-threading in Task.
 
-* COLLADA, Wavefront .obj model export with materials.
+* COLLADA model export.
 
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
@@ -30,13 +47,9 @@ models could get an *export with textures* option.
 
 * String viewer, sound player.
 
-* Support for model LODs, collision mesh rendering, bone, animation and more.
-
-* Support for text manifest and text voice files.
+* External file name database, for known files (such as the exe and dll files).
 
 * Support for paged image files.
-
-* External file name database, for known files (such as the exe and dll files).
 
 * Support for R32f DDS files.
 
@@ -44,6 +57,10 @@ models could get an *export with textures* option.
 
 * Support map files, map renderer.
 
-* Support Guild Wars (1) files.
+* Support for model LODs, collision mesh rendering, bone, animation and more.
 
-* Mac OS X and Linux port
+* Support for text manifest and text voice files.
+
+* Linux and Mac OS X port.
+
+* Support Guild Wars (1) files.
