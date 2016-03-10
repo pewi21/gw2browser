@@ -453,16 +453,13 @@ namespace gw2b {
 		auto& vert = p_mesh.vertices;
 		auto& face = p_mesh.triangles;
 
-		// May remove this loop since vert[i].normal is zero if the model have no normals
-		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-			vert[i].normal = glm::vec3( 0.0f );
-		}
+		// vert[i].normal is already initialized with zero
 
 		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
 			// Re-flip the order of the faces of the triangle to original order
-			const int ia = face[i].indices[0];
-			const int ib = face[i].indices[2];
-			const int ic = face[i].indices[1];
+			const int ia = face[i].index3;
+			const int ib = face[i].index2;
+			const int ic = face[i].index1;
 
 			const glm::vec3 e1 = vert[ia].position - vert[ib].position;
 			const glm::vec3 e2 = vert[ic].position - vert[ib].position;
@@ -474,8 +471,22 @@ namespace gw2b {
 		}
 
 		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-			vert[i].normal = glm::normalize( vert[i].normal );
+			// Check if the normals is zero to avoid divide by zero problem.
+			if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
+				if ( vert[i].normal.x ) {
+					vert[i].normal.x = glm::normalize( vert[i].normal.x );
+				}
+				if ( vert[i].normal.y ) {
+					vert[i].normal.y = glm::normalize( vert[i].normal.y );
+				}
+				if ( vert[i].normal.z ) {
+					vert[i].normal.z = glm::normalize( vert[i].normal.z );
+				}
+			} else {
+				vert[i].normal = glm::normalize( vert[i].normal );
+			}
 		}
+
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
