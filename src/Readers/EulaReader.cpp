@@ -45,7 +45,7 @@ namespace gw2b {
 		std::vector<wxString> eula;
 		if ( size ) {
 			for ( size_t i = 0; i < size; i++ ) {
-				eula.push_back( wxString( chunk->languages[i].text.data( ) ) );
+				eula.push_back( wxString::Format( wxT( "%s" ), chunk->languages[i].text.data( ) ) );
 			}
 		}
 

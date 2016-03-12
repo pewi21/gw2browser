@@ -50,7 +50,7 @@ namespace gw2b {
 				//str.string = wxT( "Encrypted string" );
 				continue;
 			} else {
-				str.string = entry.get( );
+				str.string = wxString::Format( wxT( "%s" ), entry.get( ).c_str( ) );
 				if ( str.string.IsEmpty( ) ) {
 					//str.string = wxT( "Empty string" );
 					continue;
