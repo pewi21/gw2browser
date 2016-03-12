@@ -434,14 +434,16 @@ namespace gw2b {
 
 	void BrowserWindow::onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) {
 		auto entries = p_tree.getSelectedEntries( );
+		Exporter *exporter;
 
 		if ( entries.GetSize( ) ) {
 			if ( p_mode ) {
-				Exporter::Exporter( entries, m_datFile, Exporter::EM_Converted );
+				exporter = new Exporter( entries, m_datFile, Exporter::EM_Converted );
 			} else {
-				Exporter::Exporter( entries, m_datFile, Exporter::EM_Raw );
+				exporter = new Exporter( entries, m_datFile, Exporter::EM_Raw );
 			}
 		}
+		delete exporter;
 	}
 
 	//============================================================================/
