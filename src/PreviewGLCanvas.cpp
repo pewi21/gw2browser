@@ -35,8 +35,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	PreviewGLCanvas::PreviewGLCanvas( wxWindow* p_parent, const wxPoint& p_location, const wxSize& p_size )
-		: wxGLCanvas( p_parent, wxID_ANY, nullptr, p_location, p_size )
+	PreviewGLCanvas::PreviewGLCanvas( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style )
+		: wxGLCanvas( p_parent, wxID_ANY, p_attrib, p_pos, p_size, p_style )
 		, m_currentView( nullptr )
 		, m_currentDataType( FileReader::DT_None ) {
 
@@ -88,10 +88,22 @@ namespace gw2b {
 	}
 
 	ViewerGLCanvas* PreviewGLCanvas::createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile ) {
+
+		const int attrib[] = {
+			WX_GL_RGBA,
+			WX_GL_DOUBLEBUFFER,
+			WX_GL_DEPTH_SIZE, 16,
+			WX_GL_SAMPLE_BUFFERS, 1,
+			WX_GL_SAMPLES, 4,
+			0
+		};
+
+		const long style = ( wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE );
+
 		ViewerGLCanvas* newViewer = nullptr;
 		switch ( p_dataType ) {
 		case FileReader::DT_Model:
-			newViewer = new ModelViewer( this );
+			newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style );
 			break;
 		}
 

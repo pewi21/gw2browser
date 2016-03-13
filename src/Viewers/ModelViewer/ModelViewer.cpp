@@ -95,33 +95,8 @@ namespace gw2b {
 		GLuint Advance;			// Horizontal offset to advance to next glyph
 	};
 
-	namespace {
-
-		const int attrib[] = {
-			WX_GL_RGBA,
-			WX_GL_DOUBLEBUFFER,
-			WX_GL_DEPTH_SIZE, 16,
-			WX_GL_SAMPLE_BUFFERS, 1,
-			WX_GL_SAMPLES, 4,
-			0
-		};
-
-		const long style = ( wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE );
-
-		bool doesUseAlpha( const wxString& p_shaderName ) {
-			if ( p_shaderName.StartsWith( wxT( "AmatShader" ) ) ) {
-				auto ordinal = p_shaderName.Mid( ::strlen( "AmatShader" ) );
-				return ( ordinal != "15" ) &&
-					( ordinal != "4N" ) &&
-					( ordinal != "2" );
-			}
-			return false;
-		}
-
-	};
-
-	ModelViewer::ModelViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: ViewerGLCanvas( p_parent, attrib, p_pos, p_size, style )
+	ModelViewer::ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style )
+		: ViewerGLCanvas( p_parent, p_attrib, p_pos, p_size, p_style )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
 		// Initialize OpenGL

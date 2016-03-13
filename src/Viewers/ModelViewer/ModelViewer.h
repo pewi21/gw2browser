@@ -99,7 +99,12 @@ namespace gw2b {
 		GLuint						modelVAO;
 
 	public:
-		ModelViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+		/** Constructor. Creates the model viewer with the given parent.
+		*  \param[in]  p_parent     Parent of the control.
+		*  \param[in]  p_pos        Optional position of the control.
+		*  \param[in]  p_size       Optional size of the control. */
+		ModelViewer( wxWindow* p_parent, const int *p_attrib = ( const int* ) 0, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize, long p_style = 0L );
+		/** Destructor. */
 		virtual ~ModelViewer( );
 
 		virtual void clear( ) override;
