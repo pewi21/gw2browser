@@ -29,6 +29,9 @@
 					<Add directory="../extern/libwebp/src" />
 					<Add directory="../src" />
 				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../wxWidgets-3.0.2/include" />
+				</ResourceCompiler>
 				<Linker>
 					<Add library="../extern/freetype/objs/freetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
@@ -84,6 +87,9 @@
 					<Add directory="../extern/libwebp/src" />
 					<Add directory="../src" />
 				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../wxWidgets-3.0.2/include" />
+				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
 					<Add library="../extern/freetype/objs/freetype.a" />
