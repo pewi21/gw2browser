@@ -442,8 +442,8 @@ namespace gw2b {
 			} else {
 				exporter = new Exporter( entries, m_datFile, Exporter::EM_Raw );
 			}
+			delete exporter;
 		}
-		delete exporter;
 	}
 
 	//============================================================================/
