@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "crc.h"
 
-int crc_table[16] =
+static uint32_t crc_table[16] =
 {
 	0x00000000, 0xfdb71064, 0xfb6e20c8, 0x06d930ac,
 	0xf6dc4190, 0x0b6b51f4, 0x0db26158, 0xf005713c,
@@ -12,10 +12,9 @@ int crc_table[16] =
 	0x1b64c2b0, 0xe6d3d2d4, 0xe00ae278, 0x1dbdf21c
 };
 
-int compute_crc( int old_crc, const char* s, int len ) {
-	int i;
+uint32_t compute_crc( uint32_t old_crc, const char* s, size_t len ) {
 
-	for ( i = 0; i < len; i++ ) {
+	for ( size_t i = 0; i < len; i++ ) {
 		/* XOR in the data. */
 		old_crc ^= s[i];
 

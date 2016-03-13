@@ -9,6 +9,6 @@
 
 #define INITIAL_CRC 0xFFFFFFFF
 
-int compute_crc( int old_crc, const char* s, int len );
+uint32_t compute_crc( uint32_t old_crc, const char* s, size_t len );
 
 #endif // CRC_H_INCLUDED
