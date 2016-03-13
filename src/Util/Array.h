@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef UTIL_ARRAY_H_INCLUDED
 #define UTIL_ARRAY_H_INCLUDED
 
+#include "Misc.h"
+
 namespace gw2b {
 	template <typename T>
 	struct ArrayData : public wxRefCounter {
@@ -133,7 +135,7 @@ namespace gw2b {
 
 		/** Removes the given item from this array.
 		*  \param[in]  pItem   Item to remove from this array. */
-		void Remove( const T& item ) {
+		void Remove( const T& pItem ) {
 			size_t& size = mData.get( )->mSize;
 			T*& data = mData.get( )->mData;
 

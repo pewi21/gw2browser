@@ -532,7 +532,7 @@ namespace gw2b {
 		glBindVertexArray( textVAO );
 
 		// Iterate through all characters
-		for ( auto& c : p_text ) {
+		for ( auto c : p_text ) {
 			Character ch = m_characterTextureMap[c];
 
 			GLfloat xpos = p_x + ch.Bearing.x * p_scale;
@@ -1105,7 +1105,7 @@ namespace gw2b {
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 
 		// Projection matrix
-		auto ProjMatrix = glm::perspective( fov, aspectRatio, minZ, maxZ );
+		auto ProjMatrix = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 		// View matrix
 		auto ViewMatrix = m_camera.calculateViewMatrix( );
 
