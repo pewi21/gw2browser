@@ -49,7 +49,7 @@ namespace gw2b {
 		}
 
 		m_file.Open( p_filename );
-		if ( m_file.IsOpened( ) && m_file.Length( ) > sizeof( m_header ) ) {
+		if ( m_file.IsOpened( ) && static_cast<size_t>( m_file.Length( ) ) > sizeof( m_header ) ) {
 			m_file.Read( &m_header, sizeof( m_header ) );
 			if ( m_header.magicInteger != DatIndex_Magic ) {
 				this->close( ); return false;
@@ -88,7 +88,7 @@ namespace gw2b {
 				// Read fixed-width fields
 				DatIndexCategoryFields fields;
 				bytesRead = m_file.Read( &fields, sizeof( fields ) );
-				if ( bytesRead < sizeof( fields ) ) {
+				if ( bytesRead < static_cast<ssize_t>( sizeof( fields ) ) ) {
 					result = RR_CorruptFile; goto READ_FAILED;
 				}
 				// Read name
@@ -114,7 +114,7 @@ namespace gw2b {
 				// Read fixed-width fields
 				DatIndexEntryFields fields;
 				bytesRead = m_file.Read( &fields, sizeof( fields ) );
-				if ( bytesRead < sizeof( fields ) ) {
+				if ( bytesRead < static_cast<ssize_t>( sizeof( fields ) ) ) {
 					result = RR_CorruptFile; goto READ_FAILED;
 				}
 				// Read name
@@ -214,7 +214,7 @@ namespace gw2b {
 				fields.parent = ( parent ? parent->index( ) : -1 );
 				fields.nameLength = nameBuffer.length( );
 				bytesWritten = m_file.Write( &fields, sizeof( fields ) );
-				if ( bytesWritten < sizeof( fields ) ) {
+				if ( bytesWritten < static_cast<ssize_t>( sizeof( fields ) ) ) {
 					return false;
 				}
 				// Name
@@ -240,7 +240,7 @@ namespace gw2b {
 				fields.fileType = entry->fileType( );
 				fields.nameLength = nameBuffer.length( );
 				bytesWritten = m_file.Write( &fields, sizeof( fields ) );
-				if ( bytesWritten < sizeof( fields ) ) {
+				if ( bytesWritten < static_cast<ssize_t>( sizeof( fields ) ) ) {
 					return false;
 				}
 				// Name

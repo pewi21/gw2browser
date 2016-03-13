@@ -28,8 +28,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+#ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4146)  // unary minus operator applied to unsigned type, result still unsigned
+#pragma warning( disable: 4146 )  // unary minus operator applied to unsigned type, result still unsigned
+#endif
 
 	// http://graphics.stanford.edu/~seander/bithacks.html#ZerosOnRightMultLookup
 	uint lowestSetBit( uint32 p_value ) {
@@ -49,6 +51,8 @@ namespace gw2b {
 		return count;
 	}
 
-#pragma warning(pop)
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 
 }; // namespace gw2b

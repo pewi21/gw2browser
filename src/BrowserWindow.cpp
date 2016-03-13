@@ -238,7 +238,7 @@ namespace gw2b {
 		auto configPath = stdp.GetDataDir( );
 
 		auto datPathCrc = ::compute_crc( INITIAL_CRC, m_datPath.char_str( ), m_datPath.Length( ) );
-		auto indexFileName = wxString::Format( wxT( "%x.idx" ), ( uint ) datPathCrc );
+		auto indexFileName = wxString::Format( wxT( "%x.idx" ), datPathCrc );
 
 		return wxFileName( configPath, indexFileName );
 	}

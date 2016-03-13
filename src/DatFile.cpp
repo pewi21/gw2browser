@@ -64,7 +64,7 @@ namespace gw2b {
 			}
 
 			// Read header
-			if ( m_file.Length( ) < sizeof( m_datHead ) ) {
+			if ( static_cast<size_t>( m_file.Length( ) ) < sizeof( m_datHead ) ) {
 				break;
 			}
 			m_file.Read( &m_datHead, sizeof( m_datHead ) );
