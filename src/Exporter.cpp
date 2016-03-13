@@ -148,6 +148,15 @@ namespace gw2b {
 			case ANFT_EULA:
 				return wxT( "txt" );
 				break;
+			case ANFT_Bink2Video:
+				return wxT( "bk2" );
+				break;
+			case ANFT_DLL:
+				return wxT( "dll" );
+				break;
+			case ANFT_EXE:
+				return wxT( "exe" );
+				break;
 			default:
 				return wxT( "raw" ); // todo
 				break;
