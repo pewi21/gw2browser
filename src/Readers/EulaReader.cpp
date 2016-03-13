@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <codecvt>
+#include <locale>
 #include <gw2formats/pf/EulaPackFile.h>
 
 #include "EulaReader.h"
@@ -45,7 +47,15 @@ namespace gw2b {
 		std::vector<wxString> eula;
 		if ( size ) {
 			for ( size_t i = 0; i < size; i++ ) {
-				eula.push_back( wxString::Format( wxT( "%s" ), chunk->languages[i].text.data( ) ) );
+				wxString str;
+#if defined(_MSC_VER)
+				str = wxString::Format( wxT( "%s" ), chunk->languages[i].text.data( ) );
+#elif defined(__GNUC__) || defined(__GNUG__)
+				std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
+				std::string mbs = temp.to_bytes( chunk->languages[i].text.data( ) );
+				str = wxString( mbs.c_str( ) );
+#endif
+				eula.push_back( str );
 			}
 		}
 

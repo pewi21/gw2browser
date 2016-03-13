@@ -509,7 +509,7 @@ namespace gw2b {
 		auto materialInfoArray = modelChunk->permutations[0];
 		auto materialsArray = materialInfoArray.materials;
 		// Count materials
-		auto materialCount = materialsArray.size( );
+		auto materialCount = static_cast<uint>( materialsArray.size( ) );
 
 		// Bail if no materials
 		if ( !materialCount ) {

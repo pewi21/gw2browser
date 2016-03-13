@@ -86,7 +86,9 @@ namespace gw2b {
 
 				m_path = dialog.GetPath( );
 
-				auto title = wxString::Format( wxT( "Extracting %d %s..." ), p_entries.GetSize( ), ( p_entries.GetSize( ) == 1 ? wxT( "file" ) : wxT( "files" ) ) );
+				uint numFile = static_cast<uint>( p_entries.GetSize( ) );
+
+				auto title = wxString::Format( wxT( "Extracting %d %s..." ), numFile, ( p_entries.GetSize( ) == 1 ? wxT( "file" ) : wxT( "files" ) ) );
 				m_progress = new wxProgressDialog( title, wxT( "Preparing to extract..." ), p_entries.GetSize( ), this, wxPD_SMOOTH | wxPD_CAN_ABORT | wxPD_ELAPSED_TIME );
 				m_progress->Show( );
 
@@ -100,7 +102,7 @@ namespace gw2b {
 					// Extract current file
 					this->extractFiles( *m_entries[m_currentProgress] );
 
-					bool shouldContinue = m_progress->Update( m_currentProgress, wxString::Format( wxT( "Extracting file %d/%d..." ), m_currentProgress, m_entries.GetSize( ) ) );
+					bool shouldContinue = m_progress->Update( m_currentProgress, wxString::Format( wxT( "Extracting file %d/%d..." ), m_currentProgress, numFile ) );
 
 					if ( shouldContinue ) {
 						m_currentProgress++;
@@ -461,7 +463,7 @@ namespace gw2b {
 		// Get file name
 		auto filename = m_filename.GetName( );
 		// Write each record
-		for ( size_t i = 0; i < eula.size( ); i++ ) {
+		for ( uint i = 0; i < eula.size( ); i++ ) {
 			wxString StringOut;
 			StringOut << eula[i];
 

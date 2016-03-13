@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <codecvt>
+#include <locale>
 #include <gw2formats/StringsFile.h>
 
 #include "StringReader.h"
@@ -50,7 +52,13 @@ namespace gw2b {
 				//str.string = wxT( "Encrypted string" );
 				continue;
 			} else {
+#if defined(_MSC_VER)
 				str.string = wxString::Format( wxT( "%s" ), entry.get( ).c_str( ) );
+#elif defined(__GNUC__) || defined(__GNUG__)
+				std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
+				std::string mbs = temp.to_bytes( entry.get( ) );
+				str.string = wxString( mbs.c_str( ) );
+#endif
 				if ( str.string.IsEmpty( ) ) {
 					//str.string = wxT( "Empty string" );
 					continue;
