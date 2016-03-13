@@ -58,10 +58,35 @@ Need to work on it someday once I understand about code architect thing.
 Libraries and restrictions
 --------------------------
 
-The application used some C++11 features, so it required C++11 capable
-compiler in order to compile it. And if you use Visual Studio, since
-Gw2Browser use ranged-base for loop in some area, you need Visual Studio 2012
-or newer in order to compile it.
+The application used some C++11 features, it required C++11 capable
+compiler in order to compile it.
+
+Since Gw2Browser and some of required libraries use ranged-base for loop
+in some area, you will need Visual Studio 2012 or newer in order to compile it,
+or if you use GCC, you will need GCC 4.8 or better.
+
+### Required software
+
+* [Git](https://git-scm.com/downloads) for download source code. It also come with Git Bash
+for use as command prompt to compile some required libraries if using GCC to compile.
+
+* Microsoft Visual Studio 2012 or better. Express version will work too.
+or use [Visual Studio Community 2013](https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx)
+which have functionality like Professional version, but it free for individual developers,
+open source projects, academic research, education, and small professional teams.
+(you must register in order to use it tho).
+
+		or
+
+* [TDM-GCC 4.8.1 or 5.1.0](http://tdm-gcc.tdragon.net/)
+
+* [CMake](https://cmake.org/) use for build glew when using GCC compiler.
+
+* [CodeBlocks](http://www.codeblocks.org/) for use to open Gw2Browser's CodeBlocks solution file.
+
+### Optional software
+
+* todo
 
 ### Required libraries
 
@@ -75,7 +100,7 @@ or newer in order to compile it.
 
 ### Optional libraries
 
-* [Visual Leak Detector](http://vld.codeplex.com/)
+* [Visual Leak Detector](http://vld.codeplex.com/) (for use with Visual Studio only)
 
 If you want to use Visual Leak Detector, remove the "//" at #include <vld.h>
 in Gw2Browser.cpp.
@@ -83,16 +108,86 @@ in Gw2Browser.cpp.
 How to compile
 --------------
 
-Windows:
+#### Windows, building with Visual Studio:
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
 by use these command at extern\libweb directory.
 
-`nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
+		nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
+		nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
 
-`nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
+* Compile wxWidgets using Visual Studio solution file corresponding with your VS version
+in directory wxWidgets/build/msw. for example, VS2012 is wx_vc11.sln and VS2013 is wx_vc12.sln.
 
-* Compile wxWidgets.
-* Compile Gw2Browser.
+* Compile Gw2Browser using Visual Studio solution file Gw2Browser.sln in Gw2Browser/prj.
+
+#### Windows, building with TDM-GCC
+
+* You must add TDM-GCC to your path.
+
+* Open Git Bash command line window.
+
+* Build wxWidgets
+
+1. Open the file: wxWidgets-3.0.2/include/wx/msw/setup.h and change line 788 to:
+
+		#define wxUSE_GRAPHICS_CONTEXT 1
+
+3. Change directory of Git Bash window to wxWidgets-3.0.2/build/msw and use these command
+
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug
+
+   If it give error, re-type it again.
+   Wait for it to finish, then use these command
+
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release
+
+   This will build wxWidgets in debug and release configuration as a static
+   library, or add "SHARED=1" for building dynamiclink library.
+
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug SHARED=1
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release SHARED=1
+
+4. If you need to rebuild, use "clean" target first.
+
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug clean
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release clean
+
+* Build libwebp
+
+1. Change directory of Git Bash window to Gw2Browser/extern/libwebp and use these command
+
+		mingw32-make -f makefile.unix "EXTRA_FLAGS=" "DWEBP_LIBS=" "CWEBP_LIBS=" "GIF_LIBS="
+
+* Build glew
+
+1. Use cmake to generate glew's MinGW makefile.
+
+2. Open CMakeCache.txt in Gw2Browser/extern/glew directory and change these line
+
+		CMAKE_C_FLAGS:STRING=
+		to
+		CMAKE_C_FLAGS:STRING=-DGLEW_STATIC
+
+		CMAKE_CXX_FLAGS:STRING=
+		to
+		CMAKE_CXX_FLAGS:STRING=-DGLEW_STATIC
+
+3. Change directory of Git Bash window to Gw2Browser/extern/glew and use these command
+
+		mingw32-make
+
+* Build freetype
+
+1. Open Command Prompt window (cmd.exe).
+
+2. Change directory to Gw2Browser/extern/freetype and use these command
+
+		mkdir objs
+		mingw32-make
+
+* Build Gw2Browser
+
+		todo
 
 Authors
 -------
