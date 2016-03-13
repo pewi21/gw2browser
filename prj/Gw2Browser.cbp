@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Gw2Browser" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Gw2Browserd" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-fopenmp" />
+					<Add option="-Wno-deprecated-declarations" />
+					<Add option="-Wno-switch" />
+					<Add option="-std=gnu++11" />
+					<Add option="-DGLEW_STATIC" />
+					<Add directory="../../wxWidgets-3.0.2/include" />
+					<Add directory="../../wxWidgets-3.0.2/lib/gcc_lib/mswud" />
+					<Add directory="../extern/freetype/include" />
+					<Add directory="../extern/glew/include" />
+					<Add directory="../extern/glm" />
+					<Add directory="../extern/gw2DatTools/include" />
+					<Add directory="../extern/gw2formats/include" />
+					<Add directory="../extern/libwebp/src" />
+					<Add directory="../src" />
+				</Compiler>
+				<Linker>
+					<Add library="../extern/freetype/objs/freetype.a" />
+					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libgw2DatTools.a" />
+					<Add library="libgw2formats.a" />
+					<Add library="libwebpdecoder.a" />
+					<Add library="libwxmsw30ud_aui.a" />
+					<Add library="libwxmsw30ud_adv.a" />
+					<Add library="libwxmsw30ud_gl.a" />
+					<Add library="libwxmsw30ud_core.a" />
+					<Add library="libwxbase30ud.a" />
+					<Add library="libwxpngd.a" />
+					<Add library="libwxtiffd.a" />
+					<Add library="libwxzlibd.a" />
+					<Add library="libwxjpegd.a" />
+					<Add library="libgomp.a" />
+					<Add library="libpthread.a" />
+					<Add library="libcomctl32.a" />
+					<Add library="libcomdlg32.a" />
+					<Add library="libgdi32.a" />
+					<Add library="libole32.a" />
+					<Add library="liboleaut32.a" />
+					<Add library="libopengl32.a" />
+					<Add library="libwinspool.a" />
+					<Add library="libuuid.a" />
+					<Add directory="../../wxWidgets-3.0.2/lib/gcc_lib" />
+					<Add directory="../extern/freetype/objs" />
+					<Add directory="../extern/glew/lib" />
+					<Add directory="../extern/gw2DatTools/lib/Debug" />
+					<Add directory="../extern/gw2formats/lib/Debug" />
+					<Add directory="../extern/libwebp/src" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Gw2Browser" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-fopenmp" />
+					<Add option="-Wno-deprecated-declarations" />
+					<Add option="-Wno-switch" />
+					<Add option="-std=gnu++11" />
+					<Add option="-DGLEW_STATIC" />
+					<Add directory="../../wxWidgets-3.0.2/include" />
+					<Add directory="../../wxWidgets-3.0.2/lib/gcc_lib/mswu" />
+					<Add directory="../extern/freetype/include" />
+					<Add directory="../extern/glew/include" />
+					<Add directory="../extern/glm" />
+					<Add directory="../extern/gw2DatTools/include" />
+					<Add directory="../extern/gw2formats/include" />
+					<Add directory="../extern/libwebp/src" />
+					<Add directory="../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="../extern/freetype/objs/freetype.a" />
+					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libgw2DatTools.a" />
+					<Add library="libgw2formats.a" />
+					<Add library="libwebpdecoder.a" />
+					<Add library="libwxmsw30u_aui.a" />
+					<Add library="libwxmsw30u_adv.a" />
+					<Add library="libwxmsw30u_gl.a" />
+					<Add library="libwxmsw30u_core.a" />
+					<Add library="libwxbase30u.a" />
+					<Add library="libwxpng.a" />
+					<Add library="libwxtiff.a" />
+					<Add library="libwxzlib.a" />
+					<Add library="libwxjpeg.a" />
+					<Add library="libgomp.a" />
+					<Add library="libpthread.a" />
+					<Add library="libcomctl32.a" />
+					<Add library="libcomdlg32.a" />
+					<Add library="libgdi32.a" />
+					<Add library="libole32.a" />
+					<Add library="liboleaut32.a" />
+					<Add library="libopengl32.a" />
+					<Add library="libwinspool.a" />
+					<Add library="libuuid.a" />
+					<Add directory="../../wxWidgets-3.0.2/lib/gcc_lib" />
+					<Add directory="../extern/freetype/objs" />
+					<Add directory="../extern/glew/lib" />
+					<Add directory="../extern/gw2DatTools/lib/Release" />
+					<Add directory="../extern/gw2formats/lib/Release" />
+					<Add directory="../extern/libwebp/src" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../src/ANetStructs.h" />
+		<Unit filename="../src/BrowserWindow.cpp" />
+		<Unit filename="../src/BrowserWindow.h" />
+		<Unit filename="../src/CategoryTree.cpp" />
+		<Unit filename="../src/CategoryTree.h" />
+		<Unit filename="../src/DatFile.cpp" />
+		<Unit filename="../src/DatFile.h" />
+		<Unit filename="../src/DatIndex.cpp" />
+		<Unit filename="../src/DatIndex.h" />
+		<Unit filename="../src/DatIndexIO.cpp" />
+		<Unit filename="../src/DatIndexIO.h" />
+		<Unit filename="../src/Data.cpp" />
+		<Unit filename="../src/Data.h" />
+		<Unit filename="../src/Documentation/Namespaces.h" />
+		<Unit filename="../src/Exporter.cpp" />
+		<Unit filename="../src/Exporter.h" />
+		<Unit filename="../src/FileReader.cpp" />
+		<Unit filename="../src/FileReader.h" />
+		<Unit filename="../src/Gw2Browser.cpp" />
+		<Unit filename="../src/Gw2Browser.h" />
+		<Unit filename="../src/Gw2Browser.ico" />
+		<Unit filename="../src/Gw2Browser.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="../src/INeedDatFile.h" />
+		<Unit filename="../src/Identifiers/BaseIdentifier.h" />
+		<Unit filename="../src/Imported/crc.cpp" />
+		<Unit filename="../src/Imported/crc.h" />
+		<Unit filename="../src/Imported/half.cpp" />
+		<Unit filename="../src/Imported/half.h" />
+		<Unit filename="../src/Imported/half.inl" />
+		<Unit filename="../src/PackFile.cpp" />
+		<Unit filename="../src/PackFile.h" />
+		<Unit filename="../src/PreviewGLCanvas.cpp" />
+		<Unit filename="../src/PreviewGLCanvas.h" />
+		<Unit filename="../src/PreviewPanel.cpp" />
+		<Unit filename="../src/PreviewPanel.h" />
+		<Unit filename="../src/ProgressStatusBar.cpp" />
+		<Unit filename="../src/ProgressStatusBar.h" />
+		<Unit filename="../src/Readers/EulaReader.cpp" />
+		<Unit filename="../src/Readers/EulaReader.h" />
+		<Unit filename="../src/Readers/ImageReader.cpp" />
+		<Unit filename="../src/Readers/ImageReader.h" />
+		<Unit filename="../src/Readers/ModelReader.cpp" />
+		<Unit filename="../src/Readers/ModelReader.h" />
+		<Unit filename="../src/Readers/PackedSoundReader.cpp" />
+		<Unit filename="../src/Readers/PackedSoundReader.h" />
+		<Unit filename="../src/Readers/PagedImageReader.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../src/Readers/PagedImageReader.h" />
+		<Unit filename="../src/Readers/SoundBankReader.cpp" />
+		<Unit filename="../src/Readers/SoundBankReader.h" />
+		<Unit filename="../src/Readers/StringReader.cpp" />
+		<Unit filename="../src/Readers/StringReader.h" />
+		<Unit filename="../src/Readers/asndMP3Reader.cpp" />
+		<Unit filename="../src/Readers/asndMP3Reader.h" />
+		<Unit filename="../src/Task.cpp" />
+		<Unit filename="../src/Task.h" />
+		<Unit filename="../src/Tasks/ReadIndexTask.cpp" />
+		<Unit filename="../src/Tasks/ReadIndexTask.h" />
+		<Unit filename="../src/Tasks/ScanDatTask.cpp" />
+		<Unit filename="../src/Tasks/ScanDatTask.h" />
+		<Unit filename="../src/Tasks/WriteIndexTask.cpp" />
+		<Unit filename="../src/Tasks/WriteIndexTask.h" />
+		<Unit filename="../src/Util/Array.h" />
+		<Unit filename="../src/Util/Ensure.h" />
+		<Unit filename="../src/Util/Misc.cpp" />
+		<Unit filename="../src/Util/Misc.h" />
+		<Unit filename="../src/Viewer.cpp" />
+		<Unit filename="../src/Viewer.h" />
+		<Unit filename="../src/ViewerGLCanvas.cpp" />
+		<Unit filename="../src/ViewerGLCanvas.h" />
+		<Unit filename="../src/Viewers/BinaryViewer/BinaryViewer.cpp" />
+		<Unit filename="../src/Viewers/BinaryViewer/BinaryViewer.h" />
+		<Unit filename="../src/Viewers/BinaryViewer/HexControl.cpp" />
+		<Unit filename="../src/Viewers/BinaryViewer/HexControl.h" />
+		<Unit filename="../src/Viewers/ImageViewer/ImageControl.cpp" />
+		<Unit filename="../src/Viewers/ImageViewer/ImageControl.h" />
+		<Unit filename="../src/Viewers/ImageViewer/ImageViewer.cpp" />
+		<Unit filename="../src/Viewers/ImageViewer/ImageViewer.h" />
+		<Unit filename="../src/Viewers/ModelViewer/Camera.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/Camera.h" />
+		<Unit filename="../src/Viewers/ModelViewer/ModelViewer.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/ModelViewer.h" />
+		<Unit filename="../src/resource.h" />
+		<Unit filename="../src/stdafx.cpp" />
+		<Unit filename="../src/stdafx.h" />
+		<Unit filename="../src/version.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
