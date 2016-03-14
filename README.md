@@ -44,13 +44,7 @@ Decompressing one produces garbage blocks. Well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
 * **Some sound data in bank file(s) is unsupported.**
-The data seems to be compressed or encrypted.
-
-* **Gw2Browser not export some entry in string file(s).**
-Some string entry are either empty or encrypted.
-
-* **Some times after the finish re-index .dat file, some of catalog is missing**
-Restart Gw2Browser will fix this issue.
+The data seems to be compressed or encrypted. Might investigate on this in future.
 
 * **The code architect is messy**
 Need to work on it someday once I understand about code architect thing.
@@ -78,6 +72,8 @@ open source projects, academic research, education, and small professional teams
 
 		or
 
+* [Git](https://git-scm.com/downloads)
+
 * [TDM-GCC 4.8.1 or 5.1.0](http://tdm-gcc.tdragon.net/)
 
 * [CMake](https://cmake.org/) use for build glew when using GCC compiler.
@@ -86,7 +82,9 @@ open source projects, academic research, education, and small professional teams
 
 ### Optional software
 
-* todo
+* [Cppcheck](http://cppcheck.sourceforge.net/) a static code analysis tool for the C and C++.
+
+If using Visual Studio, also download [Visual Studio integration add-in for Cppcheck](https://github.com/VioletGiraffe/cppcheck-vs-addin/releases)
 
 ### Required libraries
 
@@ -109,16 +107,17 @@ How to compile
 --------------
 
 #### Windows, building with Visual Studio:
+
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
-by use these command at extern\libweb directory.
+by use these command at Gw2Browser/extern/libweb directory.
 
 		nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
 		nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
 
-* Compile wxWidgets using Visual Studio solution file corresponding with your VS version
-in directory wxWidgets/build/msw. for example, VS2012 is wx_vc11.sln and VS2013 is wx_vc12.sln.
+* Compile wxWidgets using solution file corresponding with your VS version in directory
+wxWidgets-3.0.2/build/msw. For example, VS2012 is wx_vc11.sln and VS2013 is wx_vc12.sln.
 
-* Compile Gw2Browser using Visual Studio solution file Gw2Browser.sln in Gw2Browser/prj.
+* Compile Gw2Browser using Gw2Browser.sln solution file in Gw2Browser/prj.
 
 #### Windows, building with TDM-GCC
 
@@ -132,7 +131,7 @@ in directory wxWidgets/build/msw. for example, VS2012 is wx_vc11.sln and VS2013 
 
 		#define wxUSE_GRAPHICS_CONTEXT 1
 
-3. Change directory of Git Bash window to wxWidgets-3.0.2/build/msw and use these command
+2. Change directory of Git Bash window to wxWidgets-3.0.2/build/msw and use these command
 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug
 
@@ -147,7 +146,7 @@ in directory wxWidgets/build/msw. for example, VS2012 is wx_vc11.sln and VS2013 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug SHARED=1
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release SHARED=1
 
-4. If you need to rebuild, use "clean" target first.
+3. If you need to rebuild, use "clean" target first.
 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug clean
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release clean
@@ -187,7 +186,9 @@ in directory wxWidgets/build/msw. for example, VS2012 is wx_vc11.sln and VS2013 
 
 * Build Gw2Browser
 
-		todo
+   Open solution file Gw2Browser.workspace in Gw2Browser/prj/. Then, compile gw2DatTools and gw2formats
+   by right click and select as active project and build it, both debug and release build. Then proceed
+   to compile Gw2Browser.
 
 Authors
 -------
@@ -196,7 +197,7 @@ Authors
 
 ### Thanks to:
 
-* [Rhoot](https://github.com/rhoot) : Original Gw2Browser
+* [Rhoot](https://github.com/rhoot) : Original Gw2Browser and gw2formats
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
