@@ -145,6 +145,8 @@ namespace gw2b {
 		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleWindowEvt ) );
 		this->Connect( ID_ClearLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onClearLogEvt ) );
 
+		this->Connect( wxEVT_AUI_PANE_CLOSE, wxAuiManagerEventHandler( BrowserWindow::onPaneCloseEvt ) );
+
 		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( BrowserWindow::onCloseEvt ) );
 	}
 
@@ -375,6 +377,20 @@ namespace gw2b {
 
 	//============================================================================/
 
+	void BrowserWindow::onPaneCloseEvt( wxAuiManagerEvent &event ) {
+
+		if ( event.GetPane( )->window == m_uiManager.GetPane( wxT( "CategoryTree" ) ).window ) {
+			this->GetMenuBar( )->Check( ID_ShowFileList, false );
+		}
+		if ( event.GetPane( )->window == m_uiManager.GetPane( wxT( "LogWindow" ) ).window ) {
+			this->GetMenuBar( )->Check( ID_ShowLog, false );
+		}
+
+		m_uiManager.Update( );
+	}
+
+	//============================================================================/
+
 	void BrowserWindow::onReadIndexComplete( ) {
 		// If it failed, it was cleared.
 		if ( m_index->datTimestamp( ) == 0 || m_index->numEntries( ) == 0 ) {
@@ -502,8 +518,8 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::SetDefaults( ) {
-		GetMenuBar( )->Check( ID_ShowFileList, true );
-		GetMenuBar( )->Check( ID_ShowLog, false );
+		this->GetMenuBar( )->Check( ID_ShowFileList, true );
+		this->GetMenuBar( )->Check( ID_ShowLog, false );
 	}
 
 }; // namespace gw2b

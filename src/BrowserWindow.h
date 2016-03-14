@@ -111,6 +111,9 @@ namespace gw2b {
 		/** Executed when the user clicks <em>View -> Clear Log</em> in the menu.
 		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
 		void onClearLogEvt( wxCommandEvent &event );
+		/** Executed when the user close aui pane.
+		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
+		void onPaneCloseEvt( wxAuiManagerEvent &event );
 
 		/** Raised when the index has been read. */
 		void onReadIndexComplete( );
