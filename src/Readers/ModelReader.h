@@ -165,6 +165,8 @@ namespace gw2b {
 		void computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
 		void readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
 		void computeVertexNormals( Mesh& p_mesh ) const;
+		/** Rotate given mesh in ZY and invert Z. */
+		void rotZYinvZ( Mesh& p_mesh ) const;
 		void readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 	}; // class ModelReader
 

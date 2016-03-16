@@ -234,6 +234,12 @@ namespace gw2b {
 				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
 			}
 
+			// DirectX coordinate to OpenGL coordinate by rotate ZY and invert Z
+			this->rotZYinvZ( mesh );
+
+			// Scale it? maybe
+			//this->scaleMesh( mesh, 0.01 );
+
 			// Index data
 			if ( indiceCount ) {
 				this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
@@ -242,7 +248,6 @@ namespace gw2b {
 
 			if ( mesh.hasNormal ) {
 				// Normalize normal
-				// Todo: may need to convert to OpenGL coordinate
 				//this->normalizeNormals( mesh );
 			} else {
 				// Calculate the vertex normal if it not exist
@@ -261,13 +266,6 @@ namespace gw2b {
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
-		// DirectX coordinate to OpenGL by rotate ZY and invert Z.
-		const glm::mat3 transform = glm::mat3(
-			glm::vec3( 1.0f, 0.0f, 0.0f ),
-			glm::vec3( 0.0f, 0.0f, -1.0f ),
-			glm::vec3( 0.0f, -1.0f, 0.0f )
-			);
-
 		p_mesh.vertices.resize( p_vertexCount );
 		uint vertexSize = this->vertexSize( p_vertexFormat );
 
@@ -283,8 +281,6 @@ namespace gw2b {
 			// Bit 0: Position
 			if ( p_vertexFormat & ANFVF_Position ) {
 				::memcpy( &vertex.position, pos, sizeof( vertex.position ) );
-				// Convert DirectX coordinate to OpenGL
-				vertex.position = transform * vertex.position;
 				pos += sizeof( vertex.position );
 			}
 			// Bit 1: Weights
@@ -297,10 +293,7 @@ namespace gw2b {
 			}
 			// Bit 3: Normal
 			if ( p_vertexFormat & ANFVF_Normal ) {
-				// need to test this
 				::memcpy( &vertex.normal, pos, sizeof( vertex.normal ) );
-				// Convert DirectX coordinate to OpenGL
-				vertex.normal = transform * vertex.normal;
 				pos += sizeof( vertex.normal );
 			}
 			// Bit 4: Color
@@ -369,8 +362,6 @@ namespace gw2b {
 				vertex.position.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
 				vertex.position.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
 				vertex.position.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
-				// Convert DirectX coordinate to OpenGL
-				vertex.position = transform * vertex.position;
 				pos += 3 * sizeof( half );
 			}
 			// Bit 29: Unknown 12-byte value
@@ -490,6 +481,25 @@ namespace gw2b {
 			}
 		}
 
+	}
+
+	void ModelReader::rotZYinvZ( Mesh& p_mesh ) const {
+		// Rotate ZY and invert Z
+		const glm::mat3 transform = glm::mat3(
+			glm::vec3( 1.0f, 0.0f, 0.0f ),
+			glm::vec3( 0.0f, 0.0f, -1.0f ),
+			glm::vec3( 0.0f, -1.0f, 0.0f )
+			);
+
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
+			auto& vertex = p_mesh.vertices[i];
+			vertex.position = transform * vertex.position;
+			// Todo: Untested!
+			if ( p_mesh.hasNormal ) {
+				vertex.normal = transform * vertex.normal;
+			}
+		}
 	}
 
 	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
