@@ -36,7 +36,7 @@ namespace gw2b {
 		mBackdrop = data::loadPNG( data::checkers_png, data::checkers_png_size );
 		this->SetBackgroundStyle( wxBG_STYLE_CUSTOM );
 		this->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
-		this->Connect( wxEVT_PAINT, wxPaintEventHandler( ImageControl::OnPaintEvt ) );
+		this->Bind( wxEVT_PAINT, &ImageControl::OnPaintEvt, this );
 	}
 
 	ImageControl::~ImageControl( ) {

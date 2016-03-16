@@ -32,7 +32,7 @@ namespace gw2b {
 		: wxStatusBar( p_parent, wxID_ANY, wxST_SIZEGRIP ) {
 		m_progress.Create( this, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL | wxGA_SMOOTH );
 		m_progress.Hide( );
-		this->Connect( wxEVT_SIZE, wxSizeEventHandler( ProgressStatusBar::onSize ) );
+		this->Bind( wxEVT_SIZE, &ProgressStatusBar::onSize, this );
 	}
 
 	void ProgressStatusBar::showProgressBar( ) {

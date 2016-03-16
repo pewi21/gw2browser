@@ -113,11 +113,11 @@ namespace gw2b {
 		m_renderTimer->start( );
 
 		// Hook up events
-		this->Connect( wxEVT_PAINT, wxPaintEventHandler( ModelViewer::onPaintEvt ) );
-		this->Connect( wxEVT_MOTION, wxMouseEventHandler( ModelViewer::onMotionEvt ) );
-		this->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ModelViewer::onMouseWheelEvt ) );
-		this->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( ModelViewer::onKeyDownEvt ) );
-		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ModelViewer::onClose ) );
+		this->Bind( wxEVT_PAINT, &ModelViewer::onPaintEvt, this );
+		this->Bind( wxEVT_MOTION, &ModelViewer::onMotionEvt, this );
+		this->Bind( wxEVT_MOUSEWHEEL, &ModelViewer::onMouseWheelEvt, this );
+		this->Bind( wxEVT_KEY_DOWN, &ModelViewer::onKeyDownEvt, this );
+		this->Bind( wxEVT_CLOSE_WINDOW, &ModelViewer::onClose, this );
 	}
 
 	ModelViewer::~ModelViewer( ) {

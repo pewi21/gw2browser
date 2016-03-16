@@ -45,7 +45,7 @@ namespace gw2b {
 		wxFont hexFont( 10, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
 		this->SetFont( hexFont );
 
-		this->Connect( wxEVT_PAINT, wxPaintEventHandler( HexControl::onPaintEvt ) );
+		this->Bind( wxEVT_PAINT, &HexControl::onPaintEvt, this );
 	}
 
 	void HexControl::onDraw( wxDC& p_DC, wxRect& p_region ) {

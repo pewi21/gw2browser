@@ -138,16 +138,14 @@ namespace gw2b {
 		m_uiManager.Update( );
 
 		// Hook up events
-		this->Connect( wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onOpenEvt ) );
-		this->Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onExitEvt ) );
-		this->Connect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onAboutEvt ) );
-		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onTogglePaneEvt ) );
-		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onTogglePaneEvt ) );
-		this->Connect( ID_ClearLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onClearLogEvt ) );
-
-		this->Connect( wxEVT_AUI_PANE_CLOSE, wxAuiManagerEventHandler( BrowserWindow::onPaneCloseEvt ) );
-
-		this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( BrowserWindow::onCloseEvt ) );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onOpenEvt, this, wxID_OPEN );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onExitEvt, this, wxID_EXIT );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onAboutEvt, this, wxID_ABOUT );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onTogglePaneEvt, this, ID_ShowFileList );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onTogglePaneEvt, this, ID_ShowLog );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onClearLogEvt, this, ID_ClearLog );
+		this->Bind( wxEVT_AUI_PANE_CLOSE, &BrowserWindow::onPaneCloseEvt, this );
+		this->Bind( wxEVT_CLOSE_WINDOW, &BrowserWindow::onCloseEvt, this );
 	}
 
 	//============================================================================/
@@ -169,7 +167,7 @@ namespace gw2b {
 			if ( m_currentTask->canAbort( ) ) {
 				m_currentTask->abort( );
 				deletePointer( m_currentTask );
-				this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( BrowserWindow::onPerformTaskEvt ) );
+				this->Unbind( wxEVT_IDLE, &BrowserWindow::onPerformTaskEvt, this );
 				m_progress->hideProgressBar( );
 			} else {
 				deletePointer( p_task );
@@ -184,7 +182,7 @@ namespace gw2b {
 			return false;
 		}
 
-		this->Connect( wxEVT_IDLE, wxIdleEventHandler( BrowserWindow::onPerformTaskEvt ) );
+		this->Bind( wxEVT_IDLE, &BrowserWindow::onPerformTaskEvt, this );
 		m_progress->setMaxValue( m_currentTask->maxProgress( ) );
 		m_progress->showProgressBar( );
 		return true;
@@ -301,7 +299,7 @@ namespace gw2b {
 			if ( m_currentTask->canAbort( ) ) {
 				m_currentTask->abort( );
 				deletePointer( m_currentTask );
-				this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( BrowserWindow::onPerformTaskEvt ) );
+				this->Unbind( wxEVT_IDLE, &BrowserWindow::onPerformTaskEvt, this );
 			} else {
 				this->Disable( );
 				m_currentTask->addOnCompleteHandler( [this] ( ) { this->tryClose( ); } );
@@ -339,7 +337,7 @@ namespace gw2b {
 			m_progress->update( m_currentTask->currentProgress( ), m_currentTask->text( ) );
 			p_event.RequestMore( );
 		} else {
-			this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( BrowserWindow::onPerformTaskEvt ) );
+			this->Unbind( wxEVT_IDLE, &BrowserWindow::onPerformTaskEvt, this );
 			m_progress->SetStatusText( wxEmptyString );
 			m_progress->hideProgressBar( );
 

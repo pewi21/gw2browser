@@ -74,12 +74,12 @@ namespace gw2b {
 		this->AddRoot( wxT( "Root" ) );
 
 		// Hookup events
-		this->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDING, wxTreeEventHandler( CategoryTree::onItemExpanding ) );
-		this->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSING, wxTreeEventHandler( CategoryTree::onItemCollapsing ) );
-		this->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( CategoryTree::onSelChanged ) );
-		this->Connect( wxEVT_COMMAND_TREE_ITEM_MENU, wxTreeEventHandler( CategoryTree::onContextMenu ) );
-		this->Connect( wxID_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( CategoryTree::onExtractConvertedFiles ) );
-		this->Connect( wxID_SAVEAS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( CategoryTree::onExtractRawFiles ) );
+		this->Bind( wxEVT_TREE_ITEM_EXPANDING, &CategoryTree::onItemExpanding, this );
+		this->Bind( wxEVT_TREE_ITEM_COLLAPSING, &CategoryTree::onItemCollapsing, this );
+		this->Bind( wxEVT_TREE_SEL_CHANGED, &CategoryTree::onSelChanged, this );
+		this->Bind( wxEVT_TREE_ITEM_MENU, &CategoryTree::onContextMenu, this );
+		this->Bind( wxEVT_MENU, &CategoryTree::onExtractConvertedFiles, this, wxID_SAVE );
+		this->Bind( wxEVT_MENU, &CategoryTree::onExtractRawFiles, this, wxID_SAVEAS );
 	}
 
 	//============================================================================/

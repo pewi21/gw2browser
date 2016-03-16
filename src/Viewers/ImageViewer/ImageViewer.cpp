@@ -90,7 +90,7 @@ namespace gw2b {
 			toolbar->AddTool( button );
 			button->Toggle( true );
 			m_toolbarButtons.Add( button );
-			this->Connect( m_toolbarButtonIds[i], wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( ImageViewer::onToolbarClickedEvt ) );
+			this->Bind( wxEVT_TOOL, &ImageViewer::onToolbarClickedEvt, this, m_toolbarButtonIds[i] );
 		}
 
 		toolbar->Realize( );
