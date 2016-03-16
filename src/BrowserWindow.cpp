@@ -141,8 +141,8 @@ namespace gw2b {
 		this->Connect( wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onOpenEvt ) );
 		this->Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onExitEvt ) );
 		this->Connect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onAboutEvt ) );
-		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleWindowEvt ) );
-		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onToggleWindowEvt ) );
+		this->Connect( ID_ShowFileList, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onTogglePaneEvt ) );
+		this->Connect( ID_ShowLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onTogglePaneEvt ) );
 		this->Connect( ID_ClearLog, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( BrowserWindow::onClearLogEvt ) );
 
 		this->Connect( wxEVT_AUI_PANE_CLOSE, wxAuiManagerEventHandler( BrowserWindow::onPaneCloseEvt ) );
@@ -352,7 +352,7 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::onToggleWindowEvt( wxCommandEvent &event ) {
+	void BrowserWindow::onTogglePaneEvt( wxCommandEvent &event ) {
 		// wxAUI Stuff
 		if ( GetMenuBar( )->IsChecked( ID_ShowFileList ) ) {
 			m_uiManager.GetPane( wxT( "CategoryTree" ) ).Show( );
@@ -378,11 +378,11 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::onPaneCloseEvt( wxAuiManagerEvent &event ) {
-
-		if ( event.GetPane( )->window == m_uiManager.GetPane( wxT( "CategoryTree" ) ).window ) {
+		auto evt = event.GetPane( )->window;
+		if ( evt == m_uiManager.GetPane( wxT( "CategoryTree" ) ).window ) {
 			this->GetMenuBar( )->Check( ID_ShowFileList, false );
 		}
-		if ( event.GetPane( )->window == m_uiManager.GetPane( wxT( "LogWindow" ) ).window ) {
+		if ( evt == m_uiManager.GetPane( wxT( "LogWindow" ) ).window ) {
 			this->GetMenuBar( )->Check( ID_ShowLog, false );
 		}
 

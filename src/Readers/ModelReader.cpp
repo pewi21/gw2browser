@@ -212,7 +212,7 @@ namespace gw2b {
 		clock_t begin = clock( );
 
 #pragma omp parallel for shared( meshes )
-		for ( int i = 0; i < static_cast< int >( meshCount ); i++ ) {
+		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
 			// Fetch mesh info
 			auto meshInfo = meshInfoArray[i];
 
@@ -231,13 +231,13 @@ namespace gw2b {
 
 			// Vertex data
 			if ( vertexCount ) {
-				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast< ANetFlexibleVertexFormat >( vertexInfo.mesh.fvf ) );
+				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
 			}
 
 			// Index data
 			if ( indiceCount ) {
-				this->readIndexBuffer( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
-				this->computeBond( mesh, reinterpret_cast< const byte* >( indicesInfo.indices.data( ) ), indiceCount );
+				this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
+				this->computeBond( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
 			}
 
 			if ( mesh.hasNormal ) {
@@ -261,6 +261,13 @@ namespace gw2b {
 	}
 
 	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
+		// DirectX coordinate to OpenGL by rotate ZY and invert Z.
+		const glm::mat3 transform = glm::mat3(
+			glm::vec3( 1.0f, 0.0f, 0.0f ),
+			glm::vec3( 0.0f, 0.0f, -1.0f ),
+			glm::vec3( 0.0f, -1.0f, 0.0f )
+			);
+
 		p_mesh.vertices.resize( p_vertexCount );
 		uint vertexSize = this->vertexSize( p_vertexFormat );
 
@@ -275,12 +282,9 @@ namespace gw2b {
 
 			// Bit 0: Position
 			if ( p_vertexFormat & ANFVF_Position ) {
-				glm::vec3 vertices;
-				::memcpy( &vertices, pos, sizeof( vertices ) );
+				::memcpy( &vertex.position, pos, sizeof( vertex.position ) );
 				// Convert DirectX coordinate to OpenGL
-				vertex.position.x = vertices.x;
-				vertex.position.z = 1.0f - vertices.y;
-				vertex.position.y = 1.0f - vertices.z;
+				vertex.position = transform * vertex.position;
 				pos += sizeof( vertex.position );
 			}
 			// Bit 1: Weights
@@ -295,6 +299,8 @@ namespace gw2b {
 			if ( p_vertexFormat & ANFVF_Normal ) {
 				// need to test this
 				::memcpy( &vertex.normal, pos, sizeof( vertex.normal ) );
+				// Convert DirectX coordinate to OpenGL
+				vertex.normal = transform * vertex.normal;
 				pos += sizeof( vertex.normal );
 			}
 			// Bit 4: Color
@@ -360,14 +366,11 @@ namespace gw2b {
 			}
 			// Bit 28: Compressed position
 			if ( p_vertexFormat & ANFVF_PositionCompressed ) {
-				glm::vec3 vertices;
-				vertices.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
-				vertices.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
-				vertices.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
+				vertex.position.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
+				vertex.position.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
+				vertex.position.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
 				// Convert DirectX coordinate to OpenGL
-				vertex.position.x = vertices.x;
-				vertex.position.z = 1.0f - vertices.y;
-				vertex.position.y = 1.0f - vertices.z;
+				vertex.position = transform * vertex.position;
 				pos += 3 * sizeof( half );
 			}
 			// Bit 29: Unknown 12-byte value
