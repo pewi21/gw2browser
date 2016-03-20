@@ -164,6 +164,7 @@ namespace gw2b {
 		uint vertexSize( ANetFlexibleVertexFormat p_vertexFormat ) const;
 		void computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
 		void readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
+		void normalizeNormals( Mesh& p_mesh ) const;
 		void computeVertexNormals( Mesh& p_mesh ) const;
 		/** Rotate given mesh in ZY and invert Z. */
 		void rotZYinvZ( Mesh& p_mesh ) const;

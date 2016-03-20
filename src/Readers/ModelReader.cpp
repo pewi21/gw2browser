@@ -248,7 +248,7 @@ namespace gw2b {
 
 			if ( mesh.hasNormal ) {
 				// Normalize normal
-				//this->normalizeNormals( mesh );
+				this->normalizeNormals( mesh );
 			} else {
 				// Calculate the vertex normal if it not exist
 				this->computeVertexNormals( mesh );
@@ -439,6 +439,26 @@ namespace gw2b {
 		}
 	}
 
+	void ModelReader::normalizeNormals( Mesh& p_mesh ) const {
+		auto& vert = p_mesh.vertices;
+		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+			// Check if the normals is zero to avoid divide by zero problem.
+			if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
+				if ( vert[i].normal.x ) {
+					vert[i].normal.x = glm::normalize( vert[i].normal.x );
+				}
+				if ( vert[i].normal.y ) {
+					vert[i].normal.y = glm::normalize( vert[i].normal.y );
+				}
+				if ( vert[i].normal.z ) {
+					vert[i].normal.z = glm::normalize( vert[i].normal.z );
+				}
+			} else {
+				vert[i].normal = glm::normalize( vert[i].normal );
+			}
+		}
+	}
+
 	void ModelReader::computeVertexNormals( Mesh& p_mesh ) const {
 
 		// Claculate vertex normals
@@ -464,23 +484,7 @@ namespace gw2b {
 			vert[ic].normal += no;
 		}
 
-		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-			// Check if the normals is zero to avoid divide by zero problem.
-			if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
-				if ( vert[i].normal.x ) {
-					vert[i].normal.x = glm::normalize( vert[i].normal.x );
-				}
-				if ( vert[i].normal.y ) {
-					vert[i].normal.y = glm::normalize( vert[i].normal.y );
-				}
-				if ( vert[i].normal.z ) {
-					vert[i].normal.z = glm::normalize( vert[i].normal.z );
-				}
-			} else {
-				vert[i].normal = glm::normalize( vert[i].normal );
-			}
-		}
-
+		this->normalizeNormals( p_mesh );
 	}
 
 	void ModelReader::rotZYinvZ( Mesh& p_mesh ) const {
