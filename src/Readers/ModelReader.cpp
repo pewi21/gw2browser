@@ -523,8 +523,7 @@ namespace gw2b {
 		}
 
 		// Read some necessary data
-		auto materialInfoArray = modelChunk->permutations[0];
-		auto materialsArray = materialInfoArray.materials;
+		auto materialsArray = modelChunk->permutations[0].materials;
 		// Count materials
 		auto materialCount = static_cast<uint>( materialsArray.size( ) );
 
@@ -535,47 +534,26 @@ namespace gw2b {
 		}
 		wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
-		Material* material = p_model.addMaterial( materialCount );
+		Material* materials = p_model.addMaterial( materialCount );
 
-		// Prepare parallel loop
-		std::vector<omp_lock_t> locks( materialCount );
-		for ( auto& iter : locks) {
-			omp_init_lock( &iter );
-		}
+#pragma omp parallel for shared(materials)
+        for ( int i = 0; i < static_cast<int>( materialCount ); i++ ) {
+            auto& mat = materialsArray[i];
+            auto& material = materials[i];
 
-		// Loop through each material
-#pragma omp parallel for shared(locks, material)
-		for ( int j = 0; j < static_cast<int>( materialCount ); j++ ) {
-			auto& data = material[j];
+            // Copy the data
+			material.materialId = mat.materialId;
+			material.materialFlags = mat.materialFlags;
 
-			// Only one thread must access this material at a time
-			omp_set_lock( &locks[j] );
+            // Get material filename from each materials
+            auto ref = reinterpret_cast<const ANetFileReference*>( &mat.filename );
+			material.materialFile = DatFile::fileIdFromFileReference( *ref );
 
-			// Bail if this material index already has data
-			if ( data.materialId && data.materialFlags && data.diffuseMap && data.normalMap && data.lightMap && data.materialFile ) {
-				omp_unset_lock( &locks[j] );
+			if ( mat.textures.size( ) == 0 ) {
 				continue;
 			}
 
-			// Read material info
-			auto materialInfo = materialsArray[j];
-
-			// Copy the data
-			// We are (almost) *only* interested in textures
-			data.materialId = materialInfo.materialId;
-			data.materialFlags = materialInfo.materialFlags;
-
-			auto ref = reinterpret_cast<const ANetFileReference*>( &materialInfo.filename );
-
-			// Get material filename from each materials
-			data.materialFile = DatFile::fileIdFromFileReference( *ref );
-
-			if ( materialInfo.textures.size( ) == 0 ) {
-				omp_unset_lock( &locks[j] );
-				continue;
-			}
-
-			auto textures = materialInfo.textures;
+			auto textures = mat.textures;
 
 			// Out of these, we only care about the diffuse maps
 			for ( uint t = 0; t < textures.size( ); t++ ) {
@@ -585,31 +563,25 @@ namespace gw2b {
 				// todo: figure out this
 				// Diffuse?
 				if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
-					data.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 				}
 
 				// Normal?
 				else if ( ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee )
-					/*|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
-					|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )*/ ) {
-					data.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					//|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
+					//|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )
+                    ) {
+					material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 				}
 
 				// Light Map ?
 				else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
-					data.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 					break;
 				}
 			}
+        }
 
-			// Let other threads access this material now that we're done
-			omp_unset_lock( &locks[j] );
-		}
-
-		// Destroy locks
-		for ( auto& iter : locks ) {
-			omp_destroy_lock( &iter );
-		}
 		wxLogMessage( wxT( "Finished reading MODL chunk." ) );
 	}
 
