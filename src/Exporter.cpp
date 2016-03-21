@@ -325,7 +325,7 @@ namespace gw2b {
 		// Identify file type
 		m_datFile.identifyFileType( entryData.GetPointer( ), entryData.GetSize( ), m_fileType );
 
-		auto reader = FileReader::readerForData( entryData, m_fileType );
+		auto reader = FileReader::readerForData( entryData, m_datFile, m_fileType );
 
 		if ( reader ) {
 			// Set file extension
@@ -780,7 +780,7 @@ namespace gw2b {
 		// Convert to image
 		ANetFileType fileType;
 		m_datFile.identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
-		auto reader = FileReader::readerForData( fileData, fileType );
+		auto reader = FileReader::readerForData( fileData, m_datFile, fileType );
 
 		m_filename.SetName( wxString::Format( wxT( "%d" ), p_fileid ) );
 		m_filename.SetExt( wxT( "png" ) );

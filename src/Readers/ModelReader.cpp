@@ -148,9 +148,9 @@ namespace gw2b {
 	//      ModelReader
 	//----------------------------------------------------------------------------
 
-	ModelReader::ModelReader( const Array<byte>& p_data, ANetFileType p_fileType )
-		: FileReader( p_data, p_fileType ) {
-	}
+	ModelReader::ModelReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+		: FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
 	ModelReader::~ModelReader( ) {
 	}

@@ -152,7 +152,6 @@
 		<Unit filename="../src/Gw2Browser.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="../src/INeedDatFile.h" />
 		<Unit filename="../src/Identifiers/BaseIdentifier.h" />
 		<Unit filename="../src/Imported/crc.cpp" />
 		<Unit filename="../src/Imported/crc.h" />

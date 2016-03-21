@@ -31,8 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	SoundBankReader::SoundBankReader( const Array<byte>& p_data, ANetFileType p_fileType )
-		: FileReader( p_data, p_fileType ) {
+	SoundBankReader::SoundBankReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+		: FileReader( p_data, p_datFile, p_fileType ) {
 	}
 
 	SoundBankReader::~SoundBankReader( ) {

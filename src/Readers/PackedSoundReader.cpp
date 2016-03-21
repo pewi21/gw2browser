@@ -30,8 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	PackedSoundReader::PackedSoundReader( const Array<byte>& p_data, ANetFileType p_fileType )
-		: FileReader( p_data, p_fileType ) {
+	PackedSoundReader::PackedSoundReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+		: FileReader( p_data, p_datFile, p_fileType ) {
 	}
 
 	PackedSoundReader::~PackedSoundReader( ) {

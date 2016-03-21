@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DatFile.h"
 #include "DatIndex.h"
-#include "INeedDatFile.h"
 
 #include "Viewers/ModelViewer/ModelViewer.h"
 
@@ -54,7 +53,7 @@ namespace gw2b {
 		}
 
 		// Create file reader
-		auto reader = FileReader::readerForData( entryData, p_entry.fileType( ) );
+		auto reader = FileReader::readerForData( entryData, p_datFile, p_entry.fileType( ) );
 
 		if ( reader ) {
 			if ( m_currentView ) {
@@ -103,13 +102,8 @@ namespace gw2b {
 		ViewerGLCanvas* newViewer = nullptr;
 		switch ( p_dataType ) {
 		case FileReader::DT_Model:
-			newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style );
+			newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style, p_datFile );
 			break;
-		}
-
-		auto needer = dynamic_cast<INeedDatFile*>( newViewer );
-		if ( needer ) {
-			needer->setDatFile( &p_datFile );
 		}
 
 		return newViewer;

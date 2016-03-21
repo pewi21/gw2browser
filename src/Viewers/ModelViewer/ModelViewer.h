@@ -36,12 +36,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Camera.h"
 
-#include "Readers/ModelReader.h"
+#include "DatFile.h"
 #include "ViewerGLCanvas.h"
-
-#include "INeedDatFile.h"
+#include "Readers/ModelReader.h"
 
 namespace gw2b {
+    class DatFile;
 
 	class ModelViewer;
 	class RenderTimer : public wxTimer {
@@ -52,13 +52,15 @@ namespace gw2b {
 		void start( );
 	}; // class RenderTimer
 
-	class ModelViewer : public ViewerGLCanvas, public INeedDatFile {
+	class ModelViewer : public ViewerGLCanvas {
 		struct MeshCache;
 		struct VBO;
 		struct IBO;
 		struct TBO;
 		struct PackedVertex;
 		struct Character;
+
+        DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
@@ -103,7 +105,7 @@ namespace gw2b {
 		*  \param[in]  p_parent     Parent of the control.
 		*  \param[in]  p_pos        Optional position of the control.
 		*  \param[in]  p_size       Optional size of the control. */
-		ModelViewer( wxWindow* p_parent, const int *p_attrib = ( const int* ) 0, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize, long p_style = 0L );
+		ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile );
 		/** Destructor. */
 		virtual ~ModelViewer( );
 

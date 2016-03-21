@@ -53,7 +53,7 @@ namespace gw2b {
 		/** Constructor.
 		*  \param[in]  p_data       Data to be handled by this reader.
 		*  \param[in]  p_fileType   File type of the given data. */
-		ImageReader( const Array<byte>& p_data, ANetFileType p_fileType );
+		ImageReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */
 		virtual ~ImageReader( );
 

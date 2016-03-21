@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DatFile.h"
 #include "DatIndex.h"
-#include "INeedDatFile.h"
 
 #include "Viewers/BinaryViewer/BinaryViewer.h"
 #include "Viewers/ImageViewer/ImageViewer.h"
@@ -54,7 +53,7 @@ namespace gw2b {
 		}
 
 		// Create file reader
-		auto reader = FileReader::readerForData( entryData, p_entry.fileType( ) );
+		auto reader = FileReader::readerForData( entryData, p_datFile, p_entry.fileType( ) );
 
 		if ( reader ) {
 			if ( m_currentView ) {
@@ -98,11 +97,6 @@ namespace gw2b {
 		default:
 			newViewer = new BinaryViewer( this );
 			break;
-		}
-
-		auto needer = dynamic_cast<INeedDatFile*>( newViewer );
-		if ( needer ) {
-			needer->setDatFile( &p_datFile );
 		}
 
 		return newViewer;

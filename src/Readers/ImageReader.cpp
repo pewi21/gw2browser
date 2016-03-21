@@ -152,8 +152,8 @@ namespace gw2b {
 	//      ImageReader
 	//----------------------------------------------------------------------------
 
-	ImageReader::ImageReader( const Array<byte>& p_data, ANetFileType p_fileType )
-		: FileReader( p_data, p_fileType ) {
+	ImageReader::ImageReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+		: FileReader( p_data, p_datFile, p_fileType ) {
 	}
 
 	ImageReader::~ImageReader( ) {

@@ -28,10 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <vector>
 
-#include "ModelViewer.h"
-
 #include "Readers/ImageReader.h"
-#include "DatFile.h"
+
+#include "ModelViewer.h"
 
 namespace gw2b {
 
@@ -95,9 +94,11 @@ namespace gw2b {
 		GLuint Advance;			// Horizontal offset to advance to next glyph
 	};
 
-	ModelViewer::ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style )
+	ModelViewer::ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile )
 		: ViewerGLCanvas( p_parent, p_attrib, p_pos, p_size, p_style )
-		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
+		, m_datFile( p_datFile )
+		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) )
+		{
 
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
@@ -781,8 +782,8 @@ namespace gw2b {
 	}
 
 	GLuint ModelViewer::loadTexture( const uint p_fileId ) {
-		auto entryNumber = this->datFile( )->entryNumFromFileId( p_fileId );
-		auto fileData = this->datFile( )->readEntry( entryNumber );
+		auto entryNumber = m_datFile.entryNumFromFileId( p_fileId );
+		auto fileData = m_datFile.readEntry( entryNumber );
 
 		// Bail if read failed
 		if ( fileData.GetSize( ) == 0 ) {
@@ -791,8 +792,8 @@ namespace gw2b {
 
 		// Convert to image
 		ANetFileType fileType;
-		this->datFile( )->identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
-		auto reader = FileReader::readerForData( fileData, fileType );
+		m_datFile.identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
+		auto reader = FileReader::readerForData( fileData, m_datFile, fileType );
 
 		// Bail if not an image
 		auto imgReader = dynamic_cast<ImageReader*>( reader );
