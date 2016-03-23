@@ -150,7 +150,7 @@ namespace gw2b {
 
 	ModelReader::ModelReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
 		: FileReader( p_data, p_datFile, p_fileType ) {
-    }
+	}
 
 	ModelReader::~ModelReader( ) {
 	}
@@ -537,16 +537,16 @@ namespace gw2b {
 		Material* materials = p_model.addMaterial( materialCount );
 
 #pragma omp parallel for shared(materials)
-        for ( int i = 0; i < static_cast<int>( materialCount ); i++ ) {
-            auto& mat = materialsArray[i];
-            auto& material = materials[i];
+		for ( int i = 0; i < static_cast<int>( materialCount ); i++ ) {
+			auto& mat = materialsArray[i];
+			auto& material = materials[i];
 
-            // Copy the data
+			// Copy the data
 			material.materialId = mat.materialId;
 			material.materialFlags = mat.materialFlags;
 
-            // Get material filename from each materials
-            auto ref = reinterpret_cast<const ANetFileReference*>( &mat.filename );
+			// Get material filename from each materials
+			auto ref = reinterpret_cast<const ANetFileReference*>( &mat.filename );
 			material.materialFile = DatFile::fileIdFromFileReference( *ref );
 
 			if ( mat.textures.size( ) == 0 ) {
@@ -570,7 +570,7 @@ namespace gw2b {
 				else if ( ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee )
 					//|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
 					//|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )
-                    ) {
+					) {
 					material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 				}
 
@@ -580,7 +580,7 @@ namespace gw2b {
 					break;
 				}
 			}
-        }
+		}
 
 		wxLogMessage( wxT( "Finished reading MODL chunk." ) );
 	}
