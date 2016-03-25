@@ -229,9 +229,9 @@ All other trademarks are the property of their respective owners.
 License
 -------
 
-Copyright © 2014-2016 Khral Steelforge <https://github.com/kytulendu>
-Copyright © 2013 Till034 <https://github.com/Till034>
-Copyright © 2012 Rhoot <https://github.com/rhoot>
+	Copyright © 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+	Copyright © 2013 Till034 <https://github.com/Till034>
+	Copyright © 2012 Rhoot <https://github.com/rhoot>
 
 Gw2Browser is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
