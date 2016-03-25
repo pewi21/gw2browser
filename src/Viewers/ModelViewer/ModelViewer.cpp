@@ -403,7 +403,7 @@ namespace gw2b {
 		// Update view matrix
 		this->updateMatrices( );
 
-		if ( m_statusWireframe == true ) {
+		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		} else {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -431,11 +431,11 @@ namespace gw2b {
 		// Send model transformation to the currently bound shader
 		glUniformMatrix4fv( modelMatrixID, 1, GL_FALSE, glm::value_ptr( ModelMatrix ) );
 
-		if ( m_statusWireframe == true ) {
+		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 		// Draw status text
-		if ( m_statusText == true ) {
+		if ( m_statusText ) {
 			this->displayStatusText( textShader, vertexCount, triangleCount );
 		}
 

@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/ModelReader.h"
 
 namespace gw2b {
-    class DatFile;
+	class DatFile;
 
 	class ModelViewer;
 	class RenderTimer : public wxTimer {
@@ -60,7 +60,7 @@ namespace gw2b {
 		struct PackedVertex;
 		struct Character;
 
-        DatFile&                    m_datFile;
+		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
