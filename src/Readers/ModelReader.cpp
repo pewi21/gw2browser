@@ -174,7 +174,7 @@ namespace gw2b {
 		//auto skeletonChunk = model.chunk<gw2f::pf::ModelChunks::Skeleton>( );
 
 		this->readGeometry( newModel, modelPackFile );
-		this->readMaterialData( newModel, modelPackFile );
+		this->readMaterial( newModel, modelPackFile );
 
 		wxLogMessage( wxT( "Finished reading model file." ) );
 
@@ -506,7 +506,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelReader::readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+	void ModelReader::readMaterial( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
 		wxLogMessage( wxT( "Reading MODL chunk..." ) );
 		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 
@@ -536,6 +536,7 @@ namespace gw2b {
 
 		Material* materials = p_model.addMaterial( materialCount );
 
+		// Loop through each material
 #pragma omp parallel for shared(materials)
 		for ( int i = 0; i < static_cast<int>( materialCount ); i++ ) {
 			auto& mat = materialsArray[i];
@@ -555,7 +556,6 @@ namespace gw2b {
 
 			auto textures = mat.textures;
 
-			// Out of these, we only care about the diffuse maps
 			for ( uint t = 0; t < textures.size( ); t++ ) {
 				// Get file reference
 				auto fileReference = reinterpret_cast<const ANetFileReference*>( &textures[t].filename );

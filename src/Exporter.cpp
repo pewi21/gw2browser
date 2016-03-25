@@ -604,8 +604,7 @@ namespace gw2b {
 			if ( mesh.materialName.empty( ) ) {
 				modlStream << "usemtl None" << std::endl;
 			} else {
-				//modlStream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
-				modlStream << "usemtl " << "None" << std::endl;
+				modlStream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
 			}
 
 			// Enable/disable smooth shading
@@ -667,12 +666,14 @@ namespace gw2b {
 		matStream << "# Gw2Browser MTL File: \'" << m_filename.GetName( ) << "\'" << std::endl;
 		matStream << "# Material Count : " << model.numMaterial( ) << std::endl;
 		matStream << std::endl;
-		/*
-		for ( uint i = 0; i < model.numMaterial( ); i++ ) {
-			const Material& material = model.material( i );
+
+		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
+			const Mesh& mesh = model.mesh( i );
+			auto materialIndex = mesh.materialIndex;
+			const Material& material = model.material( materialIndex );
 
 			// Define new material
-			matStream << "newmtl " << "name" << std::endl;
+			matStream << "newmtl " << mesh.materialName.c_str( ) << std::endl;
 
 			// Ambient color
 			matStream << "Ka 1.000 1.000 1.000" << std::endl;
@@ -686,17 +687,20 @@ namespace gw2b {
 			matStream << "d 1" << std::endl;
 			// Illumination model
 			matStream << "illum 2" << std::endl;
-			// Ambient texture map
-			matStream << "map_Ka " << "filename" << std::endl;
-			// Diffuse texture map ( most of the time, it will be the same as the ambient texture map )
-			matStream << "map_Kd " << "filename" << std::endl;
-			// Specular color texture map
-			matStream << "map_Ks " << "filename" << std::endl;
+
+			// Load diffuse texture
+			if ( material.diffuseMap ) {
+				// Ambient texture map
+				matStream << "map_Ka " << material.diffuseMap << ".png" << std::endl;
+				// Diffuse texture map ( most of the time, it will be the same as the ambient texture map )
+				matStream << "map_Kd " << material.diffuseMap << ".png" << std::endl;
+				// Specular color texture map
+				matStream << "map_Ks " << material.diffuseMap << ".png" << std::endl;
+			}
 
 			// newline before next material!
 			matStream << std::endl;
 		}
-		*/
 
 		// Material None
 		matStream << "newmtl " << "None" << std::endl;
@@ -726,7 +730,7 @@ namespace gw2b {
 		// Export Textures
 		// ---------------
 
-		// Exported texture(s) is in same name of exported model name directory.
+		// Exported texture(s) is in the same directory as exported model.
 
 		wxLogMessage( wxString::Format( wxT( "Exporting %s's textures..." ), m_filename.GetName( ) ) );
 
@@ -750,9 +754,6 @@ namespace gw2b {
 		std::sort( textureFileList.begin( ), textureFileList.end( ) );
 		temp = std::unique( textureFileList.begin( ), textureFileList.end( ) );
 		textureFileList.resize( std::distance( textureFileList.begin( ), temp ) );
-
-		// Set path of texture to model id
-		m_filename.AppendDir( p_entryname );
 
 		// Create directory if not exist
 		if ( !m_filename.DirExists( ) ) {

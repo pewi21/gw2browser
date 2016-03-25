@@ -90,7 +90,6 @@ namespace gw2b {
 		wxString        materialName;
 		int             materialIndex;
 		uint32			flags;
-		uint32			numLods;
 		Bounds          bounds;
 		byte            hasNormal : 1;
 		byte            hasUV : 1;
@@ -170,8 +169,7 @@ namespace gw2b {
 		void computeVertexNormals( Mesh& p_mesh ) const;
 		/** Rotate given mesh in ZY and invert Z. */
 		void rotZYinvZ( Mesh& p_mesh ) const;
-		void readAMAT( Material& p_material ) const;
-		void readMaterialData( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
+		void readMaterial( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 	}; // class ModelReader
 
 }; // namespace gw2b
