@@ -190,9 +190,6 @@
     <ClInclude Include="..\src\ViewerGLCanvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\INeedDatFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
