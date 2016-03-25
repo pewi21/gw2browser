@@ -9,7 +9,7 @@ Change:
 - New about box.
 - Sound Bank and Eula file support.
 - Improve string file support, add support for Chinese language string.
-- Some improvement in ModelReader.
+- Some small improvement in ModelReader.
 - Wavefront .obj model export improvement.
 Model now export with texture/material and can import to Blender using
 default Wavefront .obj import settings, no need to rotate the imported model.

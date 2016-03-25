@@ -6,11 +6,6 @@ TODO list
 
 * Add a icon for Gw2Browser.
 
-* When close filelist or log window, uncheck the checker menu.
-
-* Wavefront .obj model export with materials.
-(Unfinish, no texture maping in materials yet)
-
 1.0.8.1
 -------
 
@@ -35,7 +30,7 @@ for use by range-base loop.
 
 * Use C++11 std::thread for multi-threading in Task.
 
-* COLLADA model export.
+* COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
 
 * Some restructuring. Decouple views from their data, for instance. Clean up 
 headers, etc.
