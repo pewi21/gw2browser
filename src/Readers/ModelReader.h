@@ -144,6 +144,7 @@ namespace gw2b {
 	public:
 		/** Constructor.
 		*  \param[in]  pData       Data to be handled by this reader.
+		*  \param[in]  p_datFile    Reference to an instance of DatFile.
 		*  \param[in]  pFileType   File type of the given data. */
 		ModelReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */

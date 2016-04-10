@@ -35,6 +35,7 @@ namespace gw2b {
 	public:
 		/** Constructor.
 		*  \param[in]  p_data       Data to be handled by this reader.
+		*  \param[in]  p_datFile    Reference to an instance of DatFile.
 		*  \param[in]  p_fileType   File type of the given data. */
 		EulaReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */

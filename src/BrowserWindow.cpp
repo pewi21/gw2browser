@@ -52,7 +52,7 @@ namespace gw2b {
 		enum {
 			ID_ShowFileList = wxID_HIGHEST + 1,
 			ID_ShowLog,							// Show log panel
-			ID_ClearLog,
+			ID_ClearLog,						// Clear the log panel
 			//ID_ResetLayout,
 			//ID_SetBackgroundColor,
 			//ID_ShowGrid,		// Show grid on PreviewGLCanvas
