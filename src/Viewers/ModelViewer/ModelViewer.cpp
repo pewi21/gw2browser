@@ -822,6 +822,7 @@ namespace gw2b {
 		Array<GLubyte> image( imageSize );
 
 		// Merge wxImage alpha channel to RGBA
+#pragma omp parallel for
 		for ( int y = 0; y < imageHeight; y++ ) {
 			for ( int x = 0; x < imageWidth; x++ ) {
 				image[( x + y * imageWidth ) * bytesPerPixel + 0] = bitmapData[( x + y * imageWidth ) * 3];
