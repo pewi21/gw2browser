@@ -1,7 +1,7 @@
 Change log
 ----------
 
-Gw2Browser_2016-xx-xx (1.0.7.1)
+Gw2Browser_2016-04-10 (1.0.7.1)
 -------------------------------
 Change:
 - Gw2Browser can now compile with TDM-GCC (and possibly MinGW and GCC on linux as well).
