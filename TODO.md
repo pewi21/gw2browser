@@ -1,10 +1,7 @@
 TODO list
 =========
 
-1.0.7.1
--------
-
-* Add a icon for Gw2Browser.
+May change over time. :P
 
 1.0.8.1
 -------
@@ -17,8 +14,6 @@ TODO list
 
 Further plans
 -------------
-
-* Scale the exported model. (or scale it in ModelReader?)
 
 * In ModelReader make new function material( ) that return Material vector
 for use by range-base loop.

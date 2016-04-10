@@ -198,6 +198,8 @@ Authors
 ### Thanks to:
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser and gw2formats
+* [Joey de Vries](http://learnopengl.com) : Great OpenGL 3.3 tutorial
+* Inigo Quilez : clever normalization of mesh
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
