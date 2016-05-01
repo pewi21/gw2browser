@@ -64,12 +64,6 @@ namespace gw2b {
 
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
-
-		Model                       m_model;
-		std::vector<MeshCache>		m_meshCache;
-		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
-		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
-		std::vector<TBO>			m_textureBuffer;	// Texture Buffer Object
 		Camera                      m_camera;
 		wxPoint                     m_lastMousePos;
 		float                       m_minDistance;
@@ -80,10 +74,16 @@ namespace gw2b {
 		bool						m_statusTextured = true;
 		bool						m_statusText = true;
 
-		// Dummy textures
+		// Mesh
+		Model                       m_model;
+		std::vector<MeshCache>		m_meshCache;
+		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
+		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
+
+		// Textures
+		std::vector<TBO>			m_textureBuffer;	// Texture Buffer Object
 		GLuint						m_dummyBlackTexture;
 		GLuint						m_dummyWhiteTexture;
-
 		GLuint						TextureArrayID;
 
 		// Character rendering stuff

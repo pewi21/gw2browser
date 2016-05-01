@@ -73,8 +73,8 @@ namespace gw2b {
 
 	struct ModelViewer::TBO {
 		GLuint					diffuseMap;
-		//GLuint					normalMap;
-		//GLuint					lightMap;
+		GLuint					normalMap;
+		GLuint					lightMap;
 	};
 
 	struct ModelViewer::PackedVertex {
@@ -97,8 +97,7 @@ namespace gw2b {
 	ModelViewer::ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile )
 		: ViewerGLCanvas( p_parent, p_attrib, p_pos, p_size, p_style )
 		, m_datFile( p_datFile )
-		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) )
-		{
+		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
@@ -108,10 +107,10 @@ namespace gw2b {
 				return;
 			}
 			m_glInitialized = true;
-		}
 
-		m_renderTimer = new RenderTimer( this );
-		m_renderTimer->start( );
+			m_renderTimer = new RenderTimer( this );
+			m_renderTimer->start( );
+		}
 
 		// Hook up events
 		this->Bind( wxEVT_PAINT, &ModelViewer::onPaintEvt, this );
@@ -147,12 +146,12 @@ namespace gw2b {
 			if ( it.diffuseMap ) {
 				glDeleteBuffers( 1, &it.diffuseMap );
 			}
-			/*if ( it.normalMap ) {
+			if ( it.normalMap ) {
 				glDeleteBuffers( 1, &it.normalMap );
 			}
 			if ( it.lightMap ) {
 				glDeleteBuffers( 1, &it.lightMap );
-			}*/
+			}
 		}
 
 		// Clean character textures
@@ -205,12 +204,12 @@ namespace gw2b {
 			if ( it.diffuseMap ) {
 				glDeleteBuffers( 1, &it.diffuseMap );
 			}
-			/*if ( it.normalMap ) {
+			if ( it.normalMap ) {
 				glDeleteBuffers( 1, &it.normalMap );
 			}
 			if ( it.lightMap ) {
 				glDeleteBuffers( 1, &it.lightMap );
-			}*/
+			}
 		}
 
 		m_vertexBuffer.clear( );
@@ -264,33 +263,65 @@ namespace gw2b {
 			}
 		}
 
+		// Load textures to texture map
+		std::map<uint32, GLuint> textureMap;
+		for ( int i = 0; i < static_cast<int>( m_model.numMaterial( ) ); i++ ) {
+			auto& material = m_model.material( i );
+			std::map<uint32, GLuint>::iterator it;
+
+			// Load diffuse texture
+			if ( material.diffuseMap ) {
+				it = textureMap.find( material.diffuseMap );
+				if ( it == textureMap.end( ) ) {
+					textureMap.insert( std::pair<uint32, GLuint>( material.diffuseMap, this->loadTexture( material.diffuseMap ) ) );
+				}
+			}
+
+			if ( material.normalMap ) {
+				it = textureMap.find( material.normalMap );
+				if ( it == textureMap.end( ) ) {
+					textureMap.insert( std::pair<uint32, GLuint>( material.normalMap, this->loadTexture( material.normalMap ) ) );
+				}
+			}
+
+			if ( material.lightMap ) {
+				it = textureMap.find( material.lightMap );
+				if ( it == textureMap.end( ) ) {
+					textureMap.insert( std::pair<uint32, GLuint>( material.lightMap, this->loadTexture( material.lightMap ) ) );
+				}
+			}
+		}
+
 		// Create Texture Buffer Object
 		m_textureBuffer.resize( m_model.numMaterial( ) );
 
-		// Load textures
+		// Copy texture id from texture map to TBO
 		for ( int i = 0; i < static_cast<int>( m_model.numMaterial( ) ); i++ ) {
 			auto& material = m_model.material( i );
 			auto& cache = m_textureBuffer[i];
 
 			// Load diffuse texture
 			if ( material.diffuseMap ) {
-				cache.diffuseMap = this->loadTexture( material.diffuseMap );
+				cache.diffuseMap = textureMap.find( material.diffuseMap )->second;
 			} else {
 				cache.diffuseMap = 0;
 			}
-			/*
+
 			if ( material.normalMap ) {
-				cache.normalMap = this->loadTexture( material.normalMap );
+				cache.normalMap = textureMap.find( material.normalMap )->second;
 			} else {
 				cache.normalMap = 0;
 			}
 
 			if ( material.lightMap ) {
-				cache.lightMap = this->loadTexture( material.lightMap );
+				cache.lightMap = textureMap.find( material.lightMap )->second;
 			} else {
 				cache.lightMap = 0;
-			}*/
+			}
 		}
+
+		// Clear texture map
+		textureMap.clear( );
 
 		// Re-focus and re-render
 		this->focus( );
@@ -484,9 +515,9 @@ namespace gw2b {
 		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
 		// Normals attribute
-		//glEnableVertexAttribArray( 2 );
-		//glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
-		//glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+		glEnableVertexAttribArray( 2 );
+		glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
+		glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
 		// Index buffer
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo.elementBuffer );
@@ -576,8 +607,8 @@ namespace gw2b {
 	}
 
 	bool ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
-		// Tempoarary buffer
-		std::vector<uint> vertexIndices, uvIndices, normalIndices;
+
+		// Tempoarary buffers
 		std::vector<glm::vec3> temp_vertices;
 		std::vector<glm::vec2> temp_uvs;
 		std::vector<glm::vec3> temp_normals;
@@ -603,6 +634,9 @@ namespace gw2b {
 				temp_normals.push_back( tempNormals );
 			}
 		}
+
+		// Tempoarary buffers
+		std::vector<uint> vertexIndices, uvIndices, normalIndices;
 
 		// Read faces
 		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
