@@ -6,14 +6,12 @@ May change over time. :P
 1.0.8.1
 -------
 
-* Optimize model viewer's loadMeshes function.
-
-* Seperate ModelViewer function to smaller files.
-
 * Model Viewer Lighting, normal maping, normals visualizer, z-buffer visualizer, etc.
 
 Further plans
 -------------
+
+* Seperate ModelViewer function to smaller files.
 
 * In ModelReader make new function material( ) that return Material vector
 for use by range-base loop.
