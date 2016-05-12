@@ -166,7 +166,7 @@ namespace gw2b {
 		glDeleteBuffers( 1, &m_dummyWhiteTexture );
 
 		// Clean shaders
-		glDeleteProgram( programID );
+		glDeleteProgram( mainShader );
 		glDeleteProgram( textShader );
 
 		// Clean VAO
@@ -378,7 +378,7 @@ namespace gw2b {
 		glBindVertexArray( modelVAO );
 
 		// Default shader
-		if ( !loadShaders( programID, "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
+		if ( !loadShaders( mainShader, "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
 			wxLogMessage( wxT( "Fail to load shaders." ) );
 			return false;
 		}
@@ -397,12 +397,12 @@ namespace gw2b {
 		}
 
 		// Get a handle for our "MVP" uniform
-		projectionMatrixID = glGetUniformLocation( programID, "projection" );
-		viewMatrixID = glGetUniformLocation( programID, "view" );
-		modelMatrixID = glGetUniformLocation( programID, "model" );
+		projectionMatrixID = glGetUniformLocation( mainShader, "projection" );
+		viewMatrixID = glGetUniformLocation( mainShader, "view" );
+		modelMatrixID = glGetUniformLocation( mainShader, "model" );
 
 		// Get a handle for our "myTexture" uniform
-		TextureArrayID = glGetUniformLocation( programID, "texture1" );
+		TextureArrayID = glGetUniformLocation( mainShader, "texture1" );
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
@@ -428,8 +428,8 @@ namespace gw2b {
 		// Clear color buffer and depth buffer
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-		// Use the shader
-		glUseProgram( programID );
+		// Use the mainshader
+		glUseProgram( mainShader );
 
 		// Update view matrix
 		this->updateMatrices( );

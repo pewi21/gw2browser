@@ -96,7 +96,7 @@ namespace gw2b {
 		GLuint						projectionMatrixID;
 		GLuint						viewMatrixID;
 		GLuint						modelMatrixID;
-		GLuint						programID;
+		GLuint						mainShader;
 
 		GLuint						modelVAO;
 
