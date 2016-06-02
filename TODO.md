@@ -11,6 +11,8 @@ May change over time. :P
 Further plans
 -------------
 
+* Also display current file id when have error on reading files.
+
 * Seperate ModelViewer function to smaller files.
 
 * In ModelReader make new function material( ) that return Material vector
