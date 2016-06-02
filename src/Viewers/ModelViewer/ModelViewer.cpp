@@ -163,8 +163,8 @@ namespace gw2b {
 		glDeleteBuffers( 1, &m_dummyWhiteTexture );
 
 		// Clean shaders
-		mainShader.clear( );
-		textShader.clear( );
+		m_mainShader.clear( );
+		m_textShader.clear( );
 
 		// Clean VAO
 		glDeleteVertexArrays( 1, &modelVAO );
@@ -371,12 +371,10 @@ namespace gw2b {
 
 		// Generate Vertex Array Object
 		glGenVertexArrays( 1, &modelVAO );
-		// Bind Vertex Array Object
-		glBindVertexArray( modelVAO );
 
 		// Load shader
-		mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-		textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+		m_mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
+		m_textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
 
 		FT_UInt fontsize = 12;
 		// Load font
@@ -385,13 +383,8 @@ namespace gw2b {
 			return false;
 		}
 
-		// Get a handle for our "MVP" uniform
-		projectionMatrixID = glGetUniformLocation( mainShader.program, "projection" );
-		viewMatrixID = glGetUniformLocation( mainShader.program, "view" );
-		modelMatrixID = glGetUniformLocation( mainShader.program, "model" );
-
 		// Get a handle for our "myTexture" uniform
-		TextureArrayID = glGetUniformLocation( mainShader.program, "texture1" );
+		TextureArrayID = glGetUniformLocation( m_mainShader.program, "texture1" );
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
@@ -418,10 +411,17 @@ namespace gw2b {
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		// Use the mainshader
-		mainShader.use( );
+		m_mainShader.use( );
 
 		// Update view matrix
 		this->updateMatrices( );
+
+		// Model matrix
+		glm::mat4 model;
+		// Transform the model
+		model = glm::translate( model, glm::vec3( 0.0f, 0.0f, 0.0f ) );
+		// Send model transformation to the currently bound shader
+		glUniformMatrix4fv( glGetUniformLocation( m_mainShader.program, "model" ), 1, GL_FALSE, glm::value_ptr( model ) );
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -432,10 +432,7 @@ namespace gw2b {
 		uint vertexCount = 0;
 		uint triangleCount = 0;
 
-		// Model matrix
-		glm::mat4 ModelMatrix;
-
-		// Draw each model
+		// todo: Draw each model
 
 		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
@@ -445,18 +442,12 @@ namespace gw2b {
 			triangleCount += m_model.mesh( i ).triangles.size( );
 		}
 
-		// Transform the model
-		ModelMatrix = glm::translate( ModelMatrix, glm::vec3( 0.0f, 0.0f, 0.0f ) );
-
-		// Send model transformation to the currently bound shader
-		glUniformMatrix4fv( modelMatrixID, 1, GL_FALSE, glm::value_ptr( ModelMatrix ) );
-
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 		// Draw status text
 		if ( m_statusText ) {
-			this->displayStatusText( textShader.program, vertexCount, triangleCount );
+			this->displayStatusText( m_textShader.program, vertexCount, triangleCount );
 		}
 
 		SwapBuffers( );
@@ -493,22 +484,25 @@ namespace gw2b {
 		// Set our "myTexture" sampler to user Texture Unit 0
 		glUniform1i( TextureArrayID, 0 );
 
-		// Vertices attribute
+		// Bind Vertex Array Object
+		glBindVertexArray( modelVAO );
+
+		// positions
 		glEnableVertexAttribArray( 0 );
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.vertexBuffer );
 		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
-		// UVs attribute
+		// texCoords
 		glEnableVertexAttribArray( 1 );
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.uvBuffer );
 		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
-		// Normals attribute
+		// normals
 		glEnableVertexAttribArray( 2 );
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
 		glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
-		// Index buffer
+		// index buffer
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo.elementBuffer );
 
 		// Draw the triangles!
@@ -517,13 +511,15 @@ namespace gw2b {
 		// Unbind texture from Texture Unit 0
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
+		// Unbind Vertex Array Object
+		glBindVertexArray( 0 );
 	}
 
 	void ModelViewer::drawText( const GLuint &p_shader, const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color ) {
 		// Activate corresponding render state
-		textShader.use( );
+		m_textShader.use( );
 
-		glUniform3f( glGetUniformLocation( textShader.program, "textColor" ), p_color.x, p_color.y, p_color.z );
+		glUniform3f( glGetUniformLocation( m_textShader.program, "textColor" ), p_color.x, p_color.y, p_color.z );
 
 		glActiveTexture( GL_TEXTURE0 );
 		glBindVertexArray( textVAO );
@@ -567,7 +563,7 @@ namespace gw2b {
 		wxSize ClientSize = this->GetClientSize( );
 
 		// Use text shader
-		textShader.use( );
+		m_textShader.use( );
 
 		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( ClientSize.x ), 0.0f, static_cast<GLfloat>( ClientSize.y ) );
 		glUniformMatrix4fv( glGetUniformLocation( p_shader, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
@@ -765,6 +761,8 @@ namespace gw2b {
 	}
 
 	bool ModelViewer::populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache ) {
+		// Bind Vertex Array Object
+		glBindVertexArray( modelVAO );
 
 		glGenBuffers( 1, &p_vbo.vertexBuffer );
 		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.vertexBuffer );
@@ -786,6 +784,9 @@ namespace gw2b {
 		glGenBuffers( 1, &p_ibo.elementBuffer );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, p_ibo.elementBuffer );
 		glBufferData( GL_ELEMENT_ARRAY_BUFFER, p_cache.indices.size( ) * sizeof( uint ), &p_cache.indices[0], GL_STATIC_DRAW );
+
+		// Unbind Vertex Array Object
+		glBindVertexArray( 0 );
 
 		return true;
 	}
@@ -1004,13 +1005,13 @@ namespace gw2b {
 		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
 
 		// Projection matrix
-		auto ProjMatrix = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
+		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 		// View matrix
-		auto ViewMatrix = m_camera.calculateViewMatrix( );
+		auto view = m_camera.calculateViewMatrix( );
 
 		// Send our transformation to the currently bound shader
-		glUniformMatrix4fv( viewMatrixID, 1, GL_FALSE, glm::value_ptr( ViewMatrix ) );
-		glUniformMatrix4fv( projectionMatrixID, 1, GL_FALSE, glm::value_ptr( ProjMatrix ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_mainShader.program, "view" ), 1, GL_FALSE, glm::value_ptr( view ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_mainShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 	}
 
 	void ModelViewer::focus( ) {

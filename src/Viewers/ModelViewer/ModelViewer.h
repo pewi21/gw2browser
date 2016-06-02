@@ -89,15 +89,12 @@ namespace gw2b {
 
 		// Character rendering stuff
 		std::map<GLchar, Character> m_characterTextureMap;
-		Shader						textShader;
+		Shader						m_textShader;
 		GLuint						textVAO;
 		GLuint						textVBO;
 
 		// Shader stuff
-		GLuint						projectionMatrixID;
-		GLuint						viewMatrixID;
-		GLuint						modelMatrixID;
-		Shader						mainShader;
+		Shader						m_mainShader;
 
 		GLuint						modelVAO;
 
