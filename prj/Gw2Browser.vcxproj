@@ -62,6 +62,7 @@
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageViewer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Camera.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BrowserWindow.cpp" />
@@ -105,6 +106,7 @@
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageViewer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Camera.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\ModelViewer.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\shader.frag" />

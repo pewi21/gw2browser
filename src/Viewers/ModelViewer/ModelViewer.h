@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include FT_FREETYPE_H
 
 #include "Camera.h"
+#include "Shader.h"
 
 #include "DatFile.h"
 #include "ViewerGLCanvas.h"
@@ -88,7 +89,7 @@ namespace gw2b {
 
 		// Character rendering stuff
 		std::map<GLchar, Character> m_characterTextureMap;
-		GLuint						textShader;
+		Shader						textShader;
 		GLuint						textVAO;
 		GLuint						textVBO;
 
@@ -96,7 +97,7 @@ namespace gw2b {
 		GLuint						projectionMatrixID;
 		GLuint						viewMatrixID;
 		GLuint						modelMatrixID;
-		GLuint						mainShader;
+		Shader						mainShader;
 
 		GLuint						modelVAO;
 
@@ -139,9 +140,8 @@ namespace gw2b {
 			std::vector<glm::vec2>& out_uvs,
 			std::vector<glm::vec3>& out_normals );
 		bool populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
-		GLuint createDummyTexture( const GLubyte *p_data );
+		GLuint createDummyTexture( const GLubyte* p_data );
 		GLuint loadTexture( const uint p_fileId );
-		bool loadShaders( GLuint& p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath );
 		bool loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height );
 		void updateMatrices( );
 		void focus( );

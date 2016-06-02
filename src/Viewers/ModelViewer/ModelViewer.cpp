@@ -25,9 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <map>
-#include <vector>
-
 #include "Readers/ImageReader.h"
 
 #include "ModelViewer.h"
@@ -166,8 +163,8 @@ namespace gw2b {
 		glDeleteBuffers( 1, &m_dummyWhiteTexture );
 
 		// Clean shaders
-		glDeleteProgram( mainShader );
-		glDeleteProgram( textShader );
+		mainShader.clear( );
+		textShader.clear( );
 
 		// Clean VAO
 		glDeleteVertexArrays( 1, &modelVAO );
@@ -377,17 +374,9 @@ namespace gw2b {
 		// Bind Vertex Array Object
 		glBindVertexArray( modelVAO );
 
-		// Default shader
-		if ( !loadShaders( mainShader, "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
-			wxLogMessage( wxT( "Fail to load shaders." ) );
-			return false;
-		}
-
-		// Text shader
-		if ( !loadShaders( textShader, "..//data//shaders//text.vert", "..//data//shaders//text.frag" ) ) {
-			wxLogMessage( wxT( "Fail to load text shaders." ) );
-			return false;
-		}
+		// Load shader
+		mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
+		textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
 
 		FT_UInt fontsize = 12;
 		// Load font
@@ -397,12 +386,12 @@ namespace gw2b {
 		}
 
 		// Get a handle for our "MVP" uniform
-		projectionMatrixID = glGetUniformLocation( mainShader, "projection" );
-		viewMatrixID = glGetUniformLocation( mainShader, "view" );
-		modelMatrixID = glGetUniformLocation( mainShader, "model" );
+		projectionMatrixID = glGetUniformLocation( mainShader.program, "projection" );
+		viewMatrixID = glGetUniformLocation( mainShader.program, "view" );
+		modelMatrixID = glGetUniformLocation( mainShader.program, "model" );
 
 		// Get a handle for our "myTexture" uniform
-		TextureArrayID = glGetUniformLocation( mainShader, "texture1" );
+		TextureArrayID = glGetUniformLocation( mainShader.program, "texture1" );
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
@@ -429,7 +418,7 @@ namespace gw2b {
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		// Use the mainshader
-		glUseProgram( mainShader );
+		mainShader.use( );
 
 		// Update view matrix
 		this->updateMatrices( );
@@ -467,7 +456,7 @@ namespace gw2b {
 		}
 		// Draw status text
 		if ( m_statusText ) {
-			this->displayStatusText( textShader, vertexCount, triangleCount );
+			this->displayStatusText( textShader.program, vertexCount, triangleCount );
 		}
 
 		SwapBuffers( );
@@ -532,8 +521,9 @@ namespace gw2b {
 
 	void ModelViewer::drawText( const GLuint &p_shader, const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color ) {
 		// Activate corresponding render state
-		glUseProgram( p_shader );
-		glUniform3f( glGetUniformLocation( textShader, "textColor" ), p_color.x, p_color.y, p_color.z );
+		textShader.use( );
+
+		glUniform3f( glGetUniformLocation( textShader.program, "textColor" ), p_color.x, p_color.y, p_color.z );
 
 		glActiveTexture( GL_TEXTURE0 );
 		glBindVertexArray( textVAO );
@@ -577,7 +567,8 @@ namespace gw2b {
 		wxSize ClientSize = this->GetClientSize( );
 
 		// Use text shader
-		glUseProgram( p_shader );
+		textShader.use( );
+
 		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( ClientSize.x ), 0.0f, static_cast<GLfloat>( ClientSize.y ) );
 		glUniformMatrix4fv( glGetUniformLocation( p_shader, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 
@@ -799,7 +790,7 @@ namespace gw2b {
 		return true;
 	}
 
-	GLuint ModelViewer::createDummyTexture( const GLubyte *p_data ) {
+	GLuint ModelViewer::createDummyTexture( const GLubyte* p_data ) {
 		// Create one OpenGL texture
 		GLuint Texture;
 		glGenTextures( 1, &Texture );
@@ -906,109 +897,6 @@ namespace gw2b {
 		deletePointer( reader );
 
 		return TextureID;
-	}
-
-	bool ModelViewer::loadShaders( GLuint& p_programId, const char *p_vertexShaderFilePath, const char *p_fragmentShaderFilePath ) {
-		// Read the Vertex Shader code from the file
-		std::string VertexShaderCode;
-		std::ifstream VertexShaderStream( p_vertexShaderFilePath );
-
-		if ( VertexShaderStream.is_open( ) ) {
-			std::string Line = "";
-			while ( getline( VertexShaderStream, Line ) ) {
-				VertexShaderCode += "\n" + Line;
-			}
-			VertexShaderStream.close( );
-		} else {
-			wxLogMessage( wxT( "Vertex shader : %s not found." ), p_vertexShaderFilePath );
-			return false;
-		}
-
-		// Read the Fragment Shader code from the file
-		std::string FragmentShaderCode;
-		std::ifstream FragmentShaderStream( p_fragmentShaderFilePath );
-		if ( FragmentShaderStream.is_open( ) ) {
-			std::string Line = "";
-			while ( getline( FragmentShaderStream, Line ) ) {
-				FragmentShaderCode += "\n" + Line;
-			}
-			FragmentShaderStream.close( );
-		} else {
-			wxLogMessage( wxT( "Fragment shader : %s not found." ), p_fragmentShaderFilePath );
-			return false;
-		}
-
-		// Create the shaders
-		GLuint VertexShaderID = glCreateShader( GL_VERTEX_SHADER );
-		GLuint FragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
-
-		GLint isCompiled = GL_FALSE;
-		GLint InfoLogLength = 0;
-
-		// Compile Vertex Shader
-		wxLogMessage( wxT( "Compiling vertex shader : %s" ), p_vertexShaderFilePath );
-		const GLchar *VertexSourcePointer = VertexShaderCode.c_str( );
-		glShaderSource( VertexShaderID, 1, &VertexSourcePointer, NULL );
-		glCompileShader( VertexShaderID );
-
-		// Check Vertex Shader
-		glGetShaderiv( VertexShaderID, GL_COMPILE_STATUS, &isCompiled );
-		if ( isCompiled == GL_FALSE ) {
-			glGetShaderiv( VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
-			std::vector<GLchar> VertexShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
-			glGetShaderInfoLog( VertexShaderID, InfoLogLength, &InfoLogLength, &VertexShaderErrorMessage[0] );
-
-			glDeleteShader( VertexShaderID );
-			wxLogMessage( wxT( "Vertex shader compile error : %s" ), &VertexShaderErrorMessage[0] );
-			return false;
-		}
-
-		// Compile Fragment Shader
-		wxLogMessage( wxT( "Compiling vertex shader : %s" ), p_fragmentShaderFilePath );
-		const GLchar *FragmentSourcePointer = FragmentShaderCode.c_str( );
-		glShaderSource( FragmentShaderID, 1, &FragmentSourcePointer, NULL );
-		glCompileShader( FragmentShaderID );
-
-		// Check Fragment Shader
-		glGetShaderiv( FragmentShaderID, GL_COMPILE_STATUS, &isCompiled );
-		if ( isCompiled == GL_FALSE ) {
-			glGetShaderiv( FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength );
-			std::vector<GLchar> FragmentShaderErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
-			glGetShaderInfoLog( FragmentShaderID, InfoLogLength, &InfoLogLength, &FragmentShaderErrorMessage[0] );
-
-			glDeleteShader( FragmentShaderID );
-			wxLogMessage( wxT( "Fragment shader compile error : %s" ), &FragmentShaderErrorMessage[0] );
-			return false;
-		}
-
-		GLint isLinked = GL_FALSE;
-
-		// Link the program
-		wxLogMessage( wxT( "Linking shader program..." ) );
-		p_programId = glCreateProgram( );
-		glAttachShader( p_programId, VertexShaderID );
-		glAttachShader( p_programId, FragmentShaderID );
-		glLinkProgram( p_programId );
-
-		// Check the program
-		glGetProgramiv( p_programId, GL_LINK_STATUS, &isLinked );
-		if ( isLinked == GL_FALSE ) {
-			glGetProgramiv( p_programId, GL_INFO_LOG_LENGTH, &InfoLogLength );
-			std::vector<GLchar> ProgramErrorMessage( glm::max( InfoLogLength, int( 1 ) ) );
-			glGetProgramInfoLog( p_programId, InfoLogLength, NULL, &ProgramErrorMessage[0] );
-
-			glDeleteShader( VertexShaderID );
-			glDeleteShader( FragmentShaderID );
-
-			wxLogMessage( wxT( "Shader program linking error : %s" ), &ProgramErrorMessage[0] );
-			return false;
-		}
-		wxLogMessage( wxT( "Done." ) );
-
-		glDeleteShader( VertexShaderID );
-		glDeleteShader( FragmentShaderID );
-
-		return true;
 	}
 
 	bool ModelViewer::loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height ) {
