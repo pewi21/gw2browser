@@ -213,6 +213,10 @@
 		<Unit filename="../src/Viewers/ModelViewer/Camera.h" />
 		<Unit filename="../src/Viewers/ModelViewer/ModelViewer.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/ModelViewer.h" />
+		<Unit filename="../src/Viewers/ModelViewer/Shader.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/Shader.h" />
+		<Unit filename="../src/Viewers/ModelViewer/Text2D.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/Text2D.h" />
 		<Unit filename="../src/resource.h" />
 		<Unit filename="../src/stdafx.cpp" />
 		<Unit filename="../src/stdafx.h" />
