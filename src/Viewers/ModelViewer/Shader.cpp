@@ -38,6 +38,14 @@ namespace gw2b {
 	Shader::~Shader( ) {
 	}
 
+	void Shader::use( ) {
+		glUseProgram( this->program );
+	}
+
+	void Shader::clear( ) {
+		glDeleteProgram( this->program );
+	}
+
 	void Shader::load( const char* p_vertexPath, const char* p_fragmentPath, const char* geometryPath ) {
 		// Read the vertex and fragment shader code from the file
 		std::string vertexCode;
@@ -139,14 +147,6 @@ namespace gw2b {
 		}
 
 		wxLogMessage( wxT( "INFO::SHADER::Done." ) );
-	}
-
-	void Shader::use( ) {
-		glUseProgram( this->program );
-	}
-
-	void Shader::clear( ) {
-		glDeleteProgram( this->program );
 	}
 
 	void Shader::checkCompileErrors( GLuint shader, std::string type ) {

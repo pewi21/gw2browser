@@ -84,13 +84,6 @@ namespace gw2b {
 		};
 	};
 
-	struct ModelViewer::Character {
-		GLuint TextureID;		// ID handle of the glyph texture
-		glm::ivec2 Size;		// Size of glyph
-		glm::ivec2 Bearing;		// Offset from baseline to left/top of glyph
-		GLuint Advance;			// Horizontal offset to advance to next glyph
-	};
-
 	ModelViewer::ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile )
 		: ViewerGLCanvas( p_parent, p_attrib, p_pos, p_size, p_style )
 		, m_datFile( p_datFile )
@@ -151,24 +144,18 @@ namespace gw2b {
 			}
 		}
 
-		// Clean character textures
-		for ( auto& it : m_characterTextureMap ) {
-			if ( it.first ) {
-				glDeleteBuffers( 1, &it.second.TextureID );
-			}
-		}
-
 		// Clean dummy textures
 		glDeleteBuffers( 1, &m_dummyBlackTexture );
 		glDeleteBuffers( 1, &m_dummyWhiteTexture );
 
 		// Clean shaders
 		m_mainShader.clear( );
-		m_textShader.clear( );
 
 		// Clean VAO
 		glDeleteVertexArrays( 1, &modelVAO );
-		glDeleteVertexArrays( 1, &textVAO );
+
+		// Clean text renderer
+		m_text.clear( );
 
 		delete m_renderTimer;
 
@@ -374,12 +361,10 @@ namespace gw2b {
 
 		// Load shader
 		m_mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-		m_textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
 
-		FT_UInt fontsize = 12;
-		// Load font
-		if ( !loadFont( m_characterTextureMap, "..//data//fonts//LiberationSans-Regular.ttf", fontsize ) ) {
-			wxLogMessage( wxT( "Fail to load font." ) );
+		// Initialize text renderer stuff
+		if ( !m_text.init( ) ) {
+			wxLogMessage( wxT( "Could not initialize text renderer." ) );
 			return false;
 		}
 
@@ -447,7 +432,7 @@ namespace gw2b {
 		}
 		// Draw status text
 		if ( m_statusText ) {
-			this->displayStatusText( m_textShader.program, vertexCount, triangleCount );
+			this->displayStatusText( vertexCount, triangleCount );
 		}
 
 		SwapBuffers( );
@@ -515,82 +500,28 @@ namespace gw2b {
 		glBindVertexArray( 0 );
 	}
 
-	void ModelViewer::drawText( const GLuint &p_shader, const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color ) {
-		// Activate corresponding render state
-		m_textShader.use( );
-
-		glUniform3f( glGetUniformLocation( m_textShader.program, "textColor" ), p_color.x, p_color.y, p_color.z );
-
-		glActiveTexture( GL_TEXTURE0 );
-		glBindVertexArray( textVAO );
-
-		// Iterate through all characters
-		for ( auto c : p_text ) {
-			Character ch = m_characterTextureMap[c];
-
-			GLfloat xpos = p_x + ch.Bearing.x * p_scale;
-			GLfloat ypos = p_y - ( ch.Size.y - ch.Bearing.y ) * p_scale;
-
-			GLfloat w = ch.Size.x * p_scale;
-			GLfloat h = ch.Size.y * p_scale;
-			// Update VBO for each character
-			GLfloat vertices[6][4] = {
-				{ xpos, ypos + h, 0.0, 0.0 },
-				{ xpos, ypos, 0.0, 1.0 },
-				{ xpos + w, ypos, 1.0, 1.0 },
-
-				{ xpos, ypos + h, 0.0, 0.0 },
-				{ xpos + w, ypos, 1.0, 1.0 },
-				{ xpos + w, ypos + h, 1.0, 0.0 }
-			};
-			// Render glyph texture over quad
-			glBindTexture( GL_TEXTURE_2D, ch.TextureID );
-			// Update content of Vertex Buffer Object memory
-			glBindBuffer( GL_ARRAY_BUFFER, textVBO );
-			glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof( vertices ), vertices ); // Be sure to use glBufferSubData and not glBufferData
-
-			glBindBuffer( GL_ARRAY_BUFFER, 0 );
-			// Render quad
-			glDrawArrays( GL_TRIANGLES, 0, 6 );
-			// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-			p_x += ( ch.Advance >> 6 ) * p_scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-		}
-		glBindVertexArray( 0 );
-		glBindTexture( GL_TEXTURE_2D, 0 );
-	}
-
-	void ModelViewer::displayStatusText( const GLuint &p_shader, const uint p_vertexCount, const uint p_triangleCount ) {
+	void ModelViewer::displayStatusText( const uint p_vertexCount, const uint p_triangleCount ) {
 		wxSize ClientSize = this->GetClientSize( );
 
-		// Use text shader
-		m_textShader.use( );
-
-		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( ClientSize.x ), 0.0f, static_cast<GLfloat>( ClientSize.y ) );
-		glUniformMatrix4fv( glGetUniformLocation( p_shader, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-
-		// Enable blending
-		glEnable( GL_BLEND );
-		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+		// Send ClientSize variable to text renderer
+		m_text.m_ClientSize = ClientSize;
 
 		glm::vec3 color = glm::vec3( 1.0f );
 		GLfloat scale = 1.0f;
 
 		// Top-left text
-		this->drawText( p_shader, wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ), 0.0f, ClientSize.y - 12.0f, scale, color );
-		this->drawText( p_shader, wxString::Format( wxT( "Vertices: %d" ), p_vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
-		this->drawText( p_shader, wxString::Format( wxT( "Triangles: %d" ), p_triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
+		m_text.drawText( wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ), 0.0f, ClientSize.y - 12.0f, scale, color );
+		m_text.drawText( wxString::Format( wxT( "Vertices: %d" ), p_vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
+		m_text.drawText( wxString::Format( wxT( "Triangles: %d" ), p_triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
 
 		// Bottom-left text
-		this->drawText( p_shader, wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle texture: press 3" ), 0.0f, 48.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle wireframe: press 2" ), 0.0f, 60.0f + 2.0f, scale, color );
-		this->drawText( p_shader, wxT( "Toggle status text: press 1" ), 0.0f, 72.0f + 2.0f, scale, color );
-
-		// Disable blending
-		glDisable( GL_BLEND );
+		m_text.drawText( wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle texture: press 3" ), 0.0f, 48.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle wireframe: press 2" ), 0.0f, 60.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle status text: press 1" ), 0.0f, 72.0f + 2.0f, scale, color );
 	}
 
 	bool ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
@@ -898,90 +829,6 @@ namespace gw2b {
 		deletePointer( reader );
 
 		return TextureID;
-	}
-
-	bool ModelViewer::loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height ) {
-		// FreeType
-		FT_Library ft;
-
-		// All functions return a value different than 0 whenever an error occurred
-		if ( FT_Init_FreeType( &ft ) ) {
-			wxLogMessage( wxT( "FreeType: Could not initialize FreeType library." ) );
-			return false;
-		}
-
-		// Load font as face
-		FT_Face face;
-		if ( FT_New_Face( ft, p_fontFile, 0, &face ) ) {
-			wxLogMessage( wxT( "FreeType: Failed to load font." ) );
-			return false;
-		}
-
-		// Set size to load glyphs as
-		FT_Set_Pixel_Sizes( face, 0, p_height );
-
-		// Disable byte-alignment restriction
-		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-
-		// Load first 128 characters of ASCII set
-		for ( GLubyte c = 0; c < 128; c++ ) {
-			// Load character glyph
-			if ( FT_Load_Char( face, c, FT_LOAD_RENDER ) ) {
-				wxLogMessage( wxT( "FreeType: Failed to load Glyph." ) );
-				continue;
-			}
-
-			// Generate texture
-			GLuint texture;
-			glGenTextures( 1, &texture );
-			glBindTexture( GL_TEXTURE_2D, texture );
-			glTexImage2D(
-				GL_TEXTURE_2D,
-				0,
-				GL_RED,
-				face->glyph->bitmap.width,
-				face->glyph->bitmap.rows,
-				0,
-				GL_RED,
-				GL_UNSIGNED_BYTE,
-				face->glyph->bitmap.buffer
-				);
-
-			// Set texture options
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-			// Now store character for later use
-			Character character = {
-				texture,
-				glm::ivec2( face->glyph->bitmap.width, face->glyph->bitmap.rows ),
-				glm::ivec2( face->glyph->bitmap_left, face->glyph->bitmap_top ),
-				static_cast<GLuint>( face->glyph->advance.x )
-			};
-			p_characters.insert( std::pair<GLchar, Character>( c, character ) );
-		}
-		glBindTexture( GL_TEXTURE_2D, 0 );
-
-		// Destroy FreeType once we're finished
-		FT_Done_Face( face );
-		FT_Done_FreeType( ft );
-
-		// Configure VAO/VBO for texture quads
-		glGenVertexArrays( 1, &textVAO );
-		glBindVertexArray( textVAO );
-
-		glGenBuffers( 1, &textVBO );
-		glBindBuffer( GL_ARRAY_BUFFER, textVBO );
-		glBufferData( GL_ARRAY_BUFFER, sizeof( GLfloat ) * 6 * 4, NULL, GL_DYNAMIC_DRAW );
-
-		glEnableVertexAttribArray( 0 );
-		glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof( GLfloat ), 0 );
-		glBindBuffer( GL_ARRAY_BUFFER, 0 );
-		glBindVertexArray( 0 );
-
-		return true;
 	}
 
 	void ModelViewer::updateMatrices( ) {

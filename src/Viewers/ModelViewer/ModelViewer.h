@@ -31,11 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <vector>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include "Camera.h"
 #include "Shader.h"
+#include "Text2D.h"
 
 #include "DatFile.h"
 #include "ViewerGLCanvas.h"
@@ -59,7 +57,6 @@ namespace gw2b {
 		struct IBO;
 		struct TBO;
 		struct PackedVertex;
-		struct Character;
 
 		DatFile&                    m_datFile;
 
@@ -87,14 +84,11 @@ namespace gw2b {
 		GLuint						m_dummyWhiteTexture;
 		GLuint						TextureArrayID;
 
-		// Character rendering stuff
-		std::map<GLchar, Character> m_characterTextureMap;
-		Shader						m_textShader;
-		GLuint						textVAO;
-		GLuint						textVBO;
-
 		// Shader stuff
 		Shader						m_mainShader;
+
+		// Text rendering stuff
+		Text2D						m_text;
 
 		GLuint						modelVAO;
 
@@ -125,8 +119,7 @@ namespace gw2b {
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
 		void drawMesh( const uint p_meshIndex );
-		void drawText( const GLuint &p_shader, const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color );
-		void displayStatusText( const GLuint &p_shader, const uint p_vertexCount, const uint p_triangleCount );
+		void displayStatusText( const uint p_vertexCount, const uint p_triangleCount );
 		bool loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
 		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
 		void indexVBO( const std::vector<glm::vec3>& in_vertices,
@@ -139,7 +132,6 @@ namespace gw2b {
 		bool populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
 		GLuint createDummyTexture( const GLubyte* p_data );
 		GLuint loadTexture( const uint p_fileId );
-		bool loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height );
 		void updateMatrices( );
 		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );

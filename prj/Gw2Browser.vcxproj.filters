@@ -208,6 +208,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h">
       <Filter>Header Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h">
+      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -319,6 +322,9 @@
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
   </ItemGroup>
