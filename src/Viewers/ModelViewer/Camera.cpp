@@ -29,7 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	Camera::Camera( )
-		: m_pivot( 0, 0, 0 )
+		: m_position( 0, 0, 0 )
+		, m_pivot( 0, 0, 0 )
 		, m_distance( 200 )
 		, m_yaw( 0 )
 		, m_pitch( 0 ) {
@@ -38,7 +39,7 @@ namespace gw2b {
 	Camera::~Camera( ) {
 	}
 
-	glm::mat4 Camera::calculateViewMatrix( ) const {
+	glm::mat4 Camera::calculateViewMatrix( ) {
 		// Calculate camera distance
 		auto distance = glm::vec4( 0.0f, 0.0f, m_distance, 0.0f );
 
@@ -54,6 +55,8 @@ namespace gw2b {
 			pivotVector,		// Where to look at, in world space
 			upVector			// Up vector
 			);
+
+		this->setPosition( eyePositionVector );
 
 		return ViewMatrix;
 	}
@@ -145,6 +148,14 @@ namespace gw2b {
 
 	void Camera::setPivot( const glm::vec3& p_pivot ) {
 		m_pivot = p_pivot;
+	}
+
+	const glm::vec3& Camera::position( ) const {
+		return m_position;
+	}
+
+	void Camera::setPosition( const glm::vec3& p_position ) {
+		m_position = p_position;
 	}
 
 }; // namespace gw2b

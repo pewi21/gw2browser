@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	class Camera {
+		glm::vec3 m_position;
 		glm::vec3 m_pivot;
 		float m_distance;
 		float m_yaw;
@@ -39,7 +40,7 @@ namespace gw2b {
 		Camera( );
 		~Camera( );
 
-		glm::mat4 calculateViewMatrix( ) const;
+		glm::mat4 calculateViewMatrix( );
 		glm::mat4 calculateRotationMatrix( ) const;
 
 		float yaw( ) const;
@@ -58,6 +59,11 @@ namespace gw2b {
 		const glm::vec3& pivot( ) const;
 		void pan( float p_x, float p_y );
 		void setPivot( const glm::vec3& p_pivot );
+
+		const glm::vec3& position( ) const;
+
+	private:
+		void setPosition( const glm::vec3& p_position );
 
 	}; // class Camera
 
