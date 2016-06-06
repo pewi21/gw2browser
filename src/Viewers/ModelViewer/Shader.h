@@ -43,7 +43,7 @@ namespace gw2b {
 		// Delete the current shader
 		void clear( );
 		// Load shader
-		void load( const char* p_vertexPath, const char* p_fragmentPath, const char* geometryPath = nullptr );
+		void load( const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
 
 	private:
 		void checkCompileErrors( GLuint shader, std::string type );
