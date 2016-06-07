@@ -739,7 +739,8 @@ namespace gw2b {
 			out_bitangents.push_back( bitangent );
 		}
 
-		for ( uint i = 0; i < in_vertices.size( ); i += 1 ) {
+		// We do this in shader
+		/*for ( uint i = 0; i < in_vertices.size( ); i += 1 ) {
 			glm::vec3& n = in_normals[i];
 			glm::vec3& t = out_tangents[i];
 			glm::vec3& b = out_bitangents[i];
@@ -751,7 +752,7 @@ namespace gw2b {
 			if ( glm::dot( glm::cross( n, t ), b ) < 0.0f ) {
 				t = t * -1.0f;
 			}
-		}
+		}*/
 	}
 
 	bool ModelViewer::getSimilarVertexIndex( PackedVertex & p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result ) {

@@ -5,7 +5,7 @@ layout( location = 0 ) in vec3 position;
 layout( location = 1 ) in vec2 texCoords;
 layout( location = 2 ) in vec3 normal;
 layout( location = 3 ) in vec3 tangent;
-layout( location = 4 ) in vec3 bitangent;
+layout( location = 4 ) in vec3 bitangent;	// not need
 
 out VS_OUT {
 	vec3 FragPos;
@@ -38,9 +38,17 @@ void main( ) {
 	vs_out.Normal = normalize( normalMatrix * normal );
 
 	vec3 T = normalize( normalMatrix * tangent );
-	vec3 B = normalize( normalMatrix * bitangent );
 	vec3 N = normalize( normalMatrix * normal );
-	mat3 TBN = transpose( mat3( T, B, N ) );
+	// Gram-Schmidt orthogonalize: re-orthogonalize T with respect to N
+	T = normalize( T - dot( T, N ) * N );
+	// Then retrieve perpendicular vector B with the cross product of T and N
+	vec3 B = cross( T, N );
+	// Calculate handedness
+	if ( dot( cross( T, N ), B ) < 0.0f ) {
+		T = T * -1.0f;
+	}
+	mat3 TBN = mat3( T, B, N );
+
 	vs_out.TBN = TBN;
 
 	vs_out.TangentLightPos = TBN * lightPos;
