@@ -26,6 +26,8 @@ uniform mat4 model;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
+uniform int normalMapping;
+
 void main( ) {
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position = projection * view * model * vec4( position, 1.0f );
@@ -34,27 +36,30 @@ void main( ) {
 	// UV of the vertex. No special space for this one.
 	vs_out.TexCoords = texCoords;
 
+	// todo: for performance reason, inverse the matrix before send to shader
 	mat3 normalMatrix = transpose( inverse( mat3( model ) ) );
 	vs_out.Normal = normalize( normalMatrix * normal );
 
-	vec3 T = normalize( normalMatrix * tangent );
-	vec3 N = normalize( normalMatrix * normal );
-	// Gram-Schmidt orthogonalize: re-orthogonalize T with respect to N
-	T = normalize( T - dot( T, N ) * N );
-	// Then retrieve perpendicular vector B with the cross product of T and N
-	vec3 B = cross( T, N );
-	// Calculate handedness
-	if ( dot( cross( T, N ), B ) < 0.0f ) {
-		T = T * -1.0f;
+	if ( normalMapping ) {
+		vec3 T = normalize( normalMatrix * tangent );
+		vec3 N = normalize( normalMatrix * normal );
+		// Gram-Schmidt orthogonalize: re-orthogonalize T with respect to N
+		T = normalize( T - dot( T, N ) * N );
+		// Then retrieve perpendicular vector B with the cross product of T and N
+		vec3 B = cross( T, N );
+		// Calculate handedness
+		if ( dot( cross( T, N ), B ) < 0.0f ) {
+			T = T * -1.0f;
+		}
+		mat3 TBN = mat3( T, B, N );
+
+		vs_out.TBN = TBN;
+
+		vs_out.TangentLightPos = TBN * lightPos;
+		vs_out.TangentViewPos = TBN * viewPos;
+		vs_out.TangentFragPos = TBN * vs_out.FragPos;
+
+		vs_out.Tangent = T;
+		vs_out.Bitangent = B;
 	}
-	mat3 TBN = mat3( T, B, N );
-
-	vs_out.TBN = TBN;
-
-	vs_out.TangentLightPos = TBN * lightPos;
-	vs_out.TangentViewPos = TBN * viewPos;
-	vs_out.TangentFragPos = TBN * vs_out.FragPos;
-
-	vs_out.Tangent = T;
-	vs_out.Bitangent = B;
 }

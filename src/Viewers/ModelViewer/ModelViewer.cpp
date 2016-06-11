@@ -459,6 +459,10 @@ namespace gw2b {
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+			if ( m_statusLighting ) {
+				// Disable lighting for wireframe rendering
+				m_statusLighting = !m_statusLighting;
+			}
 		} else {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
@@ -468,7 +472,11 @@ namespace gw2b {
 
 		// View matrix
 		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
+		// Model matrix
 		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "model" ), 1, GL_FALSE, glm::value_ptr( p_model ) );
+
+		glUniform1i( glGetUniformLocation( p_shader.program, "normalMapping" ), m_statusNormalMapping );
+		glUniform1i( glGetUniformLocation( p_shader.program, "lighting" ), m_statusLighting );
 
 		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
@@ -559,6 +567,10 @@ namespace gw2b {
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+			if ( !m_statusLighting ) {
+				// Re-enable lighting
+				m_statusLighting = !m_statusLighting;
+			}
 		}
 	}
 
@@ -581,10 +593,12 @@ namespace gw2b {
 		m_text.drawText( wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
 		m_text.drawText( wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
 		m_text.drawText( wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle back-face culling: press 4" ), 0.0f, 48.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle texture: press 3" ), 0.0f, 60.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle wireframe: press 2" ), 0.0f, 72.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle status text: press 1" ), 0.0f, 84.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle normal mapping: press 6" ), 0.0f, 48.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle lighting: press 5" ), 0.0f, 60.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle texture: press 4" ), 0.0f, 72.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle back-face culling: press 3" ), 0.0f, 84.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle wireframe: press 2" ), 0.0f, 96.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle status text: press 1" ), 0.0f, 108.0f + 2.0f, scale, color );
 	}
 
 	void ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
@@ -1084,10 +1098,17 @@ namespace gw2b {
 		} else if ( p_event.GetKeyCode( ) == '2' ) {
 			m_statusWireframe = !m_statusWireframe;
 		} else if ( p_event.GetKeyCode( ) == '3' ) {
-			m_statusTextured = !m_statusTextured;
-		} else if ( p_event.GetKeyCode( ) == '4' ) {
 			m_statusCullFace = !m_statusCullFace;
-		} else if ( p_event.GetKeyCode( ) == '=' ) {
+		} else if ( p_event.GetKeyCode( ) == '4' ) {
+			m_statusTextured = !m_statusTextured;
+		} else if ( p_event.GetKeyCode( ) == '5' ) {
+			m_statusLighting = !m_statusLighting;
+		} else if ( p_event.GetKeyCode( ) == '6' ) {
+			m_statusNormalMapping = !m_statusNormalMapping;
+		}
+
+		// Debugging/Visualization
+		else if ( p_event.GetKeyCode( ) == 'N' ) {
 			m_statusVisualizeNormal = !m_statusVisualizeNormal;
 		}
 	}

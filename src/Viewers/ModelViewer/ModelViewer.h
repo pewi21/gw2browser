@@ -68,10 +68,12 @@ namespace gw2b {
 		float                       m_maxDistance;
 
 		bool						m_glInitialized = false;
-		bool						m_statusWireframe = false;
-		bool						m_statusTextured = true;
 		bool						m_statusText = true;
+		bool						m_statusWireframe = false;
 		bool						m_statusCullFace = true;
+		bool						m_statusTextured = true;
+		bool						m_statusNormalMapping = true;
+		bool						m_statusLighting = true;
 		bool						m_statusVisualizeNormal = false;
 
 		// Mesh
