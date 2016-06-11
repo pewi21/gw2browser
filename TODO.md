@@ -6,20 +6,32 @@ May change over time. :P
 1.0.8.1
 -------
 
-* Model Viewer Lighting, normal maping, normals visualizer, z-buffer visualizer, etc.
+* Model Viewer z-buffer visualizer, etc. (for debugging/visualization)
+
+* Seperate ModelViewer function to smaller files.
+
+* Add way to position light (shift left click?)
+
+* Render light source. (for debugging/visualization)
+
+* Add a button to reload shader.
 
 Further plans
 -------------
-
-* Also display current file id when have error on reading files.
-
-* Seperate ModelViewer function to smaller files.
 
 * In ModelReader make new function material( ) that return Material vector
 for use by range-base loop.
 
 * Fix crash when ModelReader read some model that have material in other version.
 (cause by out of range or file is in difference version?)
+
+* SSAO
+
+* Self shadowed model shading?
+
+* Draw each model (need when implement map viewer)
+
+* Also display current file id when have error on reading files.
 
 * Improve performance of ModelViewer's drawText function.
 
