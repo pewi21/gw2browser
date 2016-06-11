@@ -30,7 +30,7 @@ void main( ) {
 	// Obtain normal from normal map in range [0,1]
 	normal = texture( normalMap, fs_in.TexCoords ).rgb;
 	// Transform normal vector to range [-1,1]
-	normal = normalize( normal * 2.0 - 1.0 );
+	normal = normalize( normal * 2.0f - 1.0f );
 	// Then transform normal in tangent space to world-space via TBN matrix
 	//tbn = mat3( fs_in.Tangent, fs_in.Bitangent, fs_in.Normal ); // TBN calculated in fragment shader
 	//normal = normalize( tbn * normal ); // This works!
@@ -39,18 +39,18 @@ void main( ) {
 	// Get diffuse color
 	vec3 color = texture( diffuseMap, fs_in.TexCoords ).rgb;
 	// Ambient
-	vec3 ambient = 0.1 * color;
+	vec3 ambient = 0.1f * color;
 	// Diffuse
 	vec3 lightDir = normalize( fs_in.TangentLightPos - fs_in.TangentFragPos );
-	float diff = max( dot( lightDir, normal ), 0.0 );
+	float diff = max( dot( lightDir, normal ), 0.0f );
 	vec3 diffuse = diff * color;
 	// Specular
 	vec3 viewDir = normalize( fs_in.TangentViewPos - fs_in.TangentFragPos );
 	vec3 reflectDir = reflect( -lightDir, normal );
 	vec3 halfwayDir = normalize( lightDir + viewDir );
-	float spec = pow( max( dot( normal, halfwayDir ), 0.0 ), 32.0 );
+	float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), 32.0f );
 
-	vec3 specular = vec3( 0.2 ) * spec;
+	vec3 specular = vec3( 0.2f ) * spec;
 	vec4 finalColor = vec4( ambient + diffuse + specular, texture( diffuseMap, fs_in.TexCoords ).a );
 
 	// Alpha test

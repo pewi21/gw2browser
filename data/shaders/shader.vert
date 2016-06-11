@@ -30,7 +30,7 @@ void main( ) {
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position = projection * view * model * vec4( position, 1.0f );
 	// Position of the vertex, in worldspace : M * position
-	vs_out.FragPos = vec3( model * vec4( position, 1.0 ) );
+	vs_out.FragPos = vec3( model * vec4( position, 1.0f ) );
 	// UV of the vertex. No special space for this one.
 	vs_out.TexCoords = texCoords;
 
