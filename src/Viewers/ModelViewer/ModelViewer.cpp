@@ -53,8 +53,8 @@ namespace gw2b {
 
 	struct ModelViewer::MeshCache {
 		std::vector<glm::vec3>	vertices;
-		std::vector<glm::vec2>	uvs;
 		std::vector<glm::vec3>	normals;
+		std::vector<glm::vec2>	uvs;
 		std::vector<uint>		indices;
 		std::vector<glm::vec3>	tangents;
 		std::vector<glm::vec3>	bitangents;
@@ -62,8 +62,8 @@ namespace gw2b {
 
 	struct ModelViewer::VBO {
 		GLuint					vertexBuffer;
-		GLuint					uvBuffer;
 		GLuint					normalBuffer;
+		GLuint					uvBuffer;
 		GLuint					tangentbuffer;
 		GLuint					bitangentbuffer;
 	};
@@ -80,8 +80,8 @@ namespace gw2b {
 
 	struct ModelViewer::PackedVertex {
 		glm::vec3 position;
-		glm::vec2 uv;
 		glm::vec3 normal;
+		glm::vec2 uv;
 
 		bool operator < ( const PackedVertex that ) const {
 			return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
@@ -120,11 +120,11 @@ namespace gw2b {
 			if ( it.vertexBuffer ) {
 				glDeleteBuffers( 1, &it.vertexBuffer );
 			}
-			if ( it.uvBuffer ) {
-				glDeleteBuffers( 1, &it.uvBuffer );
-			}
 			if ( it.normalBuffer ) {
 				glDeleteBuffers( 1, &it.normalBuffer );
+			}
+			if ( it.uvBuffer ) {
+				glDeleteBuffers( 1, &it.uvBuffer );
 			}
 			if ( it.tangentbuffer ) {
 				glDeleteBuffers( 1, &it.tangentbuffer );
@@ -160,6 +160,7 @@ namespace gw2b {
 
 		// Clean shaders
 		m_mainShader.clear( );
+		m_normalVisualizerShader.clear( );
 
 		// Clean VAO
 		glDeleteVertexArrays( 1, &modelVAO );
@@ -178,11 +179,11 @@ namespace gw2b {
 			if ( it.vertexBuffer ) {
 				glDeleteBuffers( 1, &it.vertexBuffer );
 			}
-			if ( it.uvBuffer ) {
-				glDeleteBuffers( 1, &it.uvBuffer );
-			}
 			if ( it.normalBuffer ) {
 				glDeleteBuffers( 1, &it.normalBuffer );
+			}
+			if ( it.uvBuffer ) {
+				glDeleteBuffers( 1, &it.uvBuffer );
 			}
 			if ( it.tangentbuffer ) {
 				glDeleteBuffers( 1, &it.tangentbuffer );
@@ -368,26 +369,9 @@ namespace gw2b {
 		// Remove lighting glitch cause by some triangles
 		glEnable( GL_CULL_FACE );
 
-		// Generate Vertex Array Object
-		glGenVertexArrays( 1, &modelVAO );
-
 		// Load shader
 		m_mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-
-		m_mainShader.use( );
-
-		// Get a handle for our matrix
-		modelMatrixID = glGetUniformLocation( m_mainShader.program, "model" );
-		viewMatrixID = glGetUniformLocation( m_mainShader.program, "view" );
-		projectionMatrixID = glGetUniformLocation( m_mainShader.program, "projection" );
-		// Get a handle for light ID
-		lightID = glGetUniformLocation( m_mainShader.program, "lightPos" );
-		// Get a handle for view position ID
-		viewPosID = glGetUniformLocation( m_mainShader.program, "viewPos" );
-		// Get a handle for our texture sampler
-		diffuseTextureID = glGetUniformLocation( m_mainShader.program, "diffuseMap" );
-		normalTextureID = glGetUniformLocation( m_mainShader.program, "normalMap" );
-		//specularTextureID = glGetUniformLocation( m_mainShader.program, "specularMap" );
+		m_normalVisualizerShader.load( "..//data//shaders//normalVisualizer.vert", "..//data//shaders//normalVisualizer.frag", "..//data//shaders//normalVisualizer.geom" );
 
 		// Initialize text renderer stuff
 		if ( !m_text.init( ) ) {
@@ -423,42 +407,35 @@ namespace gw2b {
 		// Clear color buffer and depth buffer
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-		// Use the mainshader
-		m_mainShader.use( );
-
 		this->updateMatrices( );
-
-		if ( m_statusWireframe ) {
-			glDisable( GL_CULL_FACE );
-			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		} else {
-			if ( m_statusCullFace ) {
-				glEnable( GL_CULL_FACE );
-			} else {
-				glDisable( GL_CULL_FACE );
-			}
-			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-		}
 
 		uint vertexCount = 0;
 		uint triangleCount = 0;
+
+		// Model matrix
+		glm::mat4 model;
+		// Transform the model
+		model = glm::translate( model, glm::vec3( 0.0f, 0.0f, 0.0f ) );
 
 		// todo: Draw each model
 
 		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
-			this->drawMesh( i );
+			this->drawMesh( m_mainShader, model, i );
 
 			vertexCount += m_model.mesh( i ).vertices.size( );
 			triangleCount += m_model.mesh( i ).triangles.size( );
 		}
 
+		// Draw normal lines for debugging/visualization
+		if ( m_statusVisualizeNormal ) {
+			for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+				this->drawMesh( m_normalVisualizerShader, model, i );
+			}
+		}
+
 		// todo: render light source (for debugging/visualization)
 
-		if ( m_statusWireframe ) {
-			glEnable( GL_CULL_FACE );
-			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-		}
 		// Draw status text
 		if ( m_statusText ) {
 			this->displayStatusText( vertexCount, triangleCount );
@@ -467,12 +444,31 @@ namespace gw2b {
 		SwapBuffers( );
 	}
 
-	void ModelViewer::drawMesh( const uint p_meshIndex ) {
+	void ModelViewer::drawMesh( Shader p_shader, const glm::mat4 p_model, const uint p_meshIndex ) {
 		auto& vbo = m_vertexBuffer[p_meshIndex];
 		auto& ibo = m_indexBuffer[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
 
 		auto materialIndex = m_model.mesh( p_meshIndex ).materialIndex;
+
+		if ( m_statusCullFace ) {
+			glEnable( GL_CULL_FACE );
+		} else {
+			glDisable( GL_CULL_FACE );
+		}
+
+		if ( m_statusWireframe ) {
+			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		} else {
+			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		}
+
+		// Use the shader
+		p_shader.use( );
+
+		// View matrix
+		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "model" ), 1, GL_FALSE, glm::value_ptr( p_model ) );
 
 		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
@@ -495,20 +491,20 @@ namespace gw2b {
 			}
 		}
 
-		// Set our "DiffuseTextureSampler" sampler to user Texture Unit 0
-		glUniform1i( diffuseTextureID, 0 );
+		// Set our "diffuseMap" sampler to user Texture Unit 0
+		glUniform1i( glGetUniformLocation( m_mainShader.program, "diffuseMap" ), 0 );
 
 		// Bind our normal texture in Texture Unit 1
 		glActiveTexture( GL_TEXTURE1 );
 		glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].normalMap);
-		// Set our "Normal	TextureSampler" sampler to user Texture Unit 1
-		glUniform1i( normalTextureID, 1 );
+		// Set our "normalMap" sampler to user Texture Unit 1
+		glUniform1i( glGetUniformLocation( m_mainShader.program, "normalMap" ), 1 );
 
 		// Bind our normal texture in Texture Unit 2
 		//glActiveTexture( GL_TEXTURE2 );
 		//glBindTexture( GL_TEXTURE_2D, specularTexture );
-		// Set our "Normal	TextureSampler" sampler to user Texture Unit 2
-		//glUniform1i( specularTextureID, 2 );
+		// Set our "specularMap" sampler to user Texture Unit 2
+		//glUniform1i( glGetUniformLocation( m_mainShader.program, "specularMap" ), 2 );
 
 		// Bind Vertex Array Object
 		glBindVertexArray( modelVAO );
@@ -518,15 +514,15 @@ namespace gw2b {
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.vertexBuffer );
 		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
-		// texCoords
-		glEnableVertexAttribArray( 1 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.uvBuffer );
-		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-
 		// normals
-		glEnableVertexAttribArray( 2 );
+		glEnableVertexAttribArray( 1 );
 		glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
-		glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+		glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+
+		// texCoords
+		glEnableVertexAttribArray( 2 );
+		glBindBuffer( GL_ARRAY_BUFFER, vbo.uvBuffer );
+		glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
 		// tangents
 		glEnableVertexAttribArray( 3 );
@@ -560,6 +556,10 @@ namespace gw2b {
 		// Unbind texture from Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
 		glBindTexture( GL_TEXTURE_2D, 0 );
+
+		if ( m_statusWireframe ) {
+			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		}
 	}
 
 	void ModelViewer::displayStatusText( const uint p_vertexCount, const uint p_triangleCount ) {
@@ -590,21 +590,13 @@ namespace gw2b {
 	void ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
 		// Tempoarary buffers
 		std::vector<glm::vec3> temp_vertices;
-		std::vector<glm::vec2> temp_uvs;
 		std::vector<glm::vec3> temp_normals;
+		std::vector<glm::vec2> temp_uvs;
 
 		// Read positions
 		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
 			auto tempVertices = p_mesh.vertices[i].position;
 			temp_vertices.push_back( tempVertices );
-		}
-
-		// Read UVs
-		if ( p_mesh.hasUV ) {
-			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-				auto tempUvs = p_mesh.vertices[i].uv;
-				temp_uvs.push_back( tempUvs );
-			}
 		}
 
 		// Read normals
@@ -615,8 +607,16 @@ namespace gw2b {
 			}
 		}
 
+		// Read UVs
+		if ( p_mesh.hasUV ) {
+			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+				auto tempUvs = p_mesh.vertices[i].uv;
+				temp_uvs.push_back( tempUvs );
+			}
+		}
+
 		// Tempoarary buffers
-		std::vector<uint> vertexIndices, uvIndices, normalIndices;
+		std::vector<uint> vertexIndices, normalIndices, uvIndices;
 
 		// Read faces
 		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
@@ -628,14 +628,15 @@ namespace gw2b {
 				uint index = triangle.indices[j] + p_indexBase;
 
 				vertexIndex[j] = index;
-				// UV reference
-				if ( p_mesh.hasUV ) {
-					uvIndex[j] = index;
-				}
 
 				// Normal reference
 				if ( p_mesh.hasNormal ) {
 					normalIndex[j] = index;
+				}
+
+				// UV reference
+				if ( p_mesh.hasUV ) {
+					uvIndex[j] = index;
 				}
 			}
 
@@ -643,24 +644,24 @@ namespace gw2b {
 			vertexIndices.push_back( vertexIndex[1] );
 			vertexIndices.push_back( vertexIndex[2] );
 
-			if ( p_mesh.hasUV ) {
-				uvIndices.push_back( uvIndex[0] );
-				uvIndices.push_back( uvIndex[1] );
-				uvIndices.push_back( uvIndex[2] );
-			}
-
 			if ( p_mesh.hasNormal ) {
 				normalIndices.push_back( normalIndex[0] );
 				normalIndices.push_back( normalIndex[1] );
 				normalIndices.push_back( normalIndex[2] );
+			}
+
+			if ( p_mesh.hasUV ) {
+				uvIndices.push_back( uvIndex[0] );
+				uvIndices.push_back( uvIndex[1] );
+				uvIndices.push_back( uvIndex[2] );
 			}
 		}
 		p_indexBase += p_mesh.vertices.size( );
 
 		// Temporary buffer before send to VBO indexer
 		std::vector<glm::vec3> vertices;
-		std::vector<glm::vec2> uvs;
 		std::vector<glm::vec3> normals;
+		std::vector<glm::vec2> uvs;
 		std::vector<glm::vec3> tangents;
 		std::vector<glm::vec3> bitangents;
 
@@ -673,32 +674,32 @@ namespace gw2b {
 			// Put the attributes in buffers
 			vertices.push_back( vertex );
 
-			if ( p_mesh.hasUV ) {
-				uint uvIndex = uvIndices[i];
-				glm::vec2 uv = temp_uvs[uvIndex - 1];
-				uvs.push_back( uv );
-			}
-
 			if ( p_mesh.hasNormal ) {
 				uint normalIndex = normalIndices[i];
 				glm::vec3 normal = temp_normals[normalIndex - 1];
 				normals.push_back( normal );
 			}
+
+			if ( p_mesh.hasUV ) {
+				uint uvIndex = uvIndices[i];
+				glm::vec2 uv = temp_uvs[uvIndex - 1];
+				uvs.push_back( uv );
+			}
 		}
 
 		this->computeTangent(
-			vertices, uvs, normals,
+			vertices, normals, uvs,
 			tangents, bitangents
 			);
 
-		this->indexVBO( vertices, uvs, normals, tangents, bitangents,
-			p_cache.indices, p_cache.vertices, p_cache.uvs, p_cache.normals, p_cache.tangents, p_cache.bitangents );
+		this->indexVBO( vertices, normals, uvs, tangents, bitangents,
+			p_cache.indices, p_cache.vertices, p_cache.normals, p_cache.uvs, p_cache.tangents, p_cache.bitangents );
 	}
 
 	void ModelViewer::computeTangent(
 		std::vector<glm::vec3>& in_vertices,
-		std::vector<glm::vec2>& in_uvs,
 		std::vector<glm::vec3>& in_normals,
+		std::vector<glm::vec2>& in_uvs,
 		std::vector<glm::vec3>& out_tangents,
 		std::vector<glm::vec3>& out_bitangents
 		) {
@@ -739,7 +740,7 @@ namespace gw2b {
 			out_bitangents.push_back( bitangent );
 		}
 
-		// We do this in shader
+		// We will do this in vertex shader
 		/*for ( uint i = 0; i < in_vertices.size( ); i += 1 ) {
 			glm::vec3& n = in_normals[i];
 			glm::vec3& t = out_tangents[i];
@@ -767,14 +768,14 @@ namespace gw2b {
 
 	void ModelViewer::indexVBO(
 		std::vector<glm::vec3>& in_vertices,
-		std::vector<glm::vec2>& in_uvs,
 		std::vector<glm::vec3>& in_normals,
+		std::vector<glm::vec2>& in_uvs,
 		std::vector<glm::vec3>& in_tangents,
 		std::vector<glm::vec3>& in_bitangents,
 		std::vector<uint>& out_indices,
 		std::vector<glm::vec3>& out_vertices,
-		std::vector<glm::vec2>& out_uvs,
 		std::vector<glm::vec3>& out_normals,
+		std::vector<glm::vec2>& out_uvs,
 		std::vector<glm::vec3>& out_tangents,
 		std::vector<glm::vec3>& out_bitangents ) {
 
@@ -783,20 +784,20 @@ namespace gw2b {
 		// For each input vertex
 		for ( uint i = 0; i < in_vertices.size( ); i++ ) {
 			glm::vec3 vertices;
-			glm::vec2 uvs;
 			glm::vec3 normals;
+			glm::vec2 uvs;
 
 			vertices = in_vertices[i];
-
-			if ( !in_uvs.empty( ) ) {
-				uvs = in_uvs[i];
-			}
 
 			if ( !in_normals.empty( ) ) {
 				normals = in_normals[i];
 			}
 
-			PackedVertex packed = { vertices, uvs, normals };
+			if ( !in_uvs.empty( ) ) {
+				uvs = in_uvs[i];
+			}
+
+			PackedVertex packed = { vertices, normals, uvs };
 
 			// Try to find a similar vertex in out_XXXX
 			uint index;
@@ -811,13 +812,14 @@ namespace gw2b {
 			} else { // If not, it needs to be added in the output data.
 				out_vertices.push_back( in_vertices[i] );
 
+				if ( !in_normals.empty( ) ) {
+					out_normals.push_back( in_normals[i] );
+				}
+
 				if ( !in_uvs.empty( ) ) {
 					out_uvs.push_back( in_uvs[i] );
 				}
 
-				if ( !in_normals.empty( ) ) {
-					out_normals.push_back( in_normals[i] );
-				}
 				out_tangents.push_back( in_tangents[i] );
 				out_bitangents.push_back( in_bitangents[i] );
 				uint newindex = ( uint ) out_vertices.size( ) - 1;
@@ -828,6 +830,8 @@ namespace gw2b {
 	}
 
 	void ModelViewer::populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache ) {
+		// Generate Vertex Array Object
+		glGenVertexArrays( 1, &modelVAO );
 		// Bind Vertex Array Object
 		glBindVertexArray( modelVAO );
 
@@ -836,16 +840,16 @@ namespace gw2b {
 		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.vertexBuffer );
 		glBufferData( GL_ARRAY_BUFFER, p_cache.vertices.size( ) * sizeof( glm::vec3 ), &p_cache.vertices[0], GL_STATIC_DRAW );
 
-		if ( p_cache.uvs.data( ) ) {
-			glGenBuffers( 1, &p_vbo.uvBuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
-			glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
-		}
-
 		if ( p_cache.normals.data( ) ) {
 			glGenBuffers( 1, &p_vbo.normalBuffer );
 			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.normalBuffer );
 			glBufferData( GL_ARRAY_BUFFER, p_cache.normals.size( ) * sizeof( glm::vec3 ), &p_cache.normals[0], GL_STATIC_DRAW );
+		}
+
+		if ( p_cache.uvs.data( ) ) {
+			glGenBuffers( 1, &p_vbo.uvBuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
+			glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
 		}
 
 		glGenBuffers( 1, &p_vbo.tangentbuffer );
@@ -996,26 +1000,23 @@ namespace gw2b {
 
 		// Projection matrix
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
-		// View matrix
-		auto view = m_camera.calculateViewMatrix( );
 
-		// Model matrix
-		glm::mat4 model;
-		// Transform the model
-		model = glm::translate( model, glm::vec3( 0.0f, 0.0f, 0.0f ) );
+		m_mainShader.use( );
 
-		// Send our transformation to the currently bound shader
-		glUniformMatrix4fv( modelMatrixID, 1, GL_FALSE, glm::value_ptr( model ) );
-		glUniformMatrix4fv( viewMatrixID, 1, GL_FALSE, glm::value_ptr( view ) );
-		glUniformMatrix4fv( projectionMatrixID, 1, GL_FALSE, glm::value_ptr( projection ) );
+		// Send projection matrix to main shader
+		glUniformMatrix4fv( glGetUniformLocation( m_mainShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+
+		// View position
+		glUniform3fv( glGetUniformLocation( m_mainShader.program, "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
 
 		// Set light position to ... (currently is front of the model)
 		lightPos = bounds.center( ) + glm::vec3( 0, 25, maxZ );
-		glUniform3fv( lightID, 1, glm::value_ptr( lightPos ) );
+		glUniform3fv( glGetUniformLocation( m_mainShader.program, "lightPos" ), 1, glm::value_ptr( lightPos ) );
 
-		// View position
-		glm::vec3 viewPos = m_camera.position( );
-		glUniform3fv( viewPosID, 1, glm::value_ptr( viewPos ) );
+		m_normalVisualizerShader.use( );
+
+		// Send projection matrix to normal visualizer shader
+		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 	}
 
 	void ModelViewer::focus( ) {
@@ -1086,6 +1087,8 @@ namespace gw2b {
 			m_statusTextured = !m_statusTextured;
 		} else if ( p_event.GetKeyCode( ) == '4' ) {
 			m_statusCullFace = !m_statusCullFace;
+		} else if ( p_event.GetKeyCode( ) == '=' ) {
+			m_statusVisualizeNormal = !m_statusVisualizeNormal;
 		}
 	}
 

@@ -72,6 +72,7 @@ namespace gw2b {
 		bool						m_statusTextured = true;
 		bool						m_statusText = true;
 		bool						m_statusCullFace = true;
+		bool						m_statusVisualizeNormal = false;
 
 		// Mesh
 		Model                       m_model;
@@ -84,22 +85,10 @@ namespace gw2b {
 		GLuint						m_dummyBlackTexture;
 		GLuint						m_dummyWhiteTexture;
 
-		GLuint						diffuseTextureID;
-		GLuint						normalTextureID;
-		//GLuint						specularTextureID;
-
-		//GLuint						SpecularTexture;
-
 		// Shader stuff
 		Shader						m_mainShader;
-		GLuint						lightID;
+		Shader						m_normalVisualizerShader;
 		glm::vec3					lightPos;
-		GLuint						viewPosID;
-
-		// Matices handles
-		GLuint						modelMatrixID;
-		GLuint						viewMatrixID;
-		GLuint						projectionMatrixID;
 
 		// Text rendering stuff
 		Text2D						m_text;
@@ -132,26 +121,26 @@ namespace gw2b {
 		int initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		void drawMesh( const uint p_meshIndex );
+		void drawMesh( Shader p_shader, const glm::mat4 p_model, const uint p_meshIndex );
 		void displayStatusText( const uint p_vertexCount, const uint p_triangleCount );
 		void loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
 		void computeTangent(
 			std::vector<glm::vec3>& in_vertices,
-			std::vector<glm::vec2>& in_uvs,
 			std::vector<glm::vec3>& in_normals,
+			std::vector<glm::vec2>& in_uvs,
 			std::vector<glm::vec3>& out_tangents,
 			std::vector<glm::vec3>& out_bitangents );
 		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
 		void indexVBO(
 			std::vector<glm::vec3>& in_vertices,
-			std::vector<glm::vec2>& in_uvs,
 			std::vector<glm::vec3>& in_normals,
+			std::vector<glm::vec2>& in_uvs,
 			std::vector<glm::vec3>& in_tangents,
 			std::vector<glm::vec3>& in_bitangents,
 			std::vector<uint>& out_indices,
 			std::vector<glm::vec3>& out_vertices,
-			std::vector<glm::vec2>& out_uvs,
 			std::vector<glm::vec3>& out_normals,
+			std::vector<glm::vec2>& out_uvs,
 			std::vector<glm::vec3>& out_tangents,
 			std::vector<glm::vec3>& out_bitangents );
 		void populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );

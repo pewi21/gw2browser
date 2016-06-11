@@ -4,8 +4,8 @@ out vec4 FragColor;
 
 in VS_OUT {
 	vec3 FragPos;
-	vec2 TexCoords;
 	vec3 Normal;
+	vec2 TexCoords;
 	vec3 Tangent;
 	vec3 Bitangent;
 	mat3 TBN;

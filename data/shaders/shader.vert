@@ -2,15 +2,15 @@
 
 // Input vertex data, different for all executions of this shader.
 layout( location = 0 ) in vec3 position;
-layout( location = 1 ) in vec2 texCoords;
-layout( location = 2 ) in vec3 normal;
+layout( location = 1 ) in vec3 normal;
+layout( location = 2 ) in vec2 texCoords;
 layout( location = 3 ) in vec3 tangent;
 layout( location = 4 ) in vec3 bitangent;	// not need
 
 out VS_OUT {
 	vec3 FragPos;
-	vec2 TexCoords;
 	vec3 Normal;
+	vec2 TexCoords;
 	vec3 Tangent;
 	vec3 Bitangent;
 	mat3 TBN;

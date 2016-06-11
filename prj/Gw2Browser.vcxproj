@@ -111,6 +111,9 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\data\shaders\normalVisualizer.frag" />
+    <None Include="..\data\shaders\normalVisualizer.geom" />
+    <None Include="..\data\shaders\normalVisualizer.vert" />
     <None Include="..\data\shaders\shader.frag" />
     <None Include="..\data\shaders\shader.vert" />
     <None Include="..\data\shaders\text.frag" />

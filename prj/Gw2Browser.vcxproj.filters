@@ -344,6 +344,15 @@
     <None Include="..\data\shaders\shader.vert">
       <Filter>Data Files\shaders</Filter>
     </None>
+    <None Include="..\data\shaders\normalVisualizer.frag">
+      <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\normalVisualizer.vert">
+      <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\normalVisualizer.geom">
+      <Filter>Data Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\src\Gw2Browser.ico">
