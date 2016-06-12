@@ -1,5 +1,24 @@
 #version 330 core
 
+struct Material {
+	sampler2D diffuseMap;
+	sampler2D normalMap;
+	float     shininess;
+};
+
+struct Light {
+	vec3 position;
+
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+struct RenderMode {
+	int normalMapping;
+	int lighting;
+};
+
 out vec4 FragColor;
 
 in VS_OUT {
@@ -14,16 +33,12 @@ in VS_OUT {
 	vec3 TangentFragPos;
 } fs_in;
 
-uniform sampler2D diffuseMap;
-uniform sampler2D normalMap;
-
-uniform vec3 lightPos;
 uniform vec3 viewPos;
 
-uniform int normalMapping;
-uniform int lighting;
+uniform Material material;
+uniform Light light;
+uniform RenderMode mode;
 
-float ambientStrength = 0.5f;
 float alpha_threshold = 0.1f;
 
 void main( ) {
@@ -32,9 +47,9 @@ void main( ) {
 
 	vec3 normal = fs_in.Normal;
 
-	if ( normalMapping ) {
+	if ( mode.normalMapping ) {
 		// Obtain normal from normal map in range [0,1]
-		normal = texture( normalMap, fs_in.TexCoords ).rgb;
+		normal = texture( material.normalMap, fs_in.TexCoords ).rgb;
 		// Transform normal vector to range [-1,1]
 		normal = normalize( normal * 2.0f - 1.0f );
 		// Then transform normal in tangent space to world-space via TBN matrix
@@ -44,28 +59,33 @@ void main( ) {
 	}
 
 	// Get diffuse color
-	vec3 color = texture( diffuseMap, fs_in.TexCoords ).rgb;
+	vec3 color = texture( material.diffuseMap, fs_in.TexCoords ).rgb;
 	// Ambient
-	vec3 ambient = ambientStrength * color;
+	vec3 ambient = light.ambient * color;
 	// Diffuse
-	vec3 lightDir = normalize( lightPos - fs_in.FragPos );
-	if ( normalMapping ) {
+	vec3 lightDir = normalize( light.position - fs_in.FragPos );
+	if ( mode.normalMapping ) {
 		lightDir = normalize( fs_in.TangentLightPos - fs_in.TangentFragPos );
 	}
 	float diff = max( dot( lightDir, normal ), 0.0f );
-	vec3 diffuse = diff * color;
+	vec3 diffuse = light.diffuse * diff * color;
 
 	// Specular
-	vec3 viewDir = normalize( fs_in.TangentViewPos - fs_in.TangentFragPos );
+	vec3 viewDir = normalize( viewPos - fs_in.FragPos );
+	if ( mode.normalMapping ) {
+		viewDir = normalize( fs_in.TangentViewPos - fs_in.TangentFragPos );
+	}
 	vec3 reflectDir = reflect( -lightDir, normal );
 	vec3 halfwayDir = normalize( lightDir + viewDir );
-	float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), 32.0f );
-	vec3 specular = vec3( 0.2f ) * spec;
+	float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), material.shininess );
+	// GW2 store specular texture in texture alpha channel
+	vec3 specularTexture = vec3( texture( material.diffuseMap, fs_in.TexCoords ).a );
+	vec3 specular = light.specular * spec * specularTexture;
 
-	if ( lighting ) {
-		finalColor = vec4( ambient + diffuse + specular, texture( diffuseMap, fs_in.TexCoords ).a );
+	if ( mode.lighting ) {
+		finalColor = vec4( ambient + diffuse + specular, texture( material.diffuseMap, fs_in.TexCoords ).a );
 	} else {
-		finalColor = texture( diffuseMap, fs_in.TexCoords );
+		finalColor = texture( material.diffuseMap, fs_in.TexCoords );
 	}
 
 	// Alpha test

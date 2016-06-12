@@ -1,5 +1,18 @@
 #version 330 core
 
+struct Light {
+	vec3 position;
+
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+struct RenderMode {
+	int normalMapping;
+	int lighting;
+};
+
 // Input vertex data, different for all executions of this shader.
 layout( location = 0 ) in vec3 position;
 layout( location = 1 ) in vec3 normal;
@@ -23,10 +36,10 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform vec3 lightPos;
 uniform vec3 viewPos;
 
-uniform int normalMapping;
+uniform Light light;
+uniform RenderMode mode;
 
 void main( ) {
 	// Output position of the vertex, in clip space : MVP * position
@@ -40,7 +53,7 @@ void main( ) {
 	mat3 normalMatrix = transpose( inverse( mat3( model ) ) );
 	vs_out.Normal = normalize( normalMatrix * normal );
 
-	if ( normalMapping ) {
+	if ( mode.normalMapping ) {
 		vec3 T = normalize( normalMatrix * tangent );
 		vec3 N = normalize( normalMatrix * normal );
 		// Gram-Schmidt orthogonalize: re-orthogonalize T with respect to N
@@ -55,7 +68,7 @@ void main( ) {
 
 		vs_out.TBN = TBN;
 
-		vs_out.TangentLightPos = TBN * lightPos;
+		vs_out.TangentLightPos = TBN * light.position;
 		vs_out.TangentViewPos = TBN * viewPos;
 		vs_out.TangentFragPos = TBN * vs_out.FragPos;
 

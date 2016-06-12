@@ -379,10 +379,6 @@ namespace gw2b {
 			return false;
 		}
 
-		////////
-		//GLubyte specularTextureData[] = { 224, 224, 224, 255 };
-		//specularTexture = createDummyTexture( specularTextureData );
-
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
 		m_dummyBlackTexture = createDummyTexture( blackTextureData );
@@ -451,6 +447,8 @@ namespace gw2b {
 
 		auto materialIndex = m_model.mesh( p_meshIndex ).materialIndex;
 
+		bool oldStatusLighting;
+
 		if ( m_statusCullFace ) {
 			glEnable( GL_CULL_FACE );
 		} else {
@@ -459,10 +457,9 @@ namespace gw2b {
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-			if ( m_statusLighting ) {
-				// Disable lighting for wireframe rendering
-				m_statusLighting = !m_statusLighting;
-			}
+			oldStatusLighting = m_statusLighting;
+			// Disable lighting for wireframe rendering
+			m_statusLighting = false;
 		} else {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
@@ -470,13 +467,28 @@ namespace gw2b {
 		// Use the shader
 		p_shader.use( );
 
+		// Set renderer status flag
+		glUniform1i( glGetUniformLocation( p_shader.program, "mode.normalMapping" ), m_statusNormalMapping );
+		glUniform1i( glGetUniformLocation( p_shader.program, "mode.lighting" ), m_statusLighting );
+
+		// Set light position to ... (currently is front of the model)
+		lightPos = m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 );
+		glUniform3fv( glGetUniformLocation( m_mainShader.program, "light.position" ), 1, glm::value_ptr( lightPos ) );
+		// Set lights properties
+		glm::vec3 ambient = glm::vec3( 0.5f, 0.5f, 0.5f );
+		glm::vec3 diffuse = glm::vec3( 0.5f, 0.5f, 0.5f );
+		glm::vec3 specular = glm::vec3( 0.5f, 0.5f, 0.5f );
+		glUniform3f( glGetUniformLocation( m_mainShader.program, "light.ambient" ), ambient.r, ambient.g, ambient.b );
+		glUniform3f( glGetUniformLocation( m_mainShader.program, "light.diffuse" ), diffuse.r, diffuse.g, diffuse.b );
+		glUniform3f( glGetUniformLocation( m_mainShader.program, "light.specular" ), specular.r, specular.g, specular.b );
+
+		// Set material properties
+		glUniform1f( glGetUniformLocation( m_mainShader.program, "material.shininess" ), 32.0f );
+
 		// View matrix
 		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
 		// Model matrix
 		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "model" ), 1, GL_FALSE, glm::value_ptr( p_model ) );
-
-		glUniform1i( glGetUniformLocation( p_shader.program, "normalMapping" ), m_statusNormalMapping );
-		glUniform1i( glGetUniformLocation( p_shader.program, "lighting" ), m_statusLighting );
 
 		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
@@ -500,19 +512,13 @@ namespace gw2b {
 		}
 
 		// Set our "diffuseMap" sampler to user Texture Unit 0
-		glUniform1i( glGetUniformLocation( m_mainShader.program, "diffuseMap" ), 0 );
+		glUniform1i( glGetUniformLocation( p_shader.program, "material.diffuseMap" ), 0 );
 
 		// Bind our normal texture in Texture Unit 1
 		glActiveTexture( GL_TEXTURE1 );
 		glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].normalMap);
 		// Set our "normalMap" sampler to user Texture Unit 1
-		glUniform1i( glGetUniformLocation( m_mainShader.program, "normalMap" ), 1 );
-
-		// Bind our normal texture in Texture Unit 2
-		//glActiveTexture( GL_TEXTURE2 );
-		//glBindTexture( GL_TEXTURE_2D, specularTexture );
-		// Set our "specularMap" sampler to user Texture Unit 2
-		//glUniform1i( glGetUniformLocation( m_mainShader.program, "specularMap" ), 2 );
+		glUniform1i( glGetUniformLocation( p_shader.program, "material.normalMap" ), 1 );
 
 		// Bind Vertex Array Object
 		glBindVertexArray( modelVAO );
@@ -567,10 +573,8 @@ namespace gw2b {
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-			if ( !m_statusLighting ) {
-				// Re-enable lighting
-				m_statusLighting = !m_statusLighting;
-			}
+			// Set lighting flag to old value
+			m_statusLighting = oldStatusLighting;
 		}
 	}
 
@@ -1022,10 +1026,6 @@ namespace gw2b {
 
 		// View position
 		glUniform3fv( glGetUniformLocation( m_mainShader.program, "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
-
-		// Set light position to ... (currently is front of the model)
-		lightPos = bounds.center( ) + glm::vec3( 0, 25, maxZ );
-		glUniform3fv( glGetUniformLocation( m_mainShader.program, "lightPos" ), 1, glm::value_ptr( lightPos ) );
 
 		m_normalVisualizerShader.use( );
 
