@@ -1009,12 +1009,9 @@ namespace gw2b {
 		auto maxZ = ( maxSize + distance ) * 10.0f;
 		auto minZ = maxZ * 0.001f;
 
-		//minZ 0.1f
-		//maxZ 100.0f
-
 		const wxSize ClientSize = this->GetClientSize( );
 		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
-		auto fov = ( 5.0f / 12.0f ) * glm::pi<float>( );
+		auto fov = 45.0f;
 
 		// Projection matrix
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
