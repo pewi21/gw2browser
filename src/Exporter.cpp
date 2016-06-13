@@ -667,13 +667,30 @@ namespace gw2b {
 		matStream << "# Material Count : " << model.numMaterial( ) << std::endl;
 		matStream << std::endl;
 
-		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
-			const Mesh& mesh = model.mesh( i );
-			auto materialIndex = mesh.materialIndex;
-			const Material& material = model.material( materialIndex );
+		//for ( uint i = 0; i < model.numMeshes( ); i++ ) {
+		for ( uint i = 0; i < model.numMaterial( ); i++ ) {
+			//const Mesh& mesh = model.mesh( i );
+			//auto materialIndex = mesh.materialIndex;
+			//const Material& material = model.material( materialIndex );
+			const Material& material = model.material( i );
+
+			matStream << "# Material " << i + 1 << std::endl;
+			matStream << "# Material ID : " << material.materialId << std::endl;
+			matStream << "# Material flags : " << material.materialFlags << std::endl;
+			matStream << "# Material file : " << material.materialFile << std::endl;
+			if ( material.diffuseMap ) {
+				matStream << "# Diffuse map texture : " << material.diffuseMap << std::endl;
+			}
+			if ( material.normalMap ) {
+				matStream << "# Normal map texture : " << material.normalMap << std::endl;
+			}
+			if ( material.lightMap ) {
+				matStream << "# Light map texture : " << material.lightMap << std::endl;
+			}
 
 			// Define new material
-			matStream << "newmtl " << mesh.materialName.c_str( ) << std::endl;
+			//matStream << "newmtl " << mesh.materialName.c_str( ) << std::endl;
+			matStream << "newmtl " << "mat" << i + 1 << std::endl;
 
 			// Ambient color
 			matStream << "Ka 1.000 1.000 1.000" << std::endl;
