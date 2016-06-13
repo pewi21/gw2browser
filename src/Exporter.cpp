@@ -795,13 +795,18 @@ namespace gw2b {
 			return;
 		}
 
+		m_filename.SetName( wxString::Format( wxT( "%d" ), p_fileid ) );
+		m_filename.SetExt( wxT( "png" ) );
+
+		if ( m_filename.FileExists( ) ) {
+			wxLogMessage( wxString::Format( wxT( "File %s is already exists, skiping." ), m_filename.GetFullPath( ) ) );
+			return;
+		}
+
 		// Convert to image
 		ANetFileType fileType;
 		m_datFile.identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
 		auto reader = FileReader::readerForData( fileData, m_datFile, fileType );
-
-		m_filename.SetName( wxString::Format( wxT( "%d" ), p_fileid ) );
-		m_filename.SetExt( wxT( "png" ) );
 
 		wxLogMessage( wxString::Format( wxT( "Writing texture file %s." ), m_filename.GetFullPath( ) ) );
 
