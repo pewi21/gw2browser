@@ -161,10 +161,10 @@ namespace gw2b {
 		// Disable byte-alignment restriction
 		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
-		// Load first 128 characters of ASCII set
-		for ( GLubyte c = 0; c < 128; c++ ) {
+		// Create 128 Charr charracters
+		for ( unsigned char charr = 0; charr < 128; charr++ ) {
 			// Load character glyph
-			if ( FT_Load_Char( face, c, FT_LOAD_RENDER ) ) {
+			if ( FT_Load_Char( face, charr, FT_LOAD_RENDER ) ) {
 				wxLogMessage( wxT( "FreeType: Failed to load Glyph." ) );
 				continue;
 			}
@@ -192,13 +192,13 @@ namespace gw2b {
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
 			// Now store character for later use
-			Character character = {
+			Character charracter = {
 				texture,
 				glm::ivec2( face->glyph->bitmap.width, face->glyph->bitmap.rows ),
 				glm::ivec2( face->glyph->bitmap_left, face->glyph->bitmap_top ),
 				static_cast<GLuint>( face->glyph->advance.x )
 			};
-			p_characters.insert( std::pair<GLchar, Character>( c, character ) );
+			p_characters.insert( std::pair<GLchar, Character>( charr, charracter ) );
 		}
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
