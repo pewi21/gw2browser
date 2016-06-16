@@ -447,7 +447,7 @@ namespace gw2b {
 
 		auto materialIndex = m_model.mesh( p_meshIndex ).materialIndex;
 
-		bool oldStatusLighting;
+		bool oldStatusLighting = m_statusLighting;
 
 		if ( m_statusCullFace ) {
 			glEnable( GL_CULL_FACE );
@@ -457,7 +457,6 @@ namespace gw2b {
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-			oldStatusLighting = m_statusLighting;
 			// Disable lighting for wireframe rendering
 			m_statusLighting = false;
 		} else {
