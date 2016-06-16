@@ -213,6 +213,16 @@ namespace gw2b {
 			}
 		}
 
+		// Clean mesh cache
+		for ( auto& it : m_meshCache ) {
+			it.vertices.clear( );
+			it.normals.clear( );
+			it.uvs.clear( );
+			it.indices.clear( );
+			it.tangents.clear( );
+			it.bitangents.clear( );
+		}
+
 		m_vertexBuffer.clear( );
 		m_indexBuffer.clear( );
 		m_textureBuffer.clear( );
