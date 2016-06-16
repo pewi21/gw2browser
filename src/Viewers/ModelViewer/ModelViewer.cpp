@@ -988,8 +988,12 @@ namespace gw2b {
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 
-		// Anisotropic texture filtering
-		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 8 );
+		// Set anisotropic texture filtering to maximumn supported by GPU
+		// No need to check if extension available since it is ubiquitous extension
+		// https://www.opengl.org/registry/specs/EXT/texture_filter_anisotropic.txt
+		GLfloat af = 0.0f;
+		glGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &af );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, af );
 
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
