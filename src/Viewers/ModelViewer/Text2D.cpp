@@ -42,9 +42,6 @@ namespace gw2b {
 	}
 
 	bool Text2D::init( ) {
-		// Load text shader
-		m_textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
-
 		// Set font size to 12 point
 		FT_UInt fontsize = 12;
 		// Load font
@@ -52,6 +49,23 @@ namespace gw2b {
 			wxLogMessage( wxT( "Fail to load font." ) );
 			return false;
 		}
+
+		// Load text shader
+		m_textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+
+		// Configure VAO/VBO for texture quads
+		glGenVertexArrays( 1, &m_textVAO );
+		glBindVertexArray( m_textVAO );
+
+		glGenBuffers( 1, &m_textVBO );
+		glBindBuffer( GL_ARRAY_BUFFER, m_textVBO );
+		glBufferData( GL_ARRAY_BUFFER, sizeof( GLfloat ) * 6 * 4, NULL, GL_DYNAMIC_DRAW );
+
+		glEnableVertexAttribArray( 0 );
+		glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof( GLfloat ), 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, 0 );
+		glBindVertexArray( 0 );
+
 		return true;
 	}
 
@@ -191,19 +205,6 @@ namespace gw2b {
 		// Destroy FreeType once we're finished
 		FT_Done_Face( face );
 		FT_Done_FreeType( ft );
-
-		// Configure VAO/VBO for texture quads
-		glGenVertexArrays( 1, &m_textVAO );
-		glBindVertexArray( m_textVAO );
-
-		glGenBuffers( 1, &m_textVBO );
-		glBindBuffer( GL_ARRAY_BUFFER, m_textVBO );
-		glBufferData( GL_ARRAY_BUFFER, sizeof( GLfloat ) * 6 * 4, NULL, GL_DYNAMIC_DRAW );
-
-		glEnableVertexAttribArray( 0 );
-		glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof( GLfloat ), 0 );
-		glBindBuffer( GL_ARRAY_BUFFER, 0 );
-		glBindVertexArray( 0 );
 
 		return true;
 	}
