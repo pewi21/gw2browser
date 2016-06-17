@@ -453,8 +453,8 @@ namespace gw2b {
 		}
 
 		// Convert string to byte array
-		Array<byte> data( StringOut.length( ) );
-		::memcpy( data.GetPointer( ), StringOut.utf8_str( ), StringOut.length( ) );
+		Array<byte> data( strlen( StringOut.utf8_str( ) ) );
+		::memcpy( data.GetPointer( ), StringOut.utf8_str( ), strlen( StringOut.utf8_str( ) ) );
 
 		// Write to file
 		this->writeFile( data );
@@ -477,8 +477,8 @@ namespace gw2b {
 			StringOut << eula[i];
 
 			// Convert string to byte array
-			Array<byte> data( StringOut.length( ) );
-			::memcpy( data.GetPointer( ), StringOut.utf8_str( ), StringOut.length( ) );
+			Array<byte> data( strlen( StringOut.utf8_str( ) ) );
+			::memcpy( data.GetPointer( ), StringOut.utf8_str( ), strlen( StringOut.utf8_str( ) ) );
 
 			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), filename, i ) );
 			// Write to file
