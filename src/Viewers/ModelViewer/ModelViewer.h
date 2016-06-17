@@ -75,6 +75,7 @@ namespace gw2b {
 		bool						m_statusNormalMapping = true;
 		bool						m_statusLighting = true;
 		bool						m_statusVisualizeNormal = false;
+		bool						m_statusVisualizeZbuffer = false;
 
 		// Mesh
 		Model                       m_model;
@@ -90,6 +91,7 @@ namespace gw2b {
 		// Shader stuff
 		Shader						m_mainShader;
 		Shader						m_normalVisualizerShader;
+		Shader						m_zVisualizerShader;
 		glm::vec3					lightPos;
 
 		// Text rendering stuff

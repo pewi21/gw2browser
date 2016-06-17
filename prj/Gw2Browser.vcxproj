@@ -118,6 +118,8 @@
     <None Include="..\data\shaders\shader.vert" />
     <None Include="..\data\shaders\text.frag" />
     <None Include="..\data\shaders\text.vert" />
+    <None Include="..\data\shaders\zVisualizer.frag" />
+    <None Include="..\data\shaders\zVisualizer.vert" />
     <None Include="..\src\Imported\half.inl" />
   </ItemGroup>
   <ItemGroup>

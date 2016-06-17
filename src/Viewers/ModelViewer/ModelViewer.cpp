@@ -161,6 +161,7 @@ namespace gw2b {
 		// Clean shaders
 		m_mainShader.clear( );
 		m_normalVisualizerShader.clear( );
+		m_zVisualizerShader.clear( );
 
 		// Clean VAO
 		glDeleteVertexArrays( 1, &modelVAO );
@@ -382,6 +383,7 @@ namespace gw2b {
 		// Load shader
 		m_mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
 		m_normalVisualizerShader.load( "..//data//shaders//normalVisualizer.vert", "..//data//shaders//normalVisualizer.frag", "..//data//shaders//normalVisualizer.geom" );
+		m_zVisualizerShader.load( "..//data//shaders//zVisualizer.vert", "..//data//shaders//zVisualizer.frag" );
 
 		// Initialize text renderer stuff
 		if ( !m_text.init( ) ) {
@@ -427,7 +429,13 @@ namespace gw2b {
 
 		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
-			this->drawMesh( m_mainShader, model, i );
+			if ( !m_statusVisualizeZbuffer ) {
+				// Draw normally
+				this->drawMesh( m_mainShader, model, i );
+			} else {
+				// Draw only Z-Buffer for debugging/visualization
+				this->drawMesh( m_zVisualizerShader, model, i );
+			}
 
 			vertexCount += m_model.mesh( i ).vertices.size( );
 			triangleCount += m_model.mesh( i ).triangles.size( );
@@ -482,17 +490,17 @@ namespace gw2b {
 
 		// Set light position to ... (currently is front of the model)
 		lightPos = m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 );
-		glUniform3fv( glGetUniformLocation( m_mainShader.program, "light.position" ), 1, glm::value_ptr( lightPos ) );
+		glUniform3fv( glGetUniformLocation( p_shader.program, "light.position" ), 1, glm::value_ptr( lightPos ) );
 		// Set lights properties
 		glm::vec3 ambient = glm::vec3( 0.5f, 0.5f, 0.5f );
 		glm::vec3 diffuse = glm::vec3( 0.5f, 0.5f, 0.5f );
 		glm::vec3 specular = glm::vec3( 0.5f, 0.5f, 0.5f );
-		glUniform3f( glGetUniformLocation( m_mainShader.program, "light.ambient" ), ambient.r, ambient.g, ambient.b );
-		glUniform3f( glGetUniformLocation( m_mainShader.program, "light.diffuse" ), diffuse.r, diffuse.g, diffuse.b );
-		glUniform3f( glGetUniformLocation( m_mainShader.program, "light.specular" ), specular.r, specular.g, specular.b );
+		glUniform3f( glGetUniformLocation( p_shader.program, "light.ambient" ), ambient.r, ambient.g, ambient.b );
+		glUniform3f( glGetUniformLocation( p_shader.program, "light.diffuse" ), diffuse.r, diffuse.g, diffuse.b );
+		glUniform3f( glGetUniformLocation( p_shader.program, "light.specular" ), specular.r, specular.g, specular.b );
 
 		// Set material properties
-		glUniform1f( glGetUniformLocation( m_mainShader.program, "material.shininess" ), 32.0f );
+		glUniform1f( glGetUniformLocation( p_shader.program, "material.shininess" ), 32.0f );
 
 		// View matrix
 		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
@@ -1032,17 +1040,20 @@ namespace gw2b {
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 
 		m_mainShader.use( );
-
 		// Send projection matrix to main shader
 		glUniformMatrix4fv( glGetUniformLocation( m_mainShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-
 		// View position
 		glUniform3fv( glGetUniformLocation( m_mainShader.program, "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
 
 		m_normalVisualizerShader.use( );
-
 		// Send projection matrix to normal visualizer shader
 		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+
+		m_zVisualizerShader.use( );
+		// Send projection matrix to Z-Buffer visualizer shader
+		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniform1f( glGetUniformLocation( m_zVisualizerShader.program, "near" ), minZ );
+		glUniform1f( glGetUniformLocation( m_zVisualizerShader.program, "far" ), maxZ );
 	}
 
 	void ModelViewer::focus( ) {
@@ -1122,6 +1133,8 @@ namespace gw2b {
 		// Debugging/Visualization
 		else if ( p_event.GetKeyCode( ) == 'N' ) {
 			m_statusVisualizeNormal = !m_statusVisualizeNormal;
+		} else if ( p_event.GetKeyCode( ) == 'M' ) {
+			m_statusVisualizeZbuffer = !m_statusVisualizeZbuffer;
 		}
 	}
 

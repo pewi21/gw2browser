@@ -353,6 +353,12 @@
     <None Include="..\data\shaders\normalVisualizer.geom">
       <Filter>Data Files\shaders</Filter>
     </None>
+    <None Include="..\data\shaders\zVisualizer.frag">
+      <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\zVisualizer.vert">
+      <Filter>Data Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\src\Gw2Browser.ico">
