@@ -6,15 +6,16 @@ May change over time. :P
 1.0.8.1
 -------
 
-* Model Viewer z-buffer visualizer, etc. (for debugging/visualization)
-
 * Seperate ModelViewer function to smaller files.
 
 * Add way to position light (shift left click?)
 
 * Render light source. (for debugging/visualization)
 
-* Add a button to reload shader.
+* Add toggles indicator
+Toggle XXX : 1    ON (with green/grey text)
+
+* Re-write camera class?
 
 Further plans
 -------------
@@ -22,14 +23,29 @@ Further plans
 * In ModelReader make new function material( ) that return Material vector
 for use by range-base loop.
 
-* Fix crash when ModelReader read some model that have material in other version.
-(cause by out of range or file is in difference version?)
+* Exporters class, like Reader/Viewer.
+
+* Fix crash when ModelReader read some model.
+Related to material in gw2formats, possibly library bug.
+
+Example, error std::invalid_argument at model file 905578.
+
+Possible work around:
+ - Don't read material on that files, build exclude file lists.
+ - Have option to export model without material/texture.
+
+* Then fix the model exporter, automatically map the materials and model.
+(have to disable it, for now)
+
+* Add a button to reload shader.
+
+* Frame Buffer
 
 * SSAO
 
 * Self shadowed model shading?
 
-* Draw each model (need when implement map viewer)
+* Draw each model/scene manager (need when implement map viewer)
 
 * Also display current file id when have error on reading files.
 
