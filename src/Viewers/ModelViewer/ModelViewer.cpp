@@ -417,48 +417,47 @@ namespace gw2b {
 
 		this->updateMatrices( );
 
-		uint vertexCount = 0;
-		uint triangleCount = 0;
+		// Transformation matrix
+		glm::mat4 trans;
+		// Model position
+		trans = glm::translate( trans, glm::vec3( 0.0f, 0.0f, 0.0f ) );
+		// Model rotation
+		//trans = glm::rotate( trans, 90.0f, glm::vec3( 0.0, 0.0, 1.0 ) );
+		// Model scale
+		//trans = glm::scale( trans, glm::vec3( 0.5 ) );
 
-		// Model matrix
-		glm::mat4 model;
-		// Transform the model
-		model = glm::translate( model, glm::vec3( 0.0f, 0.0f, 0.0f ) );
-
-		// todo: Draw each model
-
-		// Draw meshes
-		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
-			if ( !m_statusVisualizeZbuffer ) {
-				// Draw normally
-				this->drawMesh( m_mainShader, model, i );
-			} else {
-				// Draw only Z-Buffer for debugging/visualization
-				this->drawMesh( m_zVisualizerShader, model, i );
-			}
-
-			vertexCount += m_model.mesh( i ).vertices.size( );
-			triangleCount += m_model.mesh( i ).triangles.size( );
-		}
-
-		// Draw normal lines for debugging/visualization
-		if ( m_statusVisualizeNormal ) {
-			for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
-				this->drawMesh( m_normalVisualizerShader, model, i );
-			}
+		if ( !m_statusVisualizeZbuffer ) {
+			// Draw normally
+			this->drawModel( m_mainShader, trans );
+		} else {
+			// Draw only Z-Buffer for debugging/visualization
+			this->drawModel( m_zVisualizerShader, trans );
 		}
 
 		// todo: render light source (for debugging/visualization)
 
 		// Draw status text
 		if ( m_statusText ) {
-			this->displayStatusText( vertexCount, triangleCount );
+			this->displayStatusText( );
 		}
 
 		SwapBuffers( );
 	}
 
-	void ModelViewer::drawMesh( Shader p_shader, const glm::mat4 p_model, const uint p_meshIndex ) {
+	void ModelViewer::drawModel( Shader p_shader, const glm::mat4& p_trans ) {
+		// Draw meshes
+		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+			// Draw normally
+			this->drawMesh( p_shader, p_trans, i );
+
+			// Draw normal lines for debugging/visualization
+			if ( m_statusVisualizeNormal ) {
+				this->drawMesh( m_normalVisualizerShader, p_trans, i );
+			}
+		}
+	}
+
+	void ModelViewer::drawMesh( Shader p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
 		auto& vbo = m_vertexBuffer[p_meshIndex];
 		auto& ibo = m_indexBuffer[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
@@ -505,7 +504,7 @@ namespace gw2b {
 		// View matrix
 		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
 		// Model matrix
-		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "model" ), 1, GL_FALSE, glm::value_ptr( p_model ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
 
 		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
@@ -597,7 +596,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::displayStatusText( const uint p_vertexCount, const uint p_triangleCount ) {
+	void ModelViewer::displayStatusText( ) {
 		wxSize ClientSize = this->GetClientSize( );
 
 		// Send ClientSize variable to text renderer
@@ -606,10 +605,18 @@ namespace gw2b {
 		glm::vec3 color = glm::vec3( 1.0f );
 		GLfloat scale = 1.0f;
 
+		uint vertexCount = 0;
+		uint triangleCount = 0;
+		// Count vertex and triangle of model
+		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
+			vertexCount += m_model.mesh( i ).vertices.size( );
+			triangleCount += m_model.mesh( i ).triangles.size( );
+		}
+
 		// Top-left text
 		m_text.drawText( wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ), 0.0f, ClientSize.y - 12.0f, scale, color );
-		m_text.drawText( wxString::Format( wxT( "Vertices: %d" ), p_vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
-		m_text.drawText( wxString::Format( wxT( "Triangles: %d" ), p_triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
+		m_text.drawText( wxString::Format( wxT( "Vertices: %d" ), vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
+		m_text.drawText( wxString::Format( wxT( "Triangles: %d" ), triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
 
 		// Bottom-left text
 		m_text.drawText( wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
