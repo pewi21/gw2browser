@@ -31,7 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 	class DatFile;
 	class FileReader;
-	class INeedDatFile;
 
 	/** Panel used to view the contents of a file. */
 	class ViewerGLCanvas : public wxGLCanvas {
