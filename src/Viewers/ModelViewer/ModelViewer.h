@@ -125,8 +125,8 @@ namespace gw2b {
 		int initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		void drawModel( Shader p_shader, const glm::mat4& p_trans );
-		void drawMesh( Shader p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
+		void drawModel( Shader& p_shader, const glm::mat4& p_trans );
+		void drawMesh( Shader& p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
 		void displayStatusText( );
 		void loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
 		void computeTangent(

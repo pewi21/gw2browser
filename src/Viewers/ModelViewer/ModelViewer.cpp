@@ -444,7 +444,7 @@ namespace gw2b {
 		SwapBuffers( );
 	}
 
-	void ModelViewer::drawModel( Shader p_shader, const glm::mat4& p_trans ) {
+	void ModelViewer::drawModel( Shader& p_shader, const glm::mat4& p_trans ) {
 		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			// Draw normally
@@ -457,7 +457,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::drawMesh( Shader p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
+	void ModelViewer::drawMesh( Shader& p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
 		auto& vbo = m_vertexBuffer[p_meshIndex];
 		auto& ibo = m_indexBuffer[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
