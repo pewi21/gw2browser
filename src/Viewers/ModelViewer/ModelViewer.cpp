@@ -623,12 +623,45 @@ namespace gw2b {
 		m_text.drawText( wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
 		m_text.drawText( wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
 		m_text.drawText( wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle normal mapping: press 6" ), 0.0f, 48.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle lighting: press 5" ), 0.0f, 60.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle texture: press 4" ), 0.0f, 72.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle back-face culling: press 3" ), 0.0f, 84.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle wireframe: press 2" ), 0.0f, 96.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle status text: press 1" ), 0.0f, 108.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle normal mapping: press 6" ), 25.0f, 48.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle lighting: press 5" ), 25.0f, 60.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle texture: press 4" ), 25.0f, 72.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle back-face culling: press 3" ), 25.0f, 84.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle wireframe: press 2" ), 25.0f, 96.0f + 2.0f, scale, color );
+		m_text.drawText( wxT( "Toggle status text: press 1" ), 25.0f, 108.0f + 2.0f, scale, color );
+
+		// Status text
+		auto gray = glm::vec3( 0.5f, 0.5f, 0.5f );
+		auto green = glm::vec3( 0.0f, 1.0f, 0.0f );
+		if ( m_statusNormalMapping ) {
+			m_text.drawText( wxT( "ON" ), 0.0f, 48.0f + 2.0f, scale, green );
+		} else {
+			m_text.drawText( wxT( "OFF" ), 0.0f, 48.0f + 2.0f, scale, gray );
+		}
+
+		if ( m_statusLighting ) {
+			m_text.drawText( wxT( "ON" ), 0.0f, 60.0f + 2.0f, scale, green );
+		} else {
+			m_text.drawText( wxT( "OFF" ), 0.0f, 60.0f + 2.0f, scale, gray );
+		}
+
+		if ( m_statusTextured ) {
+			m_text.drawText( wxT( "ON" ), 0.0f, 72.0f + 2.0f, scale, green );
+		} else {
+			m_text.drawText( wxT( "OFF" ), 0.0f, 72.0f + 2.0f, scale, gray );
+		}
+
+		if ( m_statusCullFace ) {
+			m_text.drawText( wxT( "ON" ), 0.0f, 84.0f + 2.0f, scale, green );
+		} else {
+			m_text.drawText( wxT( "OFF" ), 0.0f, 84.0f + 2.0f, scale, gray );
+		}
+
+		if ( m_statusWireframe ) {
+			m_text.drawText( wxT( "ON" ), 0.0f, 96.0f + 2.0f, scale, green );
+		} else {
+			m_text.drawText( wxT( "OFF" ), 0.0f, 96.0f + 2.0f, scale, gray );
+		}
 	}
 
 	void ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
