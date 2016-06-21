@@ -144,19 +144,19 @@ namespace gw2b {
 		// Clean TBO
 		for ( auto& it : m_textureBuffer ) {
 			if ( it.diffuseMap ) {
-				glDeleteBuffers( 1, &it.diffuseMap );
+				glDeleteTextures( 1, &it.diffuseMap );
 			}
 			if ( it.normalMap ) {
-				glDeleteBuffers( 1, &it.normalMap );
+				glDeleteTextures( 1, &it.normalMap );
 			}
 			if ( it.lightMap ) {
-				glDeleteBuffers( 1, &it.lightMap );
+				glDeleteTextures( 1, &it.lightMap );
 			}
 		}
 
 		// Clean dummy textures
-		glDeleteBuffers( 1, &m_dummyBlackTexture );
-		glDeleteBuffers( 1, &m_dummyWhiteTexture );
+		glDeleteTextures( 1, &m_dummyBlackTexture );
+		glDeleteTextures( 1, &m_dummyWhiteTexture );
 
 		// Clean shaders
 		m_mainShader.clear( );
@@ -204,13 +204,13 @@ namespace gw2b {
 		// Clean TBO
 		for ( auto& it : m_textureBuffer ) {
 			if ( it.diffuseMap ) {
-				glDeleteBuffers( 1, &it.diffuseMap );
+				glDeleteTextures( 1, &it.diffuseMap );
 			}
 			if ( it.normalMap ) {
-				glDeleteBuffers( 1, &it.normalMap );
+				glDeleteTextures( 1, &it.normalMap );
 			}
 			if ( it.lightMap ) {
-				glDeleteBuffers( 1, &it.lightMap );
+				glDeleteTextures( 1, &it.lightMap );
 			}
 		}
 

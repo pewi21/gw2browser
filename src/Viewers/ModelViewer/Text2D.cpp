@@ -73,7 +73,7 @@ namespace gw2b {
 		// Clean character textures
 		for ( auto& it : m_characterTextureMap ) {
 			if ( it.first ) {
-				glDeleteBuffers( 1, &it.second.TextureID );
+				glDeleteTextures( 1, &it.second.TextureID );
 			}
 		}
 
