@@ -185,6 +185,8 @@ and VS2015 is wx_vc14.sln.
    by right click and select as active project and build it, both debug and release build. Then proceed
    to compile Gw2Browser.
 
+* Copy libgomp-1.dll or libgomp_64-1.dll from TDM-GCC install directory to Gw2Browser/bin
+
 Authors
 -------
 

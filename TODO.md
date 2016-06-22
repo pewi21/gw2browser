@@ -12,9 +12,6 @@ May change over time. :P
 
 * Render light source. (for debugging/visualization)
 
-* Add toggles indicator
-Toggle XXX : 1    ON (with green/grey text)
-
 * Re-write camera class?
 
 Further plans
@@ -41,11 +38,11 @@ Possible work around:
 
 * Frame Buffer
 
-* SSAO
+* SSAO?
 
 * Self shadowed model shading?
 
-* Draw each model/scene manager (need when implement map viewer)
+* Scene manager (need when implement map viewer)
 
 * Also display current file id when have error on reading files.
 
