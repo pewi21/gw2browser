@@ -15,7 +15,7 @@ or while an index is being read, the process is *a lot* slower.
 The latest binary can always be found [Here](http://goo.gl/4xMRVF)
 
 For people who can't run Gw2Browser, download and Install
-[Visual C++ Redistributable Packages for Visual Studio 2013](http://www.microsoft.com/en-us/download/details.aspx?id=40784)
+[Microsoft Visual C++ 2015 Redistributable Update 2](https://www.microsoft.com/en-us/download/details.aspx?id=51682)
 choose vcredist_x64.exe for 64bit and vcredist_x86.exe for 32bit executable.
 
 The modelviewer required GPU with OpenGL 3.3 support.
@@ -32,10 +32,15 @@ If `<input dat>` is given, the program will open the file as soon as it starts.
 Known issues
 ------------
 
-* **Model rendering is very experimental.**
-Viewing one may crash the browser, or it may not. It might also use the wrong texture,
-or it might not. It entirely depends on what model you view, as some models don't have
-any references to textures (mostly equipment models). Some models also use the
+* **Viewing or exporting some model may crash the browser.**
+This possibly cause by the file is in difference version and gw2formats library
+doesn't support it, or more likely, a bug in gw2formats library. This issue
+will (possibly) fixed on next Gw2Browser release.
+
+* **Model rendering is still experimental stage.**
+Some of the model may use the wrong texture, or it might not. It entirely
+depends on what model you view, as some models don't have any references to textures
+(mostly equipment, player character parts models). Some models also use the
 second UV channel for rendering while the shader in the browser only uses the
 first. Loading any model is also *far* from optimized!
 
@@ -46,18 +51,8 @@ Probably they use custom format for NPOT texture.
 * **Some sound data in bank file(s) is unsupported.**
 The data seems to be compressed or encrypted. Might investigate on this in future.
 
-* **The code architect is messy**
-Need to work on it someday once I understand about code architect thing.
-
-Libraries and restrictions
---------------------------
-
-The application used some C++11 features, it required C++11 capable
-compiler in order to compile it.
-
-Since Gw2Browser and some of required libraries use ranged-base for loop
-in some area, you will need Visual Studio 2012 or newer in order to compile it,
-or if you use GCC, you will need GCC 4.8 or better.
+Building Gw2Browser
+-------------------
 
 ### Required software
 
@@ -65,7 +60,7 @@ or if you use GCC, you will need GCC 4.8 or better.
 for use as command prompt to compile some required libraries if using GCC to compile.
 
 * Microsoft Visual Studio 2012 or better. Express version will work too.
-or use [Visual Studio Community 2013](https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx)
+or use [Visual Studio Community 2015](https://www.visualstudio.com/products/visual-studio-community-vs)
 which have functionality like Professional version, but it free for individual developers,
 open source projects, academic research, education, and small professional teams.
 (you must register in order to use it tho).
@@ -90,7 +85,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
 * [gw2formats](https://github.com/kytulendu/gw2formats)
-* [wxWidgets 3.0.2](http://wxwidgets.org/)
+* [wxWidgets 3.1.0](http://wxwidgets.org/)
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
 * [The OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
 * [libwebp](https://developers.google.com/speed/webp/download) *Included*
@@ -103,19 +98,19 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 If you want to use Visual Leak Detector, remove the "//" at #include <vld.h>
 in Gw2Browser.cpp.
 
-How to compile
---------------
+### Building instructions
 
 #### Windows, building with Visual Studio:
 
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
 by use these command at Gw2Browser/extern/libweb directory.
 
-		nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj`
-		nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj`
+		nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj
+		nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
 
 * Compile wxWidgets using solution file corresponding with your VS version in directory
-wxWidgets-3.0.2/build/msw. For example, VS2012 is wx_vc11.sln and VS2013 is wx_vc12.sln.
+wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
+and VS2015 is wx_vc14.sln.
 
 * Compile Gw2Browser using Gw2Browser.sln solution file in Gw2Browser/prj.
 
@@ -127,11 +122,11 @@ wxWidgets-3.0.2/build/msw. For example, VS2012 is wx_vc11.sln and VS2013 is wx_v
 
 * Build wxWidgets
 
-1. Open the file: wxWidgets-3.0.2/include/wx/msw/setup.h and change line 788 to:
+1. Open the file: wxWidgets-3.1.0/include/wx/msw/setup.h and change line 788 to:
 
 		#define wxUSE_GRAPHICS_CONTEXT 1
 
-2. Change directory of Git Bash window to wxWidgets-3.0.2/build/msw and use these command
+2. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command
 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug
 
