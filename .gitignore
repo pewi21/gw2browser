@@ -22,5 +22,7 @@ extern/glew/lib
 *.pc
 *.depend
 *.layout
+*.db
+*.opendb
 CMakeCache.txt
 cmake_install.cmake
