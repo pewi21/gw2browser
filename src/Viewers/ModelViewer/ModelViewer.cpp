@@ -83,7 +83,7 @@ namespace gw2b {
 		glm::vec3 normal;
 		glm::vec2 uv;
 
-		bool operator < ( const PackedVertex that ) const {
+		bool operator < ( const PackedVertex& that ) const {
 			return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
 		};
 	};
