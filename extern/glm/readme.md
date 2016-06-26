@@ -51,6 +51,37 @@ glm::mat4 camera(float Translate, glm::vec2 const & Rotate)
 
 ## Release notes
 
+#### [GLM 0.9.7.5](https://github.com/g-truc/glm/releases/tag/0.9.7.5) - 2016-05-24
+##### Improvements:
+- Added Visual C++ Clang toolset detection
+
+##### Fixes:
+- Fixed uaddCarry warning #497
+- Fixed roundPowerOfTwo and floorPowerOfTwo #503
+- Fixed Visual C++ SIMD instruction set automatic detection in 64 bits
+- Fixed to_string when used with GLM_FORCE_INLINE #506
+- Fixed GLM_FORCE_INLINE with binary vec4 operators
+
+#### [GLM 0.9.7.4](https://github.com/g-truc/glm/releases/tag/0.9.7.4) - 2016-03-19
+##### Fixes:
+- Fixed asinh and atanh warning with C++98 STL #484
+- Fixed polar coordinates function latitude #485
+- Fixed outerProduct defintions and operator signatures for mat2x4 and vec4 #475
+- Fixed eulerAngles precision error, returns NaN  #451
+- Fixed undefined reference errors #489
+- Fixed missing GLM_PLATFORM_CYGWIN declaration #495
+- Fixed various undefined reference errors #490
+
+#### [GLM 0.9.7.3](https://github.com/g-truc/glm/releases/tag/0.9.7.3) - 2016-02-21
+##### Improvements:
+- Added AVX512 detection
+
+##### Fixes:
+- Fixed CMake policy warning
+- Fixed GCC 6.0 detection #477
+- Fixed Clang build on Windows #479
+- Fixed 64 bits constants warnings on GCC #463
+
 #### [GLM 0.9.7.2](https://github.com/g-truc/glm/releases/tag/0.9.7.2) - 2016-01-03
 ##### Fixes:
 - Fixed GTC_round floorMultiple/ceilMultiple #412
