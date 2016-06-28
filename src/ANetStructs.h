@@ -91,6 +91,7 @@ namespace gw2b {
 		FCC_txtm = 0x6d747874,
 		FCC_txtV = 0x56747874,
 		FCC_txtv = 0x76747874,
+		FCC_PNG = 0x474e5089,
 
 		// Not quite FourCC
 		FCC_MZ = 0x5a4d,		// Executable or Dynamic Link Library
@@ -116,6 +117,7 @@ namespace gw2b {
 		ANFT_DDS,						/**< DDS texture, not an ANet specific format. */
 		ANFT_JPEG,						/**< JPEG Image, not an ANet specific format. */
 		ANFT_WEBP,						/**< WebP Image, not an ANet specific format. */
+		ANFT_PNG,						/**< PNG Image, not an ANet specific format. */
 		ANFT_TextureEnd,				/**< Values in between this and ANFT_TextureStart are texture types. */
 
 		// Sound

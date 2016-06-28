@@ -151,6 +151,7 @@ namespace gw2b {
 		case ANFT_DDS:
 		case ANFT_JPEG:
 		case ANFT_WEBP:
+		case ANFT_PNG:
 			MakeCategory( wxT( "Textures" ) );
 
 			switch ( p_fileType ) {
@@ -180,6 +181,9 @@ namespace gw2b {
 				break;
 			case ANFT_WEBP:
 				MakeSubCategory( wxT( "WebP" ) );
+				break;
+			case ANFT_PNG:
+				MakeSubCategory( wxT( "PNG" ) );
 				break;
 			}
 

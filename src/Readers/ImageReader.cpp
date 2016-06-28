@@ -165,7 +165,7 @@ namespace gw2b {
 
 		// Read the correct type of data
 		auto fourcc = *reinterpret_cast<const uint32*>( m_data.GetPointer( ) );
-		if ( ( ( fourcc & 0xffffff ) != FCC_JPEG ) ) {
+		if ( ( ( fourcc & 0xffffff ) != FCC_JPEG ) && ( fourcc != FCC_PNG ) ) {
 
 			wxSize size;
 			BGR* colors = nullptr;
@@ -196,11 +196,14 @@ namespace gw2b {
 
 			return image;
 
-		} else {	// JPEGs
+		} else {
 			wxImage image;
 			wxMemoryInputStream stream( m_data.GetPointer( ), m_data.GetSize( ) );
-			image.LoadFile( stream, wxBITMAP_TYPE_JPEG );
-
+			if ( fourcc == FCC_PNG ) {
+				image.LoadFile( stream, wxBITMAP_TYPE_PNG );
+			} else {	// JPEGs
+				image.LoadFile( stream, wxBITMAP_TYPE_JPEG );
+			}
 			return image;
 		}
 	}
@@ -494,7 +497,9 @@ namespace gw2b {
 			return false;
 		}
 		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
-
+		if ( fourcc == FCC_PNG ) {
+			return true;
+		}
 		if ( ( fourcc & 0xffffff ) == FCC_JPEG ) {
 			return true;
 		}

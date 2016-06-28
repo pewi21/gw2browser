@@ -127,6 +127,7 @@ namespace gw2b {
 			case ANFT_DDS:
 			case ANFT_JPEG:
 			case ANFT_WEBP:
+			case ANFT_PNG:
 				return wxT( "png" );
 				break;
 			case ANFT_Model:
@@ -190,6 +191,9 @@ namespace gw2b {
 				break;
 			case ANFT_WEBP:
 				return wxT( "webp" );
+				break;
+			case ANFT_PNG:
+				return wxT( "png" );
 				break;
 
 				// String files

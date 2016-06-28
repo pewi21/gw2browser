@@ -430,6 +430,9 @@ namespace gw2b {
 		case FCC_ARAP:
 			po_fileType = ANFT_ARAP;
 			break;
+		case FCC_PNG:
+			po_fileType = ANFT_PNG;
+			break;
 		}
 
 		// Identify PF files
