@@ -57,9 +57,6 @@ namespace gw2b {
 		void drawText( const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color );
 		bool loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height );
 
-	private:
-		//void checkCompileErrors( GLuint Text2D, std::string type );
-
 	}; // class Text2D
 
 }; // namespace gw2b
