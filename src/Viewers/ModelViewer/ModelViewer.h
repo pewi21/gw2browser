@@ -122,6 +122,7 @@ namespace gw2b {
 		} // already asserted with a dynamic_cast
 
 	private:
+		void clearBuffer( );
 		int initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );

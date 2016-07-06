@@ -115,44 +115,7 @@ namespace gw2b {
 	}
 
 	ModelViewer::~ModelViewer( ) {
-		// Clean VBO
-		for ( auto& it : m_vertexBuffer ) {
-			if ( it.vertexBuffer ) {
-				glDeleteBuffers( 1, &it.vertexBuffer );
-			}
-			if ( it.normalBuffer ) {
-				glDeleteBuffers( 1, &it.normalBuffer );
-			}
-			if ( it.uvBuffer ) {
-				glDeleteBuffers( 1, &it.uvBuffer );
-			}
-			if ( it.tangentbuffer ) {
-				glDeleteBuffers( 1, &it.tangentbuffer );
-			}
-			if ( it.bitangentbuffer ) {
-				glDeleteBuffers( 1, &it.bitangentbuffer );
-			}
-		}
-
-		// Clean IBO
-		for ( auto& it : m_indexBuffer ) {
-			if ( it.elementBuffer ) {
-				glDeleteBuffers( 1, &it.elementBuffer );
-			}
-		}
-
-		// Clean TBO
-		for ( auto& it : m_textureBuffer ) {
-			if ( it.diffuseMap ) {
-				glDeleteTextures( 1, &it.diffuseMap );
-			}
-			if ( it.normalMap ) {
-				glDeleteTextures( 1, &it.normalMap );
-			}
-			if ( it.lightMap ) {
-				glDeleteTextures( 1, &it.lightMap );
-			}
-		}
+		this->clearBuffer( );
 
 		// Clean dummy textures
 		glDeleteTextures( 1, &m_dummyBlackTexture );
@@ -175,6 +138,17 @@ namespace gw2b {
 	}
 
 	void ModelViewer::clear( ) {
+		this->clearBuffer( );
+
+		m_vertexBuffer.clear( );
+		m_indexBuffer.clear( );
+		m_textureBuffer.clear( );
+		m_meshCache.clear( );
+		m_model = Model( );
+		ViewerGLCanvas::clear( );
+	}
+
+	void ModelViewer::clearBuffer( ) {
 		// Clean VBO
 		for ( auto& it : m_vertexBuffer ) {
 			if ( it.vertexBuffer ) {
@@ -213,23 +187,6 @@ namespace gw2b {
 				glDeleteTextures( 1, &it.lightMap );
 			}
 		}
-
-		// Clean mesh cache
-		for ( auto& it : m_meshCache ) {
-			it.vertices.clear( );
-			it.normals.clear( );
-			it.uvs.clear( );
-			it.indices.clear( );
-			it.tangents.clear( );
-			it.bitangents.clear( );
-		}
-
-		m_vertexBuffer.clear( );
-		m_indexBuffer.clear( );
-		m_textureBuffer.clear( );
-		m_meshCache.clear( );
-		m_model = Model( );
-		ViewerGLCanvas::clear( );
 	}
 
 	void ModelViewer::setReader( FileReader* p_reader ) {
