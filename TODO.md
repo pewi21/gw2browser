@@ -14,6 +14,8 @@ May change over time. :P
 
 * Re-write camera class?
 
+* Detect ef bb bf = utf8 text file
+
 Further plans
 -------------
 
