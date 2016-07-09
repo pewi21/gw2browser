@@ -1,6 +1,26 @@
 Change log
 ----------
 
+Gw2Browser_2016-xx-xx (1.0.8.1)
+-------------------------------
+Change:
+- Add normal maping, specular mapping, model lighting to model renderer.
+- Add Anisotropic texture filtering.
+Set anisotropic texture filtering to maximumn supported by GPU.
+- Reduce texture memory usuage when model viewer load texture.
+- Add ModelViewer toggle indicator.
+- Change model renderer fov to 45 degree.
+- When export model with textures, skip if the texture file is already exists.
+- PNG file support.
+
+Fix:
+- Fix crash on rendering some model.
+- Fix memory leak in model viewer.
+- Fix string and eula file export bug.
+
+Issue:
+- *** Export all of the materials. need to map the materials and models manually, for now.
+
 Gw2Browser_2016-04-10 (1.0.7.1)
 -------------------------------
 Change:
