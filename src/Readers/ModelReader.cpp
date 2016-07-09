@@ -168,10 +168,10 @@ namespace gw2b {
 
 		gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		//auto animationChunk = model.chunk<gw2f::pf::ModelChunks::Animation>( );
-		//auto propertiesChunk = model.chunk<gw2f::pf::ModelChunks::Properties>( );
-		//auto rootmotionChunk = model.chunk<gw2f::pf::ModelChunks::RootMotion>( );
-		//auto skeletonChunk = model.chunk<gw2f::pf::ModelChunks::Skeleton>( );
+		//auto animationChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::Animation>( );
+		//auto propertiesChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::Properties>( );
+		//auto rootmotionChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::RootMotion>( );
+		//auto skeletonChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::Skeleton>( );
 
 		this->readGeometry( newModel, modelPackFile );
 		this->readMaterial( newModel, modelPackFile );
@@ -208,8 +208,6 @@ namespace gw2b {
 
 		uint verticesCount = 0;
 		uint trianglesCount = 0;
-
-		clock_t begin = clock( );
 
 #pragma omp parallel for shared( meshes )
 		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
@@ -259,8 +257,7 @@ namespace gw2b {
 			verticesCount += vertexCount;
 			trianglesCount += indiceCount;
 		}
-		clock_t end = clock( );
-		wxLogMessage( wxT( "Read %d mesh(es) in %f seconds." ), meshCount, ( double( end - begin ) ) / CLOCKS_PER_SEC );
+
 		wxLogMessage( wxT( "%d vertices." ), verticesCount );
 		wxLogMessage( wxT( "%d triangles." ), trianglesCount );
 	}
