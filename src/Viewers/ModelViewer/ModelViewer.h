@@ -129,7 +129,7 @@ namespace gw2b {
 		void drawModel( Shader& p_shader, const glm::mat4& p_trans );
 		void drawMesh( Shader& p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
 		void displayStatusText( );
-		void loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase );
+		void loadMeshes( MeshCache& p_cache, const Mesh& p_mesh );
 		void computeTangent(
 			std::vector<glm::vec3>& in_vertices,
 			std::vector<glm::vec3>& in_normals,

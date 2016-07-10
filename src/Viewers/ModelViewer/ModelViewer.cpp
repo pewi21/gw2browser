@@ -205,13 +205,12 @@ namespace gw2b {
 		// Create mesh cache
 		m_meshCache.resize( m_model.numMeshes( ) );
 
-		uint indexBase = 1;
 		// Load mesh to mesh cache
 		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
-			this->loadMeshes( cache, mesh, indexBase );
+			this->loadMeshes( cache, mesh );
 		}
 
 		// Create Vertex Buffer Object and Index Buffer Object
@@ -621,106 +620,57 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh, uint p_indexBase ) {
+	void ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh ) {
 		// Tempoarary buffers
 		std::vector<glm::vec3> temp_vertices;
 		std::vector<glm::vec3> temp_normals;
 		std::vector<glm::vec2> temp_uvs;
+		std::vector<uint> temp_indices;
 
 		// Read positions
-		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-			auto tempVertices = p_mesh.vertices[i].position;
-			temp_vertices.push_back( tempVertices );
-		}
-
-		// Read normals
-		if ( p_mesh.hasNormal ) {
-			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-				auto tempNormals = p_mesh.vertices[i].normal;
-				temp_normals.push_back( tempNormals );
+		for ( auto& it : p_mesh.vertices ) {
+			temp_vertices.push_back( it.position );
+			// Read normals
+			if ( p_mesh.hasNormal ) {
+				temp_normals.push_back( it.normal );
+			}
+			// Read UVs
+			if ( p_mesh.hasUV ) {
+				temp_uvs.push_back( it.uv );
 			}
 		}
-
-		// Read UVs
-		if ( p_mesh.hasUV ) {
-			for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
-				auto tempUvs = p_mesh.vertices[i].uv;
-				temp_uvs.push_back( tempUvs );
-			}
-		}
-
-		// Tempoarary buffers
-		std::vector<uint> vertexIndices, normalIndices, uvIndices;
 
 		// Read faces
-		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
-			const Triangle& triangle = p_mesh.triangles[i];
-
-			uint vertexIndex[3], uvIndex[3], normalIndex[3];
-
-			for ( uint j = 0; j < 3; j++ ) {
-				uint index = triangle.indices[j] + p_indexBase;
-
-				vertexIndex[j] = index;
-
-				// Normal reference
-				if ( p_mesh.hasNormal ) {
-					normalIndex[j] = index;
-				}
-
-				// UV reference
-				if ( p_mesh.hasUV ) {
-					uvIndex[j] = index;
-				}
-			}
-
-			vertexIndices.push_back( vertexIndex[0] );
-			vertexIndices.push_back( vertexIndex[1] );
-			vertexIndices.push_back( vertexIndex[2] );
-
-			if ( p_mesh.hasNormal ) {
-				normalIndices.push_back( normalIndex[0] );
-				normalIndices.push_back( normalIndex[1] );
-				normalIndices.push_back( normalIndex[2] );
-			}
-
-			if ( p_mesh.hasUV ) {
-				uvIndices.push_back( uvIndex[0] );
-				uvIndices.push_back( uvIndex[1] );
-				uvIndices.push_back( uvIndex[2] );
-			}
+		for ( auto& it : p_mesh.triangles ) {
+			temp_indices.push_back( it.index1 );
+			temp_indices.push_back( it.index2 );
+			temp_indices.push_back( it.index3 );
 		}
-		p_indexBase += p_mesh.vertices.size( );
 
 		// Temporary buffer before send to VBO indexer
 		std::vector<glm::vec3> vertices;
 		std::vector<glm::vec3> normals;
 		std::vector<glm::vec2> uvs;
-		std::vector<glm::vec3> tangents;
-		std::vector<glm::vec3> bitangents;
 
 		// For each vertex of each triangle
-		for ( uint i = 0; i < vertexIndices.size( ); i++ ) {
-			// Get the indices of its attributes
-			uint vertexIndex = vertexIndices[i];
-			// Get the indices of its attributes
-			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
-			// Put the attributes in buffers
+		for ( auto& it : temp_indices ) {
+			auto& index = it;
+			auto vertex = temp_vertices[index];
 			vertices.push_back( vertex );
 
 			if ( p_mesh.hasNormal ) {
-				uint normalIndex = normalIndices[i];
-				glm::vec3 normal = temp_normals[normalIndex - 1];
+				auto normal = temp_normals[index];
 				normals.push_back( normal );
 			}
 
 			if ( p_mesh.hasUV ) {
-				uint uvIndex = uvIndices[i];
-				glm::vec2 uv = temp_uvs[uvIndex - 1];
+				auto uv = temp_uvs[index];
 				uvs.push_back( uv );
 			}
 		}
 
+		std::vector<glm::vec3> tangents;
+		std::vector<glm::vec3> bitangents;
 		this->computeTangent(
 			vertices, normals, uvs,
 			tangents, bitangents
