@@ -206,11 +206,12 @@ namespace gw2b {
 		m_meshCache.resize( m_model.numMeshes( ) );
 
 		// Load mesh to mesh cache
+#pragma omp parallel for
 		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
-			this->loadMeshes( cache, mesh );
+			this->loadMesh( cache, mesh );
 		}
 
 		// Create Vertex Buffer Object and Index Buffer Object
@@ -622,7 +623,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::loadMeshes( MeshCache& p_cache, const Mesh& p_mesh ) {
+	void ModelViewer::loadMesh( MeshCache& p_cache, const Mesh& p_mesh ) {
 		// Tempoarary buffers
 		std::vector<glm::vec3> temp_vertices;
 		std::vector<glm::vec3> temp_normals;
