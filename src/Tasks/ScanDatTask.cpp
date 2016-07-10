@@ -25,8 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <gw2formats/StringsFile.h>
-
 #include "ScanDatTask.h"
 
 #include "DatFile.h"
@@ -236,8 +234,6 @@ namespace gw2b {
 			MakeCategory( wxT( "Binaries" ) );
 			break;
 
-		// when catagorize string files the process will slower,
-		// due to strs file format that have to read near end of file to know what language is
 		case ANFT_StringFile:
 		{
 			MakeCategory( wxT( "Strings" ) );
@@ -247,30 +243,33 @@ namespace gw2b {
 			auto buffer = allocate<byte>( m_datFile.fileSize( entryNumber ) );
 			auto size = m_datFile.readFile( entryNumber, buffer );
 
-			gw2f::StringsFile stringFile( buffer, size );
+			// strs file format that have to read near end of file to know what language is
+			auto pos = buffer + 4;
+			auto end = buffer + size - 2;
+			auto language = static_cast<uint32>( *end );
 
-			switch ( stringFile.language( ) ) {
-			case gw2f::language::English:
+			switch ( language ) {
+			case 0:
 				MakeSubCategory( wxT( "English" ) );
 				break;
-			case gw2f::language::French:
-				MakeSubCategory( wxT( "French" ) );
-				break;
-			case gw2f::language::German:
-				MakeSubCategory( wxT( "German" ) );
-				break;
-			case gw2f::language::Korean:
+			case 1:
 				MakeSubCategory( wxT( "Korean" ) );
 				break;
-			case gw2f::language::Spanish:
+			case 2:
+				MakeSubCategory( wxT( "French" ) );
+				break;
+			case 3:
+				MakeSubCategory( wxT( "German" ) );
+				break;
+			case 4:
 				MakeSubCategory( wxT( "Spanish" ) );
 				break;
-			case gw2f::language::Chinese:
+			case 5:
 				MakeSubCategory( wxT( "Chinese" ) );
 				break;
 			default:
 				MakeSubCategory( wxT( "Unknown" ) );
-				MakeSubCategory( wxString::Format( wxT( "%u" ), stringFile.language( ) ) );
+				MakeSubCategory( wxString::Format( wxT( "%u" ), language ) );
 			}
 			freePointer( buffer );
 			break;
