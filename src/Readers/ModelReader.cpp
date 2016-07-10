@@ -217,6 +217,7 @@ namespace gw2b {
 			// Fetch buffer info
 			auto vertexInfo = meshInfo.geometry->verts;
 			auto indicesInfo = meshInfo.geometry->indices;
+			//auto lodsInfo = meshInfo.geometry->lods[0];
 			auto vertexCount = vertexInfo.vertexCount;
 			auto indiceCount = indicesInfo.indices.size( );
 
@@ -426,7 +427,8 @@ namespace gw2b {
 
 	void ModelReader::readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
 		p_mesh.triangles.resize( p_indiceCount / 3 );
-		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( p_mesh.triangles.size( ) ); i++ ) {
 			auto pos = &p_data[i * sizeof( Triangle )];
 			Triangle& triangle = p_mesh.triangles[i];
 			// Flip the order of the faces of the triangle
@@ -438,7 +440,8 @@ namespace gw2b {
 
 	void ModelReader::normalizeNormals( Mesh& p_mesh ) const {
 		auto& vert = p_mesh.vertices;
-		for ( uint i = 0; i < p_mesh.vertices.size( ); i++ ) {
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
 			// Check if the normals is zero to avoid divide by zero problem.
 			if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
 				if ( vert[i].normal.x ) {
@@ -505,6 +508,7 @@ namespace gw2b {
 
 	void ModelReader::readMaterial( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
 		wxLogMessage( wxT( "Reading MODL chunk..." ) );
+
 		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 
 		// Bail if no data
