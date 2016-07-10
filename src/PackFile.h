@@ -41,7 +41,7 @@ namespace gw2b {
 		*  \param[in]  p_chunkType  Type of chunk to look for.
 		*  \param[out] po_size      Size of the returned chunk.
 		*  \return byte*   Pointer to the start of the chunk (post-header). */
-		const byte* findChunk( uint p_chunkType, uint& po_size ) const;
+		const byte* findChunk( uint p_chunkType, size_t& po_size ) const;
 	};
 
 }; // namespace gw2b

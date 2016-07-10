@@ -36,7 +36,7 @@ namespace gw2b {
 	PackFile::~PackFile( ) {
 	}
 
-	const byte* PackFile::findChunk( uint p_chunkType, uint& po_size ) const {
+	const byte* PackFile::findChunk( uint p_chunkType, size_t& po_size ) const {
 		po_size = 0;
 
 		// Bail if the data size is too small
