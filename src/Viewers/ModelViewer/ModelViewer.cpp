@@ -674,13 +674,17 @@ namespace gw2b {
 
 		std::vector<glm::vec3> tangents;
 		std::vector<glm::vec3> bitangents;
-		this->computeTangent(
-			vertices, normals, uvs,
-			tangents, bitangents
+		if ( p_mesh.hasUV ) {
+			this->computeTangent(
+				vertices, normals, uvs,
+				tangents, bitangents
 			);
+		}
 
-		this->indexVBO( vertices, normals, uvs, tangents, bitangents,
-			p_cache.indices, p_cache.vertices, p_cache.normals, p_cache.uvs, p_cache.tangents, p_cache.bitangents );
+		this->indexVBO(
+			vertices, normals, uvs, tangents, bitangents,
+			p_cache.indices, p_cache.vertices, p_cache.normals, p_cache.uvs, p_cache.tangents, p_cache.bitangents
+		);
 	}
 
 	void ModelViewer::computeTangent(
@@ -794,8 +798,10 @@ namespace gw2b {
 				out_indices.push_back( index );
 
 				// Average the tangents and the bitangents
-				out_tangents[index] += in_tangents[i];
-				out_bitangents[index] += in_bitangents[i];
+				if ( !in_tangents.empty( ) && !in_bitangents.empty( ) ) {
+					out_tangents[index] += in_tangents[i];
+					out_bitangents[index] += in_bitangents[i];
+				}
 			} else { // If not, it needs to be added in the output data.
 				out_vertices.push_back( in_vertices[i] );
 
@@ -807,8 +813,11 @@ namespace gw2b {
 					out_uvs.push_back( in_uvs[i] );
 				}
 
-				out_tangents.push_back( in_tangents[i] );
-				out_bitangents.push_back( in_bitangents[i] );
+				if ( !in_tangents.empty( ) && !in_bitangents.empty( ) ) {
+					out_tangents.push_back( in_tangents[i] );
+					out_bitangents.push_back( in_bitangents[i] );
+				}
+
 				uint newindex = ( uint ) out_vertices.size( ) - 1;
 				out_indices.push_back( newindex );
 				VertexToOutIndex[packed] = newindex;
@@ -839,13 +848,17 @@ namespace gw2b {
 			glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
 		}
 
-		glGenBuffers( 1, &p_vbo.tangentbuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
-		glBufferData( GL_ARRAY_BUFFER, p_cache.tangents.size( ) * sizeof( glm::vec3 ), &p_cache.tangents[0], GL_STATIC_DRAW );
+		if ( p_cache.tangents.data( ) ) {
+			glGenBuffers( 1, &p_vbo.tangentbuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
+			glBufferData( GL_ARRAY_BUFFER, p_cache.tangents.size( ) * sizeof( glm::vec3 ), &p_cache.tangents[0], GL_STATIC_DRAW );
+		}
 
-		glGenBuffers( 1, &p_vbo.bitangentbuffer );
-		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
-		glBufferData( GL_ARRAY_BUFFER, p_cache.bitangents.size( ) * sizeof( glm::vec3 ), &p_cache.bitangents[0], GL_STATIC_DRAW );
+		if ( p_cache.bitangents.data( ) ) {
+			glGenBuffers( 1, &p_vbo.bitangentbuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
+			glBufferData( GL_ARRAY_BUFFER, p_cache.bitangents.size( ) * sizeof( glm::vec3 ), &p_cache.bitangents[0], GL_STATIC_DRAW );
+		}
 
 		// Buffer for the indices
 		glGenBuffers( 1, &p_ibo.elementBuffer );
