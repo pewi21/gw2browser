@@ -488,11 +488,13 @@ namespace gw2b {
 
 		// Bind our normal texture in Texture Unit 1
 		glActiveTexture( GL_TEXTURE1 );
-		if ( materialIndex >= 0 && m_textureBuffer[materialIndex].normalMap ) {
-			glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].normalMap );
+		if ( !m_textureBuffer.empty( ) ) {
+			if ( materialIndex >= 0 && m_textureBuffer[materialIndex].normalMap ) {
+				glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].normalMap );
+			}
+			// Set our "normalMap" sampler to user Texture Unit 1
+			glUniform1i( glGetUniformLocation( p_shader.program, "material.normalMap" ), 1 );
 		}
-		// Set our "normalMap" sampler to user Texture Unit 1
-		glUniform1i( glGetUniformLocation( p_shader.program, "material.normalMap" ), 1 );
 
 		// Bind Vertex Array Object
 		glBindVertexArray( modelVAO );
