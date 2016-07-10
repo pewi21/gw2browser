@@ -2,4 +2,20 @@ This file list will list the stuff in dat file,
 which mostly are Charr stuff! X3
 
 File Id			Format			Note
+13829			model			Gaheron Baelfire
+13840			model			God Gaheron Baelfire
+13848
+13854
+13861
+14224			model			Flame Legion charr
+32634			model			Charr equipment
+...
+
 184748			ogg				Charr Theme! Rrawr!
+104223			model			Dead Dragon
+454456			model			Zhaitan
+
+106572
+104223
+408554
+908287			model			The Lost Ark
