@@ -84,7 +84,7 @@ namespace gw2b {
 
 #pragma pack(pop)
 
-	struct Mesh {
+	struct GW2Mesh {
 		std::vector<Vertex>   vertices;
 		std::vector<Triangle> triangles;
 		wxString        materialName;
@@ -95,7 +95,7 @@ namespace gw2b {
 		byte            hasUV : 1;
 	};
 
-	struct Material {
+	struct GW2Material {
 		uint32 materialId;			// Unknown
 		uint32 materialFlags;		// Unknown
 		uint32 materialFile;		// File Id for material file
@@ -104,35 +104,35 @@ namespace gw2b {
 		uint32 lightMap;
 	};
 
-	class ModelData : public wxRefCounter {
+	class GW2ModelData : public wxRefCounter {
 	public:
-		std::vector<Mesh>			meshes;
-		std::vector<Material>		material;
+		std::vector<GW2Mesh>		meshes;
+		std::vector<GW2Material>		material;
 	public:
-		ModelData( );
-		ModelData( const ModelData& p_other );
-		virtual ~ModelData( );
+		GW2ModelData( );
+		GW2ModelData( const GW2ModelData& p_other );
+		virtual ~GW2ModelData( );
 	};
 
-	class Model {
-		wxObjectDataPtr<ModelData>  m_data;
+	class GW2Model {
+		wxObjectDataPtr<GW2ModelData>  m_data;
 	public:
-		Model( );
-		Model( const Model& p_other );
-		~Model( );
+		GW2Model( );
+		GW2Model( const GW2Model& p_other );
+		~GW2Model( );
 
-		Model& operator=( const Model& p_other );
+		GW2Model& operator=( const GW2Model& p_other );
 
 		// Submeshes
 		uint numMeshes( ) const;
-		const Mesh& mesh( uint p_index ) const;
-		Mesh* addMeshes( uint p_amount );
+		const GW2Mesh& mesh( uint p_index ) const;
+		GW2Mesh* addMeshes( uint p_amount );
 
 		// Material data
 		uint numMaterial( ) const;
-		Material& material( uint p_index );
-		const Material& material( uint p_index ) const;
-		Material* addMaterial( uint p_amount );
+		GW2Material& material( uint p_index );
+		const GW2Material& material( uint p_index ) const;
+		GW2Material* addMaterial( uint p_amount );
 
 		// helpers
 		Bounds bounds( ) const;
@@ -143,34 +143,34 @@ namespace gw2b {
 	class ModelReader : public FileReader {
 	public:
 		/** Constructor.
-		*  \param[in]  pData       Data to be handled by this reader.
-		*  \param[in]  p_datFile    Reference to an instance of DatFile.
-		*  \param[in]  pFileType   File type of the given data. */
+		*  \param[in]  pData		Data to be handled by this reader.
+		*  \param[in]  p_datFile	Reference to an instance of DatFile.
+		*  \param[in]  pFileType	File type of the given data. */
 		ModelReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
 		/** Destructor. Clears all data. */
 		virtual ~ModelReader( );
 
 		/** Gets the type of data contained in this file. Not to be confused with
 		*  file type.
-		*  \return DataType    type of data. */
+		*  \return DataType			type of data. */
 		virtual DataType dataType( ) const override {
 			return DT_Model;
 		}
 		/** Gets the model represented by this data.
-		*  \return Model   model. */
-		Model getModel( ) const;
+		*  \return GW2Model			model. */
+		GW2Model getModel( ) const;
 
 	private:
-		void readGeometry( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
-		void readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const;
+		void readGeometry( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
+		void readVertexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const;
 		uint vertexSize( ANetFlexibleVertexFormat p_vertexFormat ) const;
-		void computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
-		void readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
-		void normalizeNormals( Mesh& p_mesh ) const;
-		void computeVertexNormals( Mesh& p_mesh ) const;
+		void computeBond( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
+		void readIndexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const;
+		void normalizeNormals( GW2Mesh& p_mesh ) const;
+		void computeVertexNormals( GW2Mesh& p_mesh ) const;
 		/** Rotate given mesh in ZY and invert Z. */
-		void rotZYinvZ( Mesh& p_mesh ) const;
-		void readMaterial( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
+		void rotZYinvZ( GW2Mesh& p_mesh ) const;
+		void readMaterial( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 	}; // class ModelReader
 
 }; // namespace gw2b

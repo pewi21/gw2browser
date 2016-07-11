@@ -78,7 +78,7 @@ namespace gw2b {
 		bool						m_statusVisualizeZbuffer = false;
 
 		// Mesh
-		Model                       m_model;
+		GW2Model                    m_model;
 		std::vector<MeshCache>		m_meshCache;
 		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
 		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
@@ -129,7 +129,7 @@ namespace gw2b {
 		void drawModel( Shader& p_shader, const glm::mat4& p_trans );
 		void drawMesh( Shader& p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
 		void displayStatusText( );
-		void loadMesh( MeshCache& p_cache, const Mesh& p_mesh );
+		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent(
 			std::vector<glm::vec3>& in_vertices,
 			std::vector<glm::vec3>& in_normals,

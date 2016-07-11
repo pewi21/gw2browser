@@ -576,7 +576,7 @@ namespace gw2b {
 
 		uint indexBase = 1;
 		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
-			const Mesh& mesh = model.mesh( i );
+			const GW2Mesh& mesh = model.mesh( i );
 
 			// Write header
 			modlStream << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
@@ -676,7 +676,7 @@ namespace gw2b {
 			//const Mesh& mesh = model.mesh( i );
 			//auto materialIndex = mesh.materialIndex;
 			//const Material& material = model.material( materialIndex );
-			const Material& material = model.material( i );
+			const GW2Material& material = model.material( i );
 
 			matStream << "# Material " << i + 1 << std::endl;
 			matStream << "# Material ID : " << material.materialId << std::endl;

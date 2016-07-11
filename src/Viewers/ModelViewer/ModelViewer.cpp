@@ -144,7 +144,7 @@ namespace gw2b {
 		m_indexBuffer.clear( );
 		m_textureBuffer.clear( );
 		m_meshCache.clear( );
-		m_model = Model( );
+		m_model = GW2Model( );
 		ViewerGLCanvas::clear( );
 	}
 
@@ -623,7 +623,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::loadMesh( MeshCache& p_cache, const Mesh& p_mesh ) {
+	void ModelViewer::loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh ) {
 		// Tempoarary buffers
 		std::vector<glm::vec3> temp_vertices;
 		std::vector<glm::vec3> temp_normals;

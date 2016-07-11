@@ -38,50 +38,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	//----------------------------------------------------------------------------
-	//      ModelData
+	//      GW2ModelData
 	//----------------------------------------------------------------------------
 
-	ModelData::ModelData( ) {
+	GW2ModelData::GW2ModelData( ) {
 	}
 
-	ModelData::ModelData( const ModelData& p_other ) {
+	GW2ModelData::GW2ModelData( const GW2ModelData& p_other ) {
 		meshes.assign( p_other.meshes.begin( ), p_other.meshes.end( ) );
 		material.assign( p_other.material.begin( ), p_other.material.end( ) );
 	}
 
-	ModelData::~ModelData( ) {
+	GW2ModelData::~GW2ModelData( ) {
 	}
 
 	//----------------------------------------------------------------------------
-	//      Model
+	//      GW2Model
 	//----------------------------------------------------------------------------
 
-	Model::Model( )
-		: m_data( new ModelData( ) ) {
+	GW2Model::GW2Model( )
+		: m_data( new GW2ModelData( ) ) {
 	}
 
-	Model::Model( const Model& p_other )
+	GW2Model::GW2Model( const GW2Model& p_other )
 		: m_data( p_other.m_data ) {
 	}
 
-	Model::~Model( ) {
+	GW2Model::~GW2Model( ) {
 	}
 
-	Model& Model::operator=( const Model& p_other ) {
+	GW2Model& GW2Model::operator=( const GW2Model& p_other ) {
 		m_data = p_other.m_data;
 		return *this;
 	}
 
-	uint Model::numMeshes( ) const {
+	uint GW2Model::numMeshes( ) const {
 		return m_data->meshes.size( );
 	}
 
-	const Mesh& Model::mesh( uint p_index ) const {
+	const GW2Mesh& GW2Model::mesh( uint p_index ) const {
 		Assert( p_index < this->numMeshes( ) );
 		return m_data->meshes[p_index];
 	}
 
-	Mesh* Model::addMeshes( uint p_amount ) {
+	GW2Mesh* GW2Model::addMeshes( uint p_amount ) {
 		this->unShare( );
 
 		uint oldSize = m_data->meshes.size( );
@@ -90,24 +90,24 @@ namespace gw2b {
 		return &( m_data->meshes[oldSize] );
 	}
 
-	uint Model::numMaterial( ) const {
+	uint GW2Model::numMaterial( ) const {
 		return m_data->material.size( );
 	}
 
-	Material& Model::material( uint p_index ) {
+	GW2Material& GW2Model::material( uint p_index ) {
 		Assert( p_index < this->numMaterial( ) );
 		return m_data->material[p_index];
 	}
 
-	const Material& Model::material( uint p_index ) const {
+	const GW2Material& GW2Model::material( uint p_index ) const {
 		Assert( p_index < this->numMaterial( ) );
 		return m_data->material[p_index];
 	}
 
-	Material* Model::addMaterial( uint p_amount ) {
+	GW2Material* GW2Model::addMaterial( uint p_amount ) {
 		this->unShare( );
 
-		Material emptyData;
+		GW2Material emptyData;
 		::memset( &emptyData, 0, sizeof( emptyData ) );
 
 		uint oldSize = m_data->material.size( );
@@ -116,14 +116,14 @@ namespace gw2b {
 		return &( m_data->material[oldSize] );
 	}
 
-	void Model::unShare( ) {
+	void GW2Model::unShare( ) {
 		if ( m_data->GetRefCount( ) == 1 ) {
 			return;
 		}
-		m_data = new ModelData( *m_data );
+		m_data = new GW2ModelData( *m_data );
 	}
 
-	Bounds Model::bounds( ) const {
+	Bounds GW2Model::bounds( ) const {
 		// If this model contains meshes, return proper bounds
 		if ( m_data->meshes.size( ) ) {
 			Bounds retval;
@@ -155,8 +155,8 @@ namespace gw2b {
 	ModelReader::~ModelReader( ) {
 	}
 
-	Model ModelReader::getModel( ) const {
-		Model newModel;
+	GW2Model ModelReader::getModel( ) const {
+		GW2Model newModel;
 
 		// Bail if there is no data to read
 		if ( m_data.GetSize( ) == 0 ) {
@@ -181,7 +181,7 @@ namespace gw2b {
 		return newModel;
 	}
 
-	void ModelReader::readGeometry( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+	void ModelReader::readGeometry( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
 		wxLogMessage( wxT( "Reading GOEM chunk..." ) );
 		auto geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
 
@@ -202,7 +202,7 @@ namespace gw2b {
 		wxLogMessage( wxT( "%d mesh(es)." ), meshCount );
 
 		// Create storage for submeshes now, so we can parallelize the loop
-		Mesh* meshes = p_model.addMeshes( meshCount );
+		GW2Mesh* meshes = p_model.addMeshes( meshCount );
 
 		auto& meshInfoArray = geometryChunk->meshes;
 
@@ -222,7 +222,7 @@ namespace gw2b {
 			auto indiceCount = indicesInfo.indices.size( );
 
 			// Add new mesh
-			Mesh& mesh = meshes[i];
+			GW2Mesh& mesh = meshes[i];
 
 			// Material data
 			mesh.materialIndex = meshInfo.materialIndex;
@@ -263,7 +263,7 @@ namespace gw2b {
 		wxLogMessage( wxT( "%d triangles." ), trianglesCount );
 	}
 
-	void ModelReader::readVertexBuffer( Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
+	void ModelReader::readVertexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
 		p_mesh.vertices.resize( p_vertexCount );
 		uint vertexSize = this->vertexSize( p_vertexFormat );
 
@@ -403,7 +403,7 @@ namespace gw2b {
 
 	}
 
-	void ModelReader::computeBond( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+	void ModelReader::computeBond( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
 		// Calculate bounds
 		float floatMin = std::numeric_limits<float>::min( );
 		float floatMax = std::numeric_limits<float>::max( );
@@ -425,7 +425,7 @@ namespace gw2b {
 		p_mesh.bounds.max = max;
 	}
 
-	void ModelReader::readIndexBuffer( Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+	void ModelReader::readIndexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
 		p_mesh.triangles.resize( p_indiceCount / 3 );
 #pragma omp parallel for
 		for ( int i = 0; i < static_cast<int>( p_mesh.triangles.size( ) ); i++ ) {
@@ -438,7 +438,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelReader::normalizeNormals( Mesh& p_mesh ) const {
+	void ModelReader::normalizeNormals( GW2Mesh& p_mesh ) const {
 		auto& vert = p_mesh.vertices;
 #pragma omp parallel for
 		for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
@@ -459,7 +459,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelReader::computeVertexNormals( Mesh& p_mesh ) const {
+	void ModelReader::computeVertexNormals( GW2Mesh& p_mesh ) const {
 
 		// Claculate vertex normals
 		// http://www.iquilezles.org/www/articles/normals/normals.htm
@@ -487,7 +487,7 @@ namespace gw2b {
 		this->normalizeNormals( p_mesh );
 	}
 
-	void ModelReader::rotZYinvZ( Mesh& p_mesh ) const {
+	void ModelReader::rotZYinvZ( GW2Mesh& p_mesh ) const {
 		// Rotate ZY and invert Z
 		const glm::mat3 transform = glm::mat3(
 			glm::vec3( 1.0f, 0.0f, 0.0f ),
@@ -506,7 +506,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelReader::readMaterial( Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+	void ModelReader::readMaterial( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
 		wxLogMessage( wxT( "Reading MODL chunk..." ) );
 
 		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
@@ -535,7 +535,7 @@ namespace gw2b {
 		}
 		wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
-		Material* materials = p_model.addMaterial( materialCount );
+		GW2Material* materials = p_model.addMaterial( materialCount );
 
 		// Loop through each material
 #pragma omp parallel for shared(materials)
