@@ -89,7 +89,7 @@ namespace gw2b {
 			m_index->removeListener( this );
 		}
 
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onTreeDestruction( *this );
 		}
 	}
@@ -298,7 +298,7 @@ namespace gw2b {
 		this->DeleteAllItems( );
 		this->AddRoot( wxT( "Root" ) );
 
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onTreeCleared( *this );
 		}
 	}
@@ -518,12 +518,12 @@ namespace gw2b {
 			// raise the correct event
 			switch ( itemData->dataType( ) ) {
 			case CategoryTreeItem::DT_Category:
-				for ( auto& it : m_listeners ) {
+				for ( auto const& it : m_listeners ) {
 					it->onTreeCategoryClicked( *this, *static_cast<const DatIndexCategory*>( itemData->data( ) ) );
 				}
 				break;
 			case CategoryTreeItem::DT_Entry:
-				for ( auto& it : m_listeners ) {
+				for ( auto const& it : m_listeners ) {
 					it->onTreeEntryClicked( *this, *static_cast<const DatIndexEntry*>( itemData->data( ) ) );
 				}
 			}
@@ -574,7 +574,7 @@ namespace gw2b {
 	//============================================================================/
 
 	void CategoryTree::onExtractRawFiles( wxCommandEvent& p_event ) {
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onTreeExtractFile( *this, Exporter::EM_Raw );
 		}
 	}
@@ -582,7 +582,7 @@ namespace gw2b {
 	//============================================================================/
 
 	void CategoryTree::onExtractConvertedFiles( wxCommandEvent& p_event ) {
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onTreeExtractFile( *this, Exporter::EM_Converted );
 		}
 	}

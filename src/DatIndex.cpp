@@ -130,7 +130,7 @@ namespace gw2b {
 		this->clear( );
 
 		// Notify listeners, so they can clear pointers etc
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onIndexDestruction( *this );
 		}
 	}
@@ -154,7 +154,7 @@ namespace gw2b {
 		m_numCategories = 0;
 
 		// Notify listeners
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onIndexCleared( *this );
 		}
 	}
@@ -196,7 +196,7 @@ namespace gw2b {
 		auto& category = *m_categories[index];
 
 		// Notify listeners
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onIndexCategoryAdded( *this, category );
 		}
 
@@ -242,7 +242,7 @@ namespace gw2b {
 		}
 
 		// Notify listeners
-		for ( auto& it : m_listeners ) {
+		for ( auto const& it : m_listeners ) {
 			it->onIndexFileAdded( *this, p_entry );
 		}
 	}

@@ -452,7 +452,7 @@ namespace gw2b {
 		}
 
 		wxString StringOut;
-		for ( auto& it : string ) {
+		for ( auto const& it : string ) {
 			StringOut << wxT( "\"" ) << it.id << wxT( "\";\"" ) << it.string << L"\"\r\n";
 		}
 
@@ -528,7 +528,7 @@ namespace gw2b {
 		auto data = sound->getSoundData( );
 		auto filename = m_filename.GetName( );
 
-		for ( auto& it : data ) {
+		for ( auto const& it : data ) {
 			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), filename, it.voiceId ) );
 
 			//uint16 format = *reinterpret_cast<const uint16*>( it.data.GetPointer( ) );
@@ -782,7 +782,7 @@ namespace gw2b {
 		}
 
 		// Extract textures
-		for ( auto& it : textureFileList ) {
+		for ( auto const& it : textureFileList ) {
 			this->exportModelTexture( it );
 		}
 

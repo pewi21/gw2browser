@@ -101,7 +101,7 @@ namespace gw2b {
 		glBindVertexArray( m_textVAO );
 
 		// Iterate through all characters
-		for ( auto c : p_text ) {
+		for ( auto const& c : p_text ) {
 			Character ch = m_characterTextureMap[c];
 
 			GLfloat xpos = p_x + ch.Bearing.x * p_scale;

@@ -222,12 +222,12 @@ namespace gw2b {
 #pragma omp parallel for shared( meshes )
 		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
 			// Fetch mesh info
-			auto meshInfo = meshInfoArray[i];
+			auto& meshInfo = meshInfoArray[i];
 
 			// Fetch buffer info
-			auto vertexInfo = meshInfo.geometry->verts;
-			auto indicesInfo = meshInfo.geometry->indices;
-			//auto lodsInfo = meshInfo.geometry->lods[0];
+			auto& vertexInfo = meshInfo.geometry->verts;
+			auto& indicesInfo = meshInfo.geometry->indices;
+			//auto& lodsInfo = meshInfo.geometry->lods[0];
 			auto vertexCount = vertexInfo.vertexCount;
 			auto indiceCount = indicesInfo.indices.size( );
 
@@ -649,7 +649,7 @@ namespace gw2b {
 
 		// Prepare parallel loop
 		std::vector<omp_lock_t> locks( materialCount );
-		for ( auto it : locks ) {
+		for ( auto& it : locks ) {
 			omp_init_lock( &( it ) );
 		}
 
@@ -734,7 +734,7 @@ namespace gw2b {
 		}
 
 		// Destroy locks
-		for ( auto it : locks ) {
+		for ( auto& it : locks ) {
 			omp_destroy_lock( &( it ) );
 		}
 
