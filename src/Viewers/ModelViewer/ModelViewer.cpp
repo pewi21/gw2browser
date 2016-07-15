@@ -202,12 +202,14 @@ namespace gw2b {
 		auto reader = this->modelReader( );
 		m_model = reader->getModel( );
 
+		auto numMeshes = m_model.numMeshes( );
+
 		// Create mesh cache
-		m_meshCache.resize( m_model.numMeshes( ) );
+		m_meshCache.resize( numMeshes );
 
 		// Load mesh to mesh cache
 #pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( m_model.numMeshes( ) ); i++ ) {
+		for ( int i = 0; i < static_cast<int>( numMeshes ); i++ ) {
 			auto& mesh = m_model.mesh( i );
 			auto& cache = m_meshCache[i];
 
@@ -215,11 +217,11 @@ namespace gw2b {
 		}
 
 		// Create Vertex Buffer Object and Index Buffer Object
-		m_vertexBuffer.resize( m_model.numMeshes( ) );
-		m_indexBuffer.resize( m_model.numMeshes( ) );
+		m_vertexBuffer.resize( numMeshes );
+		m_indexBuffer.resize( numMeshes );
 
 		// Populate Buffer Object
-		for ( int i = 0; i < static_cast<int>( m_meshCache.size( ) ); i++ ) {
+		for ( uint i = 0; i < m_meshCache.size( ); i++ ) {
 			auto& cache = m_meshCache[i];
 			auto& vbo = m_vertexBuffer[i];
 			auto& ibo = m_indexBuffer[i];
@@ -227,9 +229,11 @@ namespace gw2b {
 			this->populateBuffers( vbo, ibo, cache );
 		}
 
+		auto numMaterial = m_model.numMaterial( );
+
 		// Load textures to texture map
 		std::map<uint32, GLuint> textureMap;
-		for ( int i = 0; i < static_cast<int>( m_model.numMaterial( ) ); i++ ) {
+		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
 			auto& material = m_model.material( i );
 			std::map<uint32, GLuint>::iterator it;
 
@@ -257,10 +261,10 @@ namespace gw2b {
 		}
 
 		// Create Texture Buffer Object
-		m_textureBuffer.resize( m_model.numMaterial( ) );
+		m_textureBuffer.resize( numMaterial );
 
 		// Copy texture id from texture map to TBO
-		for ( int i = 0; i < static_cast<int>( m_model.numMaterial( ) ); i++ ) {
+		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
 			auto& material = m_model.material( i );
 			auto& cache = m_textureBuffer[i];
 
@@ -283,9 +287,6 @@ namespace gw2b {
 				cache.lightMap = 0;
 			}
 		}
-
-		// Clear texture map
-		textureMap.clear( );
 
 		// Re-focus and re-render
 		this->focus( );
@@ -625,55 +626,36 @@ namespace gw2b {
 
 	void ModelViewer::loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh ) {
 		// Tempoarary buffers
-		std::vector<glm::vec3> temp_vertices;
-		std::vector<glm::vec3> temp_normals;
-		std::vector<glm::vec2> temp_uvs;
-		std::vector<uint> temp_indices;
-
-		// Read positions
-		for ( auto& it : p_mesh.vertices ) {
-			temp_vertices.push_back( it.position );
-			// Read normals
-			if ( p_mesh.hasNormal ) {
-				temp_normals.push_back( it.normal );
-			}
-			// Read UVs
-			if ( p_mesh.hasUV ) {
-				temp_uvs.push_back( it.uv );
-			}
-		}
-
-		// Read faces
-		for ( auto& it : p_mesh.triangles ) {
-			temp_indices.push_back( it.index1 );
-			temp_indices.push_back( it.index2 );
-			temp_indices.push_back( it.index3 );
-		}
-
-		// Temporary buffer before send to VBO indexer
 		std::vector<glm::vec3> vertices;
 		std::vector<glm::vec3> normals;
 		std::vector<glm::vec2> uvs;
+		std::vector<uint> indices;
+		std::vector<glm::vec3> tangents;
+		std::vector<glm::vec3> bitangents;
+
+		// Read faces
+		for ( auto& it : p_mesh.triangles ) {
+			indices.push_back( it.index1 );
+			indices.push_back( it.index2 );
+			indices.push_back( it.index3 );
+		}
 
 		// For each vertex of each triangle
-		for ( auto& it : temp_indices ) {
-			auto& index = it;
-			auto vertex = temp_vertices[index];
+		for ( auto& it : indices ) {
+			auto& vertex = p_mesh.vertices[it].position;
 			vertices.push_back( vertex );
 
 			if ( p_mesh.hasNormal ) {
-				auto normal = temp_normals[index];
+				auto& normal = p_mesh.vertices[it].normal;
 				normals.push_back( normal );
 			}
 
 			if ( p_mesh.hasUV ) {
-				auto uv = temp_uvs[index];
+				auto& uv = p_mesh.vertices[it].uv;
 				uvs.push_back( uv );
 			}
 		}
 
-		std::vector<glm::vec3> tangents;
-		std::vector<glm::vec3> bitangents;
 		if ( p_mesh.hasUV ) {
 			this->computeTangent(
 				vertices, normals, uvs,
