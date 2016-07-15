@@ -249,6 +249,20 @@ namespace gw2b {
 		uint16 parts[3];                /**< Part1 is always above 0x100, Part2 is always between 0x100 and 0x101, Part3 is always 0x00 */
 	};
 
+	/** ATEX file header. */
+	struct ANetAtexHeader {
+		union {
+			byte identifier[4];         /**< File identifier (FourCC). */
+			uint32 identifierInteger;   /**< File identifier (FourCC), as integer. */
+		};
+		union {
+			byte format[4];             /**< Format of the contained data. */
+			uint32 formatInteger;       /**< Format of the contained data, as integer. */
+		};
+		uint16 width;                   /**< Width of the texture, in pixels. */
+		uint16 height;                  /**< Height of the texture, in pixels. */
+	};
+
 	/** PF file header. */
 	struct ANetPfHeader {
 		byte identifier[2];             /**< Always 'PF'. */
@@ -272,6 +286,43 @@ namespace gw2b {
 		uint16 chunkVersion;            /**< Version of this chunk. */
 		uint16 chunkHeaderSize;         /**< Size of the chunk header. */
 		uint32 offsetTableOffset;       /**< Offset to the offset table. */
+	};
+
+	/** MODL file, MODL chunk permutations. */
+	struct ANetModelMaterialPermutations {
+		uint64 token;
+		uint32 materialCount;
+		int32 materialsOffset;
+	};
+
+	/** MODL file, MODL chunk material info data. */
+	struct ANetModelMaterialData {
+		uint64 token;
+		uint32 materialId;
+		int32 materialFileOffset;		/**< Offset to material file reference. */
+		uint32 materialFlags;			/**< Mesh flags. */
+		uint32 sortOrder;
+		uint32 textureCount;			/**< Amount of texture references. */
+		int32 texturesOffset;			/**< Offset to texture references. */
+		uint32 constantsCount;			/**< Amount of constantss for use by the material. */
+		int32 constantsOffset;			/**< Offset to constants data. */
+		uint32 matConstLinksCount;		/**< Amount of matConstLinks pointed to by mHashesOffset. Only contains matConstLinks used by vectors. */
+		int32 matConstLinksOffset;		/**< Offset to matConstLinks. */
+		uint32 uvTransLinksCount;
+		int32 uvTransLinksOffset;
+		uint32 texTransforms4Count;
+		int32 texTransforms4Offset;
+		byte texCoordCount;
+	};
+
+	/** MODL file, MODL chunk texture reference data. */
+	struct ANetModelTextureReference {
+		int32 offsetToFileReference;    /**< Offset to the texture file reference. */
+		uint32 textureFlags;
+		uint64 token;					/**< Hash used to associate the texture with a variable in the material. */
+		uint64 blitId;
+		uint32 uvAnimId;
+		byte uvPSInputIndex;
 	};
 
 #pragma pack(pop)

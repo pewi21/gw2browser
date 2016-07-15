@@ -47,7 +47,6 @@ namespace gw2b {
 		struct DCXBlock;
 		struct DDSPixelFormat;
 		struct DDSHeader;
-		struct ANetAtexHeader;
 
 	public:
 		/** Constructor.

@@ -134,20 +134,6 @@ namespace gw2b {
 		uint32          reserved2;              /**< Unused. */
 	};
 
-	/** ATEX file header. */
-	struct ImageReader::ANetAtexHeader {
-		union {
-			byte identifier[4];         /**< File identifier (FourCC). */
-			uint32 identifierInteger;   /**< File identifier (FourCC), as integer. */
-		};
-		union {
-			byte format[4];             /**< Format of the contained data. */
-			uint32 formatInteger;       /**< Format of the contained data, as integer. */
-		};
-		uint16 width;                   /**< Width of the texture, in pixels. */
-		uint16 height;                  /**< Height of the texture, in pixels. */
-	};
-
 	//----------------------------------------------------------------------------
 	//      ImageReader
 	//----------------------------------------------------------------------------

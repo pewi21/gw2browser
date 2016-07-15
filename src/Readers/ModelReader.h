@@ -171,6 +171,7 @@ namespace gw2b {
 		/** Rotate given mesh in ZY and invert Z. */
 		void rotZYinvZ( GW2Mesh& p_mesh ) const;
 		void readMaterial( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
+		void readMaterialPF( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const;
 	}; // class ModelReader
 
 }; // namespace gw2b

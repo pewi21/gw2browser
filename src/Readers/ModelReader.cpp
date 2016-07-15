@@ -183,7 +183,17 @@ namespace gw2b {
 
 	void ModelReader::readGeometry( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
 		wxLogMessage( wxT( "Reading GOEM chunk..." ) );
-		auto geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
+
+		std::shared_ptr<gw2f::pf::chunks::ModelFileGeometryV1> geometryChunk;
+		try {
+			geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
+		} catch ( std::exception& exception ) {
+			wxLogMessage( wxT( "Failed to read GEOM chunk using gw2formats: %s" ), std::string( exception.what( ) ) );
+			return;
+		} catch ( ... ) {
+			wxLogMessage( wxT( "An unknown error has occurred." ) );
+			return;
+		}
 
 		// Bail if no geometry data
 		if ( !geometryChunk ) {
@@ -509,81 +519,225 @@ namespace gw2b {
 	void ModelReader::readMaterial( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
 		wxLogMessage( wxT( "Reading MODL chunk..." ) );
 
-		auto modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
+		std::shared_ptr<gw2f::pf::chunks::ModelFileDataV65> modelChunk;
+		try {
+			modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
+		} catch ( std::exception& exception ) {
+			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), std::string( exception.what( ) ) );
 
-		// Bail if no data
-		if ( !modelChunk ) {
-			wxLogMessage( wxT( "No data." ) );
+			wxLogMessage( wxT( "Try another method..." ) );
+			this->readMaterialPF( p_model, p_modelPackFile );
+
+		} catch ( ... ) {
+			wxLogMessage( wxT( "An unknown error has occurred." ) );
 			return;
 		}
 
-		// Bail if no data
-		if ( !modelChunk->permutations.data( ) ) {
-			wxLogMessage( wxT( "No permutations data." ) );
-			return;
-		}
-
-		// Read some necessary data
-		auto materialsArray = modelChunk->permutations[0].materials;
-		// Count materials
-		auto materialCount = static_cast<uint>( materialsArray.size( ) );
-
-		// Bail if no materials
-		if ( !materialCount ) {
-			wxLogMessage( wxT( "No material to read." ) );
-			return;
-		}
-		wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
-
-		GW2Material* materials = p_model.addMaterial( materialCount );
-
-		// Loop through each material
-#pragma omp parallel for shared(materials)
-		for ( int i = 0; i < static_cast<int>( materialCount ); i++ ) {
-			auto& mat = materialsArray[i];
-			auto& material = materials[i];
-
-			// Copy the data
-			material.materialId = mat.materialId;
-			material.materialFlags = mat.materialFlags;
-
-			// Get material filename from each materials
-			auto ref = reinterpret_cast<const ANetFileReference*>( &mat.filename );
-			material.materialFile = DatFile::fileIdFromFileReference( *ref );
-
-			if ( mat.textures.size( ) == 0 ) {
-				continue;
+		// Successfully read MODL chunk using gw2formats
+		if ( modelChunk ) {
+			// Bail if no permutations data
+			if ( !modelChunk->permutations.data( ) ) {
+				wxLogMessage( wxT( "No permutations data." ) );
+				return;
 			}
 
-			auto textures = mat.textures;
+			// Read some necessary data
+			auto& permutationsInfoArray = modelChunk->permutations;
+			uint32 numMaterialInfo = modelChunk->permutations.size( );
 
-			for ( uint t = 0; t < textures.size( ); t++ ) {
-				// Get file reference
-				auto fileReference = reinterpret_cast<const ANetFileReference*>( &textures[t].filename );
+			// Count materials
+			uint materialCount = 0;
+			for ( uint i = 0; i < numMaterialInfo; i++ ) {
+				materialCount = wxMax( materialCount, permutationsInfoArray[i].materials.size( ) );
+			}
 
-				// todo: figure out this
-				// Diffuse?
-				if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
-					material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-				}
+			// Bail if no materials data
+			if ( !materialCount ) {
+				wxLogMessage( wxT( "No material data." ) );
+				return;
+			}
+			wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
-				// Normal?
-				else if ( ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee )
-					//|| ( ( textures[t].token& 0xffffffff ) == 0x8b0bbd87 )
-					//|| ( ( textures[t].token& 0xffffffff ) == 0xa55a48b0 )
-					) {
-					material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-				}
+			GW2Material* materials = p_model.addMaterial( materialCount );
+			// Loop through each material
+			for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
+					// Bail if no material data
+					if ( !permutationsInfoArray[i].materials.data( ) ) {
+						wxLogMessage( wxT( "No material data in material array %d." ), i );
+						continue;
+					}
 
-				// Light Map ?
-				else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
-					material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-					break;
-				}
+				#pragma omp parallel
+				{
+					auto& materialsArray = permutationsInfoArray[i].materials;
+
+					// Loop through each material in these permutations infos
+					#pragma omp for
+					for ( int j = 0; j < static_cast<int>( materialsArray.size( ) ); j++ ) {
+						auto& mat = materialsArray[j];
+						auto& material = materials[j];
+
+						// Copy the data
+						material.materialId = mat.materialId;
+						material.materialFlags = mat.materialFlags;
+
+						// Get material filename from each materials
+						auto ref = reinterpret_cast<const ANetFileReference*>( &mat.filename );
+						material.materialFile = DatFile::fileIdFromFileReference( *ref );
+
+						if ( !mat.textures.size( ) ) {
+							continue;
+						}
+
+						for ( uint t = 0; t < mat.textures.size( ); t++ ) {
+							auto& texture = mat.textures[t];
+							// Get file reference
+							auto fileReference = reinterpret_cast<const ANetFileReference*>( &texture.filename );
+
+							// 0x67531924	01100111010100110001100100100100	Diffuse
+							// 0x1816c9ee	00011000000101101100100111101110	Normal
+							// 0x680bbd87	01101000000010111011110110000111	Light Map
+
+							// todo: figure out this
+							// Diffuse?
+							if ( ( texture.token & 0xffffffff ) == 0x67531924 ) {
+								material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+							}
+
+							// Normal?
+							else if ( ( ( texture.token & 0xffffffff ) == 0x1816c9ee )
+								//|| ( ( texture.token& 0xffffffff ) == 0x8b0bbd87 )
+								//|| ( ( texture.token& 0xffffffff ) == 0xa55a48b0 )
+								) {
+								material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+							}
+
+							// Light Map?
+							else if ( ( texture.token & 0xffffffff ) == 0x680bbd87 ) {
+								material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+								break;
+							}
+						}
+					}
+				}	//#pragma omp parallel
 			}
 		}
 
 		wxLogMessage( wxT( "Finished reading MODL chunk." ) );
+	}
+
+	void ModelReader::readMaterialPF( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+		size_t size;
+		auto data = p_modelPackFile.chunk( gw2f::pf::ModelChunks::Model, size );
+
+		// Read some necessary data
+		uint32 numPermutations = *reinterpret_cast<const uint32*>( data );
+		uint32 permutationsOffset = *reinterpret_cast<const uint32*>( &data[4] );
+		auto permutationInfoArray = reinterpret_cast<const ANetModelMaterialPermutations*>( &data[4 + permutationsOffset] );
+
+		// Count permutations
+		uint materialCount = 0;
+		for ( uint i = 0; i < numPermutations; i++ ) {
+			materialCount = wxMax( materialCount, permutationInfoArray[i].materialCount );
+		}
+
+		// Bail if no permutations
+		if ( !materialCount ) {
+			wxLogMessage( wxT( "No permutations data." ) );
+			return;
+		}
+
+		// Prepare parallel loop
+		std::vector<omp_lock_t> locks( materialCount );
+		for ( auto it : locks ) {
+			omp_init_lock( &( it ) );
+		}
+
+		GW2Material* materials = p_model.addMaterial( materialCount );
+
+		// Loop through each permutations
+#pragma omp parallel for shared(locks, permutationInfoArray)
+		for ( int i = 0; i < static_cast<int>( numPermutations ); i++ ) {
+			// Bail if no offset or count
+			if ( !permutationInfoArray[i].materialCount || !permutationInfoArray[i].materialsOffset ) {
+				continue;
+			}
+
+			// Read the offset table for this set of materials
+			auto pos = permutationInfoArray[i].materialsOffset + reinterpret_cast<const byte*>( &permutationInfoArray[i].materialsOffset );
+			auto offsetTable = reinterpret_cast<const int32*>( pos );
+
+			// Loop through each material in these material infos
+			for ( uint j = 0; j < permutationInfoArray[i].materialCount; j++ ) {
+				auto& material = materials[j];
+
+				// Bail if offset is NULL
+				if ( !offsetTable[j] ) {
+					continue;
+				}
+
+				// Only one thread must access this material at a time
+				omp_set_lock( &locks[j] );
+
+				// Bail if this material index already has data
+				if ( material.diffuseMap && material.normalMap && material.lightMap && material.materialFlags ) {
+					omp_unset_lock( &locks[j] );
+					continue;
+				}
+
+				// Read material info
+				pos = offsetTable[j] + reinterpret_cast<const byte*>( &offsetTable[j] );
+				auto materialInfo = reinterpret_cast<const ANetModelMaterialData*>( pos );
+
+				// Copy the data
+				material.materialId = materialInfo->materialId;
+				material.materialFlags = materialInfo->materialFlags;
+
+				// Get material filename from each materials
+				auto ref = reinterpret_cast<const ANetFileReference*>( materialInfo->materialFileOffset + reinterpret_cast<const byte*>( &materialInfo->materialFileOffset ) );
+				material.materialFile = DatFile::fileIdFromFileReference( *ref );
+
+				if ( !materialInfo->textureCount ) {
+					omp_unset_lock( &locks[j] );
+					continue;
+				}
+
+				pos = materialInfo->texturesOffset + reinterpret_cast<const byte*>( &materialInfo->texturesOffset );
+				auto textures = reinterpret_cast<const ANetModelTextureReference*>( pos );
+
+				for ( uint t = 0; t < materialInfo->textureCount; t++ ) {
+					// Get file reference
+					pos = textures[t].offsetToFileReference + reinterpret_cast<const byte*>( &textures[t].offsetToFileReference );
+					auto fileReference = reinterpret_cast<const ANetFileReference*>( pos );
+
+					// Diffuse?
+					if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
+						material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					}
+
+					// Normal?
+					else if ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee ) {
+						material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+					}
+
+					// Light Map?
+					else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
+						material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+						break;
+					}
+				}
+
+				// Let other threads access this material now that we're done
+				omp_unset_lock( &locks[j] );
+			}
+
+		}
+
+		// Destroy locks
+		for ( auto it : locks ) {
+			omp_destroy_lock( &( it ) );
+		}
+
 	}
 
 }; // namespace gw2b
