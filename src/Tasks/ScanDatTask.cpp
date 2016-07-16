@@ -244,7 +244,6 @@ namespace gw2b {
 			auto size = m_datFile.readFile( entryNumber, buffer );
 
 			// strs file format that have to read near end of file to know what language is
-			auto pos = buffer + 4;
 			auto end = buffer + size - 2;
 			auto language = static_cast<uint32>( *end );
 
