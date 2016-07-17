@@ -122,11 +122,7 @@ and VS2015 is wx_vc14.sln.
 
 * Build wxWidgets
 
-1. Open the file: wxWidgets-3.1.0/include/wx/msw/setup.h and change line 788 to:
-
-		#define wxUSE_GRAPHICS_CONTEXT 1
-
-2. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command
+1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command
 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug
 
@@ -141,7 +137,7 @@ and VS2015 is wx_vc14.sln.
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug SHARED=1
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release SHARED=1
 
-3. If you need to rebuild, use "clean" target first.
+2. If you need to rebuild, use "clean" target first.
 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug clean
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release clean
