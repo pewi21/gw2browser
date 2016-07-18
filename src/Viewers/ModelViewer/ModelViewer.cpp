@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <unordered_map>
+
 #include "Readers/ImageReader.h"
 
 #include "ModelViewer.h"
@@ -232,10 +234,10 @@ namespace gw2b {
 		auto numMaterial = m_model.numMaterial( );
 
 		// Load textures to texture map
-		std::map<uint32, GLuint> textureMap;
+		std::unordered_map<uint32, GLuint> textureMap;
 		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
 			auto& material = m_model.material( i );
-			std::map<uint32, GLuint>::iterator it;
+			std::unordered_map<uint32, GLuint>::iterator it;
 
 			// Load diffuse texture
 			if ( material.diffuseMap ) {
