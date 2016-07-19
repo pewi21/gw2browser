@@ -563,6 +563,10 @@ namespace gw2b {
 			po_fileType = ANFT_JPEG;
 		}
 
+		if ( ( fourcc & 0xffffff ) == FCC_UTF8 ) {
+			po_fileType = ANFT_UTF8;
+		}
+
 		return IR_Success;
 	}
 

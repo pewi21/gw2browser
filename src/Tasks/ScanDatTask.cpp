@@ -279,6 +279,9 @@ namespace gw2b {
 		case ANFT_PortalManifest:
 			MakeCategory( wxT( "Portal Manifests" ) );
 			break;
+		case ANFT_UTF8:
+			MakeCategory( wxT( "Text" ) );
+			break;
 		case ANFT_TextPackManifest:
 			MakeCategory( wxT( "TextPack Manifests" ) );
 			break;

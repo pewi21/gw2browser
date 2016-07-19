@@ -100,6 +100,7 @@ namespace gw2b {
 		FCC_JPEG = 0xffd8ff,
 		FCC_ID3 = 0x334449,		// MP3 with an ID3v2 container
 		FCC_BINK2 = 0x32424b,	// Bink 2 video
+		FCC_UTF8 = 0xbfbbef,	// UTF-8 encoding
 	};
 
 	/** Contains the various (known) file formats in the dat. */
@@ -170,6 +171,7 @@ namespace gw2b {
 		ANFT_FontFile,					/**< Font file. */
 		ANFT_Bink2Video,				/**< Bink2 video file. */
 		ANFT_ARAP,
+		ANFT_UTF8,						/**< UTF-8 encoding. */
 	};
 
 	/** Compression flags that appear in the MFT entries. */
