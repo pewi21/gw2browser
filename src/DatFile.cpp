@@ -277,10 +277,11 @@ namespace gw2b {
 			uint32 outputSize = p_peekSize;
 			try {
 				gw2dt::compression::inflateDatFileBuffer( inputSize, m_inputBuffer.GetPointer( ), outputSize, po_Buffer );
-				return outputSize;
-			} catch ( std::exception& ) {
-				return 0;
+			} catch ( std::exception& exception ) {
+				wxLogMessage( wxT( "Failed to decompress file %u: %s" ), p_entryNum, std::string( exception.what( ) ) );
+				outputSize = 0;
 			}
+			return outputSize;
 		} else {
 			uint dataSize = wxMin( p_peekSize, inputSize );
 
