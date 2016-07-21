@@ -172,6 +172,7 @@ namespace gw2b {
 		ANFT_Bink2Video,				/**< Bink2 video file. */
 		ANFT_ARAP,
 		ANFT_UTF8,						/**< UTF-8 encoding. */
+		ANFT_TEXT,						/**< Text file. */
 	};
 
 	/** Compression flags that appear in the MFT entries. */

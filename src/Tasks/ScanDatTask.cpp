@@ -279,6 +279,7 @@ namespace gw2b {
 		case ANFT_PortalManifest:
 			MakeCategory( wxT( "Portal Manifests" ) );
 			break;
+		case ANFT_TEXT:
 		case ANFT_UTF8:
 			MakeCategory( wxT( "Text" ) );
 			break;
@@ -359,15 +360,11 @@ namespace gw2b {
 				MakeSubCategory( wxString( reinterpret_cast<const char*>( p_data + 8 ), 4 ) );
 			}
 			break;
-
-		default: // unknown stuff
+		default:
 			MakeCategory( wxT( "Unknown" ) );
-
-			// to do: printable character detection in files for detect text files.
-			//MakeSubCategory( wxString::Format( wxT( "%x" ), *reinterpret_cast<const uint32*>( p_data ) ) );
-
 			break;
 		}
+
 		return category;
 	}
 

@@ -368,32 +368,31 @@ namespace gw2b {
 
 		// start with fourcc
 		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
-		switch ( fourcc ) {
-		case FCC_ATEX:
+		if ( fourcc == FCC_ATEX ) {
 			po_fileType = ANFT_ATEX;
-			break;
-		case FCC_ATTX:
+
+		} else if ( fourcc == FCC_ATTX ) {
 			po_fileType = ANFT_ATTX;
-			break;
-		case FCC_ATEC:
+
+		} else if ( fourcc == FCC_ATEC ) {
 			po_fileType = ANFT_ATEC;
-			break;
-		case FCC_ATEP:
+
+		} else if ( fourcc == FCC_ATEP ) {
 			po_fileType = ANFT_ATEP;
-			break;
-		case FCC_ATEU:
+
+		} else if ( fourcc == FCC_ATEU ) {
 			po_fileType = ANFT_ATEU;
-			break;
-		case FCC_ATET:
+
+		} else if ( fourcc == FCC_ATET ) {
 			po_fileType = ANFT_ATET;
-			break;
-		case FCC_DDS:
+
+		} else if ( fourcc == FCC_DDS ) {
 			po_fileType = ANFT_DDS;
-			break;
-		case FCC_strs:
+
+		} else if ( fourcc == FCC_strs ) {
 			po_fileType = ANFT_StringFile;
-			break;
-		case FCC_asnd:
+
+		} else if ( fourcc == FCC_asnd ) {
 			po_fileType = ANFT_Sound;
 			if ( p_size >= 12 ) {
 				auto format = *reinterpret_cast<const byte*>( p_data + 8 );
@@ -410,15 +409,14 @@ namespace gw2b {
 			} else {
 				return IR_NotEnoughData;
 			}
-			break;
-		case FCC_OggS:
+
+		} else if ( fourcc == FCC_OggS ) {
 			po_fileType = ANFT_Ogg;
-			break;
-		case FCC_TTF:
+
+		} else if ( fourcc == FCC_TTF ) {
 			po_fileType = ANFT_FontFile;
-			break;
-		case FCC_RIFF:
-		{
+
+		} else if ( fourcc == FCC_RIFF ) {
 			po_fileType = ANFT_RIFF;
 			auto format = *reinterpret_cast<const uint32*>( p_data + 8 );
 			switch ( format ) {
@@ -426,18 +424,14 @@ namespace gw2b {
 				po_fileType = ANFT_WEBP;
 				break;
 			}
-			break;
-		}
-		case FCC_ARAP:
-			po_fileType = ANFT_ARAP;
-			break;
-		case FCC_PNG:
-			po_fileType = ANFT_PNG;
-			break;
-		}
 
-		// Identify PF files
-		if ( ( fourcc & 0xffff ) == FCC_PF ) {
+		} else if ( fourcc == FCC_ARAP ) {
+			po_fileType = ANFT_ARAP;
+
+		} else if ( fourcc == FCC_PNG ) {
+			po_fileType = ANFT_PNG;
+
+		} else if ( ( fourcc & 0xffff ) == FCC_PF ) {	// Identify PF files
 			po_fileType = ANFT_PF;
 
 			fourcc = *reinterpret_cast<const uint32*>( p_data + 8 );
@@ -531,10 +525,8 @@ namespace gw2b {
 				po_fileType = ANFT_Config;
 				break;
 			}
-		}
 
-		// Identify binary files
-		if ( ( fourcc & 0xffff ) == FCC_MZ ) {
+		} else if ( ( fourcc & 0xffff ) == FCC_MZ ) {	// Identify binary files
 			po_fileType = ANFT_Binary;
 
 			if ( p_size >= 0x40 ) {
@@ -549,23 +541,37 @@ namespace gw2b {
 			} else {
 				return IR_NotEnoughData;
 			}
-		}
 
-		if ( ( fourcc & 0xffffff ) == FCC_BINK2 ) {
+		} else if ( ( fourcc & 0xffffff ) == FCC_BINK2 ) {
 			po_fileType = ANFT_Bink2Video;
-		}
 
-		if ( ( fourcc & 0xffffff ) == FCC_ID3 ) {
+		} else if ( ( fourcc & 0xffffff ) == FCC_ID3 ) {
 			po_fileType = ANFT_MP3;
-		}
 
-		// Identify JPEG files
-		if ( ( fourcc & 0xffffff ) == FCC_JPEG ) {
+		} else if ( ( fourcc & 0xffffff ) == FCC_JPEG ) {	// Identify JPEG files
 			po_fileType = ANFT_JPEG;
-		}
 
-		if ( ( fourcc & 0xffffff ) == FCC_UTF8 ) {
+		} else if ( ( fourcc & 0xffffff ) == FCC_UTF8 ) {
 			po_fileType = ANFT_UTF8;
+
+		} else {
+			int result = 0;
+
+			// Printable character detection in files for detect text files.
+			for ( uint i = 0; i < p_size; i++ ) {
+				auto c = p_data[i];
+				if ( isprint( c ) || isspace( c ) ) {
+					result = 1;
+				} else {
+					result = 0;
+					break;
+				}
+			}
+			// All byte in the file is printable and space characters
+			if ( result ) {
+				po_fileType = ANFT_TEXT;
+			}
+
 		}
 
 		return IR_Success;

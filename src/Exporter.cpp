@@ -147,6 +147,8 @@ namespace gw2b {
 				return wxT( "mp3" );
 				break;
 			case ANFT_EULA:
+			case ANFT_TEXT:
+			case ANFT_UTF8:
 				return wxT( "txt" );
 				break;
 			case ANFT_Bink2Video:
@@ -309,6 +311,12 @@ namespace gw2b {
 
 			case ANFT_ARAP:
 				return wxT( "arap" );
+				break;
+
+				// Text file
+			case ANFT_TEXT:
+			case ANFT_UTF8:
+				return wxT( "txt" );
 				break;
 
 			default:
