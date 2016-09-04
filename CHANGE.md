@@ -12,14 +12,17 @@ Set anisotropic texture filtering to maximumn supported by GPU.
 - Change model renderer fov to 45 degree.
 - When export model with textures, skip if the texture file is already exists.
 - PNG file support.
+- Add text file detection
+- Faster speed when scaning string files.
+- When export model, also export all materials.
 
 Fix:
-- Fix crash on rendering some model.
+- Fix crash on reading/rendering some model.
 - Fix memory leak in model viewer.
 - Fix string and eula file export bug.
 
 Issue:
-- *** Export all of the materials. need to map the materials and models manually, for now.
+- Export all of the materials. need to map the materials and models manually, for now.
 
 Gw2Browser_2016-04-10 (1.0.7.1)
 -------------------------------
