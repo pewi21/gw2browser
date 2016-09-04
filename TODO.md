@@ -12,9 +12,7 @@ May change over time. :P
 
 * Render light source. (for debugging/visualization)
 
-* Re-write camera class?
-
-* Detect ef bb bf = utf8 text file
+* Re-write camera class
 
 Further plans
 -------------
@@ -23,18 +21,6 @@ Further plans
 for use by range-base loop.
 
 * Exporters class, like Reader/Viewer.
-
-* Fix crash when ModelReader read some model.
-Related to material in gw2formats, possibly library bug.
-
-Example, error std::invalid_argument at model file 905578.
-
-Possible work around:
- - Don't read material on that files, build exclude file lists.
- - Have option to export model without material/texture.
-
-* Then fix the model exporter, automatically map the materials and model.
-(have to disable it, for now)
 
 * Add a button to reload shader.
 
