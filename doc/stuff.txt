@@ -8,14 +8,25 @@ File Id			Format			Note
 13854
 13861
 14224			model			Flame Legion charr
-32634			model			Charr equipment
+26667			model			Krait
+27218			model			White owl
+27351			model			Charr Tank
+32634			model			Charr equipment start
 ...
-
+34178			model			Charr equipment end
+...
+75001			model			Charr plateform
+...
+91xxx			model			Charr Stuff!
 184748			ogg				Charr Theme! Rrawr!
 104223			model			Dead Dragon
-454456			model			Zhaitan
-
+104556			model			Hornny Charr...
 106572
 104223
 408554
+454456			model			Zhaitan
+543864			model			Plush Tybalt
+543946			model			Sunrise
+543947			model			Twilight
 908287			model			The Lost Ark
+915401			model			Cute male Charr NPC
