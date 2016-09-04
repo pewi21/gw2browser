@@ -15,8 +15,8 @@ or while an index is being read, the process is *a lot* slower.
 The latest binary can always be found [Here](http://goo.gl/4xMRVF)
 
 For people who can't run Gw2Browser, download and Install
-[Microsoft Visual C++ 2015 Redistributable Update 2](https://www.microsoft.com/en-us/download/details.aspx?id=51682)
-choose vcredist_x64.exe for 64bit and vcredist_x86.exe for 32bit executable.
+[Microsoft Visual C++ 2015 Redistributable Update 3](https://www.microsoft.com/en-us/download/details.aspx?id=52982)
+choose vcredist.x64.exe for 64bit and vcredist.x86.exe for 32bit executable.
 
 The modelviewer required GPU with OpenGL 3.3 support.
 
