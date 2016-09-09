@@ -329,7 +329,6 @@ namespace gw2b {
 	}
 
 	bool ImageReader::readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
-		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
 		auto atex = reinterpret_cast<const ANetAtexHeader*>( m_data.GetPointer( ) );
 
 		// Determine mipmap0 size and bail if the file is too small
@@ -359,44 +358,73 @@ namespace gw2b {
 			width = 128;
 		}
 
+		// Calculate uncompressed data size
+		// from gw2formats\src\TextureFile.cpp
+		uint32 numBlocks = ( ( width + 3 ) >> 2 ) * ( ( height + 3 ) >> 2 );
+		switch ( atex->formatInteger ) {
+		case FCC_DXT1:
+		case FCC_DXTA:
+			numBlocks = numBlocks * 8;
+			break;
+		case FCC_DXT2:
+		case FCC_DXT3:
+		case FCC_DXT4:
+		case FCC_DXT5:
+		case FCC_DXTL:
+		case FCC_DXTN:
+		case FCC_3DCX:
+			numBlocks = numBlocks * 16;
+			break;
+		default:
+			wxLogMessage( wxT( "Unsupported ATEX texture format." ) );
+			return false;
+		}
+
+		uint32_t uncompressedSize = numBlocks;
+
 		// Allocate output
 		auto buffer = allocate<BGRA>( width * height );
-		uint32_t bufferSize; // decode everything
 
-		// Uncompress
-		if ( gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, bufferSize, reinterpret_cast<uint8_t*>( buffer ) )
-			) {
-			switch ( atex->formatInteger ) {
-			case FCC_DXT1:
-				this->processDXT1( buffer, width, height, po_colors, po_alphas );
-				break;
-			case FCC_DXT2:
-			case FCC_DXT3:
-			case FCC_DXTN:
-				this->processDXT3( buffer, width, height, po_colors, po_alphas );
-				break;
-			case FCC_DXT4:
-			case FCC_DXT5:
-				this->processDXT5( buffer, width, height, po_colors, po_alphas );
-				break;
-			case FCC_DXTA:
-				this->processDXTA( reinterpret_cast< uint64* >( buffer ), width, height, po_colors );
-				break;
-			case FCC_DXTL:
-				this->processDXT5( buffer, width, height, po_colors, po_alphas );
-				for ( uint i = 0; i < ( static_cast<uint>( width ) * static_cast<uint>( height ) ); i++ ) {
-					po_colors[i].r = ( po_colors[i].r * po_alphas[i] ) / 0xff;
-					po_colors[i].g = ( po_colors[i].g * po_alphas[i] ) / 0xff;
-					po_colors[i].b = ( po_colors[i].b * po_alphas[i] ) / 0xff;
-				}
-				break;
-			case FCC_3DCX:
-				this->process3DCX( reinterpret_cast<RGBA*>( buffer ), width, height, po_colors, po_alphas );
-				break;
-			default:
-				freePointer( buffer );
-				return false;
+		// Decompress
+		try {
+			gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer ) );
+		} catch( std::exception& exception ) {
+			wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( exception.what( ) ) );
+			freePointer( buffer );
+			return false;
+		}
+
+		switch ( atex->formatInteger ) {
+		case FCC_DXT1:
+			this->processDXT1( buffer, width, height, po_colors, po_alphas );
+			break;
+		case FCC_DXT2:
+		case FCC_DXT3:
+		case FCC_DXTN:
+			this->processDXT3( buffer, width, height, po_colors, po_alphas );
+			break;
+		case FCC_DXT4:
+		case FCC_DXT5:
+			this->processDXT5( buffer, width, height, po_colors, po_alphas );
+			break;
+		case FCC_DXTA:
+			this->processDXTA( reinterpret_cast<uint64*>( buffer ), width, height, po_colors );
+			break;
+		case FCC_DXTL:
+			this->processDXT5( buffer, width, height, po_colors, po_alphas );
+			for ( uint i = 0; i < ( static_cast<uint>( width ) * static_cast<uint>( height ) ); i++ ) {
+				po_colors[i].r = ( po_colors[i].r * po_alphas[i] ) / 0xff;
+				po_colors[i].g = ( po_colors[i].g * po_alphas[i] ) / 0xff;
+				po_colors[i].b = ( po_colors[i].b * po_alphas[i] ) / 0xff;
 			}
+			break;
+		case FCC_3DCX:
+			this->process3DCX( reinterpret_cast<RGBA*>( buffer ), width, height, po_colors, po_alphas );
+			break;
+		default:
+			freePointer( buffer );
+			return false;
+
 		}
 
 		freePointer( buffer );
@@ -424,12 +452,12 @@ namespace gw2b {
 		status = WebPGetFeatures( reinterpret_cast<const uint8_t*>( data ), data_size, bitstream );
 
 		if ( status != VP8_STATUS_OK ) {
-			wxMessageBox( wxString( "This file isn't WebP!" ), _( "" ), wxOK | wxICON_EXCLAMATION );
+			wxLogMessage( wxT( "This file isn't WebP!" ) );
 			return false;
 		}
 
 		if ( bitstream->has_animation ) {
-			wxMessageBox( wxString( "Not support Animation WebP." ), _( "" ), wxOK | wxICON_INFORMATION );
+			wxLogMessage( wxT( "Not support Animation WebP." ) );
 			return false;
 		}
 
@@ -439,7 +467,7 @@ namespace gw2b {
 		auto decoded_data = reinterpret_cast<BGRA*>( WebPDecodeRGBA( data, data_size, nullptr, nullptr ) );
 
 		if ( decoded_data == nullptr ) {
-			wxMessageBox( wxString( "Invalid WebP format." ), _( "ERROR" ), wxOK | wxICON_ERROR );
+			wxLogMessage( wxT( "Invalid WebP file format." ) );
 			return false;
 		}
 
