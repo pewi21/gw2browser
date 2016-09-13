@@ -188,7 +188,7 @@ namespace gw2b {
 		try {
 			geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
 		} catch ( std::exception& exception ) {
-			wxLogMessage( wxT( "Failed to read GEOM chunk using gw2formats: %s" ), std::string( exception.what( ) ) );
+			wxLogMessage( wxT( "Failed to read GEOM chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
 			return;
 		} catch ( ... ) {
 			wxLogMessage( wxT( "An unknown error has occurred." ) );
@@ -523,11 +523,10 @@ namespace gw2b {
 		try {
 			modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
 		} catch ( std::exception& exception ) {
-			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), std::string( exception.what( ) ) );
+			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
 
 			wxLogMessage( wxT( "Try another method..." ) );
 			this->readMaterialPF( p_model, p_modelPackFile );
-
 		} catch ( ... ) {
 			wxLogMessage( wxT( "An unknown error has occurred." ) );
 			return;

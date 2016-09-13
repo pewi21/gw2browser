@@ -421,7 +421,7 @@ namespace gw2b {
 		auto imageData = imgReader->getImage( );
 
 		if ( !imageData.IsOk( ) ) {
-			wxMessageBox( wxT("imgReader->getImage( ) error."), wxT( "Error" ), wxOK | wxICON_ERROR );
+			wxLogMessage( wxString::Format( wxT( "imgReader->getImage( ) error in entry %s." ), p_entryname ) );
 			return;
 		}
 
