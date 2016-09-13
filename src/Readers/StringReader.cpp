@@ -26,7 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <codecvt>
 #include <locale>
-#include <gw2formats/StringsFile.h>
+
+#include <wx/mstream.h>
 
 #include "StringReader.h"
 
@@ -40,32 +41,82 @@ namespace gw2b {
 	}
 
 	std::vector<StringStruct> StringReader::getString( ) const {
-		gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
+		wxMemoryInputStream stream( m_data.GetPointer( ), m_data.GetSize( ) );
+
+		auto end = stream.GetLength( ) - 2;
+		//auto language = static_cast<language::Type>( *end );
+
+		// skip past fcc
+		stream.SeekI( 4 );
+		auto pos = stream.TellI( );
 
 		std::vector<StringStruct> string;
 
-		for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
-			auto& entry = stringFile.entry( i );
+		// for track each entry in string file, usually have 1024 entry
+		auto entryIndex = 0;
 
-			StringStruct str;
-			if ( entry.isEncrypted( ) ) {
-				//str.string = wxT( "Encrypted string" );
-				continue;
-			} else {
+		while ( pos < end ) {
+			if ( end - pos < 6 ) {
+				wxLogMessage( wxT( "String file size is less than 6 bytes." ) );
+				return string;
+			}
+
+			entryHeader entry;
+
+			// Set stream position to begining of entry header
+			stream.SeekI( pos );
+			// Read the entry header
+			stream.Read( reinterpret_cast<entryHeader*>( &entry ), sizeof( entryHeader ) );
+
+			if ( entry.size > 0 ) {
+				StringStruct str;
+
+				// Set stream position to begining of entry data
+				stream.SeekI( pos + 6 );
+
+				auto size = ( entry.size - 6 ) >> 1;	// ( entry.size - 6 ) / 2
+
+				auto isEncrypted = entry.decryptionOffset != 0 || entry.bitsPerSymbol != 0x10;
+				if ( !isEncrypted ) {
+					auto retval = allocate<char16>( size );
+
+					// Read UTF-16 data
+					stream.Read( retval, sizeof( char16 ) * size );
+
+					std::basic_string<char16> rawEntryString;
+					rawEntryString.assign( retval, size );
 #if defined(_MSC_VER)
-				str.string = wxString::Format( wxT( "%s" ), entry.get( ).c_str( ) );
+					str.string = wxString::Format( wxT( "%s" ), rawEntryString.c_str( ) );
 #elif defined(__GNUC__) || defined(__GNUG__)
-				std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
-				std::string mbs = temp.to_bytes( entry.get( ) );
-				str.string = wxString( mbs.c_str( ) );
+					std::wstring_convert<std::codecvt_utf8_utf16<char16>, char16> temp;
+					std::string mbs = temp.to_bytes( rawEntryString );
+					str.string = wxString( mbs.c_str( ) );
 #endif
-				if ( str.string.IsEmpty( ) ) {
-					//str.string = wxT( "Empty string" );
+					freePointer( retval );
+
+					if ( str.string.IsEmpty( ) ) {
+						//str.string = wxT( "Empty string" );
+
+						// Comment this out if enable above command
+						pos = pos + entry.size;
+						entryIndex++;
+						continue;
+					}
+				} else {
+					//str.string = wxT( "Encrypted string" );
+
+					// Comment this out if enable above command
+					pos = pos + entry.size;
+					entryIndex++;
 					continue;
 				}
+
+				str.id = entryIndex;
+				string.push_back( str );
+
+				pos = pos + entry.size;
+				entryIndex++;
 			}
-			str.id = i;
-			string.push_back( str );
 		}
 
 		return string;

@@ -248,22 +248,22 @@ namespace gw2b {
 			auto language = static_cast<uint32>( *end );
 
 			switch ( language ) {
-			case 0:
+			case language::English:
 				MakeSubCategory( wxT( "English" ) );
 				break;
-			case 1:
+			case language::Korean:
 				MakeSubCategory( wxT( "Korean" ) );
 				break;
-			case 2:
+			case language::French:
 				MakeSubCategory( wxT( "French" ) );
 				break;
-			case 3:
+			case language::German:
 				MakeSubCategory( wxT( "German" ) );
 				break;
-			case 4:
+			case language::Spanish:
 				MakeSubCategory( wxT( "Spanish" ) );
 				break;
-			case 5:
+			case language::Chinese:
 				MakeSubCategory( wxT( "Chinese" ) );
 				break;
 			default:

@@ -32,6 +32,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+	/** Contains language code use by string files. */
+	namespace language {
+		enum Type {
+			English = 0,
+			Korean = 1,
+			French = 2,
+			German = 3,
+			Spanish = 4,
+			Chinese = 5,
+		};
+	};
+
 	/** Contains the various four-character code for identify files in the dat. */
 	enum FourCC {
 		// Offset 0

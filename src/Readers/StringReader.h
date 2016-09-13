@@ -38,6 +38,16 @@ namespace gw2b {
 		wxString				string;
 	};
 
+#pragma pack(push, 1)
+
+	struct entryHeader {
+		uint16 size;
+		uint16 decryptionOffset;
+		uint16 bitsPerSymbol;
+	};
+
+#pragma pack(pop)
+
 	class StringReader : public FileReader {
 	public:
 		/** Constructor.

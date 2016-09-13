@@ -62,7 +62,7 @@
 
 namespace gw2b
 {
-    typedef int8_t                  int8;       /**< Signed 8-bit integer. */  
+    typedef int8_t                  int8;       /**< Signed 8-bit integer. */
     typedef int16_t                 int16;      /**< Signed 16-bit integer. */
     typedef int32_t                 int32;      /**< Signed 32-bit integer. */
     typedef int64_t                 int64;      /**< Signed 64-bit integer. */
@@ -74,9 +74,14 @@ namespace gw2b
 
     typedef uint8                   byte;       /**< Unsigned byte. */
     typedef int8                    sbyte;      /**< Signed byte. */
-    typedef char                    char8;      /**< 8-bit character. */    
+    typedef char                    char8;      /**< 8-bit character. */
+#if defined(_MSC_VER)
     typedef wxChar16                char16;     /**< 16-bit character. */
     typedef wxChar32                char32;     /**< 32-bit character. */
+#elif defined(__GNUC__) || defined(__GNUG__)
+    typedef char16_t                char16;     /**< 16-bit character. */
+    typedef char32_t                char32;     /**< 32-bit character. */
+#endif
 
     typedef unsigned short          ushort;     /**< Short for 'unsigned short'. */
     typedef unsigned int            uint;       /**< Short for 'unsigned int'. */
