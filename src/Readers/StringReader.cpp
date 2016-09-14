@@ -33,6 +33,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
+#pragma pack(push, 1)
+
+	struct StringReader::entryHeader {
+		uint16 size;
+		uint16 decryptionOffset;
+		uint16 bitsPerSymbol;
+	};
+
+#pragma pack(pop)
+
 	StringReader::StringReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
 		: FileReader( p_data, p_datFile, p_fileType ) {
 	}
