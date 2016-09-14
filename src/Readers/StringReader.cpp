@@ -96,13 +96,9 @@ namespace gw2b {
 
 					std::basic_string<char16> rawEntryString;
 					rawEntryString.assign( retval, size );
-#if defined(_MSC_VER)
-					str.string = wxString::Format( wxT( "%s" ), rawEntryString.c_str( ) );
-#elif defined(__GNUC__) || defined(__GNUG__)
-					std::wstring_convert<std::codecvt_utf8_utf16<char16>, char16> temp;
-					std::string mbs = temp.to_bytes( rawEntryString );
-					str.string = wxString( mbs.c_str( ) );
-#endif
+
+					str.string = wxString( rawEntryString );
+
 					freePointer( retval );
 
 					if ( str.string.IsEmpty( ) ) {
