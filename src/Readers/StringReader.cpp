@@ -56,13 +56,14 @@ namespace gw2b {
 		auto end = stream.GetLength( ) - 2;
 		//auto language = static_cast<language::Type>( *end );
 
-		// skip past fcc
+		// Skip past fcc
 		stream.SeekI( 4 );
+		// Get current stream position
 		auto pos = stream.TellI( );
 
 		std::vector<StringStruct> string;
 
-		// for track each entry in string file, usually have 1024 entry
+		// For track each entry in string file, usually have 1024 entry
 		auto entryIndex = 0;
 
 		while ( pos < end ) {
