@@ -33,8 +33,8 @@ namespace gw2b {
 	public:
 		GLuint program;
 
-		// Constructor
-		Shader( );
+		// Constructor for Shader object, need to clean the shader manually
+		Shader( const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
 		// Destructor
 		~Shader( );
 
@@ -42,11 +42,9 @@ namespace gw2b {
 		void use( );
 		// Delete the current shader
 		void clear( );
-		// Load shader
-		void load( const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
 
 	private:
-		void checkCompileErrors( GLuint shader, std::string type );
+		bool checkCompileErrors( GLuint shader, std::string type );
 
 	}; // class Shader
 

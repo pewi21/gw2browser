@@ -36,9 +36,11 @@ namespace gw2b {
 	};
 
 	Text2D::Text2D( ) {
+
 	}
 
 	Text2D::~Text2D( ) {
+
 	}
 
 	bool Text2D::init( ) {
@@ -51,7 +53,7 @@ namespace gw2b {
 		}
 
 		// Load text shader
-		m_textShader.load( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+		m_textShader = new Shader( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
 
 		// Configure VAO/VBO for texture quads
 		glGenVertexArrays( 1, &m_textVAO );
@@ -78,7 +80,7 @@ namespace gw2b {
 		}
 
 		// Clean shaders
-		m_textShader.clear( );
+		delete m_textShader;
 
 		// Clean VAO
 		glDeleteVertexArrays( 1, &m_textVAO );
@@ -90,12 +92,12 @@ namespace gw2b {
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
 		// Activate corresponding render state
-		m_textShader.use( );
+		m_textShader->use( );
 
 		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( m_ClientSize.x ), 0.0f, static_cast<GLfloat>( m_ClientSize.y ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_textShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_textShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 
-		glUniform3f( glGetUniformLocation( m_textShader.program, "textColor" ), p_color.x, p_color.y, p_color.z );
+		glUniform3f( glGetUniformLocation( m_textShader->program, "textColor" ), p_color.x, p_color.y, p_color.z );
 
 		glActiveTexture( GL_TEXTURE0 );
 		glBindVertexArray( m_textVAO );

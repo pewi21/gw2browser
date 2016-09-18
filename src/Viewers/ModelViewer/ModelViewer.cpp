@@ -124,12 +124,10 @@ namespace gw2b {
 		glDeleteTextures( 1, &m_dummyWhiteTexture );
 
 		// Clean shaders
-		m_mainShader.clear( );
-		m_normalVisualizerShader.clear( );
-		m_zVisualizerShader.clear( );
+		this->clearShader( );
 
 		// Clean VAO
-		glDeleteVertexArrays( 1, &modelVAO );
+		glDeleteVertexArrays( 1, &m_modelVAO );
 
 		// Clean text renderer
 		m_text.clear( );
@@ -189,6 +187,19 @@ namespace gw2b {
 				glDeleteTextures( 1, &it.lightMap );
 			}
 		}
+	}
+
+	void ModelViewer::clearShader( ) {
+		if ( m_mainShader ) {
+			delete m_mainShader;
+		}
+		if ( m_normalVisualizerShader ) {
+			delete m_normalVisualizerShader;
+		}
+		if ( m_zVisualizerShader ) {
+			delete m_zVisualizerShader;
+		}
+
 	}
 
 	void ModelViewer::setReader( FileReader* p_reader ) {
@@ -341,9 +352,20 @@ namespace gw2b {
 		glEnable( GL_CULL_FACE );
 
 		// Load shader
-		m_mainShader.load( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-		m_normalVisualizerShader.load( "..//data//shaders//normalVisualizer.vert", "..//data//shaders//normalVisualizer.frag", "..//data//shaders//normalVisualizer.geom" );
-		m_zVisualizerShader.load( "..//data//shaders//zVisualizer.vert", "..//data//shaders//zVisualizer.frag" );
+		m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
+		if ( !m_mainShader ) {
+			return false;
+		}
+
+		m_normalVisualizerShader = new Shader( "..//data//shaders//normalVisualizer.vert", "..//data//shaders//normalVisualizer.frag", "..//data//shaders//normalVisualizer.geom" );
+		if ( !m_normalVisualizerShader ) {
+			return false;
+		}
+
+		m_zVisualizerShader = new Shader( "..//data//shaders//zVisualizer.vert", "..//data//shaders//zVisualizer.frag" );
+		if ( !m_zVisualizerShader ) {
+			return false;
+		}
 
 		// Initialize text renderer stuff
 		if ( !m_text.init( ) ) {
@@ -404,7 +426,7 @@ namespace gw2b {
 		SwapBuffers( );
 	}
 
-	void ModelViewer::drawModel( Shader& p_shader, const glm::mat4& p_trans ) {
+	void ModelViewer::drawModel( Shader* p_shader, const glm::mat4& p_trans ) {
 		// Draw meshes
 		for ( uint i = 0; i < m_model.numMeshes( ); i++ ) {
 			// Draw normally
@@ -417,7 +439,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::drawMesh( Shader& p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
+	void ModelViewer::drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
 		auto& vbo = m_vertexBuffer[p_meshIndex];
 		auto& ibo = m_indexBuffer[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
@@ -441,30 +463,30 @@ namespace gw2b {
 		}
 
 		// Use the shader
-		p_shader.use( );
+		p_shader->use( );
 
 		// Set renderer status flag
-		glUniform1i( glGetUniformLocation( p_shader.program, "mode.normalMapping" ), m_statusNormalMapping );
-		glUniform1i( glGetUniformLocation( p_shader.program, "mode.lighting" ), m_statusLighting );
+		glUniform1i( glGetUniformLocation( p_shader->program, "mode.normalMapping" ), m_statusNormalMapping );
+		glUniform1i( glGetUniformLocation( p_shader->program, "mode.lighting" ), m_statusLighting );
 
 		// Set light position to ... (currently is front of the model)
-		lightPos = m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 );
-		glUniform3fv( glGetUniformLocation( p_shader.program, "light.position" ), 1, glm::value_ptr( lightPos ) );
+		m_lightPos = m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 );
+		glUniform3fv( glGetUniformLocation( p_shader->program, "light.position" ), 1, glm::value_ptr( m_lightPos ) );
 		// Set lights properties
 		glm::vec3 ambient = glm::vec3( 0.5f, 0.5f, 0.5f );
 		glm::vec3 diffuse = glm::vec3( 0.5f, 0.5f, 0.5f );
 		glm::vec3 specular = glm::vec3( 0.5f, 0.5f, 0.5f );
-		glUniform3f( glGetUniformLocation( p_shader.program, "light.ambient" ), ambient.r, ambient.g, ambient.b );
-		glUniform3f( glGetUniformLocation( p_shader.program, "light.diffuse" ), diffuse.r, diffuse.g, diffuse.b );
-		glUniform3f( glGetUniformLocation( p_shader.program, "light.specular" ), specular.r, specular.g, specular.b );
+		glUniform3f( glGetUniformLocation( p_shader->program, "light.ambient" ), ambient.r, ambient.g, ambient.b );
+		glUniform3f( glGetUniformLocation( p_shader->program, "light.diffuse" ), diffuse.r, diffuse.g, diffuse.b );
+		glUniform3f( glGetUniformLocation( p_shader->program, "light.specular" ), specular.r, specular.g, specular.b );
 
 		// Set material properties
-		glUniform1f( glGetUniformLocation( p_shader.program, "material.shininess" ), 32.0f );
+		glUniform1f( glGetUniformLocation( p_shader->program, "material.shininess" ), 32.0f );
 
 		// View matrix
-		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader->program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
 		// Model matrix
-		glUniformMatrix4fv( glGetUniformLocation( p_shader.program, "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader->program, "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
 
 		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
@@ -488,7 +510,7 @@ namespace gw2b {
 		}
 
 		// Set our "diffuseMap" sampler to user Texture Unit 0
-		glUniform1i( glGetUniformLocation( p_shader.program, "material.diffuseMap" ), 0 );
+		glUniform1i( glGetUniformLocation( p_shader->program, "material.diffuseMap" ), 0 );
 
 		// Bind our normal texture in Texture Unit 1
 		glActiveTexture( GL_TEXTURE1 );
@@ -497,11 +519,11 @@ namespace gw2b {
 				glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].normalMap );
 			}
 			// Set our "normalMap" sampler to user Texture Unit 1
-			glUniform1i( glGetUniformLocation( p_shader.program, "material.normalMap" ), 1 );
+			glUniform1i( glGetUniformLocation( p_shader->program, "material.normalMap" ), 1 );
 		}
 
 		// Bind Vertex Array Object
-		glBindVertexArray( modelVAO );
+		glBindVertexArray( m_modelVAO );
 
 		// positions
 		glEnableVertexAttribArray( 0 );
@@ -811,9 +833,9 @@ namespace gw2b {
 
 	void ModelViewer::populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache ) {
 		// Generate Vertex Array Object
-		glGenVertexArrays( 1, &modelVAO );
+		glGenVertexArrays( 1, &m_modelVAO );
 		// Bind Vertex Array Object
-		glBindVertexArray( modelVAO );
+		glBindVertexArray( m_modelVAO );
 
 		// Load the model data to VBO
 		glGenBuffers( 1, &p_vbo.vertexBuffer );
@@ -986,21 +1008,21 @@ namespace gw2b {
 		// Projection matrix
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 
-		m_mainShader.use( );
+		m_mainShader->use( );
 		// Send projection matrix to main shader
-		glUniformMatrix4fv( glGetUniformLocation( m_mainShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_mainShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 		// View position
-		glUniform3fv( glGetUniformLocation( m_mainShader.program, "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
+		glUniform3fv( glGetUniformLocation( m_mainShader->program, "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
 
-		m_normalVisualizerShader.use( );
+		m_normalVisualizerShader->use( );
 		// Send projection matrix to normal visualizer shader
-		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 
-		m_zVisualizerShader.use( );
+		m_zVisualizerShader->use( );
 		// Send projection matrix to Z-Buffer visualizer shader
-		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader.program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-		glUniform1f( glGetUniformLocation( m_zVisualizerShader.program, "near" ), minZ );
-		glUniform1f( glGetUniformLocation( m_zVisualizerShader.program, "far" ), maxZ );
+		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniform1f( glGetUniformLocation( m_zVisualizerShader->program, "near" ), minZ );
+		glUniform1f( glGetUniformLocation( m_zVisualizerShader->program, "far" ), maxZ );
 	}
 
 	void ModelViewer::focus( ) {

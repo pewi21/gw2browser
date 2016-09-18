@@ -42,7 +42,7 @@ namespace gw2b {
 		std::map<GLchar, Character> m_characterTextureMap;
 		GLuint						m_textVAO;
 		GLuint						m_textVBO;
-		Shader						m_textShader;
+		Shader*						m_textShader;
 
 	public:
 		wxSize						m_ClientSize;

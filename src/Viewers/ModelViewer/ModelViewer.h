@@ -89,15 +89,15 @@ namespace gw2b {
 		GLuint						m_dummyWhiteTexture;
 
 		// Shader stuff
-		Shader						m_mainShader;
-		Shader						m_normalVisualizerShader;
-		Shader						m_zVisualizerShader;
-		glm::vec3					lightPos;
+		Shader*						m_mainShader;
+		Shader*						m_normalVisualizerShader;
+		Shader*						m_zVisualizerShader;
+		glm::vec3					m_lightPos;
 
 		// Text rendering stuff
 		Text2D						m_text;
 
-		GLuint						modelVAO;
+		GLuint						m_modelVAO;
 
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
@@ -123,11 +123,12 @@ namespace gw2b {
 
 	private:
 		void clearBuffer( );
+		void clearShader( );
 		int initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		void drawModel( Shader& p_shader, const glm::mat4& p_trans );
-		void drawMesh( Shader& p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
+		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
+		void drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
 		void displayStatusText( );
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent(
