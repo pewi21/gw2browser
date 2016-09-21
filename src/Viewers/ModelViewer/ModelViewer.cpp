@@ -215,91 +215,8 @@ namespace gw2b {
 		auto reader = this->modelReader( );
 		m_model = reader->getModel( );
 
-		auto numMeshes = m_model.numMeshes( );
-
-		// Create mesh cache
-		m_meshCache.resize( numMeshes );
-
-		// Load mesh to mesh cache
-#pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( numMeshes ); i++ ) {
-			auto& mesh = m_model.mesh( i );
-			auto& cache = m_meshCache[i];
-
-			this->loadMesh( cache, mesh );
-		}
-
-		// Create Vertex Buffer Object and Index Buffer Object
-		m_vertexBuffer.resize( numMeshes );
-		m_indexBuffer.resize( numMeshes );
-
-		// Populate Buffer Object
-		for ( uint i = 0; i < m_meshCache.size( ); i++ ) {
-			auto& cache = m_meshCache[i];
-			auto& vbo = m_vertexBuffer[i];
-			auto& ibo = m_indexBuffer[i];
-
-			this->populateBuffers( vbo, ibo, cache );
-		}
-
-		auto numMaterial = m_model.numMaterial( );
-
-		// Load textures to texture map
-		std::unordered_map<uint32, GLuint> textureMap;
-		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
-			auto& material = m_model.material( i );
-			std::unordered_map<uint32, GLuint>::iterator it;
-
-			// Load diffuse texture
-			if ( material.diffuseMap ) {
-				it = textureMap.find( material.diffuseMap );
-				if ( it == textureMap.end( ) ) {
-					textureMap.insert( std::pair<uint32, GLuint>( material.diffuseMap, this->loadTexture( material.diffuseMap ) ) );
-				}
-			}
-
-			if ( material.normalMap ) {
-				it = textureMap.find( material.normalMap );
-				if ( it == textureMap.end( ) ) {
-					textureMap.insert( std::pair<uint32, GLuint>( material.normalMap, this->loadTexture( material.normalMap ) ) );
-				}
-			}
-
-			if ( material.lightMap ) {
-				it = textureMap.find( material.lightMap );
-				if ( it == textureMap.end( ) ) {
-					textureMap.insert( std::pair<uint32, GLuint>( material.lightMap, this->loadTexture( material.lightMap ) ) );
-				}
-			}
-		}
-
-		// Create Texture Buffer Object
-		m_textureBuffer.resize( numMaterial );
-
-		// Copy texture id from texture map to TBO
-		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
-			auto& material = m_model.material( i );
-			auto& cache = m_textureBuffer[i];
-
-			// Load diffuse texture
-			if ( material.diffuseMap ) {
-				cache.diffuseMap = textureMap.find( material.diffuseMap )->second;
-			} else {
-				cache.diffuseMap = 0;
-			}
-
-			if ( material.normalMap ) {
-				cache.normalMap = textureMap.find( material.normalMap )->second;
-			} else {
-				cache.normalMap = 0;
-			}
-
-			if ( material.lightMap ) {
-				cache.lightMap = textureMap.find( material.lightMap )->second;
-			} else {
-				cache.lightMap = 0;
-			}
-		}
+		this->loadModel( m_model );
+		this->loadMaterial( m_model );
 
 		// Re-focus and re-render
 		this->focus( );
@@ -645,6 +562,35 @@ namespace gw2b {
 		}
 	}
 
+	void ModelViewer::loadModel( GW2Model& p_model ) {
+		auto numMeshes = p_model.numMeshes( );
+
+		// Create mesh cache
+		m_meshCache.resize( numMeshes );
+
+		// Load mesh to mesh cache
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( numMeshes ); i++ ) {
+			auto& mesh = p_model.mesh( i );
+			auto& cache = m_meshCache[i];
+
+			this->loadMesh( cache, mesh );
+		}
+
+		// Create Vertex Buffer Object and Index Buffer Object
+		m_vertexBuffer.resize( numMeshes );
+		m_indexBuffer.resize( numMeshes );
+
+		// Populate Buffer Object
+		for ( uint i = 0; i < m_meshCache.size( ); i++ ) {
+			auto& cache = m_meshCache[i];
+			auto& vbo = m_vertexBuffer[i];
+			auto& ibo = m_indexBuffer[i];
+
+			this->populateBuffers( vbo, ibo, cache );
+		}
+	}
+
 	void ModelViewer::loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh ) {
 		// Tempoarary buffers
 		std::vector<glm::vec3> vertices;
@@ -698,7 +644,7 @@ namespace gw2b {
 		std::vector<glm::vec2>& in_uvs,
 		std::vector<glm::vec3>& out_tangents,
 		std::vector<glm::vec3>& out_bitangents
-		) {
+	) {
 
 		for ( uint i = 0; i < in_vertices.size( ); i += 3 ) {
 			// Shortcuts for vertices
@@ -873,6 +819,67 @@ namespace gw2b {
 
 		// Unbind Vertex Array Object
 		glBindVertexArray( 0 );
+	}
+
+	void ModelViewer::loadMaterial( GW2Model& p_model ) {
+		auto numMaterial = p_model.numMaterial( );
+
+		// Load textures to texture map
+		std::unordered_map<uint32, GLuint> textureMap;
+		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
+			auto& material = p_model.material( i );
+			std::unordered_map<uint32, GLuint>::iterator it;
+
+			// Load diffuse texture
+			if ( material.diffuseMap ) {
+				it = textureMap.find( material.diffuseMap );
+				if ( it == textureMap.end( ) ) {
+					textureMap.insert( std::pair<uint32, GLuint>( material.diffuseMap, this->loadTexture( material.diffuseMap ) ) );
+				}
+			}
+
+			if ( material.normalMap ) {
+				it = textureMap.find( material.normalMap );
+				if ( it == textureMap.end( ) ) {
+					textureMap.insert( std::pair<uint32, GLuint>( material.normalMap, this->loadTexture( material.normalMap ) ) );
+				}
+			}
+
+			if ( material.lightMap ) {
+				it = textureMap.find( material.lightMap );
+				if ( it == textureMap.end( ) ) {
+					textureMap.insert( std::pair<uint32, GLuint>( material.lightMap, this->loadTexture( material.lightMap ) ) );
+				}
+			}
+		}
+
+		// Create Texture Buffer Object
+		m_textureBuffer.resize( numMaterial );
+
+		// Copy texture id from texture map to TBO
+		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
+			auto& material = p_model.material( i );
+			auto& cache = m_textureBuffer[i];
+
+			// Load diffuse texture
+			if ( material.diffuseMap ) {
+				cache.diffuseMap = textureMap.find( material.diffuseMap )->second;
+			} else {
+				cache.diffuseMap = 0;
+			}
+
+			if ( material.normalMap ) {
+				cache.normalMap = textureMap.find( material.normalMap )->second;
+			} else {
+				cache.normalMap = 0;
+			}
+
+			if ( material.lightMap ) {
+				cache.lightMap = textureMap.find( material.lightMap )->second;
+			} else {
+				cache.lightMap = 0;
+			}
+		}
 	}
 
 	GLuint ModelViewer::createDummyTexture( const GLubyte* p_data ) {

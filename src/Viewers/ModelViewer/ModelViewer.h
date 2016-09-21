@@ -130,6 +130,7 @@ namespace gw2b {
 		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
 		void drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
 		void displayStatusText( );
+		void loadModel( GW2Model& p_model );
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent(
 			std::vector<glm::vec3>& in_vertices,
@@ -151,6 +152,7 @@ namespace gw2b {
 			std::vector<glm::vec3>& out_tangents,
 			std::vector<glm::vec3>& out_bitangents );
 		void populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
+		void loadMaterial( GW2Model& p_model );
 		GLuint createDummyTexture( const GLubyte* p_data );
 		GLuint loadTexture( const uint p_fileId );
 		void updateMatrices( );
