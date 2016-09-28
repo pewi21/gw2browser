@@ -87,6 +87,8 @@ namespace gw2b {
 	}
 
 	void Text2D::drawText( const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color ) {
+		// Disable depth-testing
+		glDisable( GL_DEPTH_TEST );
 		// Enable blending
 		glEnable( GL_BLEND );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
@@ -138,6 +140,8 @@ namespace gw2b {
 
 		// Disable blending
 		glDisable( GL_BLEND );
+		// Enable depth-testing
+		glEnable( GL_DEPTH_TEST );
 	}
 
 	bool Text2D::loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height ) {
