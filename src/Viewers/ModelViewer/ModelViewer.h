@@ -53,6 +53,7 @@ namespace gw2b {
 
 	class ModelViewer : public ViewerGLCanvas {
 		struct MeshCache;
+		struct VAO;
 		struct VBO;
 		struct IBO;
 		struct TBO;
@@ -80,6 +81,7 @@ namespace gw2b {
 		// Mesh
 		GW2Model                    m_model;
 		std::vector<MeshCache>		m_meshCache;
+		std::vector<VAO>			m_vertexArray;		// Vertex Array Object
 		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
 		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
 
@@ -96,8 +98,6 @@ namespace gw2b {
 
 		// Text rendering stuff
 		Text2D						m_text;
-
-		GLuint						m_modelVAO;
 
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
@@ -132,26 +132,10 @@ namespace gw2b {
 		void displayStatusText( );
 		void loadModel( GW2Model& p_model );
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
-		void computeTangent(
-			std::vector<glm::vec3>& in_vertices,
-			std::vector<glm::vec3>& in_normals,
-			std::vector<glm::vec2>& in_uvs,
-			std::vector<glm::vec3>& out_tangents,
-			std::vector<glm::vec3>& out_bitangents );
+		void computeTangent( MeshCache& p_mesh );
 		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
-		void indexVBO(
-			std::vector<glm::vec3>& in_vertices,
-			std::vector<glm::vec3>& in_normals,
-			std::vector<glm::vec2>& in_uvs,
-			std::vector<glm::vec3>& in_tangents,
-			std::vector<glm::vec3>& in_bitangents,
-			std::vector<uint>& out_indices,
-			std::vector<glm::vec3>& out_vertices,
-			std::vector<glm::vec3>& out_normals,
-			std::vector<glm::vec2>& out_uvs,
-			std::vector<glm::vec3>& out_tangents,
-			std::vector<glm::vec3>& out_bitangents );
-		void populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
+		void indexVBO( const MeshCache p_inMesh, MeshCache& p_outMesh );
+		void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
 		void loadMaterial( GW2Model& p_model );
 		GLuint createDummyTexture( const GLubyte* p_data );
 		GLuint loadTexture( const uint p_fileId );

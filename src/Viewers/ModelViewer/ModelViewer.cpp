@@ -62,6 +62,10 @@ namespace gw2b {
 		std::vector<glm::vec3>	bitangents;
 	};
 
+	struct ModelViewer::VAO {
+		GLuint					vertexArray;
+	};
+
 	struct ModelViewer::VBO {
 		GLuint					vertexBuffer;
 		GLuint					normalBuffer;
@@ -126,9 +130,6 @@ namespace gw2b {
 		// Clean shaders
 		this->clearShader( );
 
-		// Clean VAO
-		glDeleteVertexArrays( 1, &m_modelVAO );
-
 		// Clean text renderer
 		m_text.clear( );
 
@@ -185,6 +186,13 @@ namespace gw2b {
 			}
 			if ( it.lightMap ) {
 				glDeleteTextures( 1, &it.lightMap );
+			}
+		}
+
+		// Clean VAO
+		for ( auto& it : m_vertexArray ) {
+			if ( it.vertexArray ) {
+				glDeleteVertexArrays( 1, &it.vertexArray );
 			}
 		}
 	}
@@ -357,8 +365,7 @@ namespace gw2b {
 	}
 
 	void ModelViewer::drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
-		auto& vbo = m_vertexBuffer[p_meshIndex];
-		auto& ibo = m_indexBuffer[p_meshIndex];
+		auto& vao = m_vertexArray[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
 
 		auto materialIndex = m_model.mesh( p_meshIndex ).materialIndex;
@@ -440,42 +447,9 @@ namespace gw2b {
 		}
 
 		// Bind Vertex Array Object
-		glBindVertexArray( m_modelVAO );
-
-		// Set the vertex attribute pointers
-		// positions
-		glEnableVertexAttribArray( 0 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.vertexBuffer );
-		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-		// normals
-		glEnableVertexAttribArray( 1 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.normalBuffer );
-		glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-		// texCoords
-		glEnableVertexAttribArray( 2 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.uvBuffer );
-		glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-		// tangents
-		glEnableVertexAttribArray( 3 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.tangentbuffer );
-		glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-		// bitangents
-		glEnableVertexAttribArray( 4 );
-		glBindBuffer( GL_ARRAY_BUFFER, vbo.bitangentbuffer );
-		glVertexAttribPointer( 4, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-
-		// index buffer
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo.elementBuffer );
-
+		glBindVertexArray( vao.vertexArray );
 		// Draw the triangles!
-		glDrawElements( GL_TRIANGLES, cache.indices.size( ), GL_UNSIGNED_INT, ( void* ) 0 );
-
-		glDisableVertexAttribArray( 0 );
-		glDisableVertexAttribArray( 1 );
-		glDisableVertexAttribArray( 2 );
-		glDisableVertexAttribArray( 3 );
-		glDisableVertexAttribArray( 4 );
-
+		glDrawElements( GL_TRIANGLES, cache.indices.size( ), GL_UNSIGNED_INT, ( GLvoid* ) 0 );
 		// Unbind Vertex Array Object
 		glBindVertexArray( 0 );
 
@@ -577,85 +551,69 @@ namespace gw2b {
 			this->loadMesh( cache, mesh );
 		}
 
-		// Create Vertex Buffer Object and Index Buffer Object
+		// Create Vertex Array Object, Vertex Buffer Object and Index Buffer Object
+		m_vertexArray.resize( numMeshes );
 		m_vertexBuffer.resize( numMeshes );
 		m_indexBuffer.resize( numMeshes );
 
 		// Populate Buffer Object
 		for ( uint i = 0; i < m_meshCache.size( ); i++ ) {
 			auto& cache = m_meshCache[i];
+			auto& vao = m_vertexArray[i];
 			auto& vbo = m_vertexBuffer[i];
 			auto& ibo = m_indexBuffer[i];
 
-			this->populateBuffers( vbo, ibo, cache );
+			this->populateBuffers( vao, vbo, ibo, cache );
 		}
 	}
 
 	void ModelViewer::loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh ) {
 		// Tempoarary buffers
-		std::vector<glm::vec3> vertices;
-		std::vector<glm::vec3> normals;
-		std::vector<glm::vec2> uvs;
-		std::vector<uint> indices;
-		std::vector<glm::vec3> tangents;
-		std::vector<glm::vec3> bitangents;
+		MeshCache temp;
 
 		// Read faces
 		for ( auto& it : p_mesh.triangles ) {
-			indices.push_back( it.index1 );
-			indices.push_back( it.index2 );
-			indices.push_back( it.index3 );
+			temp.indices.push_back( it.index1 );
+			temp.indices.push_back( it.index2 );
+			temp.indices.push_back( it.index3 );
 		}
 
 		// For each vertex of each triangle
-		for ( auto& it : indices ) {
+		for ( auto& it : temp.indices ) {
 			auto& vertex = p_mesh.vertices[it].position;
-			vertices.push_back( vertex );
+			temp.vertices.push_back( vertex );
 
 			if ( p_mesh.hasNormal ) {
 				auto& normal = p_mesh.vertices[it].normal;
-				normals.push_back( normal );
+				temp.normals.push_back( normal );
 			}
 
 			if ( p_mesh.hasUV ) {
 				auto& uv = p_mesh.vertices[it].uv;
-				uvs.push_back( uv );
+				temp.uvs.push_back( uv );
 			} else {
-				uvs.push_back( glm::vec2( 0.0f, 0.0f ) );
+				temp.uvs.push_back( glm::vec2( 0.0f, 0.0f ) );
 			}
 		}
 
 		if ( p_mesh.hasUV ) {
-			this->computeTangent(
-				vertices, normals, uvs,
-				tangents, bitangents
-			);
+			this->computeTangent( temp );
 		}
 
-		this->indexVBO(
-			vertices, normals, uvs, tangents, bitangents,
-			p_cache.indices, p_cache.vertices, p_cache.normals, p_cache.uvs, p_cache.tangents, p_cache.bitangents
-		);
+		this->indexVBO( temp, p_cache );
 	}
 
-	void ModelViewer::computeTangent(
-		std::vector<glm::vec3>& in_vertices,
-		std::vector<glm::vec3>& in_normals,
-		std::vector<glm::vec2>& in_uvs,
-		std::vector<glm::vec3>& out_tangents,
-		std::vector<glm::vec3>& out_bitangents
-	) {
-
-		for ( uint i = 0; i < in_vertices.size( ); i += 3 ) {
+	void ModelViewer::computeTangent( MeshCache& p_mesh ) {
+		for ( uint i = 0; i < p_mesh.vertices.size( ); i += 3 ) {
 			// Shortcuts for vertices
-			glm::vec3& v0 = in_vertices[i + 0];
-			glm::vec3& v1 = in_vertices[i + 1];
-			glm::vec3& v2 = in_vertices[i + 2];
+			glm::vec3& v0 = p_mesh.vertices[i + 0];
+			glm::vec3& v1 = p_mesh.vertices[i + 1];
+			glm::vec3& v2 = p_mesh.vertices[i + 2];
 
 			// Shortcuts for UVs
-			glm::vec2& uv0 = in_uvs[i + 0];
-			glm::vec2& uv1 = in_uvs[i + 1];
-			glm::vec2& uv2 = in_uvs[i + 2];
+			glm::vec2& uv0 = p_mesh.uvs[i + 0];
+			glm::vec2& uv1 = p_mesh.uvs[i + 1];
+			glm::vec2& uv2 = p_mesh.uvs[i + 2];
 
 			// Edges of the triangle : postion delta
 			glm::vec3 deltaPos1 = v1 - v0;
@@ -672,21 +630,21 @@ namespace gw2b {
 
 			// Set the same tangent for all three vertices of the triangle.
 			// They will be merged later in VBO indexer.
-			out_tangents.push_back( tangent );
-			out_tangents.push_back( tangent );
-			out_tangents.push_back( tangent );
+			p_mesh.tangents.push_back( tangent );
+			p_mesh.tangents.push_back( tangent );
+			p_mesh.tangents.push_back( tangent );
 
 			// Same thing for binormals
-			out_bitangents.push_back( bitangent );
-			out_bitangents.push_back( bitangent );
-			out_bitangents.push_back( bitangent );
+			p_mesh.bitangents.push_back( bitangent );
+			p_mesh.bitangents.push_back( bitangent );
+			p_mesh.bitangents.push_back( bitangent );
 		}
 
 		// We will do this in vertex shader
-		/*for ( uint i = 0; i < in_vertices.size( ); i += 1 ) {
-			glm::vec3& n = in_normals[i];
-			glm::vec3& t = out_tangents[i];
-			glm::vec3& b = out_bitangents[i];
+		/*for ( uint i = 0; i < p_mesh.vertices.size( ); i += 1 ) {
+			glm::vec3& n = p_mesh.normals[i];
+			glm::vec3& t = p_mesh.tangents[i];
+			glm::vec3& b = p_mesh.bitangents[i];
 
 			// Gram-Schmidt orthogonalize
 			t = glm::normalize( t - n * glm::dot( n, t ) );
@@ -708,114 +666,101 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::indexVBO(
-		std::vector<glm::vec3>& in_vertices,
-		std::vector<glm::vec3>& in_normals,
-		std::vector<glm::vec2>& in_uvs,
-		std::vector<glm::vec3>& in_tangents,
-		std::vector<glm::vec3>& in_bitangents,
-		std::vector<uint>& out_indices,
-		std::vector<glm::vec3>& out_vertices,
-		std::vector<glm::vec3>& out_normals,
-		std::vector<glm::vec2>& out_uvs,
-		std::vector<glm::vec3>& out_tangents,
-		std::vector<glm::vec3>& out_bitangents ) {
-
+	void ModelViewer::indexVBO( const MeshCache p_inMesh, MeshCache& p_outMesh ) {
 		std::map<PackedVertex, uint> VertexToOutIndex;
 
 		// For each input vertex
-		for ( uint i = 0; i < in_vertices.size( ); i++ ) {
+		for ( uint i = 0; i < p_inMesh.vertices.size( ); i++ ) {
 			glm::vec3 vertices;
 			glm::vec3 normals;
 			glm::vec2 uvs;
 
-			vertices = in_vertices[i];
-
-			if ( !in_normals.empty( ) ) {
-				normals = in_normals[i];
-			}
-
-			if ( !in_uvs.empty( ) ) {
-				uvs = in_uvs[i];
-			}
+			vertices = p_inMesh.vertices[i];
+			normals = p_inMesh.normals[i];
+			uvs = p_inMesh.uvs[i];
 
 			PackedVertex packed = { vertices, normals, uvs };
 
-			// Try to find a similar vertex in out_XXXX
+			// Try to find a similar vertex in p_outMesh
 			uint index;
 			bool found = getSimilarVertexIndex( packed, VertexToOutIndex, index );
 
 			if ( found ) { // A similar vertex is already in the VBO, use it instead !
-				out_indices.push_back( index );
+				p_outMesh.indices.push_back( index );
 
 				// Average the tangents and the bitangents
-				if ( !in_tangents.empty( ) && !in_bitangents.empty( ) ) {
-					out_tangents[index] += in_tangents[i];
-					out_bitangents[index] += in_bitangents[i];
-				}
+				p_outMesh.tangents[index] += p_inMesh.tangents[i];
+				p_outMesh.bitangents[index] += p_inMesh.bitangents[i];
 			} else { // If not, it needs to be added in the output data.
-				out_vertices.push_back( in_vertices[i] );
+				p_outMesh.vertices.push_back( p_inMesh.vertices[i] );
+				p_outMesh.normals.push_back( p_inMesh.normals[i] );
+				p_outMesh.uvs.push_back( p_inMesh.uvs[i] );
+				p_outMesh.tangents.push_back( p_inMesh.tangents[i] );
+				p_outMesh.bitangents.push_back( p_inMesh.bitangents[i] );
 
-				if ( !in_normals.empty( ) ) {
-					out_normals.push_back( in_normals[i] );
-				}
-
-				if ( !in_uvs.empty( ) ) {
-					out_uvs.push_back( in_uvs[i] );
-				}
-
-				if ( !in_tangents.empty( ) && !in_bitangents.empty( ) ) {
-					out_tangents.push_back( in_tangents[i] );
-					out_bitangents.push_back( in_bitangents[i] );
-				}
-
-				uint newindex = ( uint ) out_vertices.size( ) - 1;
-				out_indices.push_back( newindex );
+				uint newindex = ( uint ) p_outMesh.vertices.size( ) - 1;
+				p_outMesh.indices.push_back( newindex );
 				VertexToOutIndex[packed] = newindex;
 			}
 		}
 	}
 
-	void ModelViewer::populateBuffers( VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache ) {
+	void ModelViewer::populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache ) {
 		// Generate Vertex Array Object
-		glGenVertexArrays( 1, &m_modelVAO );
+		glGenVertexArrays( 1, &p_vao.vertexArray );
 		// Bind Vertex Array Object
-		glBindVertexArray( m_modelVAO );
+		glBindVertexArray( p_vao.vertexArray );
+
+		// Generate buffers
+		glGenBuffers( 1, &p_vbo.vertexBuffer );
+		glGenBuffers( 1, &p_vbo.normalBuffer );
+		glGenBuffers( 1, &p_vbo.uvBuffer );
+		glGenBuffers( 1, &p_vbo.tangentbuffer );
+		glGenBuffers( 1, &p_vbo.bitangentbuffer );
+		glGenBuffers( 1, &p_ibo.elementBuffer );
 
 		// Load data into vertex buffers
 		// Vertex Positions
-		glGenBuffers( 1, &p_vbo.vertexBuffer );
 		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.vertexBuffer );
 		glBufferData( GL_ARRAY_BUFFER, p_cache.vertices.size( ) * sizeof( glm::vec3 ), &p_cache.vertices[0], GL_STATIC_DRAW );
 		// Vertex Normals
-		if ( p_cache.normals.data( ) ) {
-			glGenBuffers( 1, &p_vbo.normalBuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.normalBuffer );
-			glBufferData( GL_ARRAY_BUFFER, p_cache.normals.size( ) * sizeof( glm::vec3 ), &p_cache.normals[0], GL_STATIC_DRAW );
-		}
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.normalBuffer );
+		glBufferData( GL_ARRAY_BUFFER, p_cache.normals.size( ) * sizeof( glm::vec3 ), &p_cache.normals[0], GL_STATIC_DRAW );
 		// Vertex Texture Coords
-		if ( p_cache.uvs.data( ) ) {
-			glGenBuffers( 1, &p_vbo.uvBuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
-			glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
-		}
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
+		glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
 		// Vertex Tangent
-		if ( p_cache.tangents.data( ) ) {
-			glGenBuffers( 1, &p_vbo.tangentbuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
-			glBufferData( GL_ARRAY_BUFFER, p_cache.tangents.size( ) * sizeof( glm::vec3 ), &p_cache.tangents[0], GL_STATIC_DRAW );
-		}
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
+		glBufferData( GL_ARRAY_BUFFER, p_cache.tangents.size( ) * sizeof( glm::vec3 ), &p_cache.tangents[0], GL_STATIC_DRAW );
 		// Vertex Bitangent
-		if ( p_cache.bitangents.data( ) ) {
-			glGenBuffers( 1, &p_vbo.bitangentbuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
-			glBufferData( GL_ARRAY_BUFFER, p_cache.bitangents.size( ) * sizeof( glm::vec3 ), &p_cache.bitangents[0], GL_STATIC_DRAW );
-		}
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
+		glBufferData( GL_ARRAY_BUFFER, p_cache.bitangents.size( ) * sizeof( glm::vec3 ), &p_cache.bitangents[0], GL_STATIC_DRAW );
 
 		// Element Buffer for the indices
-		glGenBuffers( 1, &p_ibo.elementBuffer );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, p_ibo.elementBuffer );
 		glBufferData( GL_ELEMENT_ARRAY_BUFFER, p_cache.indices.size( ) * sizeof( uint ), &p_cache.indices[0], GL_STATIC_DRAW );
+
+		// Set the vertex attribute pointers
+		// positions
+		glEnableVertexAttribArray( 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.vertexBuffer );
+		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+		// normals
+		glEnableVertexAttribArray( 1 );
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.normalBuffer );
+		glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+		// texCoords
+		glEnableVertexAttribArray( 2 );
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
+		glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+		// tangents
+		glEnableVertexAttribArray( 3 );
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
+		glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
+		// bitangents
+		glEnableVertexAttribArray( 4 );
+		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
+		glVertexAttribPointer( 4, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
 		// Unbind Vertex Array Object
 		glBindVertexArray( 0 );
