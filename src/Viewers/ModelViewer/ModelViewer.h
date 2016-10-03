@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 #include "Camera.h"
+#include "Light.h"
 #include "Shader.h"
 #include "Text2D.h"
 
@@ -63,11 +64,8 @@ namespace gw2b {
 
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
-		Camera                      m_camera;
-		wxPoint                     m_lastMousePos;
-		float                       m_minDistance;
-		float                       m_maxDistance;
 
+		// Internal state
 		bool						m_glInitialized = false;
 		bool						m_statusText = true;
 		bool						m_statusWireframe = false;
@@ -90,11 +88,19 @@ namespace gw2b {
 		GLuint						m_dummyBlackTexture;
 		GLuint						m_dummyWhiteTexture;
 
+		// Light
+		Light						m_light;
+
 		// Shader stuff
 		Shader*						m_mainShader;
 		Shader*						m_normalVisualizerShader;
 		Shader*						m_zVisualizerShader;
-		glm::vec3					m_lightPos;
+
+		// Camera
+		Camera                      m_camera;
+		wxPoint                     m_lastMousePos;
+		float                       m_minDistance;
+		float                       m_maxDistance;
 
 		// Text rendering stuff
 		Text2D						m_text;

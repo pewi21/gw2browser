@@ -227,7 +227,6 @@ namespace gw2b {
 			// Fetch buffer info
 			auto& vertexInfo = meshInfo.geometry->verts;
 			auto& indicesInfo = meshInfo.geometry->indices;
-			//auto& lodsInfo = meshInfo.geometry->lods[0];
 			auto vertexCount = vertexInfo.vertexCount;
 			auto indiceCount = indicesInfo.indices.size( );
 

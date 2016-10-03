@@ -324,6 +324,13 @@ namespace gw2b {
 
 		this->updateMatrices( );
 
+		// Setup light properties (currently is front of the model)
+		m_light.setPosition( m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 ) );
+		// No need since already initilized with this value
+		//m_light.setAmbient( glm::vec3( 0.5f, 0.5f, 0.5f ) );
+		//m_light.setDiffuse( glm::vec3( 0.5f, 0.5f, 0.5f ) );
+		//m_light.setSpecular( glm::vec3( 0.5f, 0.5f, 0.5f ) );
+
 		// Transformation matrix
 		glm::mat4 trans;
 		// Model position
@@ -393,16 +400,11 @@ namespace gw2b {
 		glUniform1i( glGetUniformLocation( p_shader->program, "mode.normalMapping" ), m_statusNormalMapping );
 		glUniform1i( glGetUniformLocation( p_shader->program, "mode.lighting" ), m_statusLighting );
 
-		// Set light position to ... (currently is front of the model)
-		m_lightPos = m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 );
-		glUniform3fv( glGetUniformLocation( p_shader->program, "light.position" ), 1, glm::value_ptr( m_lightPos ) );
 		// Set lights properties
-		glm::vec3 ambient = glm::vec3( 0.5f, 0.5f, 0.5f );
-		glm::vec3 diffuse = glm::vec3( 0.5f, 0.5f, 0.5f );
-		glm::vec3 specular = glm::vec3( 0.5f, 0.5f, 0.5f );
-		glUniform3f( glGetUniformLocation( p_shader->program, "light.ambient" ), ambient.r, ambient.g, ambient.b );
-		glUniform3f( glGetUniformLocation( p_shader->program, "light.diffuse" ), diffuse.r, diffuse.g, diffuse.b );
-		glUniform3f( glGetUniformLocation( p_shader->program, "light.specular" ), specular.r, specular.g, specular.b );
+		glUniform3fv( glGetUniformLocation( p_shader->program, "light.position" ), 1, glm::value_ptr( m_light.position( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->program, "light.ambient" ), 1, glm::value_ptr( m_light.ambient( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->program, "light.diffuse" ), 1, glm::value_ptr( m_light.diffuse( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->program, "light.specular" ), 1, glm::value_ptr( m_light.specular( ) ) );
 
 		// Set material properties
 		glUniform1f( glGetUniformLocation( p_shader->program, "material.shininess" ), 32.0f );
