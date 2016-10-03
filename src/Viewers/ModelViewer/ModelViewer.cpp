@@ -282,12 +282,12 @@ namespace gw2b {
 			return false;
 		}
 
-		m_normalVisualizerShader = new Shader( "..//data//shaders//normalVisualizer.vert", "..//data//shaders//normalVisualizer.frag", "..//data//shaders//normalVisualizer.geom" );
+		m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
 		if ( !m_normalVisualizerShader ) {
 			return false;
 		}
 
-		m_zVisualizerShader = new Shader( "..//data//shaders//zVisualizer.vert", "..//data//shaders//zVisualizer.frag" );
+		m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
 		if ( !m_zVisualizerShader ) {
 			return false;
 		}
