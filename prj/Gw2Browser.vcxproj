@@ -61,6 +61,8 @@
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageControl.h" />
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageViewer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Camera.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\Light.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h" />
@@ -106,20 +108,24 @@
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageControl.cpp" />
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageViewer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Camera.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\Light.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\LightBox.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\ModelViewer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shaders\normalVisualizer.frag" />
-    <None Include="..\data\shaders\normalVisualizer.geom" />
-    <None Include="..\data\shaders\normalVisualizer.vert" />
+    <None Include="..\data\shaders\light_box.frag" />
+    <None Include="..\data\shaders\light_box.vert" />
+    <None Include="..\data\shaders\normal_visualizer.frag" />
+    <None Include="..\data\shaders\normal_visualizer.geom" />
+    <None Include="..\data\shaders\normal_visualizer.vert" />
     <None Include="..\data\shaders\shader.frag" />
     <None Include="..\data\shaders\shader.vert" />
     <None Include="..\data\shaders\text.frag" />
     <None Include="..\data\shaders\text.vert" />
-    <None Include="..\data\shaders\zVisualizer.frag" />
-    <None Include="..\data\shaders\zVisualizer.vert" />
+    <None Include="..\data\shaders\z_visualizer.frag" />
+    <None Include="..\data\shaders\z_visualizer.vert" />
     <None Include="..\src\Imported\half.inl" />
   </ItemGroup>
   <ItemGroup>

@@ -211,6 +211,12 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h">
       <Filter>Header Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Light.h">
+      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h">
+      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -327,6 +333,12 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\Light.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\LightBox.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\Imported\half.inl">
@@ -344,19 +356,25 @@
     <None Include="..\data\shaders\shader.vert">
       <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\shaders\normalVisualizer.frag">
+    <None Include="..\data\shaders\light_box.frag">
       <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\shaders\normalVisualizer.vert">
+    <None Include="..\data\shaders\light_box.vert">
       <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\shaders\normalVisualizer.geom">
+    <None Include="..\data\shaders\normal_visualizer.frag">
       <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\shaders\zVisualizer.frag">
+    <None Include="..\data\shaders\normal_visualizer.geom">
       <Filter>Data Files\shaders</Filter>
     </None>
-    <None Include="..\data\shaders\zVisualizer.vert">
+    <None Include="..\data\shaders\normal_visualizer.vert">
+      <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\z_visualizer.frag">
+      <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\z_visualizer.vert">
       <Filter>Data Files\shaders</Filter>
     </None>
   </ItemGroup>

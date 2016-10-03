@@ -132,6 +132,8 @@ namespace gw2b {
 
 		// Clean text renderer
 		m_text.clear( );
+		// Clean light box renderer
+		m_lightBox.clear( );
 
 		delete m_renderTimer;
 
@@ -272,10 +274,6 @@ namespace gw2b {
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc( GL_LESS );
 
-		// Cull triangles which normal is not towards the camera
-		// Remove lighting glitch cause by some triangles
-		glEnable( GL_CULL_FACE );
-
 		// Load shader
 		m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
 		if ( !m_mainShader ) {
@@ -297,6 +295,8 @@ namespace gw2b {
 			wxLogMessage( wxT( "Could not initialize text renderer." ) );
 			return false;
 		}
+
+		m_lightBox.init( );
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
@@ -325,7 +325,7 @@ namespace gw2b {
 		this->updateMatrices( );
 
 		// Setup light properties (currently is front of the model)
-		m_light.setPosition( m_model.bounds( ).center( ) + glm::vec3( 0, 25, 400 ) );
+		m_light.setPosition( m_model.bounds( ).center( ) + glm::vec3( 100, 25, 200 ) );
 		// No need since already initilized with this value
 		//m_light.setAmbient( glm::vec3( 0.5f, 0.5f, 0.5f ) );
 		//m_light.setDiffuse( glm::vec3( 0.5f, 0.5f, 0.5f ) );
@@ -344,11 +344,14 @@ namespace gw2b {
 			// Draw normally
 			this->drawModel( m_mainShader, trans );
 		} else {
-			// Draw only Z-Buffer for debugging/visualization
+			// Draw only Z-Buffer (for debugging/visualization)
 			this->drawModel( m_zVisualizerShader, trans );
 		}
 
-		// todo: render light source (for debugging/visualization)
+		// Render light source (for debugging/visualization)
+		if ( m_statusRenderLightSource ) {
+			m_lightBox.renderCube( m_light.position( ), m_light.specular( ) );
+		}
 
 		// Draw status text
 		if ( m_statusText ) {
@@ -977,6 +980,10 @@ namespace gw2b {
 		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 		glUniform1f( glGetUniformLocation( m_zVisualizerShader->program, "near" ), minZ );
 		glUniform1f( glGetUniformLocation( m_zVisualizerShader->program, "far" ), maxZ );
+
+		// Send projection matrix to lightbox renderer
+		m_lightBox.setProjectionMatrix( projection );
+		m_lightBox.setViewMatrix( m_camera.calculateViewMatrix( ) );
 	}
 
 	void ModelViewer::focus( ) {
@@ -1058,6 +1065,8 @@ namespace gw2b {
 			m_statusVisualizeNormal = !m_statusVisualizeNormal;
 		} else if ( p_event.GetKeyCode( ) == 'M' ) {
 			m_statusVisualizeZbuffer = !m_statusVisualizeZbuffer;
+		} else if ( p_event.GetKeyCode( ) == 'L' ) {
+			m_statusRenderLightSource = !m_statusRenderLightSource;
 		}
 	}
 

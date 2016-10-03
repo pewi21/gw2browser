@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Camera.h"
 #include "Light.h"
+#include "LightBox.h"
 #include "Shader.h"
 #include "Text2D.h"
 
@@ -65,15 +66,28 @@ namespace gw2b {
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
 
-		// Internal state
+		// Internal status
+
+		// Is OpenGL is initialized?
 		bool						m_glInitialized = false;
+		// Toggle display text
 		bool						m_statusText = true;
+		// Toggle wireframe rendering
 		bool						m_statusWireframe = false;
+		// Cull triangles which normal is not towards the camera,
+		// remove lighting glitch cause by some triangles
 		bool						m_statusCullFace = false;
+		// Toggle texture
 		bool						m_statusTextured = true;
+		// Toggle normal maping
 		bool						m_statusNormalMapping = true;
+		// Toggle lighting
 		bool						m_statusLighting = true;
+		// Toggle visualization of light source
+		bool						m_statusRenderLightSource = false;
+		// Toggle visualization of normal
 		bool						m_statusVisualizeNormal = false;
+		// Toggle visualization of z-buffer
 		bool						m_statusVisualizeZbuffer = false;
 
 		// Mesh
@@ -90,6 +104,7 @@ namespace gw2b {
 
 		// Light
 		Light						m_light;
+		LightBox					m_lightBox;			// For render cube at light position
 
 		// Shader stuff
 		Shader*						m_mainShader;
