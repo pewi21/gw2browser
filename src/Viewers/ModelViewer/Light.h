@@ -40,19 +40,16 @@ namespace gw2b {
 		~Light( );
 
 		const glm::vec3& position( ) const;
-		void setPosition( glm::vec3& p_pos );
+		void setPosition( const glm::vec3& p_pos );
 
 		const glm::vec3& ambient( ) const;
-		void setAmbient( glm::vec3& p_ambient );
+		void setAmbient( const glm::vec3& p_ambient );
 
 		const glm::vec3& diffuse( ) const;
-		void setDiffuse( glm::vec3& p_diffuse );
+		void setDiffuse( const glm::vec3& p_diffuse );
 
 		const glm::vec3& specular( ) const;
-		void setSpecular( glm::vec3& p_specular );
-
-	private:
-		
+		void setSpecular( const glm::vec3& p_specular );
 
 	}; // class Light
 

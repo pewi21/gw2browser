@@ -42,7 +42,7 @@ namespace gw2b {
 		return m_position;
 	}
 
-	void Light::setPosition( glm::vec3& p_pos ) {
+	void Light::setPosition( const glm::vec3& p_pos ) {
 		m_position = p_pos;
 	}
 
@@ -50,14 +50,15 @@ namespace gw2b {
 		return m_ambient;
 	}
 
-	void Light::setAmbient( glm::vec3& p_ambient ) {
+	void Light::setAmbient( const glm::vec3& p_ambient ) {
 		m_ambient = p_ambient;
 	}
+
 	const glm::vec3& Light::diffuse( ) const {
 		return m_diffuse;
 	}
 
-	void Light::setDiffuse( glm::vec3& p_diffuse ) {
+	void Light::setDiffuse( const glm::vec3& p_diffuse ) {
 		m_diffuse = p_diffuse;
 	}
 
@@ -65,10 +66,8 @@ namespace gw2b {
 		return m_specular;
 	}
 
-	void Light::setSpecular( glm::vec3& p_specular ) {
+	void Light::setSpecular( const glm::vec3& p_specular ) {
 		m_specular = p_specular;
 	}
-
-
 
 }; // namespace gw2b
