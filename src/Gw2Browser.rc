@@ -54,7 +54,7 @@ BEGIN
 
 		VALUE "CompanyName", "Forge Warband\0"
 		VALUE "Developer", "Khral Steelforge\0"
-		VALUE "FileDescription", "Allow you to browse your Gw2.dat file.\0"
+		VALUE "FileDescription", "Gw2Browser\0"
 		VALUE "FileVersion", VER_FILEVERSION_STR
 		VALUE "InternalName", "*purr*\0"
 		VALUE "LegalCopyright", "Copyright (c) 2012-2016\0"
