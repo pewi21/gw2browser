@@ -59,7 +59,6 @@ namespace gw2b {
 		std::vector<glm::vec2>	uvs;
 		std::vector<uint>		indices;
 		std::vector<glm::vec3>	tangents;
-		std::vector<glm::vec3>	bitangents;
 	};
 
 	struct ModelViewer::VAO {
@@ -71,7 +70,6 @@ namespace gw2b {
 		GLuint					normalBuffer;
 		GLuint					uvBuffer;
 		GLuint					tangentbuffer;
-		GLuint					bitangentbuffer;
 	};
 
 	struct ModelViewer::IBO {
@@ -166,9 +164,6 @@ namespace gw2b {
 			if ( it.tangentbuffer ) {
 				glDeleteBuffers( 1, &it.tangentbuffer );
 			}
-			if ( it.bitangentbuffer ) {
-				glDeleteBuffers( 1, &it.bitangentbuffer );
-			}
 		}
 
 		// Clean IBO
@@ -242,7 +237,7 @@ namespace gw2b {
 			return false;
 		}
 
-		SetCurrent( *m_glContext );
+		this->SetCurrent( *m_glContext );
 
 		// Initialize GLEW to setup the OpenGL Function pointers
 		glewExperimental = true;
@@ -336,9 +331,9 @@ namespace gw2b {
 		// Model position
 		trans = glm::translate( trans, glm::vec3( 0.0f, 0.0f, 0.0f ) );
 		// Model rotation
-		//trans = glm::rotate( trans, 90.0f, glm::vec3( 0.0, 0.0, 1.0 ) );
+		//trans = glm::rotate( trans, 90.0f, glm::vec3( 0.0f, 1.0f, 0.0f ) );
 		// Model scale
-		//trans = glm::scale( trans, glm::vec3( 0.5 ) );
+		//trans = glm::scale( trans, glm::vec3( 0.5f ) );
 
 		if ( !m_statusVisualizeZbuffer ) {
 			// Draw normally
@@ -601,10 +596,7 @@ namespace gw2b {
 			}
 		}
 
-		if ( p_mesh.hasUV ) {
-			this->computeTangent( temp );
-		}
-
+		this->computeTangent( temp );
 		this->indexVBO( temp, p_cache );
 	}
 
@@ -628,37 +620,20 @@ namespace gw2b {
 			glm::vec2 deltaUV1 = uv1 - uv0;
 			glm::vec2 deltaUV2 = uv2 - uv0;
 
-			// calculate tangent/bitangent vectors
-			float r = 1.0f / ( deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x );
-			glm::vec3 tangent = ( deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y ) * r;
-			glm::vec3 bitangent = ( deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x ) * r;
+			GLfloat f = 1.0f / ( deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y );
+
+			glm::vec3 tangent;
+			tangent.x = f * ( deltaUV2.y * deltaPos1.x - deltaUV1.y * deltaPos2.x );
+			tangent.y = f * ( deltaUV2.y * deltaPos1.y - deltaUV1.y * deltaPos2.y );
+			tangent.z = f * ( deltaUV2.y * deltaPos1.z - deltaUV1.y * deltaPos2.z );
+			tangent = glm::normalize( tangent );
 
 			// Set the same tangent for all three vertices of the triangle.
 			// They will be merged later in VBO indexer.
 			p_mesh.tangents.push_back( tangent );
 			p_mesh.tangents.push_back( tangent );
 			p_mesh.tangents.push_back( tangent );
-
-			// Same thing for binormals
-			p_mesh.bitangents.push_back( bitangent );
-			p_mesh.bitangents.push_back( bitangent );
-			p_mesh.bitangents.push_back( bitangent );
 		}
-
-		// We will do this in vertex shader
-		/*for ( uint i = 0; i < p_mesh.vertices.size( ); i += 1 ) {
-			glm::vec3& n = p_mesh.normals[i];
-			glm::vec3& t = p_mesh.tangents[i];
-			glm::vec3& b = p_mesh.bitangents[i];
-
-			// Gram-Schmidt orthogonalize
-			t = glm::normalize( t - n * glm::dot( n, t ) );
-
-			// Calculate handedness
-			if ( glm::dot( glm::cross( n, t ), b ) < 0.0f ) {
-				t = t * -1.0f;
-			}
-		}*/
 	}
 
 	bool ModelViewer::getSimilarVertexIndex( PackedVertex & p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result ) {
@@ -693,15 +668,13 @@ namespace gw2b {
 			if ( found ) { // A similar vertex is already in the VBO, use it instead !
 				p_outMesh.indices.push_back( index );
 
-				// Average the tangents and the bitangents
+				// Average the tangents
 				p_outMesh.tangents[index] += p_inMesh.tangents[i];
-				p_outMesh.bitangents[index] += p_inMesh.bitangents[i];
 			} else { // If not, it needs to be added in the output data.
 				p_outMesh.vertices.push_back( p_inMesh.vertices[i] );
 				p_outMesh.normals.push_back( p_inMesh.normals[i] );
 				p_outMesh.uvs.push_back( p_inMesh.uvs[i] );
 				p_outMesh.tangents.push_back( p_inMesh.tangents[i] );
-				p_outMesh.bitangents.push_back( p_inMesh.bitangents[i] );
 
 				uint newindex = ( uint ) p_outMesh.vertices.size( ) - 1;
 				p_outMesh.indices.push_back( newindex );
@@ -721,7 +694,6 @@ namespace gw2b {
 		glGenBuffers( 1, &p_vbo.normalBuffer );
 		glGenBuffers( 1, &p_vbo.uvBuffer );
 		glGenBuffers( 1, &p_vbo.tangentbuffer );
-		glGenBuffers( 1, &p_vbo.bitangentbuffer );
 		glGenBuffers( 1, &p_ibo.elementBuffer );
 
 		// Load data into vertex buffers
@@ -737,9 +709,6 @@ namespace gw2b {
 		// Vertex Tangent
 		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
 		glBufferData( GL_ARRAY_BUFFER, p_cache.tangents.size( ) * sizeof( glm::vec3 ), &p_cache.tangents[0], GL_STATIC_DRAW );
-		// Vertex Bitangent
-		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
-		glBufferData( GL_ARRAY_BUFFER, p_cache.bitangents.size( ) * sizeof( glm::vec3 ), &p_cache.bitangents[0], GL_STATIC_DRAW );
 
 		// Element Buffer for the indices
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, p_ibo.elementBuffer );
@@ -762,10 +731,6 @@ namespace gw2b {
 		glEnableVertexAttribArray( 3 );
 		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
 		glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-		// bitangents
-		glEnableVertexAttribArray( 4 );
-		glBindBuffer( GL_ARRAY_BUFFER, p_vbo.bitangentbuffer );
-		glVertexAttribPointer( 4, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
 
 		// Unbind Vertex Array Object
 		glBindVertexArray( 0 );

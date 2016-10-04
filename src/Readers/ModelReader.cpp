@@ -245,9 +245,6 @@ namespace gw2b {
 			// DirectX coordinate to OpenGL coordinate by rotate ZY and invert Z
 			this->rotZYinvZ( mesh );
 
-			// Scale it? maybe
-			//this->scaleMesh( mesh, 0.01 );
-
 			// Index data
 			if ( indiceCount ) {
 				this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
@@ -469,28 +466,27 @@ namespace gw2b {
 	}
 
 	void ModelReader::computeVertexNormals( GW2Mesh& p_mesh ) const {
-
-		// Claculate vertex normals
+		// Calculate vertex normals
 		// http://www.iquilezles.org/www/articles/normals/normals.htm
 
-		auto& vert = p_mesh.vertices;
-		auto& face = p_mesh.triangles;
+		auto& verts = p_mesh.vertices;
+		auto& faces = p_mesh.triangles;
 
-		// vert[i].normal is already initialized with zero
+		// verts[i].normal is already initialized with zero
 
-		for ( uint i = 0; i < p_mesh.triangles.size( ); i++ ) {
+		for ( uint i = 0; i < faces.size( ); i++ ) {
 			// Re-flip the order of the faces of the triangle to original order
-			const int ia = face[i].index3;
-			const int ib = face[i].index2;
-			const int ic = face[i].index1;
+			const int ia = faces[i].index1;
+			const int ib = faces[i].index3;
+			const int ic = faces[i].index2;
 
-			const glm::vec3 e1 = vert[ia].position - vert[ib].position;
-			const glm::vec3 e2 = vert[ic].position - vert[ib].position;
+			const glm::vec3 e1 = verts[ia].position - verts[ib].position;
+			const glm::vec3 e2 = verts[ic].position - verts[ib].position;
 			const glm::vec3 no = glm::cross( e1, e2 );
 
-			vert[ia].normal += no;
-			vert[ib].normal += no;
-			vert[ic].normal += no;
+			verts[ia].normal += no;
+			verts[ib].normal += no;
+			verts[ic].normal += no;
 		}
 
 		this->normalizeNormals( p_mesh );
