@@ -17,12 +17,12 @@ Set anisotropic texture filtering to maximumn supported by GPU.
 - When export model, also export all materials.
 
 Fix:
-- Fix crash on reading/rendering some model.
 - Fix memory leak in model viewer.
 - Fix string and eula file export bug.
+- Fix text cliping when model is close to camera.
 
 Issue:
-- Export all of the materials. need to map the materials and models manually, for now.
+- Need to map the model's materials to models manually, for now.
 
 Gw2Browser_2016-04-10 (1.0.7.1)
 -------------------------------

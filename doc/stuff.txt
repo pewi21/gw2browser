@@ -20,11 +20,23 @@ File Id			Format			Note
 91xxx			model			Charr Stuff!
 184748			ogg				Charr Theme! Rrawr!
 104223			model			Dead Dragon
+104246			model			Snaff
+104415			model			Charr Tank
 104556			model			Hornny Charr...
+104598			model			Bear!
+106244			model			BREAK MEH!
+106499			model			Turret
+106724			model			Charr stuff
+106725			model			Charr metal parts
+106728			model			Charr metal wall
+106729			model			Charr cannon
 106572
-104223
+106935			model			Turret
 408554
 454456			model			Zhaitan
+543770			model			Legionnaire Weapon
+543771			model			Legionnaire Weapon
+543772			model			Legionnaire Weapon
 543864			model			Plush Tybalt
 543946			model			Sunrise
 543947			model			Twilight
