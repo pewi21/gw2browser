@@ -36,15 +36,15 @@ namespace gw2b {
 	class DatIndexEntry;
 
 	/** Panel control used to preview files from the .dat. */
-	class PreviewGLCanvas : public wxGLCanvas {
+	class PreviewGLCanvas : public wxPanel {
 		ViewerGLCanvas*			m_currentView;
 		FileReader::DataType	m_currentDataType;
 	public:
 		/** Constructor. Creates the preview panel with the given parent.
 		*  \param[in]  p_parent     Parent of the control.
-		*  \param[in]  p_pos        Optional position of the control.
+		*  \param[in]  p_location   Optional location of the control.
 		*  \param[in]  p_size       Optional size of the control. */
-		PreviewGLCanvas( wxWindow* p_parent, const int *p_attrib = ( const int* ) 0, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize, long p_style = 0L );
+		PreviewGLCanvas( wxWindow* p_parent, const wxPoint& p_location = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		/** Destructor. */
 		~PreviewGLCanvas( );
 		/** Tells this panel to preview a file.

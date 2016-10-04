@@ -34,8 +34,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	PreviewGLCanvas::PreviewGLCanvas( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style )
-		: wxGLCanvas( p_parent, wxID_ANY, p_attrib, p_pos, p_size, p_style )
+	PreviewGLCanvas::PreviewGLCanvas( wxWindow* p_parent, const wxPoint& p_location, const wxSize& p_size )
+		: wxPanel( p_parent, wxID_ANY, p_location, p_size )
 		, m_currentView( nullptr )
 		, m_currentDataType( FileReader::DT_None ) {
 
