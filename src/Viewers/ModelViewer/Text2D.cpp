@@ -215,4 +215,8 @@ namespace gw2b {
 		return true;
 	}
 
+	void Text2D::setClientSize( const wxSize& p_size ) {
+		m_ClientSize = p_size;
+	}
+
 }; // namespace gw2b

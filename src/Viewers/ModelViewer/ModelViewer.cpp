@@ -236,7 +236,6 @@ namespace gw2b {
 			wxLogMessage( wxT( "Unable to create OpenGL context." ) );
 			return false;
 		}
-
 		this->SetCurrent( *m_glContext );
 
 		// Initialize GLEW to setup the OpenGL Function pointers
@@ -331,7 +330,8 @@ namespace gw2b {
 		// Model position
 		trans = glm::translate( trans, glm::vec3( 0.0f, 0.0f, 0.0f ) );
 		// Model rotation
-		//trans = glm::rotate( trans, 90.0f, glm::vec3( 0.0f, 1.0f, 0.0f ) );
+		//trans = glm::rotate( trans, angle, glm::vec3( 0.0f, 1.0f, 0.0f ) );
+		//angle = angle + 0.01f;
 		// Model scale
 		//trans = glm::scale( trans, glm::vec3( 0.5f ) );
 
@@ -472,7 +472,7 @@ namespace gw2b {
 		wxSize ClientSize = this->GetClientSize( );
 
 		// Send ClientSize variable to text renderer
-		m_text.m_ClientSize = ClientSize;
+		m_text.setClientSize( ClientSize );
 
 		glm::vec3 color = glm::vec3( 1.0f );
 		GLfloat scale = 1.0f;

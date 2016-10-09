@@ -35,11 +35,10 @@ namespace gw2b {
 		GLuint						m_cubeVAO;
 		GLuint						m_cubeVBO;
 		Shader*						m_cubeShader;
-
-	public:
 		glm::mat4					m_projection;
 		glm::mat4					m_view;
 
+	public:
 		LightBox( );
 		~LightBox( );
 

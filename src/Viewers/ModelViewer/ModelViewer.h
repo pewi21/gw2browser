@@ -120,6 +120,7 @@ namespace gw2b {
 		// Text rendering stuff
 		Text2D						m_text;
 
+		//float angle = 0.0f;
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
 		*  \param[in]  p_parent     Parent of the control.
