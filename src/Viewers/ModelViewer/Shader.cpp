@@ -99,17 +99,19 @@ namespace gw2b {
 		glShaderSource( vertex, 1, &vShaderCode, NULL );
 		glCompileShader( vertex );
 		if ( !checkCompileErrors( vertex, "VERTEX" ) ) {
+			glDeleteShader( vertex );
 			return;
 		}
 
 		// Compile Fragment Shader
-		wxLogMessage( wxT( "Compiling vertex shader : %s" ), p_fragmentPath );
+		wxLogMessage( wxT( "Compiling fragment shader : %s" ), p_fragmentPath );
 		GLuint fragment = glCreateShader( GL_FRAGMENT_SHADER );
 		const GLchar *fShaderCode = fragmentCode.c_str( );
 		glShaderSource( fragment, 1, &fShaderCode, NULL );
 		glCompileShader( fragment );
 		if ( !checkCompileErrors( fragment, "FRAGMENT" ) ) {
 			glDeleteShader( vertex );
+			glDeleteShader( fragment );
 			return;
 		}
 
@@ -124,6 +126,7 @@ namespace gw2b {
 			if ( !checkCompileErrors( geometry, "GEOMETRY" ) ) {
 				glDeleteShader( vertex );
 				glDeleteShader( fragment );
+				glDeleteShader( geometry );
 				return;
 			}
 		}
@@ -137,7 +140,7 @@ namespace gw2b {
 			glAttachShader( this->program, geometry );
 		}
 		glLinkProgram( this->program );
-		if ( checkCompileErrors( vertex, "PROGRAM" ) ) {
+		if ( checkCompileErrors( program, "PROGRAM" ) ) {
 			wxLogMessage( wxT( "Done linking shader program." ) );
 		}
 		// Delete the shaders as they're linked into our program now and no longer necessery
