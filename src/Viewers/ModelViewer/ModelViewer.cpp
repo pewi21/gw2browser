@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <chrono>
 #include <unordered_map>
 
 #include "Readers/ImageReader.h"
@@ -110,12 +111,16 @@ namespace gw2b {
 			m_renderTimer->start( );
 		}
 
+		m_movementKeyTimer = new wxTimer( this );
+		m_movementKeyTimer->Start( 30 );
+
 		// Hook up events
 		this->Bind( wxEVT_PAINT, &ModelViewer::onPaintEvt, this );
 		this->Bind( wxEVT_MOTION, &ModelViewer::onMotionEvt, this );
 		this->Bind( wxEVT_MOUSEWHEEL, &ModelViewer::onMouseWheelEvt, this );
 		this->Bind( wxEVT_KEY_DOWN, &ModelViewer::onKeyDownEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &ModelViewer::onClose, this );
+		this->Bind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 	}
 
 	ModelViewer::~ModelViewer( ) {
@@ -134,6 +139,7 @@ namespace gw2b {
 		m_lightBox.clear( );
 
 		delete m_renderTimer;
+		delete m_movementKeyTimer;
 
 		delete m_glContext;
 	}
@@ -309,6 +315,12 @@ namespace gw2b {
 	}
 
 	void ModelViewer::render( ) {
+		// Set frame time
+		auto now = std::chrono::high_resolution_clock::now( );
+		auto currentFrame = std::chrono::duration_cast<std::chrono::duration<float>>( now.time_since_epoch( ) ).count( );
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
 		// Set the OpenGL viewport according to the client size of wxGLCanvas.
 		wxSize ClientSize = this->GetClientSize( );
 		glViewport( 0, 0, ClientSize.x, ClientSize.y );
@@ -331,7 +343,7 @@ namespace gw2b {
 		trans = glm::translate( trans, glm::vec3( 0.0f, 0.0f, 0.0f ) );
 		// Model rotation
 		//trans = glm::rotate( trans, angle, glm::vec3( 0.0f, 1.0f, 0.0f ) );
-		//angle = angle + 0.01f;
+		//angle = angle + ( 0.5f * deltaTime );
 		// Model scale
 		//trans = glm::scale( trans, glm::vec3( 0.5f ) );
 
@@ -929,6 +941,7 @@ namespace gw2b {
 
 		// Projection matrix
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
+		//auto projection = glm::perspective( m_camera.distance( ), aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 
 		m_mainShader->use( );
 		// Send projection matrix to main shader
@@ -988,27 +1001,31 @@ namespace gw2b {
 			float rotateSpeed = 0.5f * ( glm::pi<float>( ) / 180.0f );   // 0.5 degrees per pixel
 			m_camera.addYaw( rotateSpeed * -( p_event.GetX( ) - m_lastMousePos.x ) );
 			m_camera.addPitch( rotateSpeed * ( p_event.GetY( ) - m_lastMousePos.y ) );
+
+			//m_camera.processMouseMovement( xPan, yPan );
 			this->render( );
 		}
 
 		// Pan
 		if ( p_event.RightIsDown( ) ) {
 			float xPan = ( p_event.GetX( ) - m_lastMousePos.x );
-			float yPan = ( p_event.GetY( ) - m_lastMousePos.y );
+			float yPan = ( p_event.GetY( ) - m_lastMousePos.y ); // Reversed since y-coordinates go from bottom to left
 			m_camera.pan( xPan, yPan );
 			this->render( );
 		}
 
 		m_lastMousePos = p_event.GetPosition( );
+
 	}
 
 	void ModelViewer::onMouseWheelEvt( wxMouseEvent& p_event ) {
 		float zoomSteps = static_cast<float>( p_event.GetWheelRotation( ) ) / static_cast<float>( p_event.GetWheelDelta( ) );
-		m_camera.multiplyDistance( -zoomSteps );
+		m_camera.processMouseScroll( -zoomSteps );
 		this->render( );
 	}
 
 	void ModelViewer::onKeyDownEvt( wxKeyEvent& p_event ) {
+		// Rendering control
 		if ( p_event.GetKeyCode( ) == 'F' ) {
 			this->focus( );
 		} else if ( p_event.GetKeyCode( ) == '1' ) {
@@ -1025,13 +1042,41 @@ namespace gw2b {
 			m_statusNormalMapping = !m_statusNormalMapping;
 		}
 
-		// Debugging/Visualization
+		// Rendering debugging/visualization control
 		else if ( p_event.GetKeyCode( ) == 'N' ) {
 			m_statusVisualizeNormal = !m_statusVisualizeNormal;
 		} else if ( p_event.GetKeyCode( ) == 'M' ) {
 			m_statusVisualizeZbuffer = !m_statusVisualizeZbuffer;
 		} else if ( p_event.GetKeyCode( ) == 'L' ) {
 			m_statusRenderLightSource = !m_statusRenderLightSource;
+		}
+
+		// Camera control
+		else if ( p_event.GetKeyCode( ) == 'C' ) {
+			Camera::CameraMode mode;
+			m_cameraMode = !m_cameraMode;
+			if ( m_cameraMode ) {
+				mode = Camera::FPSCAM;
+			} else {
+				mode = Camera::ORBITALCAM;
+			}
+			m_camera.setCameraMode( mode );
+		}
+	}
+
+	void ModelViewer::onMovementKeyTimerEvt( wxTimerEvent&p_event ) {
+		// First person camera control
+		if ( wxGetKeyState( wxKeyCode( 'W' ) ) ) {
+			m_camera.processKeyboard( Camera::FORWARD, deltaTime );
+		}
+		if ( wxGetKeyState( wxKeyCode( 'S' ) ) ) {
+			m_camera.processKeyboard( Camera::BACKWARD, deltaTime );
+		}
+		if ( wxGetKeyState( wxKeyCode( 'A' ) ) ) {
+			m_camera.processKeyboard( Camera::LEFT, deltaTime );
+		}
+		if ( wxGetKeyState( wxKeyCode( 'D' ) ) ) {
+			m_camera.processKeyboard( Camera::RIGHT, deltaTime );
 		}
 	}
 

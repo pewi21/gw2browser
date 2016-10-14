@@ -65,6 +65,7 @@ namespace gw2b {
 
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
+		wxTimer*					m_movementKeyTimer;
 
 		// Internal status
 
@@ -89,6 +90,8 @@ namespace gw2b {
 		bool						m_statusVisualizeNormal = false;
 		// Toggle visualization of z-buffer
 		bool						m_statusVisualizeZbuffer = false;
+		// Toggle camera mode
+		bool						m_cameraMode = false;
 
 		// Mesh
 		GW2Model                    m_model;
@@ -121,6 +124,11 @@ namespace gw2b {
 		Text2D						m_text;
 
 		//float angle = 0.0f;
+
+		// Frame time
+		GLfloat						deltaTime = 0.0f;
+		GLfloat						lastFrame = 0.0f;
+
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
 		*  \param[in]  p_parent     Parent of the control.
@@ -166,6 +174,7 @@ namespace gw2b {
 		void onMotionEvt( wxMouseEvent& p_event );
 		void onMouseWheelEvt( wxMouseEvent& p_event );
 		void onKeyDownEvt( wxKeyEvent& p_event );
+		void onMovementKeyTimerEvt( wxTimerEvent&p_event );
 		void onClose( wxCloseEvent& evt );
 
 	}; // class ModelViewer
