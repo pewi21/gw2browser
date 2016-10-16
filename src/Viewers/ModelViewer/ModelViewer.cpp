@@ -112,7 +112,7 @@ namespace gw2b {
 		}
 
 		m_movementKeyTimer = new wxTimer( this );
-		m_movementKeyTimer->Start( 30 );
+		m_movementKeyTimer->Start( 3 );
 
 		// Hook up events
 		this->Bind( wxEVT_PAINT, &ModelViewer::onPaintEvt, this );
@@ -1065,19 +1065,24 @@ namespace gw2b {
 	}
 
 	void ModelViewer::onMovementKeyTimerEvt( wxTimerEvent&p_event ) {
-		// First person camera control
-		if ( wxGetKeyState( wxKeyCode( 'W' ) ) ) {
-			m_camera.processKeyboard( Camera::FORWARD, deltaTime );
+		m_movementKeyTimer->Stop( );
+		// Prevent modify camera value if the camera is in orbital mode
+		if ( m_cameraMode ) {
+			// First person camera control
+			if ( wxGetKeyState( wxKeyCode( 'W' ) ) ) {
+				m_camera.processKeyboard( Camera::FORWARD, deltaTime );
+			}
+			if ( wxGetKeyState( wxKeyCode( 'S' ) ) ) {
+				m_camera.processKeyboard( Camera::BACKWARD, deltaTime );
+			}
+			if ( wxGetKeyState( wxKeyCode( 'A' ) ) ) {
+				m_camera.processKeyboard( Camera::LEFT, deltaTime );
+			}
+			if ( wxGetKeyState( wxKeyCode( 'D' ) ) ) {
+				m_camera.processKeyboard( Camera::RIGHT, deltaTime );
+			}
 		}
-		if ( wxGetKeyState( wxKeyCode( 'S' ) ) ) {
-			m_camera.processKeyboard( Camera::BACKWARD, deltaTime );
-		}
-		if ( wxGetKeyState( wxKeyCode( 'A' ) ) ) {
-			m_camera.processKeyboard( Camera::LEFT, deltaTime );
-		}
-		if ( wxGetKeyState( wxKeyCode( 'D' ) ) ) {
-			m_camera.processKeyboard( Camera::RIGHT, deltaTime );
-		}
+		m_movementKeyTimer->Start( );
 	}
 
 	void ModelViewer::onClose( wxCloseEvent& evt ) {
