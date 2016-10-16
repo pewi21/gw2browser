@@ -45,13 +45,15 @@ void main( ) {
 	vec4 finalColor;
 
 	if ( mode.lighting ) {
-		vec3 normal = fs_in.Normal;
-
+		// Get normal
+		vec3 normal;
 		if ( mode.normalMapping ) {
 			// Obtain normal from normal map in range [0,1]
 			normal = texture( material.normalMap, fs_in.TexCoords ).rgb;
 			// Transform normal vector to range [-1,1]
 			normal = normalize( normal * 2.0f - 1.0f );
+		} else {
+			normal = fs_in.Normal;
 		}
 
 		// Get diffuse color
@@ -59,26 +61,32 @@ void main( ) {
 		// Ambient
 		vec3 ambient = light.ambient * color;
 		// Diffuse
-		vec3 lightDir = normalize( light.position - fs_in.FragPos );
+		vec3 lightDir;
 		if ( mode.normalMapping ) {
 			lightDir = normalize( fs_in.TangentLightPos - fs_in.TangentFragPos );
+		} else {
+			lightDir = normalize( light.position - fs_in.FragPos );
 		}
-		float diff = max( dot( lightDir, normal ), 0.0f );
-		vec3 diffuse = light.diffuse * diff * color;
-
+		float lambertian = max( dot( lightDir, normal ), 0.0f );
+		vec3 diffuse = light.diffuse * lambertian * color;
 		// Specular
-		vec3 viewDir = normalize( viewPos - fs_in.FragPos );
-		if ( mode.normalMapping ) {
-			viewDir = normalize( fs_in.TangentViewPos - fs_in.TangentFragPos );
+		vec3 specular;
+		if ( lambertian > 0.0f ) {
+			vec3 viewDir;
+			if ( mode.normalMapping ) {
+				viewDir = normalize( fs_in.TangentViewPos - fs_in.TangentFragPos );
+			} else {
+				viewDir = normalize( viewPos - fs_in.FragPos );
+			}
+			// Blinn–Phong shading
+			vec3 halfwayDir = normalize( lightDir + viewDir );
+			float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), material.shininess );
+			// GW2 store specular in diffuse texture's alpha channel
+			vec3 specularTexture = vec3( texture( material.diffuseMap, fs_in.TexCoords ).a );
+			specular = light.specular * spec * specularTexture;
 		}
-		vec3 reflectDir = reflect( -lightDir, normal );
-		vec3 halfwayDir = normalize( lightDir + viewDir );
-		float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), material.shininess );
-		// GW2 store specular texture in texture alpha channel
-		vec3 specularTexture = vec3( texture( material.diffuseMap, fs_in.TexCoords ).a );
-		vec3 specular = light.specular * spec * specularTexture;
 
-		finalColor = vec4( ambient + diffuse + specular, texture( material.diffuseMap, fs_in.TexCoords ).a );
+		finalColor = vec4( ambient + ( diffuse + specular ), texture( material.diffuseMap, fs_in.TexCoords ).a );
 	} else {
 		finalColor = texture( material.diffuseMap, fs_in.TexCoords );
 	}
