@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <chrono>
 #include <unordered_map>
 
-#include "Readers/ImageReader.h"
+#include "Exception.h"
 
 #include "ModelViewer.h"
 
@@ -78,9 +78,9 @@ namespace gw2b {
 	};
 
 	struct ModelViewer::TBO {
-		GLuint					diffuseMap;
-		GLuint					normalMap;
-		GLuint					lightMap;
+		Texture2D*				diffuseMap;
+		Texture2D*				normalMap;
+		Texture2D*				lightMap;
 	};
 
 	struct ModelViewer::PackedVertex {
@@ -112,7 +112,6 @@ namespace gw2b {
 		}
 
 		m_movementKeyTimer = new wxTimer( this );
-		m_movementKeyTimer->Start( 3 );
 
 		// Hook up events
 		this->Bind( wxEVT_PAINT, &ModelViewer::onPaintEvt, this );
@@ -120,7 +119,6 @@ namespace gw2b {
 		this->Bind( wxEVT_MOUSEWHEEL, &ModelViewer::onMouseWheelEvt, this );
 		this->Bind( wxEVT_KEY_DOWN, &ModelViewer::onKeyDownEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &ModelViewer::onClose, this );
-		this->Bind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 	}
 
 	ModelViewer::~ModelViewer( ) {
@@ -182,13 +180,13 @@ namespace gw2b {
 		// Clean TBO
 		for ( auto& it : m_textureBuffer ) {
 			if ( it.diffuseMap ) {
-				glDeleteTextures( 1, &it.diffuseMap );
+				delete it.diffuseMap;
 			}
 			if ( it.normalMap ) {
-				glDeleteTextures( 1, &it.normalMap );
+				delete it.normalMap;
 			}
 			if ( it.lightMap ) {
-				glDeleteTextures( 1, &it.lightMap );
+				delete it.lightMap;
 			}
 		}
 
@@ -432,8 +430,7 @@ namespace gw2b {
 				// Black texture, for wireframe view
 				glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
 			} else if ( materialIndex >= 0 && m_textureBuffer[materialIndex].diffuseMap ) {
-				// "Bind" the texture : all future texture functions will modify this texture
-				glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].diffuseMap );
+				m_textureBuffer[materialIndex].diffuseMap->bind( );
 			}
 		} else {
 			if ( m_statusWireframe ) {
@@ -452,7 +449,7 @@ namespace gw2b {
 		glActiveTexture( GL_TEXTURE1 );
 		if ( !m_textureBuffer.empty( ) ) {
 			if ( materialIndex >= 0 && m_textureBuffer[materialIndex].normalMap ) {
-				glBindTexture( GL_TEXTURE_2D, m_textureBuffer[materialIndex].normalMap );
+				m_textureBuffer[materialIndex].normalMap->bind( );
 			}
 			// Set our "normalMap" sampler to user Texture Unit 1
 			glUniform1i( glGetUniformLocation( p_shader->program, "material.normalMap" ), 1 );
@@ -752,61 +749,77 @@ namespace gw2b {
 		auto numMaterial = p_model.numMaterial( );
 
 		// Load textures to texture map
-		std::unordered_map<uint32, GLuint> textureMap;
+		std::unordered_map<uint32, Texture2D*> textureMap;
 		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
 			auto& material = p_model.material( i );
-			std::unordered_map<uint32, GLuint>::iterator it;
+			std::unordered_map<uint32, Texture2D*>::iterator it;
 
 			// Load diffuse texture
 			if ( material.diffuseMap ) {
 				it = textureMap.find( material.diffuseMap );
 				if ( it == textureMap.end( ) ) {
-					textureMap.insert( std::pair<uint32, GLuint>( material.diffuseMap, this->loadTexture( material.diffuseMap ) ) );
+					try {
+						textureMap.insert( std::pair<uint32, Texture2D*>( material.diffuseMap, new Texture2D( m_datFile, material.diffuseMap ) ) );
+					} catch( exception::Exception& err ) {
+						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.diffuseMap, wxString( err.what( ) ) );
+					}
 				}
 			}
 
 			if ( material.normalMap ) {
 				it = textureMap.find( material.normalMap );
 				if ( it == textureMap.end( ) ) {
-					textureMap.insert( std::pair<uint32, GLuint>( material.normalMap, this->loadTexture( material.normalMap ) ) );
+					try {
+						textureMap.insert( std::pair<uint32, Texture2D*>( material.normalMap, new Texture2D( m_datFile, material.normalMap ) ) );
+					} catch ( exception::Exception& err ) {
+						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.normalMap, wxString( err.what( ) ) );
+					}
 				}
 			}
 
 			if ( material.lightMap ) {
 				it = textureMap.find( material.lightMap );
 				if ( it == textureMap.end( ) ) {
-					textureMap.insert( std::pair<uint32, GLuint>( material.lightMap, this->loadTexture( material.lightMap ) ) );
+					try {
+						textureMap.insert( std::pair<uint32, Texture2D*>( material.lightMap, new Texture2D( m_datFile, material.lightMap ) ) );
+					} catch ( exception::Exception& err ) {
+						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.lightMap, wxString( err.what( ) ) );
+					}
 				}
 			}
 		}
 
-		// Create Texture Buffer Object
-		m_textureBuffer.resize( numMaterial );
+		// Just incase
+		if ( !textureMap.empty( ) ) {
+			// Create Texture Buffer Object
+			m_textureBuffer.resize( numMaterial );
 
-		// Copy texture id from texture map to TBO
-		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
-			auto& material = p_model.material( i );
-			auto& cache = m_textureBuffer[i];
+			// Copy texture id from texture map to TBO
+			for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
+				auto& material = p_model.material( i );
+				auto& cache = m_textureBuffer[i];
 
-			// Load diffuse texture
-			if ( material.diffuseMap ) {
-				cache.diffuseMap = textureMap.find( material.diffuseMap )->second;
-			} else {
-				cache.diffuseMap = 0;
-			}
+				// Load diffuse texture
+				if ( material.diffuseMap ) {
+					cache.diffuseMap = textureMap.find( material.diffuseMap )->second;
+				} else {
+					cache.diffuseMap = 0;
+				}
 
-			if ( material.normalMap ) {
-				cache.normalMap = textureMap.find( material.normalMap )->second;
-			} else {
-				cache.normalMap = 0;
-			}
+				if ( material.normalMap ) {
+					cache.normalMap = textureMap.find( material.normalMap )->second;
+				} else {
+					cache.normalMap = 0;
+				}
 
-			if ( material.lightMap ) {
-				cache.lightMap = textureMap.find( material.lightMap )->second;
-			} else {
-				cache.lightMap = 0;
+				if ( material.lightMap ) {
+					cache.lightMap = textureMap.find( material.lightMap )->second;
+				} else {
+					cache.lightMap = 0;
+				}
 			}
 		}
+
 	}
 
 	GLuint ModelViewer::createDummyTexture( const GLubyte* p_data ) {
@@ -823,103 +836,6 @@ namespace gw2b {
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
 		return Texture;
-	}
-
-	GLuint ModelViewer::loadTexture( const uint p_fileId ) {
-		auto entryNumber = m_datFile.entryNumFromFileId( p_fileId );
-		auto fileData = m_datFile.readEntry( entryNumber );
-
-		// Bail if read failed
-		if ( fileData.GetSize( ) == 0 ) {
-			return false;
-		}
-
-		// Convert to image
-		ANetFileType fileType;
-		m_datFile.identifyFileType( fileData.GetPointer( ), fileData.GetSize( ), fileType );
-		auto reader = FileReader::readerForData( fileData, m_datFile, fileType );
-
-		// Bail if not an image
-		auto imgReader = dynamic_cast<ImageReader*>( reader );
-		if ( !imgReader ) {
-			deletePointer( reader );
-			return false;
-		}
-
-		// Get image in wxImage
-		auto imageData = imgReader->getImage( );
-
-		if ( !imageData.IsOk( ) ) {
-			deletePointer( reader );
-			return false;
-		}
-
-		// wxImage store seperate alpha channel if present
-		GLubyte* bitmapData = imageData.GetData( );
-		GLubyte* alphaData = imageData.GetAlpha( );
-
-		int imageWidth = imageData.GetWidth( );
-		int imageHeight = imageData.GetHeight( );
-		int bytesPerPixel = imageData.HasAlpha( ) ? 4 : 3;
-		int imageSize = imageWidth * imageHeight * bytesPerPixel;
-
-		Array<GLubyte> image( imageSize );
-
-		// Merge wxImage alpha channel to RGBA
-#pragma omp parallel for
-		for ( int y = 0; y < imageHeight; y++ ) {
-			for ( int x = 0; x < imageWidth; x++ ) {
-				image[( x + y * imageWidth ) * bytesPerPixel + 0] = bitmapData[( x + y * imageWidth ) * 3];
-				image[( x + y * imageWidth ) * bytesPerPixel + 1] = bitmapData[( x + y * imageWidth ) * 3 + 1];
-				image[( x + y * imageWidth ) * bytesPerPixel + 2] = bitmapData[( x + y * imageWidth ) * 3 + 2];
-
-				if ( bytesPerPixel == 4 ) {
-					image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
-				}
-			}
-		}
-
-		// Generate texture ID
-		GLuint TextureID;
-		glGenTextures( 1, &TextureID );
-
-		// Assign texture to ID
-		glBindTexture( GL_TEXTURE_2D, TextureID );
-
-		// Give the image to OpenGL
-		glTexImage2D( GL_TEXTURE_2D,
-			0,
-			bytesPerPixel,
-			imageWidth,
-			imageHeight,
-			0,
-			imageData.HasAlpha( ) ? GL_RGBA : GL_RGB,
-			GL_UNSIGNED_BYTE,
-			image.GetPointer( ) );
-
-		glGenerateMipmap( GL_TEXTURE_2D );
-
-		// Texture parameters
-
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
-		// Trilinear texture filtering
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-
-		// Set anisotropic texture filtering to maximumn supported by GPU
-		// No need to check if extension available since it is ubiquitous extension
-		// https://www.opengl.org/registry/specs/EXT/texture_filter_anisotropic.txt
-		GLfloat af = 0.0f;
-		glGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &af );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, af );
-
-		glBindTexture( GL_TEXTURE_2D, 0 );
-
-		deletePointer( reader );
-
-		return TextureID;
 	}
 
 	void ModelViewer::updateMatrices( ) {
@@ -941,7 +857,6 @@ namespace gw2b {
 
 		// Projection matrix
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
-		//auto projection = glm::perspective( m_camera.distance( ), aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 
 		m_mainShader->use( );
 		// Send projection matrix to main shader
@@ -1057,8 +972,15 @@ namespace gw2b {
 			m_cameraMode = !m_cameraMode;
 			if ( m_cameraMode ) {
 				mode = Camera::FPSCAM;
+
+				// Scan for input every 3ms
+				m_movementKeyTimer->Start( 3 );
+				this->Bind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 			} else {
 				mode = Camera::ORBITALCAM;
+
+				m_movementKeyTimer->Stop( );
+				this->Unbind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 			}
 			m_camera.setCameraMode( mode );
 		}

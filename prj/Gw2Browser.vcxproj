@@ -25,6 +25,7 @@
     <ClInclude Include="..\src\Data.h" />
     <ClInclude Include="..\src\DatIndexIO.h" />
     <ClInclude Include="..\src\Documentation\Namespaces.h" />
+    <ClInclude Include="..\src\Exception.h" />
     <ClInclude Include="..\src\Exporter.h" />
     <ClInclude Include="..\src\FileReader.h" />
     <ClInclude Include="..\src\DatFile.h" />
@@ -66,12 +67,14 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BrowserWindow.cpp" />
     <ClCompile Include="..\src\CategoryTree.cpp" />
     <ClCompile Include="..\src\Data.cpp" />
     <ClCompile Include="..\src\DatIndexIO.cpp" />
+    <ClCompile Include="..\src\Exception.cpp" />
     <ClCompile Include="..\src\Exporter.cpp" />
     <ClCompile Include="..\src\FileReader.cpp" />
     <ClCompile Include="..\src\DatFile.cpp" />
@@ -113,6 +116,7 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\ModelViewer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\light_box.frag" />

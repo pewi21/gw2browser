@@ -36,13 +36,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "LightBox.h"
 #include "Shader.h"
 #include "Text2D.h"
+#include "Texture2D.h"
 
 #include "DatFile.h"
 #include "ViewerGLCanvas.h"
 #include "Readers/ModelReader.h"
 
 namespace gw2b {
-	class DatFile;
 
 	class ModelViewer;
 	class RenderTimer : public wxTimer {
@@ -68,30 +68,17 @@ namespace gw2b {
 		wxTimer*					m_movementKeyTimer;
 
 		// Internal status
-
-		// Is OpenGL is initialized?
-		bool						m_glInitialized = false;
-		// Toggle display text
-		bool						m_statusText = true;
-		// Toggle wireframe rendering
-		bool						m_statusWireframe = false;
-		// Cull triangles which normal is not towards the camera,
-		// remove lighting glitch cause by some triangles
-		bool						m_statusCullFace = false;
-		// Toggle texture
-		bool						m_statusTextured = true;
-		// Toggle normal maping
-		bool						m_statusNormalMapping = true;
-		// Toggle lighting
-		bool						m_statusLighting = true;
-		// Toggle visualization of light source
-		bool						m_statusRenderLightSource = false;
-		// Toggle visualization of normal
-		bool						m_statusVisualizeNormal = false;
-		// Toggle visualization of z-buffer
-		bool						m_statusVisualizeZbuffer = false;
-		// Toggle camera mode
-		bool						m_cameraMode = false;
+		bool						m_glInitialized = false;			// Is OpenGL is initialized?
+		bool						m_statusText = true;				// Toggle display text
+		bool						m_statusWireframe = false;			// Toggle wireframe rendering
+		bool						m_statusCullFace = false;			// Cull triangles which normal is not towards the camera
+		bool						m_statusTextured = true;			// Toggle texture
+		bool						m_statusNormalMapping = true;		// Toggle normal maping
+		bool						m_statusLighting = true;			// Toggle lighting
+		bool						m_statusRenderLightSource = false;	// Toggle visualization of light source
+		bool						m_statusVisualizeNormal = false;	// Toggle visualization of normal
+		bool						m_statusVisualizeZbuffer = false;	// Toggle visualization of z-buffer
+		bool						m_cameraMode = false;				// Toggle camera mode
 
 		// Mesh
 		GW2Model                    m_model;
@@ -134,7 +121,7 @@ namespace gw2b {
 		*  \param[in]  p_parent     Parent of the control.
 		*  \param[in]  p_pos        Optional position of the control.
 		*  \param[in]  p_size       Optional size of the control. */
-		ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile );
+		ModelViewer( wxWindow* p_parent, const int* p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile );
 		/** Destructor. */
 		virtual ~ModelViewer( );
 
@@ -168,7 +155,6 @@ namespace gw2b {
 		void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
 		void loadMaterial( GW2Model& p_model );
 		GLuint createDummyTexture( const GLubyte* p_data );
-		GLuint loadTexture( const uint p_fileId );
 		void updateMatrices( );
 		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );

@@ -217,6 +217,12 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h">
       <Filter>Header Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h">
+      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -338,6 +344,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\ModelViewer\LightBox.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\Texture2D.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Exception.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
