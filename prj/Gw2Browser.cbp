@@ -146,6 +146,8 @@
 		<Unit filename="../src/Data.cpp" />
 		<Unit filename="../src/Data.h" />
 		<Unit filename="../src/Documentation/Namespaces.h" />
+		<Unit filename="../src/Exception.cpp" />
+		<Unit filename="../src/Exception.h" />
 		<Unit filename="../src/Exporter.cpp" />
 		<Unit filename="../src/Exporter.h" />
 		<Unit filename="../src/FileReader.cpp" />
@@ -225,6 +227,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Shader.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Text2D.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Text2D.h" />
+		<Unit filename="../src/Viewers/ModelViewer/Texture2D.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
 		<Unit filename="../src/resource.h" />
 		<Unit filename="../src/stdafx.cpp" />
 		<Unit filename="../src/stdafx.h" />

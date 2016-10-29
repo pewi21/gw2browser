@@ -32,11 +32,11 @@ namespace gw2b {
 		: m_position( 0.0f, 0.0f, 0.0f )
 		, m_pivot( 0.0f, 0.0f, -1.0f )
 		, m_worldup( 0.0f, 1.0f, 0.0f )
+		, m_distance( 200.0f )
 		, m_yaw( 0.0f )
 		, m_pitch( 0.0f )
 		, m_movementSpeed( 80.0f )
 		, m_mouseSensitivity( 0.25f )
-		, m_distance( 200.0f )
 		, m_mode( ORBITALCAM )
 	{
 		this->updateCameraVectors( );
