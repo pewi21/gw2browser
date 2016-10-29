@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <webp/decode.h> // libwebp
 #include <gw2DatTools/compression/inflateTextureFileBuffer.h>
+#include <gw2DatTools/exception/Exception.h>
 
 #include "ImageReader.h"
 
@@ -388,8 +389,8 @@ namespace gw2b {
 		// Decompress
 		try {
 			gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer ) );
-		} catch( std::exception& exception ) {
-			wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( exception.what( ) ) );
+		} catch( gw2dt::exception::Exception& err ) {
+			wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( err.what( ) ) );
 			freePointer( buffer );
 			return false;
 		}

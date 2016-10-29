@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include <gw2DatTools/exception/Exception.h>
+
 #include "FileReader.h"
 
 #include "DatFile.h"
@@ -277,8 +279,8 @@ namespace gw2b {
 			uint32 outputSize = p_peekSize;
 			try {
 				gw2dt::compression::inflateDatFileBuffer( inputSize, m_inputBuffer.GetPointer( ), outputSize, po_Buffer );
-			} catch ( std::exception& exception ) {
-				wxLogMessage( wxT( "Failed to decompress file %u: %s" ), p_entryNum, std::string( exception.what( ) ) );
+			} catch ( gw2dt::exception::Exception& err ) {
+				wxLogMessage( wxT( "Failed to decompress file %u: %s" ), p_entryNum, std::string( err.what( ) ) );
 				outputSize = 0;
 			}
 			return outputSize;
