@@ -115,7 +115,7 @@ namespace gw2b {
 
 	Texture2D::~Texture2D( ) {
 		// Delete textures
-		glDeleteTextures( m_textureType, &m_textureId );
+		glDeleteTextures( 1, &m_textureId );
 	}
 
 	void Texture2D::init( ) {
