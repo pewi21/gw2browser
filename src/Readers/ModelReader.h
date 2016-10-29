@@ -107,7 +107,7 @@ namespace gw2b {
 	class GW2ModelData : public wxRefCounter {
 	public:
 		std::vector<GW2Mesh>		meshes;
-		std::vector<GW2Material>		material;
+		std::vector<GW2Material>	material;
 	public:
 		GW2ModelData( );
 		GW2ModelData( const GW2ModelData& p_other );

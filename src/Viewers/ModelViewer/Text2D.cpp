@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include "Exception.h"
+
 #include "Text2D.h"
 
 namespace gw2b {
@@ -35,25 +37,19 @@ namespace gw2b {
 		GLuint Advance;			// Horizontal offset to advance to next glyph
 	};
 
-	Text2D::Text2D( ) {
-
-	}
-
-	Text2D::~Text2D( ) {
-
-	}
-
-	bool Text2D::init( ) {
-		// Set font size to 12 point
-		FT_UInt fontsize = 12;
+	Text2D::Text2D( const char* p_fontfile, const FT_UInt p_fontsize ) {
 		// Load font
-		if ( !loadFont( m_characterTextureMap, "..//data//fonts//LiberationSans-Regular.ttf", fontsize ) ) {
-			wxLogMessage( wxT( "Fail to load font." ) );
-			return false;
+		if ( !loadFont( m_characterTextureMap, p_fontfile, p_fontsize ) ) {
+			throw exception::Exception( "Failed to load font." );
 		}
 
 		// Load text shader
-		m_textShader = new Shader( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+		try {
+			m_textShader = new Shader( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "Failed to load text shader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load text shader." );
+		}
 
 		// Configure VAO/VBO for texture quads
 		glGenVertexArrays( 1, &m_textVAO );
@@ -67,11 +63,9 @@ namespace gw2b {
 		glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof( GLfloat ), 0 );
 		glBindBuffer( GL_ARRAY_BUFFER, 0 );
 		glBindVertexArray( 0 );
-
-		return true;
 	}
 
-	void Text2D::clear( ) {
+	Text2D::~Text2D( ) {
 		// Clean character textures
 		for ( auto& it : m_characterTextureMap ) {
 			if ( it.first ) {
@@ -97,9 +91,9 @@ namespace gw2b {
 		m_textShader->use( );
 
 		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( m_ClientSize.x ), 0.0f, static_cast<GLfloat>( m_ClientSize.y ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_textShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_textShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 
-		glUniform3f( glGetUniformLocation( m_textShader->program, "textColor" ), p_color.x, p_color.y, p_color.z );
+		glUniform3f( glGetUniformLocation( m_textShader->getProgramId( ), "textColor" ), p_color.x, p_color.y, p_color.z );
 
 		glActiveTexture( GL_TEXTURE0 );
 		glBindVertexArray( m_textVAO );
@@ -142,6 +136,10 @@ namespace gw2b {
 		glDisable( GL_BLEND );
 		// Enable depth-testing
 		glEnable( GL_DEPTH_TEST );
+	}
+
+	void Text2D::setClientSize( const wxSize& p_size ) {
+		m_ClientSize = p_size;
 	}
 
 	bool Text2D::loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height ) {
@@ -213,10 +211,6 @@ namespace gw2b {
 		FT_Done_FreeType( ft );
 
 		return true;
-	}
-
-	void Text2D::setClientSize( const wxSize& p_size ) {
-		m_ClientSize = p_size;
 	}
 
 }; // namespace gw2b

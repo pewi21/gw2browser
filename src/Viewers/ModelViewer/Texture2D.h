@@ -47,10 +47,10 @@ namespace gw2b {
 
 		/** Bind the texture. */
 		void bind( );
-		/** Get texture's ID represented by this data.
+		/** Get texture ID represented by this data.
 		*  \return GLuint			textureId. */
 		GLuint getTextureId( );
-		/** Get texture's file ID from DatFile represented by this data.
+		/** Get texture file ID from DatFile represented by this data.
 		*  \return uint				fileId. */
 		uint getFileId( );
 

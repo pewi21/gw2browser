@@ -28,6 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sstream>
 #include <vector>
 
+#include "Exception.h"
+
 #include "Shader.h"
 
 namespace gw2b {
@@ -57,7 +59,7 @@ namespace gw2b {
 			vertexCode = vShaderStream.str( );
 		} else {
 			wxLogMessage( wxT( "Shader FILE_NOT_SUCCESFULLY_READ: %s" ), p_vertexPath );
-			return;
+			throw exception::Exception( "Unable to read vertex shader file." );
 		}
 
 		// Is the file opened
@@ -69,8 +71,8 @@ namespace gw2b {
 			// Convert stream into string
 			fragmentCode = fShaderStream.str( );
 		} else {
-			wxLogMessage( wxT( "Shader FILE_NOT_SUCCESFULLY_READ: %s" ), p_vertexPath );
-			return;
+			wxLogMessage( wxT( "Shader FILE_NOT_SUCCESFULLY_READ: %s" ), p_fragmentPath );
+			throw exception::Exception( "Unable to read fragment shader file." );
 		}
 
 		// If geometry shader path is present, also load a geometry shader
@@ -88,7 +90,7 @@ namespace gw2b {
 				geometryCode = gShaderStream.str( );
 			} else {
 				wxLogMessage( wxT( "Shader FILE_NOT_SUCCESFULLY_READ: %s" ), p_geometryPath );
-				return;
+				throw exception::Exception( "Unable to read geometry shader file." );
 			}
 		}
 
@@ -100,7 +102,7 @@ namespace gw2b {
 		glCompileShader( vertex );
 		if ( !checkCompileErrors( vertex, "VERTEX" ) ) {
 			glDeleteShader( vertex );
-			return;
+			throw exception::Exception( "Vertex shader compilation error." );
 		}
 
 		// Compile Fragment Shader
@@ -112,7 +114,7 @@ namespace gw2b {
 		if ( !checkCompileErrors( fragment, "FRAGMENT" ) ) {
 			glDeleteShader( vertex );
 			glDeleteShader( fragment );
-			return;
+			throw exception::Exception( "Fragment shader compilation error." );
 		}
 
 		// If geometry shader is given, compile geometry shader
@@ -127,20 +129,20 @@ namespace gw2b {
 				glDeleteShader( vertex );
 				glDeleteShader( fragment );
 				glDeleteShader( geometry );
-				return;
+				throw exception::Exception( "Geometry shader compilation error." );
 			}
 		}
 
 		// Shader Program
 		wxLogMessage( wxT( "Linking shader program..." ) );
-		this->program = glCreateProgram( );
-		glAttachShader( this->program, vertex );
-		glAttachShader( this->program, fragment );
+		m_program = glCreateProgram( );
+		glAttachShader( m_program, vertex );
+		glAttachShader( m_program, fragment );
 		if ( p_geometryPath != nullptr ) {
-			glAttachShader( this->program, geometry );
+			glAttachShader( m_program, geometry );
 		}
-		glLinkProgram( this->program );
-		if ( checkCompileErrors( program, "PROGRAM" ) ) {
+		glLinkProgram( m_program );
+		if ( checkCompileErrors( m_program, "PROGRAM" ) ) {
 			wxLogMessage( wxT( "Done linking shader program." ) );
 		}
 		// Delete the shaders as they're linked into our program now and no longer necessery
@@ -157,11 +159,15 @@ namespace gw2b {
 	}
 
 	void Shader::use( ) {
-		glUseProgram( this->program );
+		glUseProgram( m_program );
+	}
+
+	GLuint Shader::getProgramId( ) {
+		return m_program;
 	}
 
 	void Shader::clear( ) {
-		glDeleteProgram( this->program );
+		glDeleteProgram( m_program );
 	}
 
 	bool Shader::checkCompileErrors( GLuint shader, std::string type ) {

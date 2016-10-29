@@ -42,9 +42,6 @@ namespace gw2b {
 		LightBox( );
 		~LightBox( );
 
-		void init( );
-		void clear( );
-
 		void setViewMatrix( const glm::mat4& p_view );
 		void setProjectionMatrix( const glm::mat4& p_projection );
 

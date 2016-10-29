@@ -30,20 +30,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	class Shader {
-	public:
-		GLuint program;
+		GLuint						m_program;
 
-		// Constructor for Shader object, need to clean the shader manually
+	public:
+		/** Constructor. Create shader.
+		*  \param[in]  p_vertexPath    Path to vertex shader file.
+		*  \param[in]  p_fragmentPath  Path to fragment shader file.
+		*  \param[in]  p_geometryPath  Path to geometry shader file. */
 		Shader( const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
-		// Destructor
+		/** Destructor. Clears all data. */
 		~Shader( );
 
-		// Uses the current shader
+		/** Uses the shader. */
 		void use( );
-		// Delete the current shader
+		/** Get shader program ID represented by this data.
+		*  \return GLuint			programId. */
+		GLuint getProgramId( );
+		/** Delete the shader. */
 		void clear( );
 
 	private:
+		/** Check for shader compilation error. */
 		bool checkCompileErrors( GLuint shader, std::string type );
 
 	}; // class Shader

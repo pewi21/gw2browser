@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdafx.h"
 
 #include <chrono>
-#include <unordered_map>
 
 #include "Exception.h"
 
@@ -77,10 +76,10 @@ namespace gw2b {
 		GLuint					elementBuffer;
 	};
 
-	struct ModelViewer::TBO {
-		Texture2D*				diffuseMap;
-		Texture2D*				normalMap;
-		Texture2D*				lightMap;
+	struct ModelViewer::TextureList {
+		uint					diffuseMap;
+		uint					normalMap;
+		uint					lightMap;
 	};
 
 	struct ModelViewer::PackedVertex {
@@ -101,9 +100,7 @@ namespace gw2b {
 		// Initialize OpenGL
 		if ( !m_glInitialized ) {
 			if ( !this->initGL( ) ) {
-				wxLogMessage( wxT( "Could not initialize OpenGL!" ) );
-				wxMessageBox( wxT( "Could not initialize OpenGL!" ), wxT( "" ), wxICON_ERROR );
-				return;
+				throw exception::Exception( "Could not initialize OpenGL." );
 			}
 			m_glInitialized = true;
 
@@ -132,9 +129,9 @@ namespace gw2b {
 		this->clearShader( );
 
 		// Clean text renderer
-		m_text.clear( );
+		delete m_text;
 		// Clean light box renderer
-		m_lightBox.clear( );
+		delete m_lightBox;
 
 		delete m_renderTimer;
 		delete m_movementKeyTimer;
@@ -147,7 +144,8 @@ namespace gw2b {
 
 		m_vertexBuffer.clear( );
 		m_indexBuffer.clear( );
-		m_textureBuffer.clear( );
+		m_textureList.clear( );
+		m_textureMap.clear( );
 		m_meshCache.clear( );
 		m_model = GW2Model( );
 		ViewerGLCanvas::clear( );
@@ -177,16 +175,10 @@ namespace gw2b {
 			}
 		}
 
-		// Clean TBO
-		for ( auto& it : m_textureBuffer ) {
-			if ( it.diffuseMap ) {
-				delete it.diffuseMap;
-			}
-			if ( it.normalMap ) {
-				delete it.normalMap;
-			}
-			if ( it.lightMap ) {
-				delete it.lightMap;
+		// Clean Texture Map
+		for ( auto& it : m_textureMap ) {
+			if ( it.second ) {
+				delete it.second;
 			}
 		}
 
@@ -251,9 +243,7 @@ namespace gw2b {
 		}
 
 		if ( !GLEW_VERSION_3_3 ) {
-			wxLogMessage( wxT( "GLEW: The modelviewer required OpenGL 3.3 support!" ) );
-			wxMessageBox( wxT( "GLEW: The modelviewer required OpenGL 3.3 support!" ), wxT( "" ), wxICON_ERROR );
-			return false;
+			throw exception::Exception( "The modelviewer required OpenGL 3.3 support." );
 		}
 
 		wxLogMessage( wxT( "GLEW version %s" ), wxString( glewGetString( GLEW_VERSION ) ) );
@@ -273,28 +263,42 @@ namespace gw2b {
 		glDepthFunc( GL_LESS );
 
 		// Load shader
-		m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-		if ( !m_mainShader ) {
-			return false;
+		try {
+			m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "m_mainShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
 		}
 
-		m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
-		if ( !m_normalVisualizerShader ) {
-			return false;
+		try {
+			m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "m_normalVisualizerShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
 		}
 
-		m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
-		if ( !m_zVisualizerShader ) {
-			return false;
+		try {
+			m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
 		}
 
 		// Initialize text renderer stuff
-		if ( !m_text.init( ) ) {
-			wxLogMessage( wxT( "Could not initialize text renderer." ) );
-			return false;
+		try {
+			m_text = new Text2D( );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "m_text : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to initialize text renderer." );
 		}
 
-		m_lightBox.init( );
+		// Initialize lightbox renderer
+		try {
+			m_lightBox = new LightBox( );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "m_lightBox : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to initialize lightbox renderer." );
+		}
 
 		// Create dummy texture
 		GLubyte blackTextureData[] = { 0, 0, 0, 255 };
@@ -316,8 +320,8 @@ namespace gw2b {
 		// Set frame time
 		auto now = std::chrono::high_resolution_clock::now( );
 		auto currentFrame = std::chrono::duration_cast<std::chrono::duration<float>>( now.time_since_epoch( ) ).count( );
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		m_deltaTime = currentFrame - m_lastFrame;
+		m_lastFrame = currentFrame;
 
 		// Set the OpenGL viewport according to the client size of wxGLCanvas.
 		wxSize ClientSize = this->GetClientSize( );
@@ -355,7 +359,7 @@ namespace gw2b {
 
 		// Render light source (for debugging/visualization)
 		if ( m_statusRenderLightSource ) {
-			m_lightBox.renderCube( m_light.position( ), m_light.specular( ) );
+			m_lightBox->renderCube( m_light.position( ), m_light.specular( ) );
 		}
 
 		// Draw status text
@@ -405,54 +409,63 @@ namespace gw2b {
 		p_shader->use( );
 
 		// Set renderer status flag
-		glUniform1i( glGetUniformLocation( p_shader->program, "mode.normalMapping" ), m_statusNormalMapping );
-		glUniform1i( glGetUniformLocation( p_shader->program, "mode.lighting" ), m_statusLighting );
+		glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "mode.normalMapping" ), m_statusNormalMapping );
+		glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "mode.lighting" ), m_statusLighting );
 
 		// Set lights properties
-		glUniform3fv( glGetUniformLocation( p_shader->program, "light.position" ), 1, glm::value_ptr( m_light.position( ) ) );
-		glUniform3fv( glGetUniformLocation( p_shader->program, "light.ambient" ), 1, glm::value_ptr( m_light.ambient( ) ) );
-		glUniform3fv( glGetUniformLocation( p_shader->program, "light.diffuse" ), 1, glm::value_ptr( m_light.diffuse( ) ) );
-		glUniform3fv( glGetUniformLocation( p_shader->program, "light.specular" ), 1, glm::value_ptr( m_light.specular( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.position" ), 1, glm::value_ptr( m_light.position( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.ambient" ), 1, glm::value_ptr( m_light.ambient( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.diffuse" ), 1, glm::value_ptr( m_light.diffuse( ) ) );
+		glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.specular" ), 1, glm::value_ptr( m_light.specular( ) ) );
 
 		// Set material properties
-		glUniform1f( glGetUniformLocation( p_shader->program, "material.shininess" ), 32.0f );
+		glUniform1f( glGetUniformLocation( p_shader->getProgramId( ), "material.shininess" ), 32.0f );
 
 		// View matrix
-		glUniformMatrix4fv( glGetUniformLocation( p_shader->program, "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
 		// Model matrix
-		glUniformMatrix4fv( glGetUniformLocation( p_shader->program, "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
+		glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
 
-		// Use Texture Unit 0
-		glActiveTexture( GL_TEXTURE0 );
+		// Texture Maping
+		if ( !m_textureList.empty( ) ) {
 
-		if ( m_statusTextured && !m_textureBuffer.empty( ) ) {
-			if ( m_statusWireframe ) {
-				// Black texture, for wireframe view
-				glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
-			} else if ( materialIndex >= 0 && m_textureBuffer[materialIndex].diffuseMap ) {
-				m_textureBuffer[materialIndex].diffuseMap->bind( );
-			}
-		} else {
-			if ( m_statusWireframe ) {
-				// Black texture, for wireframe view
-				glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
+			// Use Texture Unit 0
+			glActiveTexture( GL_TEXTURE0 );
+
+			if ( m_statusTextured ) {
+				if ( m_statusWireframe ) {
+					// Black texture, for wireframe view
+					glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
+				} else if ( materialIndex >= 0 && m_textureList[materialIndex].diffuseMap ) {
+					auto& texture = m_textureMap.find( m_textureList[materialIndex].diffuseMap )->second;
+					if ( texture ) {
+						texture->bind( );
+					}
+				}
 			} else {
-				// White texture, no texture
-				glBindTexture( GL_TEXTURE_2D, m_dummyWhiteTexture );
+				if ( m_statusWireframe ) {
+					// Black texture, for wireframe view
+					glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
+				} else {
+					// White texture, no texture
+					glBindTexture( GL_TEXTURE_2D, m_dummyWhiteTexture );
+				}
 			}
-		}
 
-		// Set our "diffuseMap" sampler to user Texture Unit 0
-		glUniform1i( glGetUniformLocation( p_shader->program, "material.diffuseMap" ), 0 );
+			// Set our "diffuseMap" sampler to user Texture Unit 0
+			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "material.diffuseMap" ), 0 );
 
-		// Bind our normal texture in Texture Unit 1
-		glActiveTexture( GL_TEXTURE1 );
-		if ( !m_textureBuffer.empty( ) ) {
-			if ( materialIndex >= 0 && m_textureBuffer[materialIndex].normalMap ) {
-				m_textureBuffer[materialIndex].normalMap->bind( );
+			// Bind our normal texture in Texture Unit 1
+			glActiveTexture( GL_TEXTURE1 );
+
+			if ( materialIndex >= 0 && m_textureList[materialIndex].normalMap ) {
+				auto& texture = m_textureMap.find( m_textureList[materialIndex].normalMap )->second;
+				if ( texture ) {
+					texture->bind( );
+				}
 			}
 			// Set our "normalMap" sampler to user Texture Unit 1
-			glUniform1i( glGetUniformLocation( p_shader->program, "material.normalMap" ), 1 );
+			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "material.normalMap" ), 1 );
 		}
 
 		// Bind Vertex Array Object
@@ -481,7 +494,7 @@ namespace gw2b {
 		wxSize ClientSize = this->GetClientSize( );
 
 		// Send ClientSize variable to text renderer
-		m_text.setClientSize( ClientSize );
+		m_text->setClientSize( ClientSize );
 
 		glm::vec3 color = glm::vec3( 1.0f );
 		GLfloat scale = 1.0f;
@@ -495,53 +508,53 @@ namespace gw2b {
 		}
 
 		// Top-left text
-		m_text.drawText( wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ), 0.0f, ClientSize.y - 12.0f, scale, color );
-		m_text.drawText( wxString::Format( wxT( "Vertices: %d" ), vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
-		m_text.drawText( wxString::Format( wxT( "Triangles: %d" ), triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
+		m_text->drawText( wxString::Format( wxT( "Meshes: %d" ), m_model.numMeshes( ) ), 0.0f, ClientSize.y - 12.0f, scale, color );
+		m_text->drawText( wxString::Format( wxT( "Vertices: %d" ), vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
+		m_text->drawText( wxString::Format( wxT( "Triangles: %d" ), triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
 
 		// Bottom-left text
-		m_text.drawText( wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle normal mapping: press 6" ), 25.0f, 48.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle lighting: press 5" ), 25.0f, 60.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle texture: press 4" ), 25.0f, 72.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle back-face culling: press 3" ), 25.0f, 84.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle wireframe: press 2" ), 25.0f, 96.0f + 2.0f, scale, color );
-		m_text.drawText( wxT( "Toggle status text: press 1" ), 25.0f, 108.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle normal mapping: press 6" ), 25.0f, 48.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle lighting: press 5" ), 25.0f, 60.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle texture: press 4" ), 25.0f, 72.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle back-face culling: press 3" ), 25.0f, 84.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle wireframe: press 2" ), 25.0f, 96.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle status text: press 1" ), 25.0f, 108.0f + 2.0f, scale, color );
 
 		// Status text
 		auto gray = glm::vec3( 0.5f, 0.5f, 0.5f );
 		auto green = glm::vec3( 0.0f, 1.0f, 0.0f );
 		if ( m_statusNormalMapping ) {
-			m_text.drawText( wxT( "ON" ), 0.0f, 48.0f + 2.0f, scale, green );
+			m_text->drawText( wxT( "ON" ), 0.0f, 48.0f + 2.0f, scale, green );
 		} else {
-			m_text.drawText( wxT( "OFF" ), 0.0f, 48.0f + 2.0f, scale, gray );
+			m_text->drawText( wxT( "OFF" ), 0.0f, 48.0f + 2.0f, scale, gray );
 		}
 
 		if ( m_statusLighting ) {
-			m_text.drawText( wxT( "ON" ), 0.0f, 60.0f + 2.0f, scale, green );
+			m_text->drawText( wxT( "ON" ), 0.0f, 60.0f + 2.0f, scale, green );
 		} else {
-			m_text.drawText( wxT( "OFF" ), 0.0f, 60.0f + 2.0f, scale, gray );
+			m_text->drawText( wxT( "OFF" ), 0.0f, 60.0f + 2.0f, scale, gray );
 		}
 
 		if ( m_statusTextured ) {
-			m_text.drawText( wxT( "ON" ), 0.0f, 72.0f + 2.0f, scale, green );
+			m_text->drawText( wxT( "ON" ), 0.0f, 72.0f + 2.0f, scale, green );
 		} else {
-			m_text.drawText( wxT( "OFF" ), 0.0f, 72.0f + 2.0f, scale, gray );
+			m_text->drawText( wxT( "OFF" ), 0.0f, 72.0f + 2.0f, scale, gray );
 		}
 
 		if ( m_statusCullFace ) {
-			m_text.drawText( wxT( "ON" ), 0.0f, 84.0f + 2.0f, scale, green );
+			m_text->drawText( wxT( "ON" ), 0.0f, 84.0f + 2.0f, scale, green );
 		} else {
-			m_text.drawText( wxT( "OFF" ), 0.0f, 84.0f + 2.0f, scale, gray );
+			m_text->drawText( wxT( "OFF" ), 0.0f, 84.0f + 2.0f, scale, gray );
 		}
 
 		if ( m_statusWireframe ) {
-			m_text.drawText( wxT( "ON" ), 0.0f, 96.0f + 2.0f, scale, green );
+			m_text->drawText( wxT( "ON" ), 0.0f, 96.0f + 2.0f, scale, green );
 		} else {
-			m_text.drawText( wxT( "OFF" ), 0.0f, 96.0f + 2.0f, scale, gray );
+			m_text->drawText( wxT( "OFF" ), 0.0f, 96.0f + 2.0f, scale, gray );
 		}
 	}
 
@@ -747,19 +760,19 @@ namespace gw2b {
 
 	void ModelViewer::loadMaterial( GW2Model& p_model ) {
 		auto numMaterial = p_model.numMaterial( );
+		auto& texture = m_textureMap;
 
 		// Load textures to texture map
-		std::unordered_map<uint32, Texture2D*> textureMap;
 		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
 			auto& material = p_model.material( i );
 			std::unordered_map<uint32, Texture2D*>::iterator it;
 
 			// Load diffuse texture
 			if ( material.diffuseMap ) {
-				it = textureMap.find( material.diffuseMap );
-				if ( it == textureMap.end( ) ) {
+				it = texture.find( material.diffuseMap );
+				if ( it == texture.end( ) ) {
 					try {
-						textureMap.insert( std::pair<uint32, Texture2D*>( material.diffuseMap, new Texture2D( m_datFile, material.diffuseMap ) ) );
+						texture.insert( std::pair<uint32, Texture2D*>( material.diffuseMap, new Texture2D( m_datFile, material.diffuseMap ) ) );
 					} catch( exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.diffuseMap, wxString( err.what( ) ) );
 					}
@@ -767,10 +780,10 @@ namespace gw2b {
 			}
 
 			if ( material.normalMap ) {
-				it = textureMap.find( material.normalMap );
-				if ( it == textureMap.end( ) ) {
+				it = texture.find( material.normalMap );
+				if ( it == texture.end( ) ) {
 					try {
-						textureMap.insert( std::pair<uint32, Texture2D*>( material.normalMap, new Texture2D( m_datFile, material.normalMap ) ) );
+						texture.insert( std::pair<uint32, Texture2D*>( material.normalMap, new Texture2D( m_datFile, material.normalMap ) ) );
 					} catch ( exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.normalMap, wxString( err.what( ) ) );
 					}
@@ -778,10 +791,10 @@ namespace gw2b {
 			}
 
 			if ( material.lightMap ) {
-				it = textureMap.find( material.lightMap );
-				if ( it == textureMap.end( ) ) {
+				it = texture.find( material.lightMap );
+				if ( it == texture.end( ) ) {
 					try {
-						textureMap.insert( std::pair<uint32, Texture2D*>( material.lightMap, new Texture2D( m_datFile, material.lightMap ) ) );
+						texture.insert( std::pair<uint32, Texture2D*>( material.lightMap, new Texture2D( m_datFile, material.lightMap ) ) );
 					} catch ( exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.lightMap, wxString( err.what( ) ) );
 					}
@@ -789,37 +802,33 @@ namespace gw2b {
 			}
 		}
 
-		// Just incase
-		if ( !textureMap.empty( ) ) {
-			// Create Texture Buffer Object
-			m_textureBuffer.resize( numMaterial );
+		// Create Texture Buffer Object
+		m_textureList.resize( numMaterial );
 
-			// Copy texture id from texture map to TBO
-			for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
-				auto& material = p_model.material( i );
-				auto& cache = m_textureBuffer[i];
+		// Copy texture information from material of GW2Model to m_textureList
+		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
+			auto& material = p_model.material( i );
+			auto& list = m_textureList[i];
 
-				// Load diffuse texture
-				if ( material.diffuseMap ) {
-					cache.diffuseMap = textureMap.find( material.diffuseMap )->second;
-				} else {
-					cache.diffuseMap = 0;
-				}
+			// Load diffuse texture
+			if ( material.diffuseMap ) {
+				list.diffuseMap = material.diffuseMap;
+			} else {
+				list.diffuseMap = 0;
+			}
 
-				if ( material.normalMap ) {
-					cache.normalMap = textureMap.find( material.normalMap )->second;
-				} else {
-					cache.normalMap = 0;
-				}
+			if ( material.normalMap ) {
+				list.normalMap = material.normalMap;
+			} else {
+				list.normalMap = 0;
+			}
 
-				if ( material.lightMap ) {
-					cache.lightMap = textureMap.find( material.lightMap )->second;
-				} else {
-					cache.lightMap = 0;
-				}
+			if ( material.lightMap ) {
+				list.lightMap = material.lightMap;
+			} else {
+				list.lightMap = 0;
 			}
 		}
-
 	}
 
 	GLuint ModelViewer::createDummyTexture( const GLubyte* p_data ) {
@@ -860,23 +869,23 @@ namespace gw2b {
 
 		m_mainShader->use( );
 		// Send projection matrix to main shader
-		glUniformMatrix4fv( glGetUniformLocation( m_mainShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_mainShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 		// View position
-		glUniform3fv( glGetUniformLocation( m_mainShader->program, "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
+		glUniform3fv( glGetUniformLocation( m_mainShader->getProgramId( ), "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
 
 		m_normalVisualizerShader->use( );
 		// Send projection matrix to normal visualizer shader
-		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 
 		m_zVisualizerShader->use( );
 		// Send projection matrix to Z-Buffer visualizer shader
-		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-		glUniform1f( glGetUniformLocation( m_zVisualizerShader->program, "near" ), minZ );
-		glUniform1f( glGetUniformLocation( m_zVisualizerShader->program, "far" ), maxZ );
+		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "near" ), minZ );
+		glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "far" ), maxZ );
 
 		// Send projection matrix to lightbox renderer
-		m_lightBox.setProjectionMatrix( projection );
-		m_lightBox.setViewMatrix( m_camera.calculateViewMatrix( ) );
+		m_lightBox->setProjectionMatrix( projection );
+		m_lightBox->setViewMatrix( m_camera.calculateViewMatrix( ) );
 	}
 
 	void ModelViewer::focus( ) {
@@ -992,16 +1001,16 @@ namespace gw2b {
 		if ( m_cameraMode ) {
 			// First person camera control
 			if ( wxGetKeyState( wxKeyCode( 'W' ) ) ) {
-				m_camera.processKeyboard( Camera::FORWARD, deltaTime );
+				m_camera.processKeyboard( Camera::FORWARD, m_deltaTime );
 			}
 			if ( wxGetKeyState( wxKeyCode( 'S' ) ) ) {
-				m_camera.processKeyboard( Camera::BACKWARD, deltaTime );
+				m_camera.processKeyboard( Camera::BACKWARD, m_deltaTime );
 			}
 			if ( wxGetKeyState( wxKeyCode( 'A' ) ) ) {
-				m_camera.processKeyboard( Camera::LEFT, deltaTime );
+				m_camera.processKeyboard( Camera::LEFT, m_deltaTime );
 			}
 			if ( wxGetKeyState( wxKeyCode( 'D' ) ) ) {
-				m_camera.processKeyboard( Camera::RIGHT, deltaTime );
+				m_camera.processKeyboard( Camera::RIGHT, m_deltaTime );
 			}
 		}
 		m_movementKeyTimer->Start( );

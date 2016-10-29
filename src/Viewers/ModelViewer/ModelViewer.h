@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 
 #include <map>
+#include <unordered_map>
 #include <vector>
 
 #include "Camera.h"
@@ -58,7 +59,7 @@ namespace gw2b {
 		struct VAO;
 		struct VBO;
 		struct IBO;
-		struct TBO;
+		struct TextureList;
 		struct PackedVertex;
 
 		DatFile&                    m_datFile;
@@ -88,13 +89,14 @@ namespace gw2b {
 		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
 
 		// Textures
-		std::vector<TBO>			m_textureBuffer;	// Texture Buffer Object
+		std::unordered_map<uint32, Texture2D*> m_textureMap;	// Texture Map
+		std::vector<TextureList>	m_textureList;		// Texture List, store texture list from material of GW2Model
 		GLuint						m_dummyBlackTexture;
 		GLuint						m_dummyWhiteTexture;
 
 		// Light
 		Light						m_light;
-		LightBox					m_lightBox;			// For render cube at light position
+		LightBox*					m_lightBox;			// For render cube at light position
 
 		// Shader stuff
 		Shader*						m_mainShader;
@@ -108,13 +110,13 @@ namespace gw2b {
 		float                       m_maxDistance;
 
 		// Text rendering stuff
-		Text2D						m_text;
+		Text2D*						m_text;
 
 		//float angle = 0.0f;
 
 		// Frame time
-		GLfloat						deltaTime = 0.0f;
-		GLfloat						lastFrame = 0.0f;
+		GLfloat						m_deltaTime = 0.0f;
+		GLfloat						m_lastFrame = 0.0f;
 
 	public:
 		/** Constructor. Creates the model viewer with the given parent.

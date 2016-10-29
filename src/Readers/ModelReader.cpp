@@ -187,7 +187,7 @@ namespace gw2b {
 		std::shared_ptr<gw2f::pf::chunks::ModelFileGeometryV1> geometryChunk;
 		try {
 			geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
-		} catch ( std::exception& exception ) {
+		} catch ( gw2f::exception::Exception& exception ) {
 			wxLogMessage( wxT( "Failed to read GEOM chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
 			return;
 		} catch ( ... ) {
@@ -517,7 +517,7 @@ namespace gw2b {
 		std::shared_ptr<gw2f::pf::chunks::ModelFileDataV65> modelChunk;
 		try {
 			modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
-		} catch ( std::exception& exception ) {
+		} catch ( gw2f::exception::Exception& exception ) {
 			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
 
 			wxLogMessage( wxT( "Try another method..." ) );

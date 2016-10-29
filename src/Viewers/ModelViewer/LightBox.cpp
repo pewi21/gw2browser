@@ -24,21 +24,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+#include "Exception.h"
+
 #include "LightBox.h"
 
 namespace gw2b {
 
 	LightBox::LightBox( ) {
-
-	}
-
-	LightBox::~LightBox( ) {
-
-	}
-
-	void LightBox::init( ) {
 		// Load shader
-		m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
+		try {
+			m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxT( "Failed to load lightbox shader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load lightbox shader." );
+		}
 
 		GLfloat vertices[] = {
 			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -99,7 +98,7 @@ namespace gw2b {
 		glBindVertexArray( 0 );
 	}
 
-	void LightBox::clear( ) {
+	LightBox::~LightBox( ) {
 		// Cleanup
 		if ( m_cubeVBO ) {
 			glDeleteBuffers( 1, &m_cubeVBO );
@@ -124,12 +123,12 @@ namespace gw2b {
 		glDisable( GL_CULL_FACE );
 
 		m_cubeShader->use( );
-		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->program, "projection" ), 1, GL_FALSE, glm::value_ptr( m_projection ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->program, "view" ), 1, GL_FALSE, glm::value_ptr( m_view ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( m_projection ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_view ) );
 		auto model = glm::translate( glm::mat4( ), p_pos );
 		model = glm::scale( model, glm::vec3( 6.0f ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->program, "model" ), 1, GL_FALSE, glm::value_ptr( model ) );
-		glUniform3fv( glGetUniformLocation( m_cubeShader->program, "lightColor" ), 1, glm::value_ptr( p_color ) );
+		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( model ) );
+		glUniform3fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "lightColor" ), 1, glm::value_ptr( p_color ) );
 
 		// Render Cube
 		glBindVertexArray( m_cubeVAO );

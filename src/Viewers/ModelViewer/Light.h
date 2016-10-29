@@ -30,25 +30,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	class Light {
-		glm::vec3					m_position;
-		glm::vec3					m_ambient;
-		glm::vec3					m_diffuse;
-		glm::vec3					m_specular;
+		glm::vec3					m_position;		// Light position
+		glm::vec3					m_ambient;		// Ambient light color
+		glm::vec3					m_diffuse;		// Diffuse light color
+		glm::vec3					m_specular;		// Specular light color
 
 	public:
+		/** Constructor. Create light object. */
 		Light( );
+		/** Destructor. Clears all data. */
 		~Light( );
 
+		/** Get light position.
+		*  \return glm::vec3&        Light position. */
 		const glm::vec3& position( ) const;
+		/** Set light position.
+		*  \param[in]  p_pos         Light position. */
 		void setPosition( const glm::vec3& p_pos );
 
+		/** Get ambient light color.
+		*  \return glm::vec3&        Ambient light color. */
 		const glm::vec3& ambient( ) const;
+		/** Set ambient light color.
+		*  \param[in]  p_ambient     Ambient light color. */
 		void setAmbient( const glm::vec3& p_ambient );
 
+		/** Get diffuse light color.
+		*  \return glm::vec3&        Diffuse light color. */
 		const glm::vec3& diffuse( ) const;
+		/** Set diffuse light color.
+		*  \param[in]  p_diffuse     Diffuse light color. */
 		void setDiffuse( const glm::vec3& p_diffuse );
 
+		/** Get specular light color.
+		*  \return glm::vec3&        Specular light color. */
 		const glm::vec3& specular( ) const;
+		/** Set specular light color.
+		*  \param[in]  p_specular    Specular light color. */
 		void setSpecular( const glm::vec3& p_specular );
 
 	}; // class Light

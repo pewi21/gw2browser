@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DatFile.h"
 #include "DatIndex.h"
+#include "Exception.h"
 
 #include "Viewers/ModelViewer/ModelViewer.h"
 
@@ -100,12 +101,15 @@ namespace gw2b {
 		const long style = ( wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE );
 
 		ViewerGLCanvas* newViewer = nullptr;
-		switch ( p_dataType ) {
-		case FileReader::DT_Model:
-			newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style, p_datFile );
-			break;
+		try {
+			switch ( p_dataType ) {
+			case FileReader::DT_Model:
+				newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style, p_datFile );
+				break;
+			}
+		} catch ( exception::Exception& err ) {
+			wxLogMessage( wxString( err.what( ) ) );
 		}
-
 		return newViewer;
 	}
 
