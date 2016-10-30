@@ -107,7 +107,7 @@ namespace gw2b {
 				newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style, p_datFile );
 				break;
 			}
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxString( err.what( ) ) );
 		}
 		return newViewer;

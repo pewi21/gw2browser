@@ -46,7 +46,7 @@ namespace gw2b {
 		// Load text shader
 		try {
 			m_textShader = new Shader( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "Failed to load text shader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load text shader." );
 		}

@@ -265,21 +265,21 @@ namespace gw2b {
 		// Load shader
 		try {
 			m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_mainShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
 
 		try {
 			m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_normalVisualizerShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
 
 		try {
 			m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
@@ -287,7 +287,7 @@ namespace gw2b {
 		// Initialize text renderer stuff
 		try {
 			m_text = new Text2D( );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_text : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to initialize text renderer." );
 		}
@@ -295,7 +295,7 @@ namespace gw2b {
 		// Initialize lightbox renderer
 		try {
 			m_lightBox = new LightBox( );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_lightBox : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to initialize lightbox renderer." );
 		}
@@ -773,7 +773,7 @@ namespace gw2b {
 				if ( it == texture.end( ) ) {
 					try {
 						texture.insert( std::pair<uint32, Texture2D*>( material.diffuseMap, new Texture2D( m_datFile, material.diffuseMap ) ) );
-					} catch( exception::Exception& err ) {
+					} catch ( const exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.diffuseMap, wxString( err.what( ) ) );
 					}
 				}
@@ -784,7 +784,7 @@ namespace gw2b {
 				if ( it == texture.end( ) ) {
 					try {
 						texture.insert( std::pair<uint32, Texture2D*>( material.normalMap, new Texture2D( m_datFile, material.normalMap ) ) );
-					} catch ( exception::Exception& err ) {
+					} catch ( const exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.normalMap, wxString( err.what( ) ) );
 					}
 				}
@@ -795,7 +795,7 @@ namespace gw2b {
 				if ( it == texture.end( ) ) {
 					try {
 						texture.insert( std::pair<uint32, Texture2D*>( material.lightMap, new Texture2D( m_datFile, material.lightMap ) ) );
-					} catch ( exception::Exception& err ) {
+					} catch ( const exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.lightMap, wxString( err.what( ) ) );
 					}
 				}

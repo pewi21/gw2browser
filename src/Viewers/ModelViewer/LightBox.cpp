@@ -34,7 +34,7 @@ namespace gw2b {
 		// Load shader
 		try {
 			m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
-		} catch ( exception::Exception& err ) {
+		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "Failed to load lightbox shader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load lightbox shader." );
 		}

@@ -389,7 +389,7 @@ namespace gw2b {
 		// Decompress
 		try {
 			gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer ) );
-		} catch( gw2dt::exception::Exception& err ) {
+		} catch( const gw2dt::exception::Exception& err ) {
 			wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( err.what( ) ) );
 			freePointer( buffer );
 			return false;
