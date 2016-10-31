@@ -39,12 +39,21 @@ namespace gw2b {
 		glm::mat4					m_view;
 
 	public:
+		/** Constructor. Create lightbox renderer. */
 		LightBox( );
+		/** Destructor. Clears all data. */
 		~LightBox( );
 
+		/** Set view matrix of lightbox renderer.
+		*  \param[in]  p_view        View matrix. */
 		void setViewMatrix( const glm::mat4& p_view );
+		/** Set projection matrix of lightbox renderer.
+		*  \param[in]  p_projection  Projection natrix. */
 		void setProjectionMatrix( const glm::mat4& p_projection );
 
+		/** Render colored box for light visualization at given position.
+		*  \param[in]  p_pos         Light position.
+		*  \param[in]  p_color       Box color. */
 		void renderCube( const glm::vec3& p_pos, const glm::vec3& p_color );
 
 	}; // class Light

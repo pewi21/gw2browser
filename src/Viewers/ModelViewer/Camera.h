@@ -60,41 +60,83 @@ namespace gw2b {
 		};
 
 	public:
+		/** Constructor. Create camera. */
 		Camera( );
+		/** Destructor. Clears all data. */
 		~Camera( );
 
+		/** Calculate view matrix.
+		*  \return glm::mat4&        View matrix. */
 		glm::mat4 calculateViewMatrix( );
 
-		// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
+		/** Processes input received from keyboard.
+		*  \param[in]  p_direction   Direction to move the camera.
+		*  \param[in]  p_deltaTime   Time between frame. */
 		void processKeyboard( CameraMovement p_direction, float p_deltaTime );
-		// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
+		/** Processes input received from a mouse.
+		*  \param[in]  p_xoffset     X offset.
+		*  \param[in]  p_yoffset     Y offset.
+		*  \param[in]  p_constrainPitch  Limit pitch, so screen doesn't flipped when pitch is < 90.0f. */
 		void processMouseMovement( float p_xoffset, float p_yoffset, GLboolean p_constrainPitch = true );
-		// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
+		/** Processes input received from a mouse scroll-wheel.
+		*  \param[in]  p_yoffset     Vertical wheel-axis offset. */
 		void processMouseScroll( float p_yoffset );
 
+		/** Set camera mode.
+		*  \param[in]  p_mode        Camera mode. */
 		void setCameraMode( CameraMode p_mode );
 
+		/** Get yaw angle.
+		*  \return float             Yaw angle. */
 		float yaw( ) const;
+		/** Add yaw angle.
+		*  \param[in]  p_yaw         Angle to add to yaw angle. */
 		void addYaw( float p_yaw );
+		/** Set yaw angle.
+		*  \param[in]  p_yaw         Yaw angle to set. */
 		void setYaw( float p_yaw );
 
+		/** Get pitch angle.
+		*  \return float             Pitch angle. */
 		float pitch( ) const;
+		/** Add pitch angle.
+		*  \param[in]  p_pitch       Angle to add to pitch angle. */
 		void addPitch( float p_pitch );
+		/** Set pitch angle.
+		*  \param[in]  p_pitch       Pitch angle to set. */
 		void setPitch( float p_pitch );
+		/** Clamp pitch angel.
+		*  \param[in]  p_pitch       Pitch angle to clamp.
+		*  \return float             Clamped pitch angle. */
 		float clampPitch( float p_pitch );
 
+		/** Get camera distance.
+		*  \return float             Camera distance. */
 		float distance( ) const;
+		/** Set camera distance.
+		*  \param[in]  p_distance    Camera distance to set. */
 		void setDistance( float p_distance );
 
+		/** Get pivot.
+		*  \return glm::vec3&        Pivot. */
 		const glm::vec3& pivot( ) const;
+		/** Pan the camera.
+		*  \param[in]  p_x           X offset.
+		*  \param[in]  p_y           Y offset. */
 		void pan( float p_x, float p_y );
+		/** Set pivot.
+		*  \param[in]  p_pivot       Pivot to set. */
 		void setPivot( const glm::vec3& p_pivot );
 
+		/** Get camera position.
+		*  \return glm::vec3&        Camera position. */
 		const glm::vec3& position( ) const;
+		/** Set camera position.
+		*  \param[in]  p_position    Camera position to set. */
 		void setPosition( const glm::vec3& p_position );
 
 	private:
-		// Calculates the front vector from the Camera's (updated) Eular Angles
+		/** Calculates the front vector from the Camera's (updated) Eular Angles. */
 		void updateCameraVectors( );
 
 	}; // class Camera
