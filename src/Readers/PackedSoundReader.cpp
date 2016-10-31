@@ -42,14 +42,10 @@ namespace gw2b {
 
 		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
 
-		int size = audioChunk->audioData.size( );
+		int audioDataSize = audioChunk->audioData.size( );
 
-		Array<byte> outputArray( size );
-
-#pragma omp parallel for
-		for ( int i = 0; i < size; i++ ) {
-			outputArray[i] = audioChunk->audioData[i];
-		}
+		Array<byte> outputArray( audioDataSize );
+		::memcpy( outputArray.GetPointer( ), audioChunk->audioData.data( ), audioDataSize );
 
 		return outputArray;
 	}
