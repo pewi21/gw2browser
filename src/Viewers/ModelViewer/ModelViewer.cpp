@@ -980,13 +980,13 @@ namespace gw2b {
 			Camera::CameraMode mode;
 			m_cameraMode = !m_cameraMode;
 			if ( m_cameraMode ) {
-				mode = Camera::FPSCAM;
+				mode = Camera::CameraMode::FPSCAM;
 
 				// Scan for input every 3ms
 				m_movementKeyTimer->Start( 3 );
 				this->Bind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 			} else {
-				mode = Camera::ORBITALCAM;
+				mode = Camera::CameraMode::ORBITALCAM;
 
 				m_movementKeyTimer->Stop( );
 				this->Unbind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
@@ -1001,16 +1001,16 @@ namespace gw2b {
 		if ( m_cameraMode ) {
 			// First person camera control
 			if ( wxGetKeyState( wxKeyCode( 'W' ) ) ) {
-				m_camera.processKeyboard( Camera::FORWARD, m_deltaTime );
+				m_camera.processKeyboard( Camera::CameraMovement::FORWARD, m_deltaTime );
 			}
 			if ( wxGetKeyState( wxKeyCode( 'S' ) ) ) {
-				m_camera.processKeyboard( Camera::BACKWARD, m_deltaTime );
+				m_camera.processKeyboard( Camera::CameraMovement::BACKWARD, m_deltaTime );
 			}
 			if ( wxGetKeyState( wxKeyCode( 'A' ) ) ) {
-				m_camera.processKeyboard( Camera::LEFT, m_deltaTime );
+				m_camera.processKeyboard( Camera::CameraMovement::LEFT, m_deltaTime );
 			}
 			if ( wxGetKeyState( wxKeyCode( 'D' ) ) ) {
-				m_camera.processKeyboard( Camera::RIGHT, m_deltaTime );
+				m_camera.processKeyboard( Camera::CameraMovement::RIGHT, m_deltaTime );
 			}
 		}
 		m_movementKeyTimer->Start( );
