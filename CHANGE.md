@@ -15,11 +15,13 @@ Set anisotropic texture filtering to maximumn supported by GPU.
 - Add text file detection
 - Faster speed when scaning string files.
 - When export model, also export all materials.
+- Add unfinish first-person camera (for use with map viewer in future).
 
 Fix:
 - Fix memory leak in model viewer.
 - Fix string and eula file export bug.
 - Fix text cliping when model is close to camera.
+- Fix crash on viewing model that have no material or uvs.
 
 Issue:
 - Need to map the model's materials to models manually, for now.
