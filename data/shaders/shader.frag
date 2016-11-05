@@ -15,8 +15,8 @@ struct Light {
 };
 
 struct RenderMode {
-	int normalMapping;
-	int lighting;
+	bool normalMapping;
+	bool lighting;
 };
 
 out vec4 FragColor;

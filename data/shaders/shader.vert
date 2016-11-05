@@ -9,8 +9,8 @@ struct Light {
 };
 
 struct RenderMode {
-	int normalMapping;
-	int lighting;
+	bool normalMapping;
+	bool lighting;
 };
 
 // Input vertex data, different for all executions of this shader.
