@@ -132,6 +132,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../data/shaders/light_box.frag" />
+		<Unit filename="../data/shaders/light_box.vert" />
+		<Unit filename="../data/shaders/normal_visualizer.frag" />
+		<Unit filename="../data/shaders/normal_visualizer.geom" />
+		<Unit filename="../data/shaders/normal_visualizer.vert" />
+		<Unit filename="../data/shaders/shader.frag" />
+		<Unit filename="../data/shaders/shader.vert" />
+		<Unit filename="../data/shaders/text.frag" />
+		<Unit filename="../data/shaders/text.vert" />
+		<Unit filename="../data/shaders/z_visualizer.frag" />
+		<Unit filename="../data/shaders/z_visualizer.vert" />
 		<Unit filename="../src/ANetStructs.h" />
 		<Unit filename="../src/BrowserWindow.cpp" />
 		<Unit filename="../src/BrowserWindow.h" />
