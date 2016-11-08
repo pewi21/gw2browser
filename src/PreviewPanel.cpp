@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Viewers/BinaryViewer/BinaryViewer.h"
 #include "Viewers/ImageViewer/ImageViewer.h"
+#include "Viewers/StringViewer/StringViewer.h"
 
 #include "PreviewPanel.h"
 
@@ -92,6 +93,9 @@ namespace gw2b {
 		switch ( p_dataType ) {
 		case FileReader::DT_Image:
 			newViewer = new ImageViewer( this );
+			break;
+		case FileReader::DT_String:
+			newViewer = new StringViewer( this );
 			break;
 		case FileReader::DT_Binary:
 		default:

@@ -68,6 +68,8 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h" />
+    <ClInclude Include="..\src\Viewers\StringViewer\GridControl.h" />
+    <ClInclude Include="..\src\Viewers\StringViewer\StringViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BrowserWindow.cpp" />
@@ -117,6 +119,8 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Texture2D.cpp" />
+    <ClCompile Include="..\src\Viewers\StringViewer\GridControl.cpp" />
+    <ClCompile Include="..\src\Viewers\StringViewer\StringViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\light_box.frag" />

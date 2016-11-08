@@ -74,6 +74,12 @@
     <Filter Include="Data Files\shaders">
       <UniqueIdentifier>{5d45f878-b02e-455e-b595-2c6265e14fdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Viewers\StringViewer">
+      <UniqueIdentifier>{ccdf6549-4595-4792-a8fd-08a21d07b002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Viewers\StringViewer">
+      <UniqueIdentifier>{9609db09-955a-4a7a-964b-f98bf98d5e43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\stdafx.h">
@@ -223,6 +229,12 @@
     <ClInclude Include="..\src\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\StringViewer\GridControl.h">
+      <Filter>Header Files\Viewers\StringViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\StringViewer\StringViewer.h">
+      <Filter>Header Files\Viewers\StringViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -350,6 +362,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Exception.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\StringViewer\GridControl.cpp">
+      <Filter>Source Files\Viewers\StringViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\StringViewer\StringViewer.cpp">
+      <Filter>Source Files\Viewers\StringViewer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
