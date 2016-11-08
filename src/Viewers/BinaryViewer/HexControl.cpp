@@ -178,20 +178,20 @@ namespace gw2b {
 		}
 	}
 
-	char HexControl::filterTextChar( byte pChar ) {
-		//if ( pChar != 173 && ( ( pChar > 31 && pChar < 127 ) || pChar > 159 ) ) {
+	char HexControl::filterTextChar( byte p_char ) {
+		//if ( p_char != 173 && ( ( p_char > 31 && p_char < 127 ) || p_char > 159 ) ) {
 		// Display only printable ASCII character
-		if ( pChar > 31 && pChar < 127 ) {
-			return pChar;
+		if ( p_char > 31 && p_char < 127 ) {
+			return p_char;
 		} else {
 			return '.';
 		}
 	}
 
-	void HexControl::setData( const byte* pData, size_t p_size ) {
+	void HexControl::setData( const byte* p_data, size_t p_size ) {
 		if ( p_size ) {
-			Ensure::notNull( pData );
-			m_data = pData;
+			Ensure::notNull( p_data );
+			m_data = p_data;
 			m_dataSize = p_size;
 		} else {
 			m_data = nullptr;
@@ -201,7 +201,7 @@ namespace gw2b {
 		this->Refresh( );
 	}
 
-	void HexControl::onPaintEvt( wxPaintEvent& pEvent ) {
+	void HexControl::onPaintEvt( wxPaintEvent& p_event ) {
 		wxAutoBufferedPaintDC dc( this );
 		dc.Clear( );
 

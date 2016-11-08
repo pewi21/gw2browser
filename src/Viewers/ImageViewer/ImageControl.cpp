@@ -30,10 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	ImageControl::ImageControl( wxWindow* pParent, const wxPoint& pPosition, const wxSize& pSize )
-		: wxScrolledWindow( pParent, wxID_ANY, pPosition, pSize )
-		, mChannels( IC_All ) {
-		mBackdrop = data::loadPNG( data::checkers_png, data::checkers_png_size );
+	ImageControl::ImageControl( wxWindow* p_parent, const wxPoint& p_position, const wxSize& p_size )
+		: wxScrolledWindow( p_parent, wxID_ANY, p_position, p_size )
+		, m_channels( IC_All ) {
+		m_backdrop = data::loadPNG( data::checkers_png, data::checkers_png_size );
 		this->SetBackgroundStyle( wxBG_STYLE_CUSTOM );
 		this->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
 		this->Bind( wxEVT_PAINT, &ImageControl::OnPaintEvt, this );
@@ -42,51 +42,51 @@ namespace gw2b {
 	ImageControl::~ImageControl( ) {
 	}
 
-	void ImageControl::SetImage( wxImage pImage ) {
-		mImage = pImage;
+	void ImageControl::SetImage( wxImage p_image ) {
+		m_image = p_image;
 		this->UpdateBitmap( );
 	}
 
 	void ImageControl::UpdateBitmap( ) {
-		mBitmap = wxBitmap( );
+		m_bitmap = wxBitmap( );
 
-		if ( mImage.IsOk( ) ) {
-			mBitmap.Create( mImage.GetWidth( ), mImage.GetHeight( ) );
-			wxMemoryDC dc( mBitmap );
+		if ( m_image.IsOk( ) ) {
+			m_bitmap.Create( m_image.GetWidth( ), m_image.GetHeight( ) );
+			wxMemoryDC dc( m_bitmap );
 
 			// New image so we don't mess with the actual image
-			wxImage image( mImage );
+			wxImage image( m_image );
 			bool imageHasAlpha = image.HasAlpha( );
 
 			// Skip backdrop if image has no alpha, or if it's not visible
-			if ( imageHasAlpha && !!( mChannels & IC_Alpha ) ) {
-				for ( uint y = 0; y < ( uint ) mBitmap.GetHeight( ); y += mBackdrop.GetHeight( ) ) {
-					for ( uint x = 0; x < ( uint ) mBitmap.GetWidth( ); x += mBackdrop.GetWidth( ) ) {
-						dc.DrawBitmap( mBackdrop, x, y );
+			if ( imageHasAlpha && !!( m_channels & IC_Alpha ) ) {
+				for ( uint y = 0; y < ( uint ) m_bitmap.GetHeight( ); y += m_backdrop.GetHeight( ) ) {
+					for ( uint x = 0; x < ( uint ) m_bitmap.GetWidth( ); x += m_backdrop.GetWidth( ) ) {
+						dc.DrawBitmap( m_backdrop, x, y );
 					}
 				}
 			}
 
 			// Check if any channels have been toggled off
-			if ( mChannels != IC_All ) {
+			if ( m_channels != IC_All ) {
 				uint numPixels = image.GetWidth( ) * image.GetHeight( );
 				uint8* alphaCache = nullptr;
 
 				// Any colors toggled off?
-				if ( !( mChannels & IC_Red ) || !( mChannels & IC_Green ) || !( mChannels & IC_Blue ) ) {
+				if ( !( m_channels & IC_Red ) || !( m_channels & IC_Green ) || !( m_channels & IC_Blue ) ) {
 					uint8* colors = allocate<uint8>( numPixels * 3 );
 					::memcpy( colors, image.GetData( ), numPixels * 3 );
 
 					// Setting colors clears the alpha, so cache it for restoration later,
 					// if the image has an alpha channel and it's visible
-					if ( imageHasAlpha && ( mChannels & IC_Alpha ) ) {
+					if ( imageHasAlpha && ( m_channels & IC_Alpha ) ) {
 						alphaCache = allocate<uint8>( numPixels );
 						::memcpy( alphaCache, image.GetAlpha( ), numPixels );
 					}
 
 					// If all colors are off, but alpha is on, alpha should be made white
-					bool noColors = !( ( mChannels & IC_Red ) || ( mChannels & IC_Green ) || ( mChannels & IC_Blue ) );
-					bool whiteAlpha = noColors && !!( mChannels & IC_Alpha );
+					bool noColors = !( ( m_channels & IC_Red ) || ( m_channels & IC_Green ) || ( m_channels & IC_Blue ) );
+					bool whiteAlpha = noColors && !!( m_channels & IC_Alpha );
 
 					// Loop through the pixels
 					for ( uint i = 0; i < numPixels; i++ ) {
@@ -98,15 +98,15 @@ namespace gw2b {
 							}
 						} else {
 							// Red turned off?
-							if ( !( mChannels & IC_Red ) ) {
+							if ( !( m_channels & IC_Red ) ) {
 								colors[i * 3 + 0] = 0x00;
 							}
 							// Green turned off?
-							if ( !( mChannels & IC_Green ) ) {
+							if ( !( m_channels & IC_Green ) ) {
 								colors[i * 3 + 1] = 0x00;
 							}
 							// Blue turned off?
-							if ( !( mChannels & IC_Blue ) ) {
+							if ( !( m_channels & IC_Blue ) ) {
 								colors[i * 3 + 2] = 0x00;
 							}
 						}
@@ -122,7 +122,7 @@ namespace gw2b {
 				}
 
 				// Was alpha turned off?
-				if ( imageHasAlpha && !( mChannels & IC_Alpha ) ) {
+				if ( imageHasAlpha && !( m_channels & IC_Alpha ) ) {
 					uint8* alpha = allocate<uint8>( numPixels );
 					::memset( alpha, 0xff, numPixels );
 					image.SetAlpha( alpha );
@@ -138,27 +138,27 @@ namespace gw2b {
 		this->Refresh( );
 	}
 
-	void ImageControl::ToggleChannel( ImageChannels pChannel, bool pToggled ) {
+	void ImageControl::ToggleChannel( ImageChannels p_channel, bool p_toggled ) {
 		bool isDirty = false;
 
 		// Red
-		if ( pChannel == IC_Red && !!( mChannels & IC_Red ) != pToggled ) {
-			mChannels = ( ImageChannels ) ( pToggled ? ( mChannels | IC_Red ) : ( mChannels & ~IC_Red ) );
+		if ( p_channel == IC_Red && !!( m_channels & IC_Red ) != p_toggled ) {
+			m_channels = ( ImageChannels ) ( p_toggled ? ( m_channels | IC_Red ) : ( m_channels & ~IC_Red ) );
 			isDirty = true;
 
 			// Green
-		} else if ( pChannel == IC_Green && !!( mChannels & IC_Green ) != pToggled ) {
-			mChannels = ( ImageChannels ) ( pToggled ? ( mChannels | IC_Green ) : ( mChannels & ~IC_Green ) );
+		} else if ( p_channel == IC_Green && !!( m_channels & IC_Green ) != p_toggled ) {
+			m_channels = ( ImageChannels ) ( p_toggled ? ( m_channels | IC_Green ) : ( m_channels & ~IC_Green ) );
 			isDirty = true;
 
 			// Blue
-		} else if ( pChannel == IC_Blue && !!( mChannels & IC_Blue ) != pToggled ) {
-			mChannels = ( ImageChannels ) ( pToggled ? ( mChannels | IC_Blue ) : ( mChannels & ~IC_Blue ) );
+		} else if ( p_channel == IC_Blue && !!( m_channels & IC_Blue ) != p_toggled ) {
+			m_channels = ( ImageChannels ) ( p_toggled ? ( m_channels | IC_Blue ) : ( m_channels & ~IC_Blue ) );
 			isDirty = true;
 
 			// Alpha
-		} else if ( pChannel == IC_Alpha && !!( mChannels & IC_Alpha ) != pToggled ) {
-			mChannels = ( ImageChannels ) ( pToggled ? ( mChannels | IC_Alpha ) : ( mChannels & ~IC_Alpha ) );
+		} else if ( p_channel == IC_Alpha && !!( m_channels & IC_Alpha ) != p_toggled ) {
+			m_channels = ( ImageChannels ) ( p_toggled ? ( m_channels | IC_Alpha ) : ( m_channels & ~IC_Alpha ) );
 			isDirty = true;
 		}
 
@@ -167,23 +167,23 @@ namespace gw2b {
 		}
 	}
 
-	void ImageControl::OnDraw( wxDC& pDC, wxRect& pRegion ) {
-		this->UpdateScrollbars( pDC );
-		if ( mBitmap.IsOk( ) ) {
-			pDC.DrawBitmap( mBitmap, 0, 0 );
+	void ImageControl::OnDraw( wxDC& p_DC, wxRect& p_region ) {
+		this->UpdateScrollbars( p_DC );
+		if ( m_bitmap.IsOk( ) ) {
+			p_DC.DrawBitmap( m_bitmap, 0, 0 );
 		}
 	}
 
-	void ImageControl::UpdateScrollbars( wxDC& pDC ) {
-		if ( mBitmap.IsOk( ) ) {
-			this->SetVirtualSize( mBitmap.GetWidth( ), mBitmap.GetHeight( ) );
+	void ImageControl::UpdateScrollbars( wxDC& p_DC ) {
+		if ( m_bitmap.IsOk( ) ) {
+			this->SetVirtualSize( m_bitmap.GetWidth( ), m_bitmap.GetHeight( ) );
 			this->SetScrollRate( 0x20, 0x20 );
 		} else {
 			this->SetVirtualSize( 0, 0 );
 		}
 	}
 
-	void ImageControl::OnPaintEvt( wxPaintEvent& pEvent ) {
+	void ImageControl::OnPaintEvt( wxPaintEvent& p_event ) {
 		wxAutoBufferedPaintDC dc( this );
 		dc.Clear( );
 

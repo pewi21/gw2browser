@@ -97,8 +97,8 @@ namespace gw2b {
 		return toolbar;
 	}
 
-	void ImageViewer::onToolbarClickedEvt( wxCommandEvent& pEvent ) {
-		auto id = pEvent.GetId( );
+	void ImageViewer::onToolbarClickedEvt( wxCommandEvent& p_event ) {
+		auto id = p_event.GetId( );
 
 		// Toggle red
 		if ( id == m_toolbarButtonIds[0] ) {
@@ -113,7 +113,7 @@ namespace gw2b {
 		} else if ( id == m_toolbarButtonIds[3] ) {
 			m_imageControl->ToggleChannel( ImageControl::IC_Alpha, m_toolbarButtons[3]->IsToggled( ) );
 		} else {
-			pEvent.Skip( );
+			p_event.Skip( );
 		}
 	}
 

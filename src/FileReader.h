@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DatFile.h"
 
 namespace gw2b {
-    class DatFile;
+	class DatFile;
 
 	/** Base class for all supported file readers. Also handles everything
 	*  unsupported by other file readers. */

@@ -127,14 +127,15 @@ namespace gw2b {
 		/** Destructor. */
 		virtual ~ModelViewer( );
 
+		/** Clear the viewer. */
 		virtual void clear( ) override;
 		virtual void setReader( FileReader* p_reader ) override;
-		/** Gets the image reader containing the data displayed by this viewer.
+		/** Gets the model reader containing the data displayed by this viewer.
 		*  \return ModelReader*    Reader containing the data. */
 		ModelReader* modelReader( ) {
 			return reinterpret_cast<ModelReader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
-		/** Gets the image reader containing the data displayed by this viewer.
+		/** Gets the model reader containing the data displayed by this viewer.
 		*  \return ModelReader*    Reader containing the data. */
 		const ModelReader* modelReader( ) const {
 			return reinterpret_cast<const ModelReader*>( this->reader( ) );

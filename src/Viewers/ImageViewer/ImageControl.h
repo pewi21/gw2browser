@@ -42,20 +42,20 @@ namespace gw2b {
 			IC_All = 15,
 		};
 	private:
-		wxImage         mImage;
-		wxBitmap        mBitmap;
-		wxBitmap        mBackdrop;
-		ImageChannels   mChannels;
+		wxImage         m_image;
+		wxBitmap        m_bitmap;
+		wxBitmap        m_backdrop;
+		ImageChannels   m_channels;
 	public:
-		ImageControl( wxWindow* pParent, const wxPoint& pPosition = wxDefaultPosition, const wxSize& pSize = wxDefaultSize );
+		ImageControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		virtual ~ImageControl( );
-		void SetImage( wxImage pImage );
-		void OnDraw( wxDC& pDC, wxRect& pRegion );
-		void ToggleChannel( ImageChannels pChannel, bool pToggled );
+		void SetImage( wxImage p_image );
+		void OnDraw( wxDC& p_DC, wxRect& p_region );
+		void ToggleChannel( ImageChannels p_channel, bool p_toggled );
 	private:
 		void UpdateBitmap( );
-		void UpdateScrollbars( wxDC& pDC );
-		void OnPaintEvt( wxPaintEvent& pEvent );
+		void UpdateScrollbars( wxDC& p_DC );
+		void OnPaintEvt( wxPaintEvent& p_event );
 	};
 
 }; // namespace gw2b

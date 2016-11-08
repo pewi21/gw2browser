@@ -54,11 +54,11 @@ namespace gw2b {
 		Viewer::clear( );
 	}
 
-	void BinaryViewer::setReader( FileReader* pReader ) {
-		Viewer::setReader( pReader );
+	void BinaryViewer::setReader( FileReader* p_reader ) {
+		Viewer::setReader( p_reader );
 
-		if ( pReader ) {
-			m_binaryData = pReader->rawData( );
+		if ( p_reader ) {
+			m_binaryData = p_reader->rawData( );
 			m_hexControl->setData( m_binaryData.GetPointer( ), m_binaryData.GetSize( ) );
 		}
 	}
