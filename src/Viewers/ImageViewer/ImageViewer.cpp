@@ -1,4 +1,4 @@
-/* \file       Viewers/ImageViewer.cpp
+/* \file       Viewers/ImageViewer/ImageViewer.cpp
 *  \brief      Contains definition of the image viewer.
 *  \author     Rhoot
 */

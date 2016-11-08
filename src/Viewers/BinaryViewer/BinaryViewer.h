@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef VIEWERS_BINARYVIEWER_H_INCLUDED
-#define VIEWERS_BINARYVIEWER_H_INCLUDED
+#ifndef VIEWERS_BINARYVIEWER_BINARYVIEWER_H_INCLUDED
+#define VIEWERS_BINARYVIEWER_BINARYVIEWER_H_INCLUDED
 
 #include "Viewer.h"
 
@@ -45,4 +45,4 @@ namespace gw2b {
 
 }; // namespace gw2b
 
-#endif // VIEWERS_BINARYVIEWER_H_INCLUDED
+#endif // VIEWERS_BINARYVIEWER_BINARYVIEWER_H_INCLUDED

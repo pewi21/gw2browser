@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifndef VIEWERS_IMAGEVIEWER_H_INCLUDED
-#define VIEWERS_IMAGEVIEWER_H_INCLUDED
+#ifndef VIEWERS_IMAGEVIEWER_IMAGEVIEWER_H_INCLUDED
+#define VIEWERS_IMAGEVIEWER_IMAGEVIEWER_H_INCLUDED
 
 #include <vector>
 
@@ -64,4 +64,4 @@ namespace gw2b {
 
 }; // namespace gw2b
 
-#endif // VIEWERS_IMAGEVIEWER_H_INCLUDED
+#endif // VIEWERS_IMAGEVIEWER_IMAGEVIEWER_H_INCLUDED

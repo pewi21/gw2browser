@@ -1,4 +1,4 @@
-/* \file       Viewers/BinaryViewer.cpp
+/* \file       Viewers/BinaryViewer/BinaryViewer.cpp
 *  \brief      Contains definition of the hex viewer.
 *  \author     Rhoot
 */
