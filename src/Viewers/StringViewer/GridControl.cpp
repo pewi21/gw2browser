@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-//#include <wx/dcbuffer.h>
 
 #include "GridControl.h"
 
@@ -64,7 +63,7 @@ namespace gw2b {
 			m_grid->SetColLabelValue( 0, wxT( "Entry" ) );
 			m_grid->SetColLabelValue( 1, wxT( "String" ) );
 
-			for ( int n = 0; n < m_string.size( ); n++ ) {
+			for ( uint n = 0; n < m_string.size( ); n++ ) {
 				m_grid->AppendRows( 1 );
 
 				m_grid->SetCellValue( n, 0, wxString::Format( wxT( "%i" ), m_string[n].id ) );
