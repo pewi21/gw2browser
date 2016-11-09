@@ -240,6 +240,10 @@
 		<Unit filename="../src/Viewers/ModelViewer/Text2D.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
+		<Unit filename="../src/Viewers/StringViewer/GridControl.cpp" />
+		<Unit filename="../src/Viewers/StringViewer/GridControl.h" />
+		<Unit filename="../src/Viewers/StringViewer/StringViewer.cpp" />
+		<Unit filename="../src/Viewers/StringViewer/StringViewer.h" />
 		<Unit filename="../src/resource.h" />
 		<Unit filename="../src/stdafx.cpp" />
 		<Unit filename="../src/stdafx.h" />
