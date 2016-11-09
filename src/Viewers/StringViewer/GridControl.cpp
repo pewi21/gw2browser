@@ -44,7 +44,7 @@ namespace gw2b {
 		this->SetScrollRate( 5, 5 );
 	}
 
-	void GridControl::setString( const std::vector<StringStruct> p_string ) {
+	void GridControl::setString( const std::vector<StringStruct>& p_string ) {
 		m_string = p_string;
 		this->updateGrid( );
 	}

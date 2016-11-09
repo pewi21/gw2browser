@@ -39,7 +39,7 @@ namespace gw2b {
 		wxGrid*						m_grid;
 	public:
 		GridControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		void setString( const std::vector<StringStruct> p_string );
+		void setString( const std::vector<StringStruct>& p_string );
 	private:
 		void updateGrid(  );
 	};

@@ -668,7 +668,7 @@ namespace gw2b {
 		}
 	}
 
-	void ModelViewer::indexVBO( const MeshCache p_inMesh, MeshCache& p_outMesh ) {
+	void ModelViewer::indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh ) {
 		std::map<PackedVertex, uint> VertexToOutIndex;
 
 		// For each input vertex
