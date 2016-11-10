@@ -63,9 +63,9 @@ namespace gw2b {
 			m_grid->SetColLabelValue( 0, wxT( "Entry" ) );
 			m_grid->SetColLabelValue( 1, wxT( "String" ) );
 
-			for ( uint n = 0; n < m_string.size( ); n++ ) {
-				m_grid->AppendRows( 1 );
+			m_grid->AppendRows( numstring );
 
+			for ( uint n = 0; n < numstring; n++ ) {
 				m_grid->SetCellValue( n, 0, wxString::Format( wxT( "%i" ), m_string[n].id ) );
 				m_grid->SetCellValue( n, 1, m_string[n].string );
 			}
