@@ -144,6 +144,8 @@ namespace gw2b {
 	private:
 		void clearBuffer( );
 		void clearShader( );
+		void loadShader( );
+		void reloadShader( );
 		int initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );

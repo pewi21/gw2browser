@@ -224,6 +224,35 @@ namespace gw2b {
 		this->render( );
 	}
 
+	void ModelViewer::loadShader( ) {
+		try {
+			m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxT( "m_mainShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
+		}
+
+		try {
+			m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxT( "m_normalVisualizerShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
+		}
+
+		try {
+			m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
+		}
+	}
+
+
+	void ModelViewer::reloadShader( ) {
+		this->clearShader( );
+		this->loadShader( );
+	}
+
 	int ModelViewer::initGL( ) {
 		wxLogMessage( wxT( "Initializing OpenGL..." ) );
 		// Create OpenGL context
@@ -262,27 +291,7 @@ namespace gw2b {
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc( GL_LESS );
 
-		// Load shader
-		try {
-			m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_mainShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
-		}
-
-		try {
-			m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_normalVisualizerShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
-		}
-
-		try {
-			m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
-		}
+		this->loadShader( );
 
 		// Initialize text renderer stuff
 		try {
@@ -992,6 +1001,13 @@ namespace gw2b {
 				this->Unbind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 			}
 			m_camera.setCameraMode( mode );
+		}
+
+		// Reload shaders
+		else if ( p_event.GetKeyCode( ) == '=' ) {
+			wxLogMessage( wxT( "Reload shader..." ) );
+			this->reloadShader( );
+			wxLogMessage( wxT( "Done." ) );
 		}
 	}
 
