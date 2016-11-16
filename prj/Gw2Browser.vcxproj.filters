@@ -229,9 +229,6 @@
     <ClInclude Include="..\src\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Viewers\StringViewer\GridControl.h">
-      <Filter>Header Files\Viewers\StringViewer</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Viewers\StringViewer\StringViewer.h">
       <Filter>Header Files\Viewers\StringViewer</Filter>
     </ClInclude>
@@ -362,9 +359,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Exception.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Viewers\StringViewer\GridControl.cpp">
-      <Filter>Source Files\Viewers\StringViewer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Viewers\StringViewer\StringViewer.cpp">
       <Filter>Source Files\Viewers\StringViewer</Filter>

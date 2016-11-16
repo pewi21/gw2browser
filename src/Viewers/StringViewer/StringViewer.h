@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_STRINGVIEWER_STRINGVIEWER_H_INCLUDED
 #define VIEWERS_STRINGVIEWER_STRINGVIEWER_H_INCLUDED
 
+#include <wx/grid.h>
+
 #include "Viewer.h"
 
 #include "Readers/StringReader.h"
@@ -35,8 +37,8 @@ namespace gw2b {
 	class GridControl;
 
 	class StringViewer : public Viewer {
-		GridControl*				m_gridControl;
-		std::vector<StringStruct>	m_stringData;
+		std::vector<StringStruct>	m_string;
+		wxGrid*						m_grid;
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
 		*  \param[in]  p_parent     Parent of the control.
@@ -56,9 +58,12 @@ namespace gw2b {
 		} // already asserted with a dynamic_cast
 		/** Gets the string reader containing the data displayed by this viewer.
 		*  \return StringReader*    Reader containing the data. */
-		const StringReader* modelReader( ) const {
+		const StringReader* stringReader( ) const {
 			return reinterpret_cast<const StringReader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
+
+	private:
+		void updateGrid( );
 
 	}; // class StringViewer
 

@@ -154,7 +154,7 @@ namespace gw2b {
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent( MeshCache& p_mesh );
 		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
-		void indexVBO( const MeshCache p_inMesh, MeshCache& p_outMesh );
+		void indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh );
 		void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
 		void loadMaterial( GW2Model& p_model );
 		GLuint createDummyTexture( const GLubyte* p_data );
