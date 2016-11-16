@@ -250,7 +250,7 @@ Code License Exceptions
 
 extern/glm/*
 
-Copyright (c) 2005 - 2015 G-Truc Creation
+Copyright (c) 2005 - 2016 G-Truc Creation
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -390,7 +390,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 extern/freetype/*
 
-	Portions of this software are copyright (C) 2015 The FreeType
+	Portions of this software are copyright (C) 2016 The FreeType
 	Project (www.freetype.org).  All rights reserved.
 
 See extern/freetype/docs/FTL.TXT for more details.
