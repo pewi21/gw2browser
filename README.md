@@ -108,6 +108,20 @@ by use these command at Gw2Browser/extern/libweb directory.
 		nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj
 		nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
 
+If you use Visual Studio 2015, use "Developer Command Prompt for VS2015",
+then use this command
+
+		cd vc
+
+The directory will change to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
+then use this command to compile 32 bit library.
+
+		vcvarsall amd64_x86
+
+Or use this connamd to compile 64 bit library.
+
+		vcvarsall amd64
+
 * Compile wxWidgets using solution file corresponding with your VS version in directory
 wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
 and VS2015 is wx_vc14.sln.
