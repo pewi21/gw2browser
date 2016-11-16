@@ -10,6 +10,7 @@ Release_x86
 Release_x64
 doxygen
 extern/glew/lib
+*.aps
 *.bak
 *.sdf
 *.suo
