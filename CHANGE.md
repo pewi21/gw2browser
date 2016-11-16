@@ -5,9 +5,8 @@ Gw2Browser_2016-xx-xx (1.0.8.1)
 -------------------------------
 Change:
 - Add string file viewer.
-- Add normal maping, specular mapping, model lighting to model renderer.
-- Add Anisotropic texture filtering.
-Set anisotropic texture filtering to maximumn supported by GPU.
+- Add normal maping, specular mapping, model lighting, Anisotropic texture filtering
+to model renderer. Set anisotropic texture filtering to maximumn supported by GPU.
 - Reduce texture memory usuage when model viewer load texture.
 - Add ModelViewer toggle indicator.
 - Change model renderer fov to 45 degree.
