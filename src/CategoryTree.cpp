@@ -415,6 +415,7 @@ namespace gw2b {
 			return CategoryTreeImageList::IT_Dll;
 		case ANFT_EULA:
 		case ANFT_StringFile:
+		case ANFT_TEXT:
 			return CategoryTreeImageList::IT_Text;
 		case ANFT_Bank:
 		case ANFT_Sound:
