@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdafx.h"
 
 #include <sstream>
+#include <string>
 #include <wx/sstream.h>
 #include <wx/wfstream.h>
 
@@ -562,6 +563,110 @@ namespace gw2b {
 		// Get model data
 		auto model = modlReader->getModel( );
 
+		std::ostringstream stream;
+
+		// Note: wxWidgets only does locale-specific number formatting. This does
+		// not work well with obj-files.
+		stream.imbue( std::locale( "C" ) );
+
+		// get material name list first.
+		std::vector<std::string> materialName;
+		materialName.resize( model.numMaterial( ) );
+
+		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
+			const GW2Mesh& mesh = model.mesh( i );
+
+			materialName[mesh.materialIndex] = mesh.materialName.c_str( );
+		}
+
+		// ----------------
+		// Export Materials
+		// ----------------
+
+		stream << "# Gw2Browser MTL File: \'" << m_filename.GetName( ) << "\'" << std::endl;
+		stream << "# Material Count : " << model.numMaterial( ) << std::endl;
+		stream << std::endl;
+
+		for ( uint i = 0; i < model.numMaterial( ); i++ ) {
+			const GW2Material& material = model.material( i );
+
+			stream << "# Material " << i + 1 << std::endl;
+			stream << "# Material ID : " << material.materialId << std::endl;
+			stream << "# Material flags : " << material.materialFlags << std::endl;
+			stream << "# Material file : " << material.materialFile << std::endl;
+			if ( material.diffuseMap ) {
+				stream << "# Diffuse map texture : " << material.diffuseMap << std::endl;
+			}
+			if ( material.normalMap ) {
+				stream << "# Normal map texture : " << material.normalMap << std::endl;
+			}
+			if ( material.lightMap ) {
+				stream << "# Light map texture : " << material.lightMap << std::endl;
+			}
+
+			// Define new material
+			if ( !materialName[i].empty( ) ) {
+				stream << "newmtl " << materialName[i] << std::endl;
+			} else {
+				stream << "newmtl " << "mat" << i + 1 << std::endl;
+			}
+
+			// Specular exponent (ranges between 0 and 1000)
+			stream << "Ns 0.000000" << std::endl;
+			// Ambient color
+			stream << "Ka 1.000000 1.000000 1.000000" << std::endl;
+			// Diffuse color
+			stream << "Kd 1.000000 1.000000 1.000000" << std::endl;
+			// Specular color
+			stream << "Ks 0.000000 0.000000 0.000000" << std::endl;
+			// Light emit color
+			stream << "Ke 0.000000 0.000000 0.000000" << std::endl;
+			// Transparent
+			stream << "d 1.000000" << std::endl;
+			// Illumination model
+			stream << "illum 2" << std::endl;
+
+			// Load diffuse texture
+			if ( material.diffuseMap ) {
+				// Ambient texture map
+				//stream << "map_Ka " << material.diffuseMap << ".png" << std::endl;
+				// Diffuse texture map
+				stream << "map_Kd " << material.diffuseMap << ".png" << std::endl;
+				// Specular color texture map
+				//stream << "map_Ks " << material.diffuseMap << ".png" << std::endl;
+			}
+			// Load normal map texture
+			if ( material.normalMap ) {
+				// Normal map texture
+				stream << "map_Bump " << material.normalMap << ".png" << std::endl;
+			}
+			// Load light map
+			if ( material.lightMap ) {
+				// Light map texture
+				stream << "map_Ke " << material.lightMap << ".png" << std::endl;
+			}
+
+			// newline before next material!
+			stream << std::endl;
+		}
+
+		// Material None
+		stream << "newmtl " << "None" << std::endl;
+		stream << "Ns 0.000000" << std::endl;
+		stream << "Ka 1.000000 1.000000 1.000000" << std::endl;
+		stream << "Kd 1.000000 1.000000 1.000000" << std::endl;
+		stream << "Ks 0.000000 0.000000 0.000000" << std::endl;
+		stream << "Ke 0.000000 0.000000 0.000000" << std::endl;
+		stream << "d 1.000000" << std::endl;
+		stream << "illum 2" << std::endl;
+
+		// Close stream
+		stream.flush( );
+		wxString matString( stream.str( ) );
+		// Clear the stream
+		stream.str( std::string( ) );
+		stream.clear( );
+
 		// -------------
 		// Export meshes
 		// -------------
@@ -569,30 +674,22 @@ namespace gw2b {
 		// Export to Wavefront .obj file
 		// https://en.wikipedia.org/wiki/Wavefront_.obj_file
 
-		wxLogMessage( wxString::Format( wxT( "Writing %s OBJ file..." ), m_filename.GetName( ) ) );
-
-		// Note: wxWidgets only does locale-specific number formatting. This does
-		// not work well with obj-files.
-		std::ostringstream modlStream;
-
-		modlStream.imbue( std::locale( "C" ) );
-
-		modlStream << "# Gw2Browser OBJ File: \'" << m_filename.GetName( ) << "\'" << std::endl;
-		modlStream << "# Mesh Count : " << model.numMeshes( ) << std::endl;
-		modlStream << "mtllib " << m_filename.GetName( ) << ".mtl" << std::endl;
-		modlStream << std::endl;
+		stream << "# Gw2Browser OBJ File: \'" << m_filename.GetName( ) << "\'" << std::endl;
+		stream << "# Mesh Count : " << model.numMeshes( ) << std::endl;
+		stream << "mtllib " << m_filename.GetName( ) << ".mtl" << std::endl;
+		stream << std::endl;
 
 		uint indexBase = 1;
 		for ( uint i = 0; i < model.numMeshes( ); i++ ) {
 			const GW2Mesh& mesh = model.mesh( i );
 
 			// Write header
-			modlStream << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
-			modlStream << "g mesh" << i + 1 << std::endl;
+			stream << "# Mesh " << i + 1 << ": " << mesh.vertices.size( ) << " vertices, " << mesh.triangles.size( ) << " triangles" << std::endl;
+			stream << "g mesh" << i + 1 << std::endl;
 
 			// Write positions
 			for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
-				modlStream << "v " << mesh.vertices[j].position.x << ' ' << mesh.vertices[j].position.y << ' ' << mesh.vertices[j].position.z << std::endl;
+				stream << "v " << mesh.vertices[j].position.x << ' ' << mesh.vertices[j].position.y << ' ' << mesh.vertices[j].position.z << std::endl;
 			}
 
 			// Write UVs
@@ -601,149 +698,73 @@ namespace gw2b {
 					// Flip UV coordinate
 					auto u = mesh.vertices[j].uv.x;
 					auto v = 1.0f - mesh.vertices[j].uv.y;
-					modlStream << "vt " << u << ' ' << v << std::endl;
+					stream << "vt " << u << ' ' << v << std::endl;
 				}
 			}
 
 			// Write normals
 			if ( mesh.hasNormal ) {
 				for ( uint j = 0; j < mesh.vertices.size( ); j++ ) {
-					modlStream << "vn " << mesh.vertices[j].normal.x << ' ' << mesh.vertices[j].normal.y << ' ' << mesh.vertices[j].normal.z << std::endl;
+					stream << "vn " << mesh.vertices[j].normal.x << ' ' << mesh.vertices[j].normal.y << ' ' << mesh.vertices[j].normal.z << std::endl;
 				}
 			}
 
 			// If no material, use None material
 			if ( mesh.materialName.empty( ) ) {
-				modlStream << "usemtl None" << std::endl;
+				stream << "usemtl None" << std::endl;
 			} else {
-				modlStream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
+				stream << "usemtl " << mesh.materialName.c_str( ) << std::endl;
 			}
-
-			// Enable/disable smooth shading
-			//modlStream << "s off" << std::endl;
-			//modlStream << "s 1" << std::endl;
 
 			// Write faces
 			for ( uint j = 0; j < mesh.triangles.size( ); j++ ) {
 				const Triangle& triangle = mesh.triangles[j];
 
-				modlStream << 'f';
+				stream << 'f';
 				for ( uint k = 0; k < 3; k++ ) {
 					uint index = triangle.indices[k] + indexBase;
-					modlStream << ' ' << index;
+					stream << ' ' << index;
 
 					// UV reference
 					if ( mesh.hasUV ) {
-						modlStream << '/' << index;
+						stream << '/' << index;
 					}
 
 					// Normal reference
 					if ( mesh.hasNormal ) {
 						if ( !mesh.hasUV ) {
-							modlStream << '/';
+							stream << '/';
 						}
-						modlStream << '/' << index;
+						stream << '/' << index;
 					}
 				}
-				modlStream << std::endl;
+				stream << std::endl;
 			}
 
 			// newline before next mesh!
-			modlStream << std::endl;
+			stream << std::endl;
 			indexBase += mesh.vertices.size( );
 		}
 
 		// Close stream
-		modlStream.flush( );
-		wxString meshString( modlStream.str( ) );
-		modlStream.clear( );
+		stream.flush( );
+		wxString meshString( stream.str( ) );
+		stream.clear( );
+
+		// --------------------
+		// Write string to file
+		// --------------------
 
 		// Convert string to byte array
 		Array<byte> meshData( meshString.length( ) );
 		::memcpy( meshData.GetPointer( ), meshString.c_str( ), meshString.length( ) );
 
+		wxLogMessage( wxString::Format( wxT( "Writing %s OBJ file..." ), m_filename.GetName( ) ) );
+
 		// Write to file
 		this->writeFile( meshData );
 
-		// ----------------
-		// Export Materials
-		// ----------------
-
-		wxLogMessage( wxString::Format( wxT( "Writing %s MTL file..." ), m_filename.GetName( ) ) );
-
-		std::ostringstream matStream;
-
-		matStream.imbue( std::locale( "C" ) );
-
-		matStream << "# Gw2Browser MTL File: \'" << m_filename.GetName( ) << "\'" << std::endl;
-		matStream << "# Material Count : " << model.numMaterial( ) << std::endl;
-		matStream << std::endl;
-
-		//for ( uint i = 0; i < model.numMeshes( ); i++ ) {
-		for ( uint i = 0; i < model.numMaterial( ); i++ ) {
-			//const Mesh& mesh = model.mesh( i );
-			//auto materialIndex = mesh.materialIndex;
-			//const Material& material = model.material( materialIndex );
-			const GW2Material& material = model.material( i );
-
-			matStream << "# Material " << i + 1 << std::endl;
-			matStream << "# Material ID : " << material.materialId << std::endl;
-			matStream << "# Material flags : " << material.materialFlags << std::endl;
-			matStream << "# Material file : " << material.materialFile << std::endl;
-			if ( material.diffuseMap ) {
-				matStream << "# Diffuse map texture : " << material.diffuseMap << std::endl;
-			}
-			if ( material.normalMap ) {
-				matStream << "# Normal map texture : " << material.normalMap << std::endl;
-			}
-			if ( material.lightMap ) {
-				matStream << "# Light map texture : " << material.lightMap << std::endl;
-			}
-
-			// Define new material
-			//matStream << "newmtl " << mesh.materialName.c_str( ) << std::endl;
-			matStream << "newmtl " << "mat" << i + 1 << std::endl;
-
-			// Ambient color
-			matStream << "Ka 1.000 1.000 1.000" << std::endl;
-			// Diffuse color
-			matStream << "Kd 1.000 1.000 1.000" << std::endl;
-			// Specular color
-			matStream << "Ks 0.000 0.000 0.000" << std::endl;
-			// Specular exponent (ranges between 0 and 1000)
-			matStream << "Ns 0" << std::endl;
-			// Transparent
-			matStream << "d 1" << std::endl;
-			// Illumination model
-			matStream << "illum 2" << std::endl;
-
-			// Load diffuse texture
-			if ( material.diffuseMap ) {
-				// Ambient texture map
-				matStream << "map_Ka " << material.diffuseMap << ".png" << std::endl;
-				// Diffuse texture map ( most of the time, it will be the same as the ambient texture map )
-				matStream << "map_Kd " << material.diffuseMap << ".png" << std::endl;
-				// Specular color texture map
-				matStream << "map_Ks " << material.diffuseMap << ".png" << std::endl;
-			}
-
-			// newline before next material!
-			matStream << std::endl;
-		}
-
-		// Material None
-		matStream << "newmtl " << "None" << std::endl;
-		matStream << "Ka 1.000 1.000 1.000" << std::endl;
-		matStream << "Kd 1.000 1.000 1.000" << std::endl;
-		matStream << "Ks 0.000 0.000 0.000" << std::endl;
-		matStream << "Ns 0" << std::endl;
-		matStream << "d 1" << std::endl;
-		matStream << "illum 2" << std::endl;
-
-		// Close stream
-		matStream.flush( );
-		wxString matString( matStream.str( ) );
-		matStream.clear( );
+		// --------------------------------------
 
 		// Convert string to byte array
 		Array<byte> matData( matString.length( ) );
@@ -751,6 +772,8 @@ namespace gw2b {
 
 		// Set file extension to .mtl
 		m_filename.SetExt( wxT( "mtl" ) );
+
+		wxLogMessage( wxString::Format( wxT( "Writing %s MTL file..." ), m_filename.GetName( ) ) );
 
 		// Write to file
 		this->writeFile( matData );
