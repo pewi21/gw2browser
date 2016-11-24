@@ -265,9 +265,9 @@ namespace gw2b {
 
 		// Initialize GLEW to setup the OpenGL Function pointers
 		glewExperimental = true;
-		GLenum err = glewInit( );
-		if ( GLEW_OK != err ) {
-			wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( err ) ) );
+		GLenum glewerr = glewInit( );
+		if ( GLEW_OK != glewerr ) {
+			wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( glewerr ) ) );
 			return false;
 		}
 

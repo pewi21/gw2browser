@@ -319,8 +319,8 @@ namespace gw2b {
 			// Bit 8-15: 32-bit UV
 			uint uvFlag = ( p_vertexFormat & ANFVF_UV32Mask ) >> 8;
 			if ( uvFlag ) {
-				for ( uint i = 0; i < 7; i++ ) {
-					if ( ( ( uvFlag >> i ) & 1 ) == 0 ) {
+				for ( uint j = 0; j < 7; j++ ) {
+					if ( ( ( uvFlag >> j ) & 1 ) == 0 ) {
 						continue;
 					}
 					if ( uvIndex < 1 ) {
@@ -332,8 +332,8 @@ namespace gw2b {
 			// Bit 16-23: 16-bit UV
 			uvFlag = ( p_vertexFormat & ANFVF_UV16Mask ) >> 16;
 			if ( uvFlag ) {
-				for ( uint i = 0; i < 7; i++ ) {
-					if ( ( ( uvFlag >> i ) & 1 ) == 0 ) {
+				for ( uint j = 0; j < 7; j++ ) {
+					if ( ( ( uvFlag >> j ) & 1 ) == 0 ) {
 						continue;
 					}
 					if ( uvIndex < 1 ) {
