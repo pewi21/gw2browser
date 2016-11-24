@@ -285,27 +285,29 @@ namespace gw2b {
 			}
 			return outputSize;
 		} else {
-			uint dataSize = wxMin( p_peekSize, inputSize );
+			const uint dataSize = wxMin( p_peekSize, inputSize );
 
-			const int blockSize = 65532;
-			// skip 4 byte every 65532 byte
-			const int bytetoskip = 4;
+			const uint blockSize = 65536;
+			const uint blockDataSize = 65532;
+			// skip 4 byte every 65532 byte, this is hash?
+			const uint bytetoskip = 4;
 			// how many block in data?
 			// (round down so if the data less than 65532, it will skip the copy block loop)
-			int numBlock = floor( dataSize / blockSize );
+			const uint numBlock = floor( dataSize / blockSize );
 
 #pragma omp parallel for
-			for ( int i = 0; i < numBlock; i++ ) {
-				::memcpy( &po_Buffer[i * blockSize], &m_inputBuffer[( i * blockSize ) + ( i * bytetoskip )], blockSize );
+			for ( int i = 0; i < static_cast<int>( numBlock ); i++ ) {
+				::memcpy( &po_Buffer[i * blockDataSize], &m_inputBuffer[( i * blockDataSize ) + ( i * bytetoskip )], blockDataSize );
 			}
 
-			int dataCopied = numBlock * 65536;
-			int dataRemain = dataSize - dataCopied;
+			const auto dataReaded = numBlock * blockSize;
+			const auto dataSkipped = numBlock * bytetoskip;
+			const auto dataRemain = dataSize - dataReaded;
 
-			//copy the last remaining data
+			// copy the last remaining data
 			if ( dataRemain ) {
-				int outBufferIndex = blockSize * numBlock;
-				::memcpy( &po_Buffer[outBufferIndex], &m_inputBuffer[dataCopied], dataRemain );
+				auto outBufferIndex = blockDataSize * numBlock;
+				::memcpy( &po_Buffer[outBufferIndex], &m_inputBuffer[dataReaded], dataRemain );
 			}
 
 			return sizeof( po_Buffer );
