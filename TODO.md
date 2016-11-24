@@ -6,13 +6,11 @@ May change over time. :P
 1.0.8.1
 -------
 
-* Seperate ModelViewer function to smaller files.
+* Finish the first person camera (mouse look).
 
-* Add way to position light (shift left click?)
+* Material class (texture, lighting).
 
-* Render light source. (for debugging/visualization)
-
-* Re-write camera class
+* Sound player.
 
 Further plans
 -------------
@@ -20,19 +18,23 @@ Further plans
 * In ModelReader make new function material( ) that return Material vector
 for use by range-base loop.
 
+* Add way to position light (shift left click?) by using gobal variable or access class variable
+
+* In ModelViewer, Optimize texture loader for faster loading, load DXT texture data directly, if possible?
+
 * Exporters class, like Reader/Viewer.
 
-* Add a button to reload shader.
+* Deferred shading (need for map viewer with many light)?
 
-* Frame Buffer
+* Frame Buffer.
 
 * SSAO?
 
 * Self shadowed model shading?
 
-* Scene manager (need when implement map viewer)
+* Texture2D class parameters.
 
-* Also display current file id when have error on reading files.
+* Scene manager (need when implement map viewer).
 
 * Improve performance of ModelViewer's drawText function.
 
@@ -40,15 +42,10 @@ for use by range-base loop.
 
 * COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
 
-* Some restructuring. Decouple views from their data, for instance. Clean up 
-headers, etc.
-
 * "Find by fileId" dialog.
 
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
-
-* String viewer, sound player.
 
 * External file name database, for known files (such as the exe and dll files).
 
