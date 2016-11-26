@@ -105,10 +105,6 @@ namespace gw2b {
 		/** Set pitch angle.
 		*  \param[in]  p_pitch       Pitch angle to set. */
 		void setPitch( float p_pitch );
-		/** Clamp pitch angel.
-		*  \param[in]  p_pitch       Pitch angle to clamp.
-		*  \return float             Clamped pitch angle. */
-		float clampPitch( float p_pitch );
 
 		/** Get camera distance.
 		*  \return float             Camera distance. */

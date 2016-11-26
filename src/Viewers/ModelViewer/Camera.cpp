@@ -94,16 +94,11 @@ namespace gw2b {
 	}
 
 	void Camera::processMouseScroll( float p_yoffset ) {
-		//if ( m_distance >= 1.0f && m_distance <= 200.0f ) {
-			//m_distance -= p_yoffset;
-			m_distance += ( m_distance * p_yoffset * 0.1f );
-		//}
+		m_distance += ( m_distance * p_yoffset * 0.1f );
+
 		if ( m_distance <= 1.0f ) {
 			m_distance = 1.0f;
 		}
-		//if ( m_distance >= 200.0f ) {
-		//	m_distance = 200.0f;
-		//}
 	}
 
 	void Camera::setCameraMode( CameraMode p_mode ) {
@@ -127,18 +122,11 @@ namespace gw2b {
 	}
 
 	void Camera::addPitch( float p_pitch ) {
-		//m_pitch = this->clampPitch( m_pitch + p_pitch );
 		m_pitch += p_pitch;
 	}
 
 	void Camera::setPitch( float p_pitch ) {
-		//m_pitch = this->clampPitch( p_pitch );
 		m_pitch = p_pitch;
-	}
-
-	float Camera::clampPitch( float p_pitch ) {
-		float rotationLimit = ( 89.0f * glm::pi<float>( ) ) / 180.0f;
-		return wxMin( rotationLimit, wxMax( -rotationLimit, p_pitch ) );
 	}
 
 	float Camera::distance( ) const {
