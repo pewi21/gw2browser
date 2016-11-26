@@ -316,6 +316,10 @@ namespace gw2b {
 		GLubyte whiteTextureData[] = { 255, 255, 255, 255 };
 		m_dummyWhiteTexture = createDummyTexture( whiteTextureData );
 
+		// Setup camera
+		m_camera.setCameraMode( Camera::CameraMode::ORBITALCAM );
+		m_camera.setMouseSensitivity( 0.5f * ( glm::pi<float>( ) / 180.0f ) );  // 0.5 degrees per pixel
+
 		return true;
 	}
 
@@ -929,21 +933,23 @@ namespace gw2b {
 			m_lastMousePos = p_event.GetPosition( );
 		}
 
+		glm::vec2 mousePos( ( p_event.GetX( ) - m_lastMousePos.x ), ( p_event.GetY( ) - m_lastMousePos.y ) );
+
 		// Yaw/Pitch
 		if ( p_event.LeftIsDown( ) ) {
-			float rotateSpeed = 0.5f * ( glm::pi<float>( ) / 180.0f );   // 0.5 degrees per pixel
-			m_camera.addYaw( rotateSpeed * -( p_event.GetX( ) - m_lastMousePos.x ) );
-			m_camera.addPitch( rotateSpeed * ( p_event.GetY( ) - m_lastMousePos.y ) );
-
-			//m_camera.processMouseMovement( xPan, yPan );
+			if ( m_cameraMode ) {
+				// FPS Mode
+				m_camera.processMouseMovement( mousePos.x, -mousePos.y );
+			} else {
+				// ORBITAL Mode
+				m_camera.processMouseMovement( -mousePos.x, mousePos.y );
+			}
 			this->render( );
 		}
 
 		// Pan
-		if ( p_event.RightIsDown( ) ) {
-			float xPan = ( p_event.GetX( ) - m_lastMousePos.x );
-			float yPan = ( p_event.GetY( ) - m_lastMousePos.y ); // Reversed since y-coordinates go from bottom to left
-			m_camera.pan( xPan, yPan );
+		if ( p_event.RightIsDown( ) && !m_cameraMode ) {
+			m_camera.pan( mousePos.x, mousePos.y ); // Y mouse position is reversed since y-coordinates go from bottom to left
 			this->render( );
 		}
 
@@ -987,25 +993,31 @@ namespace gw2b {
 		// Camera control
 		else if ( p_event.GetKeyCode( ) == 'C' ) {
 			Camera::CameraMode mode;
+			float sensivity = 0.25f;
+
 			m_cameraMode = !m_cameraMode;
+
 			if ( m_cameraMode ) {
 				mode = Camera::CameraMode::FPSCAM;
+				sensivity = 0.25f;
 
 				// Scan for input every 3ms
 				m_movementKeyTimer->Start( 3 );
 				this->Bind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 			} else {
 				mode = Camera::CameraMode::ORBITALCAM;
+				sensivity = 0.5f * ( glm::pi<float>( ) / 180.0f );  // 0.5 degrees per pixel
 
 				m_movementKeyTimer->Stop( );
 				this->Unbind( wxEVT_TIMER, &ModelViewer::onMovementKeyTimerEvt, this );
 			}
 			m_camera.setCameraMode( mode );
+			m_camera.setMouseSensitivity( sensivity );
 		}
 
 		// Reload shaders
 		else if ( p_event.GetKeyCode( ) == '=' ) {
-			wxLogMessage( wxT( "Reload shader..." ) );
+			wxLogMessage( wxT( "Reloading shader..." ) );
 			this->reloadShader( );
 			wxLogMessage( wxT( "Done." ) );
 		}

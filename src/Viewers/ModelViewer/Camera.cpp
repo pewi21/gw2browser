@@ -76,11 +76,8 @@ namespace gw2b {
 	}
 
 	void Camera::processMouseMovement( float p_xoffset, float p_yoffset, GLboolean p_constrainPitch ) {
-		p_xoffset *= m_mouseSensitivity;
-		p_yoffset *= m_mouseSensitivity;
-
-		m_yaw += p_xoffset;
-		m_pitch += p_yoffset;
+		this->addYaw( m_mouseSensitivity * p_xoffset );
+		this->addPitch( m_mouseSensitivity * p_yoffset );
 
 		// Make sure that when pitch is out of bounds, screen doesn't get flipped
 		if ( p_constrainPitch ) {
@@ -181,6 +178,10 @@ namespace gw2b {
 
 	void Camera::setPosition( const glm::vec3& p_position ) {
 		m_position = p_position;
+	}
+
+	void Camera::setMouseSensitivity( float p_sensitivity ) {
+		m_mouseSensitivity = p_sensitivity;
 	}
 
 	void Camera::updateCameraVectors( ) {

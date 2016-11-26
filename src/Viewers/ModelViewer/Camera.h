@@ -135,6 +135,10 @@ namespace gw2b {
 		*  \param[in]  p_position    Camera position to set. */
 		void setPosition( const glm::vec3& p_position );
 
+		/** Set mouse sensitivity.
+		*  \param[in]  p_sensitivity Mouse sensitivity to set. */
+		void setMouseSensitivity( float p_sensitivity );
+
 	private:
 		/** Calculates the front vector from the Camera's (updated) Eular Angles. */
 		void updateCameraVectors( );
