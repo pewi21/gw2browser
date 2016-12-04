@@ -15,16 +15,15 @@ to model renderer. Set anisotropic texture filtering to maximumn supported by GP
 - Add text file detection
 - Faster speed when scaning string files.
 - When export model, also export all materials.
-- Add unfinish first-person camera (for use with map viewer in future).
+- Add first-person camera (for use with map viewer in future).
 
 Fix:
 - Fix memory leak in model viewer.
 - Fix string and eula file export bug.
 - Fix text cliping when model is close to camera.
 - Fix crash on viewing model that have no material or uvs.
-
-Issue:
-- Need to map the model's materials to models manually, for now.
+- Fix crash on reading some video file.
+- Fix model viewer not work on Intel HD Graphics.
 
 Gw2Browser_2016-04-10 (1.0.7.1)
 -------------------------------
