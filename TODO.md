@@ -6,8 +6,6 @@ May change over time. :P
 1.0.8.1
 -------
 
-* Finish the first person camera (mouse look).
-
 * Material class (texture, lighting).
 
 * Sound player.
