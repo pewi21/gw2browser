@@ -35,7 +35,7 @@ Known issues
 * **Viewing or exporting some model may crash the browser.**
 This possibly cause by the file is in difference version and gw2formats library
 doesn't support it, or more likely, a bug in gw2formats library. This issue
-will (possibly) fixed on next Gw2Browser release.
+will (maybe) fixed on next Gw2Browser release.
 
 * **Model rendering is still experimental stage.**
 Some of the model may use the wrong texture, or it might not. It entirely
@@ -100,6 +100,16 @@ in Gw2Browser.cpp.
 
 ### Building instructions
 
+#### Getting the source code:
+
+* Crate a directory for source code some where, for example, C:\DEV.
+* Open Git Bash window and change directory to the one you create above.
+* Use this command to download the source code.
+
+		git clone --recursive https://github.com/kytulendu/Gw2Browser.git
+
+This will download Gw2Browser and also gw2DatTools, gw2formats source code.
+
 #### Windows, building with Visual Studio:
 
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
@@ -109,18 +119,21 @@ by use these command at Gw2Browser/extern/libweb directory.
 		nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
 
 If you use Visual Studio 2015, use "Developer Command Prompt for VS2015",
-then use this command
+the default command line will compile 64 bit library (if you use 64 bit OS).
+If you want to compile 32 bit library, use this command.
 
 		cd vc
 
 The directory will change to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
-then use this command to compile 32 bit library.
+then use this command before compile library by above command.
 
 		vcvarsall amd64_x86
 
-Or use this connamd to compile 64 bit library.
+For 32 bit library.
 
 		vcvarsall amd64
+
+For 64 bit library.
 
 * Compile wxWidgets using solution file corresponding with your VS version in directory
 wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
@@ -134,7 +147,7 @@ and VS2015 is wx_vc14.sln.
 
 * Open Git Bash command line window.
 
-* Build wxWidgets
+* Build wxWidgets.
 
 1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command
 
@@ -156,13 +169,13 @@ and VS2015 is wx_vc14.sln.
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug clean
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release clean
 
-* Build libwebp
+* Build libwebp.
 
 1. Change directory of Git Bash window to Gw2Browser/extern/libwebp and use these command
 
 		mingw32-make -f makefile.unix "EXTRA_FLAGS=" "DWEBP_LIBS=" "CWEBP_LIBS=" "GIF_LIBS="
 
-* Build glew
+* Build glew.
 
 1. Use cmake to generate glew's MinGW makefile.
 
@@ -197,6 +210,10 @@ and VS2015 is wx_vc14.sln.
 
 * Copy libgomp-1.dll or libgomp_64-1.dll from TDM-GCC install directory to Gw2Browser/bin
 
+#### Linux, building with GCC
+
+* I haven't try to build Gw2Browser on Linux yet, but it probably build =P
+
 Authors
 -------
 
@@ -229,7 +246,7 @@ For contributions, please go to [this project's page on GitHub](https://github.c
 Legal Disclaimer
 ----------------
 
-Guild Wars 2 © 2010-2015 ArenaNet, LLC. All rights reserved.
+Guild Wars 2 © 2010-2016 ArenaNet, LLC. All rights reserved.
 Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet, NCSOFT,
 the Interlocking NC Logo, and all associated logos and designs are trademarks
 or registered trademarks of NCSOFT Corporation.
