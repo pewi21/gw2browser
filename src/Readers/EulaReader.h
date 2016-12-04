@@ -45,7 +45,7 @@ namespace gw2b {
 		*  file type.
 		*  \return DataType    type of data. */
 		virtual DataType dataType( ) const override {
-			return DT_String;
+			return DT_EULA;
 		}
 		/** Gets the strings contained in the data owned by this reader.
 		*  \return std::vector<wxString>	Strings. */
