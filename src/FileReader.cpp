@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/asndMP3Reader.h"
 #include "Readers/SoundBankReader.h"
 #include "Readers/EulaReader.h"
+#include "Readers/TextReader.h"
 
 #include "FileReader.h"
 
@@ -92,6 +93,10 @@ namespace gw2b {
 			break;
 		case ANFT_EULA:
 			return new EulaReader( p_data, p_datFile, p_fileType );
+			break;
+		case ANFT_TEXT:
+		case ANFT_UTF8:
+			return new TextReader( p_data, p_datFile, p_fileType );
 			break;
 		default:
 			break;

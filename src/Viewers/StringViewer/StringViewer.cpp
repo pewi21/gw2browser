@@ -33,11 +33,11 @@ namespace gw2b {
 	StringViewer::StringViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
 		: Viewer( p_parent, p_pos, p_size ) {
 		auto sizer = new wxBoxSizer( wxHORIZONTAL );
+
+		// Grid control
 		m_grid = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
 		// Create grid with 0 row, 2 cols
 		m_grid->CreateGrid( 0, 2 );
-
-		// Grid control
 		sizer->Add( m_grid, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
 		// Layout

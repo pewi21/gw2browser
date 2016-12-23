@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Viewers/BinaryViewer/BinaryViewer.h"
 #include "Viewers/ImageViewer/ImageViewer.h"
 #include "Viewers/StringViewer/StringViewer.h"
+#include "Viewers/TextViewer/TextViewer.h"
 
 #include "PreviewPanel.h"
 
@@ -96,6 +97,10 @@ namespace gw2b {
 			break;
 		case FileReader::DT_String:
 			newViewer = new StringViewer( this );
+			break;
+		case FileReader::DT_EULA:
+		case FileReader::DT_Text:
+			newViewer = new TextViewer( this );
 			break;
 		case FileReader::DT_Binary:
 		default:
