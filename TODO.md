@@ -6,8 +6,6 @@ May change over time. :P
 1.0.8.1
 -------
 
-* Material class (texture, lighting).
-
 * Sound player.
 
 Further plans
@@ -21,6 +19,8 @@ for use by range-base loop.
 * In ModelViewer, Optimize texture loader for faster loading, load DXT texture data directly, if possible?
 
 * Exporters class, like Reader/Viewer.
+
+* Material class (texture, lighting).
 
 * Deferred shading (need for map viewer with many light)?
 
