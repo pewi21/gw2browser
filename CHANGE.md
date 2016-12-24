@@ -4,7 +4,7 @@ Change log
 Gw2Browser_2016-xx-xx (1.0.8.1)
 -------------------------------
 Change:
-- Add string file viewer.
+- Add string, text and eula file viewer.
 - Add normal maping, specular mapping, model lighting, Anisotropic texture filtering
 to model renderer. Set anisotropic texture filtering to maximumn supported by GPU.
 - Reduce texture memory usuage when model viewer load texture.
@@ -12,7 +12,7 @@ to model renderer. Set anisotropic texture filtering to maximumn supported by GP
 - Change model renderer fov to 45 degree.
 - When export model with textures, skip if the texture file is already exists.
 - PNG file support.
-- Add text file detection
+- Add text file detection.
 - Faster speed when scaning string files.
 - When export model, also export all materials.
 - Add first-person camera (for use with map viewer in future).
