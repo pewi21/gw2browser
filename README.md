@@ -12,7 +12,7 @@ will have to be re-indexed (for now).
 Keep in mind that if you keep tree items expanded while the indexer is running,
 or while an index is being read, the process is *a lot* slower.
 
-The latest binary can always be found [Here](http://goo.gl/4xMRVF)
+The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and [Here](http://goo.gl/4xMRVF) 
 
 For people who can't run Gw2Browser, download and Install
 [Microsoft Visual C++ 2015 Redistributable Update 3](https://www.microsoft.com/en-us/download/details.aspx?id=52982)

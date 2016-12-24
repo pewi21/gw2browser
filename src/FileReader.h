@@ -52,6 +52,8 @@ namespace gw2b {
 			DT_Sound,           /**< Sound data. */
 			DT_Model,           /**< Model data. */
 			DT_String,          /**< String data. */
+			DT_EULA,            /**< EULA data. */
+			DT_Text,            /**< Text data. */
 		};
 	public:
 		/** Constructor.

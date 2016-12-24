@@ -127,6 +127,19 @@ namespace gw2b {
 	*  \return uint    Amount of bits set. */
 	uint numSetBits( uint32 p_value );
 
+	//============================================================================/
+
+	/** Check if the given object is the same type of the given type.
+	*  \param[in]  p_object    Object to check type.
+	*  \tparam     T           Type the object that to check. */
+	template <typename T, typename TPtr>
+	bool isOfType( TPtr* p_object ) {
+		if ( dynamic_cast< T* >( p_object ) != nullptr ) {
+			return true;
+		}
+		return false;
+	}
+
 }; // namespace gw2b
 
 #endif // UTIL_MISC_H_INCLUDED

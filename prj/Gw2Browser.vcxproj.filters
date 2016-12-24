@@ -5,64 +5,30 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Util">
-      <UniqueIdentifier>{5288d628-7654-4daf-b07f-16f57c1ba9f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Imported">
-      <UniqueIdentifier>{7fa0d93e-9f91-4851-ae7f-86cedc49aaa8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Imported">
       <UniqueIdentifier>{a0f3f66d-976a-4de9-b68a-61a8cc093f67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Documentation">
-      <UniqueIdentifier>{3969ebf9-f688-4fa9-a111-852d5bcb7160}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tasks">
-      <UniqueIdentifier>{2d7c56ae-f0e4-42c4-b05e-4b6daa0052ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Tasks">
       <UniqueIdentifier>{ee96e7bf-2b83-4767-b335-7c8a3b011f45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Viewers">
-      <UniqueIdentifier>{a001cf52-c95a-4699-8b45-680f5339f96e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Viewers">
       <UniqueIdentifier>{cc2dfe87-f257-4cd7-bc1d-84d7f574ada0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Viewers\BinaryViewer">
-      <UniqueIdentifier>{a8e97848-9637-475e-a562-55fcee98f57e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Viewers\BinaryViewer">
       <UniqueIdentifier>{4ddb5b1d-8104-4ba8-838c-503bc44d27ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Readers">
-      <UniqueIdentifier>{7b81bce4-9ccc-475a-b61c-e0fc56ab1225}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Readers">
       <UniqueIdentifier>{92c9821e-e153-4aea-b6c4-dafade07f7bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Viewers\ImageViewer">
-      <UniqueIdentifier>{d9843848-3188-412e-ba6f-78e302a1e408}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Viewers\ImageViewer">
       <UniqueIdentifier>{84a65cd1-ade2-4813-99c8-6ebe70a65832}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{59e1e936-b1c8-48f4-8de9-9a86162e6754}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Identifiers">
-      <UniqueIdentifier>{f4c9e898-dfd2-4461-a335-53c815a9ecaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Viewers\ModelViewer">
-      <UniqueIdentifier>{d293abf8-036c-421e-a05e-2f01952102f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Viewers\ModelViewer">
       <UniqueIdentifier>{e242d328-e3f4-42e6-9eb2-a7659b6aa336}</UniqueIdentifier>
@@ -74,163 +40,184 @@
     <Filter Include="Data Files\shaders">
       <UniqueIdentifier>{5d45f878-b02e-455e-b595-2c6265e14fdc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Viewers\StringViewer">
-      <UniqueIdentifier>{ccdf6549-4595-4792-a8fd-08a21d07b002}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Viewers\StringViewer">
       <UniqueIdentifier>{9609db09-955a-4a7a-964b-f98bf98d5e43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Viewers\SoundPlayer">
+      <UniqueIdentifier>{aa9443c3-4b59-4842-914b-8e20c4ca20e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Viewers\TextViewer">
+      <UniqueIdentifier>{18437eba-da52-43cb-920e-e79e451ca4af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Documentation">
+      <UniqueIdentifier>{3969ebf9-f688-4fa9-a111-852d5bcb7160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Identifiers">
+      <UniqueIdentifier>{f4c9e898-dfd2-4461-a335-53c815a9ecaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ANetStructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\FileReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\CategoryTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Imported\crc.h">
-      <Filter>Header Files\Imported</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Gw2Browser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Documentation\Namespaces.h">
-      <Filter>Header Files\Documentation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BrowserWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DatFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DatIndex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ProgressStatusBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DatIndexIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Util\Array.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Tasks\ReadIndexTask.h">
-      <Filter>Header Files\Tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Tasks\ScanDatTask.h">
-      <Filter>Header Files\Tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Tasks\WriteIndexTask.h">
-      <Filter>Header Files\Tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PreviewPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\BinaryViewer\HexControl.h">
-      <Filter>Header Files\Viewers\BinaryViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\ImageReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Util\Ensure.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\ImageViewer\ImageControl.h">
-      <Filter>Header Files\Viewers\ImageViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Util\Misc.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\ModelReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PackFile.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Documentation</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Identifiers\BaseIdentifier.h">
-      <Filter>Header Files\Identifiers</Filter>
+      <Filter>Source Files\Identifiers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Imported\half.h">
-      <Filter>Header Files\Imported</Filter>
+    <ClInclude Include="..\src\ANetStructs.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\Camera.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    <ClInclude Include="..\src\BrowserWindow.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\resource.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\CategoryTree.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Viewers\BinaryViewer\BinaryViewer.h">
-      <Filter>Header Files\Viewers\BinaryViewer</Filter>
+    <ClInclude Include="..\src\Data.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Viewers\ImageViewer\ImageViewer.h">
-      <Filter>Header Files\Viewers\ImageViewer</Filter>
+    <ClInclude Include="..\src\DatFile.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    <ClInclude Include="..\src\DatIndex.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Readers\StringReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\asndMP3Reader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\PackedSoundReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PreviewGLCanvas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ViewerGLCanvas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Exporter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\SoundBankReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Readers\EulaReader.h">
-      <Filter>Header Files\Readers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\Light.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h">
-      <Filter>Header Files\Viewers\ModelViewer</Filter>
+    <ClInclude Include="..\src\DatIndexIO.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Exception.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Exporter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FileReader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Gw2Browser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PackFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PreviewGLCanvas.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PreviewPanel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProgressStatusBar.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Task.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\version.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ViewerGLCanvas.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Viewers\StringViewer\StringViewer.h">
-      <Filter>Header Files\Viewers\StringViewer</Filter>
+      <Filter>Source Files\Viewers\StringViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\SoundPlayer\SoundPlayer.h">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\SoundPlayer\SoundControl.h">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Camera.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Light.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ImageViewer\ImageControl.h">
+      <Filter>Source Files\Viewers\ImageViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\ImageViewer\ImageViewer.h">
+      <Filter>Source Files\Viewers\ImageViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\BinaryViewer\BinaryViewer.h">
+      <Filter>Source Files\Viewers\BinaryViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\BinaryViewer\HexControl.h">
+      <Filter>Source Files\Viewers\BinaryViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Util\Array.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Util\Ensure.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Util\Misc.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Tasks\ReadIndexTask.h">
+      <Filter>Source Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Tasks\ScanDatTask.h">
+      <Filter>Source Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Tasks\WriteIndexTask.h">
+      <Filter>Source Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Imported\crc.h">
+      <Filter>Source Files\Imported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Imported\half.h">
+      <Filter>Source Files\Imported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\asndMP3Reader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\EulaReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\ImageReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\ModelReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\PackedSoundReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\SoundBankReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\StringReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\TextViewer\TextViewer.h">
+      <Filter>Source Files\Viewers\TextViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Readers\TextReader.h">
+      <Filter>Source Files\Readers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,11 +350,20 @@
     <ClCompile Include="..\src\Viewers\StringViewer\StringViewer.cpp">
       <Filter>Source Files\Viewers\StringViewer</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundControl.cpp">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundPlayer.cpp">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\TextViewer\TextViewer.cpp">
+      <Filter>Source Files\Viewers\TextViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\TextReader.cpp">
+      <Filter>Source Files\Readers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src\Imported\half.inl">
-      <Filter>Header Files\Imported</Filter>
-    </None>
     <None Include="..\data\shaders\text.frag">
       <Filter>Data Files\shaders</Filter>
     </None>
@@ -400,6 +396,9 @@
     </None>
     <None Include="..\data\shaders\z_visualizer.vert">
       <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\src\Imported\half.inl">
+      <Filter>Source Files\Imported</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

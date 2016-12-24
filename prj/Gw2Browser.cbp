@@ -132,6 +132,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../CHANGE.md" />
+		<Unit filename="../COPYING.txt" />
+		<Unit filename="../README.md" />
+		<Unit filename="../TODO.md" />
 		<Unit filename="../data/shaders/light_box.frag" />
 		<Unit filename="../data/shaders/light_box.vert" />
 		<Unit filename="../data/shaders/normal_visualizer.frag" />
@@ -200,6 +204,8 @@
 		<Unit filename="../src/Readers/SoundBankReader.h" />
 		<Unit filename="../src/Readers/StringReader.cpp" />
 		<Unit filename="../src/Readers/StringReader.h" />
+		<Unit filename="../src/Readers/TextReader.cpp" />
+		<Unit filename="../src/Readers/TextReader.h" />
 		<Unit filename="../src/Readers/asndMP3Reader.cpp" />
 		<Unit filename="../src/Readers/asndMP3Reader.h" />
 		<Unit filename="../src/Task.cpp" />
@@ -240,10 +246,10 @@
 		<Unit filename="../src/Viewers/ModelViewer/Text2D.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
-		<Unit filename="../src/Viewers/StringViewer/GridControl.cpp" />
-		<Unit filename="../src/Viewers/StringViewer/GridControl.h" />
 		<Unit filename="../src/Viewers/StringViewer/StringViewer.cpp" />
 		<Unit filename="../src/Viewers/StringViewer/StringViewer.h" />
+		<Unit filename="../src/Viewers/TextViewer/TextViewer.cpp" />
+		<Unit filename="../src/Viewers/TextViewer/TextViewer.h" />
 		<Unit filename="../src/resource.h" />
 		<Unit filename="../src/stdafx.cpp" />
 		<Unit filename="../src/stdafx.h" />

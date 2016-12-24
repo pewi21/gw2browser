@@ -301,7 +301,6 @@ namespace gw2b {
 			}
 
 			const auto dataReaded = numBlock * blockSize;
-			const auto dataSkipped = numBlock * bytetoskip;
 			const auto dataRemain = dataSize - dataReaded;
 
 			// copy the last remaining data

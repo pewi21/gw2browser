@@ -10,6 +10,14 @@ Release_x86
 Release_x64
 doxygen
 extern/glew/lib
+extern/libogg/win32/VS2015/Win32
+extern/libogg/win32/VS2015/x64
+extern/libvorbis/win32/VS2015/Win32
+extern/libvorbis/win32/VS2015/x64
+extern/libvorbis/win32/VS2015/libvorbis/Win32
+extern/libvorbis/win32/VS2015/libvorbis/x64
+extern/libvorbis/win32/VS2015/libvorbisfile/Win32
+extern/libvorbis/win32/VS2015/libvorbisfile/x64
 *.aps
 *.bak
 *.sdf
