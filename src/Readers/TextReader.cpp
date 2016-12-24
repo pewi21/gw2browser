@@ -44,12 +44,7 @@ namespace gw2b {
 
 		wxString str;
 		for ( uint i = 0; i < size; i++ ) {
-			auto c = data[i];
-			if ( isprint( c ) || isspace( c ) ) {
-				str << c;
-			} else {
-				str << "?";
-			}
+			str << data[i];
 		}
 
 		return str;
