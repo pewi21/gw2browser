@@ -85,7 +85,7 @@ namespace gw2b {
 			return;
 		}
 
-		for ( int i = 0; i < m_string.size( ); i++ ) {
+		for ( uint i = 0; i < m_string.size( ); i++ ) {
 			m_textEntry->AppendString( wxString::Format( wxT( "%d" ), i ) );
 		}
 
