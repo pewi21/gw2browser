@@ -21,6 +21,9 @@
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../../wxWidgets-3.1.0/include" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib/mswud" />
+					<Add directory="../../openal-soft/include" />
+					<Add directory="../../libogg/include" />
+					<Add directory="../../libvorbis/include" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
@@ -81,6 +84,9 @@
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../../wxWidgets-3.1.0/include" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib/mswu" />
+					<Add directory="../../openal-soft/include" />
+					<Add directory="../../libogg/include" />
+					<Add directory="../../libvorbis/include" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
