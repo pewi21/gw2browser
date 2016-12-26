@@ -37,7 +37,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add library="../extern/freetype/objs/freetype.a" />
-					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libglew32.a" />
 					<Add library="libgw2DatTools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />
@@ -101,7 +101,7 @@
 				<Linker>
 					<Add option="-s" />
 					<Add library="../extern/freetype/objs/freetype.a" />
-					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libglew32.a" />
 					<Add library="libgw2DatTools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />

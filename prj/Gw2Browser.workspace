@@ -4,5 +4,8 @@
 		<Project filename="Gw2Browser.cbp" />
 		<Project filename="../extern/gw2DatTools/prj/gw2DatTools.cbp" />
 		<Project filename="../extern/gw2formats/prj/gw2formats.cbp" />
+		<Project filename="../extern/libogg/prj/libogg.cbp" />
+		<Project filename="../extern/libvorbis/prj/libvorbis.cbp" />
+		<Project filename="../extern/libvorbis/prj/libvorbisfile.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
