@@ -223,7 +223,7 @@ Authors
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser and gw2formats
 * [Joey de Vries](http://learnopengl.com) and [opengl-tutorial.org](http://www.opengl-tutorial.org) : Great OpenGL 3.3 tutorial
-* Inigo Quilez : clever normalization of mesh
+* [Inigo Quilez](http://www.iquilezles.org/www/articles/normals/normals.htm) : clever normalization of mesh
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
@@ -233,6 +233,7 @@ Authors
 * [Till034](https://github.com/Till034) : OnCompareItems function overload
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
 * [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
+* [DubyaDubyaDubyaDot](https://stackoverflow.com/questions/13437422/libvorbis-audio-decode-from-memory-in-c) : How to read Oggs from memory using custom callbacks.
 
 ### Special thanks to:
 
