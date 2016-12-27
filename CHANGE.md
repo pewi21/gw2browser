@@ -5,6 +5,7 @@ Gw2Browser_2016-xx-xx (1.0.8.1)
 -------------------------------
 Change:
 - Add string, text and eula file viewer.
+- Add sound player.
 - Add normal maping, specular mapping, model lighting, Anisotropic texture filtering
 to model renderer. Set anisotropic texture filtering to maximumn supported by GPU.
 - Reduce texture memory usuage when model viewer load texture.
