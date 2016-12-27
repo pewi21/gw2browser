@@ -3,11 +3,6 @@ TODO list
 
 May change over time. :P
 
-1.0.8.1
--------
-
-* Sound player.
-
 Further plans
 -------------
 
@@ -35,8 +30,6 @@ for use by range-base loop.
 * Scene manager (need when implement map viewer).
 
 * Improve performance of ModelViewer's drawText function.
-
-* Use C++11 std::thread for multi-threading in Task.
 
 * COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
 
