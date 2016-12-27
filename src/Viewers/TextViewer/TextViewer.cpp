@@ -61,37 +61,32 @@ namespace gw2b {
 	}
 
 	void TextViewer::setReader( FileReader* p_reader ) {
-		if ( isOfType<TextReader>( p_reader ) ) {
-			Viewer::setReader( p_reader );
+		Viewer::setReader( p_reader );
 
-			if ( p_reader ) {
+		if ( p_reader ) {
+			if ( isOfType<TextReader>( p_reader ) ) {
 				auto reader = this->textReader( );
 				auto str = reader->getString( );
 
 				m_string.push_back( str );
-			}
 
-		} else if ( isOfType<EulaReader>( p_reader ) ) {
-			Viewer::setReader( p_reader );
-
-			if ( p_reader ) {
+			} else if ( isOfType<EulaReader>( p_reader ) ) {
 				auto reader = this->eulaReader( );
-				auto eula = reader->getString( );
+				m_string = reader->getString( );
 
-				m_string = eula;
+			} else {
+				// Hopefully, there aren't things gones here.
+				return;
 			}
-		} else {
-			// Hopefully, there aren't things gones here.
-			return;
-		}
 
-		for ( uint i = 0; i < m_string.size( ); i++ ) {
-			m_textEntry->AppendString( wxString::Format( wxT( "%d" ), i ) );
-		}
+			for ( uint i = 0; i < m_string.size( ); i++ ) {
+				m_textEntry->AppendString( wxString::Format( wxT( "%d" ), i ) );
+			}
 
-		// Select entry 0
-		m_textEntry->SetSelection( 0 );
-		this->updateText( 0 );
+			// Select entry 0
+			m_textEntry->SetSelection( 0 );
+			this->updateText( 0 );
+		}
 	}
 
 	void TextViewer::updateText( size_t p_entry ) {
