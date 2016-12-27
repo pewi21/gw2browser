@@ -132,9 +132,6 @@
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundPlayer.h">
       <Filter>Source Files\Viewers\SoundPlayer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Viewers\SoundPlayer\SoundControl.h">
-      <Filter>Source Files\Viewers\SoundPlayer</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClInclude>
@@ -218,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Readers\TextReader.h">
       <Filter>Source Files\Readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewers\SoundPlayer\OggCallback.h">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +350,6 @@
     <ClCompile Include="..\src\Viewers\StringViewer\StringViewer.cpp">
       <Filter>Source Files\Viewers\StringViewer</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundControl.cpp">
-      <Filter>Source Files\Viewers\SoundPlayer</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Viewers\SoundPlayer\SoundPlayer.cpp">
       <Filter>Source Files\Viewers\SoundPlayer</Filter>
     </ClCompile>
@@ -361,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Readers\TextReader.cpp">
       <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\SoundPlayer\OggCallback.cpp">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

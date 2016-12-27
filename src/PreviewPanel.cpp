@@ -26,11 +26,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DatFile.h"
 #include "DatIndex.h"
+#include "Exception.h"
 
 #include "Viewers/BinaryViewer/BinaryViewer.h"
 #include "Viewers/ImageViewer/ImageViewer.h"
 #include "Viewers/StringViewer/StringViewer.h"
 #include "Viewers/TextViewer/TextViewer.h"
+#include "Viewers/SoundPlayer/SoundPlayer.h"
 
 #include "PreviewPanel.h"
 
@@ -90,22 +92,28 @@ namespace gw2b {
 
 	Viewer* PreviewPanel::createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile ) {
 		Viewer* newViewer = nullptr;
-
-		switch ( p_dataType ) {
-		case FileReader::DT_Image:
-			newViewer = new ImageViewer( this );
-			break;
-		case FileReader::DT_String:
-			newViewer = new StringViewer( this );
-			break;
-		case FileReader::DT_EULA:
-		case FileReader::DT_Text:
-			newViewer = new TextViewer( this );
-			break;
-		case FileReader::DT_Binary:
-		default:
-			newViewer = new BinaryViewer( this );
-			break;
+		try {
+			switch ( p_dataType ) {
+			case FileReader::DT_Sound:
+				newViewer = new SoundPlayer( this );
+				break;
+			case FileReader::DT_Image:
+				newViewer = new ImageViewer( this );
+				break;
+			case FileReader::DT_String:
+				newViewer = new StringViewer( this );
+				break;
+			case FileReader::DT_EULA:
+			case FileReader::DT_Text:
+				newViewer = new TextViewer( this );
+				break;
+			case FileReader::DT_Binary:
+			default:
+				newViewer = new BinaryViewer( this );
+				break;
+			}
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxString( err.what( ) ) );
 		}
 
 		return newViewer;

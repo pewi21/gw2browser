@@ -69,7 +69,7 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h" />
-    <ClInclude Include="..\src\Viewers\SoundPlayer\SoundControl.h" />
+    <ClInclude Include="..\src\Viewers\SoundPlayer\OggCallback.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundPlayer.h" />
     <ClInclude Include="..\src\Viewers\StringViewer\StringViewer.h" />
     <ClInclude Include="..\src\Viewers\TextViewer\TextViewer.h" />
@@ -123,12 +123,8 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Texture2D.cpp" />
-    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundControl.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundPlayer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\src\Viewers\SoundPlayer\OggCallback.cpp" />
+    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundPlayer.cpp" />
     <ClCompile Include="..\src\Viewers\StringViewer\StringViewer.cpp" />
     <ClCompile Include="..\src\Viewers\TextViewer\TextViewer.cpp" />
   </ItemGroup>
