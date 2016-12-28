@@ -247,7 +247,7 @@ namespace gw2b {
 		m_listCtrl->SetItemState( p_index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
 	}
 
-	void SoundPlayer::loadOggs( char* p_data, size_t p_size, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks ) {
+	void SoundPlayer::loadOggs( char* p_data, size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks ) {
 		p_oggStream.curPtr = p_oggStream.filePtr = p_data;
 		p_oggStream.fileSize = p_size;
 
@@ -256,10 +256,10 @@ namespace gw2b {
 		p_oggCallbacks.close_func = closeOgg;
 		p_oggCallbacks.tell_func = tellOgg;
 
-		int ret1 = ov_open_callbacks( static_cast<void*>( &p_oggStream ), &m_oggFile, NULL, -1, p_oggCallbacks );
+		int ret1 = ov_open_callbacks( static_cast<void*>( &p_oggStream ), p_oggFile, NULL, -1, p_oggCallbacks );
 
 		// Get some information about the OGG file
-		vorbis_info* oggInfo = ov_info( &m_oggFile, -1 );
+		vorbis_info* oggInfo = ov_info( p_oggFile, -1 );
 		assert( oggInfo );
 
 		// Check the number of channels
@@ -273,12 +273,12 @@ namespace gw2b {
 		m_frequency = oggInfo->rate;
 	}
 
-	bool SoundPlayer::readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, ALenum p_format, ALsizei p_freqency ) {
+	bool SoundPlayer::readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALenum p_format, ALsizei p_freqency ) {
 		// 'count' should not be > MAX_AUDIO_SAMPLES
 		ALsizei acc = 0;
 		ALsizei size = p_count * sizeof( ALshort );
 		while ( acc < size ) {
-			ALsizei read = ov_read( &m_oggFile, p_databuffer + acc, size - acc, 0, 2, 1, 0 );
+			ALsizei read = ov_read( p_oggFile, p_databuffer + acc, size - acc, 0, 2, 1, 0 );
 			if ( read > 0 ) {
 				acc += read;
 			} else {
@@ -305,6 +305,7 @@ namespace gw2b {
 		auto size = localData.GetSize( );
 
 		// Oggs data
+		OggVorbis_File oggFile;
 		ogg_file oggStream;
 		ov_callbacks oggCallbacks;
 
@@ -330,7 +331,7 @@ namespace gw2b {
 
 		auto const fourcc = *reinterpret_cast<uint32*>( data );
 		if ( fourcc == FCC_OggS ) {
-			this->loadOggs( reinterpret_cast<char*>( data ), size, oggStream, oggCallbacks );
+			this->loadOggs( reinterpret_cast<char*>( data ), size, &oggFile, oggStream, oggCallbacks );
 		}
 
 		// Allocate buffer
@@ -341,7 +342,7 @@ namespace gw2b {
 		// Buffer audio data to OpenAL
 		for ( int i = 0; i < NUM_BUFFERS; i++ ) {
 			if ( fourcc == FCC_OggS ) {
-				ret = readOggs( buf, m_buffers[i], m_bufferSize, m_format, m_frequency );
+				ret = readOggs( buf, m_buffers[i], m_bufferSize, &oggFile, m_format, m_frequency );
 			}
 
 			if ( alGetError( ) != AL_NO_ERROR ) {
@@ -377,7 +378,7 @@ namespace gw2b {
 					alSourceUnqueueBuffers( m_source, 1, &buffer );
 					// Read the next chunk of decoded audio data and fill the old buffer with new data
 					if ( fourcc == FCC_OggS ) {
-						ret = readOggs( buf, buffer, m_bufferSize, m_format, m_frequency );
+						ret = readOggs( buf, buffer, m_bufferSize, &oggFile, m_format, m_frequency );
 					}
 					// Insert the buffer to the source queue
 					alSourceQueueBuffers( m_source, 1, &buffer );
@@ -394,7 +395,7 @@ namespace gw2b {
 		freePointer( buf );
 
 		if ( fourcc == FCC_OggS ) {
-			ov_clear( &m_oggFile );
+			ov_clear( &oggFile );
 		}
 
 		// Delete source

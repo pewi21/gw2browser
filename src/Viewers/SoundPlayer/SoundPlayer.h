@@ -49,7 +49,6 @@ namespace gw2b {
 		std::vector<SoundBank>		m_sound;
 		wxListCtrl*					m_listCtrl;
 		std::thread*				m_thread;
-		OggVorbis_File				m_oggFile;
 
 		// Constraint
 		#define	NUM_BUFFERS 2											// 2 Buffers
@@ -114,8 +113,8 @@ namespace gw2b {
 		void populateListCtrl( );
 		void insertItem( const int p_index );
 		void selectEntry( const long p_index );
-		void loadOggs( char* p_data, size_t p_size, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks );
-		bool readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, ALenum p_format, ALsizei p_freqency );
+		void loadOggs( char* p_data, size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks );
+		bool readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALenum p_format, ALsizei p_freqency );
 		void playSound( const int p_index );
 		void stopSound( );
 		void onListItemDoubleClickedEvt( wxListEvent& p_event );
