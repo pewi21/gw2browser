@@ -121,7 +121,6 @@ namespace gw2b {
 			if ( m_isPlaying ) {
 				this->stopSound( );
 			}
-
 			// Play the first entry
 			m_thread = new std::thread( &SoundPlayer::playSound, this, 0 );
 			m_thread->detach( );
@@ -273,11 +272,15 @@ namespace gw2b {
 	}
 
 	void SoundPlayer::playSound( const int p_index ) {
-		// Copy the data to this function, since some times the thread isn't finish
+		// Copy the data to this thread function, since some times the thread isn't finish
 		// but the data already destroyed when play new file
 		auto localData = m_sound[p_index].data;
+
 		auto data = localData.GetPointer( );
 		auto size = localData.GetSize( );
+
+		ov_callbacks oggCallbacks;
+		ogg_file oggStream;
 
 		m_isPlaying = true;
 		m_isDone = false;
@@ -302,17 +305,15 @@ namespace gw2b {
 		auto const fourcc = *reinterpret_cast<uint32*>( data );
 		if ( fourcc == FCC_OggS ) {
 			// Load Oggs
-			ov_callbacks callbacks;
-			ogg_file t;
-			t.curPtr = t.filePtr = reinterpret_cast<char*>( data );
-			t.fileSize = size;
+			oggStream.curPtr = oggStream.filePtr = reinterpret_cast<char*>( data );
+			oggStream.fileSize = size;
 
-			callbacks.read_func = readOgg;
-			callbacks.seek_func = seekOgg;
-			callbacks.close_func = closeOgg;
-			callbacks.tell_func = tellOgg;
+			oggCallbacks.read_func = readOgg;
+			oggCallbacks.seek_func = seekOgg;
+			oggCallbacks.close_func = closeOgg;
+			oggCallbacks.tell_func = tellOgg;
 
-			int ret1 = ov_open_callbacks( static_cast<void*>( &t ), &m_oggFile, NULL, -1, callbacks );
+			int ret1 = ov_open_callbacks( static_cast<void*>( &oggStream ), &m_oggFile, NULL, -1, oggCallbacks );
 
 			// Get some information about the OGG file
 			vorbis_info* oggInfo = ov_info( &m_oggFile, -1 );
@@ -406,10 +407,9 @@ namespace gw2b {
 		alSourceStop( m_source );
 		// Signal player thread to stop playing
 		m_isPlaying = false;
-
 		// Wait until the thread is finished
 		while ( !m_isDone ) {
-			// Empty loop :P
+			std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
 		}
 	}
 
