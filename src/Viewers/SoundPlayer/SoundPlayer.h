@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <AL/alc.h>
 #include <vorbis/vorbisfile.h>
 
+#include "OggCallback.h"
 #include "Readers/PackedSoundReader.h"
 #include "Readers/SoundBankReader.h"
 
@@ -113,6 +114,7 @@ namespace gw2b {
 		void populateListCtrl( );
 		void insertItem( const int p_index );
 		void selectEntry( const long p_index );
+		void loadOggs( char* p_data, size_t p_size, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks );
 		bool readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, ALenum p_format, ALsizei p_freqency );
 		void playSound( const int p_index );
 		void stopSound( );

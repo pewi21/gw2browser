@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SoundPlayer.h"
 #include "Exception.h"
-#include "OggCallback.h"
 
 #include "Readers/ImageReader.h"
 #include "Data.h"
@@ -248,6 +247,32 @@ namespace gw2b {
 		m_listCtrl->SetItemState( p_index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
 	}
 
+	void SoundPlayer::loadOggs( char* p_data, size_t p_size, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks ) {
+		p_oggStream.curPtr = p_oggStream.filePtr = p_data;
+		p_oggStream.fileSize = p_size;
+
+		p_oggCallbacks.read_func = readOgg;
+		p_oggCallbacks.seek_func = seekOgg;
+		p_oggCallbacks.close_func = closeOgg;
+		p_oggCallbacks.tell_func = tellOgg;
+
+		int ret1 = ov_open_callbacks( static_cast<void*>( &p_oggStream ), &m_oggFile, NULL, -1, p_oggCallbacks );
+
+		// Get some information about the OGG file
+		vorbis_info* oggInfo = ov_info( &m_oggFile, -1 );
+		assert( oggInfo );
+
+		// Check the number of channels
+		if ( oggInfo->channels == 1 ) {
+			m_format = AL_FORMAT_MONO16;
+		} else {
+			m_format = AL_FORMAT_STEREO16;
+		}
+
+		// The frequency of the sampling rate
+		m_frequency = oggInfo->rate;
+	}
+
 	bool SoundPlayer::readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, ALenum p_format, ALsizei p_freqency ) {
 		// 'count' should not be > MAX_AUDIO_SAMPLES
 		ALsizei acc = 0;
@@ -263,7 +288,7 @@ namespace gw2b {
 
 		if ( acc > 0 ) {
 			alBufferData( p_buffer, p_format, p_databuffer, acc, p_freqency );
-			wxLogMessage( wxT( "Read %d bytes" ), acc / 2 );
+			//wxLogMessage( wxT( "Read %d bytes" ), acc / 2 );
 		} else {
 			return false;
 		}
@@ -279,8 +304,9 @@ namespace gw2b {
 		auto data = localData.GetPointer( );
 		auto size = localData.GetSize( );
 
-		ov_callbacks oggCallbacks;
+		// Oggs data
 		ogg_file oggStream;
+		ov_callbacks oggCallbacks;
 
 		m_isPlaying = true;
 		m_isDone = false;
@@ -304,30 +330,7 @@ namespace gw2b {
 
 		auto const fourcc = *reinterpret_cast<uint32*>( data );
 		if ( fourcc == FCC_OggS ) {
-			// Load Oggs
-			oggStream.curPtr = oggStream.filePtr = reinterpret_cast<char*>( data );
-			oggStream.fileSize = size;
-
-			oggCallbacks.read_func = readOgg;
-			oggCallbacks.seek_func = seekOgg;
-			oggCallbacks.close_func = closeOgg;
-			oggCallbacks.tell_func = tellOgg;
-
-			int ret1 = ov_open_callbacks( static_cast<void*>( &oggStream ), &m_oggFile, NULL, -1, oggCallbacks );
-
-			// Get some information about the OGG file
-			vorbis_info* oggInfo = ov_info( &m_oggFile, -1 );
-			assert( oggInfo );
-
-			// Check the number of channels
-			if ( oggInfo->channels == 1 ) {
-				m_format = AL_FORMAT_MONO16;
-			} else {
-				m_format = AL_FORMAT_STEREO16;
-			}
-
-			// The frequency of the sampling rate
-			m_frequency = oggInfo->rate;
+			this->loadOggs( reinterpret_cast<char*>( data ), size, oggStream, oggCallbacks );
 		}
 
 		// Allocate buffer
