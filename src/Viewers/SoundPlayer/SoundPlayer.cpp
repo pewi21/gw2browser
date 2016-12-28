@@ -42,9 +42,6 @@ namespace gw2b {
 				throw exception::Exception( "Could not initialize OpenAL." );
 			}
 			m_alInitialized = true;
-
-			//m_renderTimer = new RenderTimer( this );
-			//m_renderTimer->start( );
 		}
 
 		auto sizer = new wxBoxSizer( wxHORIZONTAL );
@@ -61,6 +58,10 @@ namespace gw2b {
 	}
 
 	SoundPlayer::~SoundPlayer( ) {
+		if ( m_isPlaying ) {
+			this->stopSound( );
+		}
+
 		// Delete buffers
 		alDeleteBuffers( NUM_BUFFERS, m_buffers );
 
@@ -71,6 +72,10 @@ namespace gw2b {
 	}
 
 	void SoundPlayer::clear( ) {
+		if ( m_isPlaying ) {
+			this->stopSound( );
+		}
+
 		// Clear list control content
 		m_listCtrl->ClearAll( );
 
@@ -112,8 +117,14 @@ namespace gw2b {
 
 			// Select the first entry
 			this->selectEntry( 0 );
+			// Stop playing sound, if still playing it
+			if ( m_isPlaying ) {
+				this->stopSound( );
+			}
+
 			// Play the first entry
-			this->playSound( 0 );
+			m_thread = new std::thread( &SoundPlayer::playSound, this, 0 );
+			m_thread->detach( );
 		}
 	}
 
@@ -262,8 +273,14 @@ namespace gw2b {
 	}
 
 	void SoundPlayer::playSound( const int p_index ) {
-		auto data = m_sound[p_index].data.GetPointer( );
-		auto size = m_sound[p_index].data.GetSize( );
+		// Copy the data to this function, since some times the thread isn't finish
+		// but the data already destroyed when play new file
+		auto localData = m_sound[p_index].data;
+		auto data = localData.GetPointer( );
+		auto size = localData.GetSize( );
+
+		m_isPlaying = true;
+		m_isDone = false;
 
 		// Generate source
 		alGenSources( ( ALuint ) 1, &m_source );
@@ -284,6 +301,7 @@ namespace gw2b {
 
 		auto const fourcc = *reinterpret_cast<uint32*>( data );
 		if ( fourcc == FCC_OggS ) {
+			// Load Oggs
 			ov_callbacks callbacks;
 			ogg_file t;
 			t.curPtr = t.filePtr = reinterpret_cast<char*>( data );
@@ -300,7 +318,7 @@ namespace gw2b {
 			vorbis_info* oggInfo = ov_info( &m_oggFile, -1 );
 			assert( oggInfo );
 
-			// Check the number of channels... always use 16-bit samples
+			// Check the number of channels
 			if ( oggInfo->channels == 1 ) {
 				m_format = AL_FORMAT_MONO16;
 			} else {
@@ -339,12 +357,12 @@ namespace gw2b {
 		}
 
 		ALint processed;
-		// while (!thread_finish)
-		while ( ret ) {
+
+		while ( ret && m_isPlaying ) {
 			ALuint buffer;
 
-			// make it not use too much CPU time
-			//_sleep( 1 ); // Sleep 1 sec
+			// sleep 100ms to make it not use too much CPU time
+			std::this_thread::sleep_for( std::chrono::microseconds( 100 ) );
 
 			// Check if OpenAL is processed the buffer
 			alGetSourcei( m_source, AL_BUFFERS_PROCESSED, &processed );
@@ -368,8 +386,6 @@ namespace gw2b {
 			}
 		}
 
-		//alSourceStop( m_source );
-
 		// Clean up
 		freePointer( buf );
 
@@ -379,14 +395,33 @@ namespace gw2b {
 
 		// Delete source
 		alDeleteSources( 1, &m_source );
+
+		m_isPlaying = false;
+		m_isDone = true;
+		delete m_thread;
+	}
+
+	void SoundPlayer::stopSound( ) {
+		// Stop OpenAL to play sound
+		alSourceStop( m_source );
+		// Signal player thread to stop playing
+		m_isPlaying = false;
+
+		// Wait until the thread is finished
+		while ( !m_isDone ) {
+			// Empty loop :P
+		}
 	}
 
 	void SoundPlayer::onListItemDoubleClickedEvt( wxListEvent& p_event ) {
 		auto index = p_event.m_itemIndex;
 
-		// stop current sound()
+		if ( m_isPlaying ) {
+			this->stopSound( );
+		}
 
-		this->playSound( index );
+		m_thread = new std::thread( &SoundPlayer::playSound, this, index );
+		m_thread->detach( );
 	}
 
 }; // namespace gw2b

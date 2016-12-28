@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_SOUNDPLAYER_SOUNDPLAYER_H_INCLUDED
 #define VIEWERS_SOUNDPLAYER_SOUNDPLAYER_H_INCLUDED
 
+#include <thread>
 #include <vector>
 
 #include <wx/listctrl.h>
@@ -43,10 +44,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	class SoundPlayer : public Viewer {
-
+		// Data
 		std::vector<SoundBank>		m_sound;
 		wxListCtrl*					m_listCtrl;
-
+		std::thread*				m_thread;
 		OggVorbis_File				m_oggFile;
 
 		// Constraint
@@ -55,6 +56,8 @@ namespace gw2b {
 
 		// Internal status
 		bool						m_alInitialized = false;			// Is OpenAL is initialized?
+		bool						m_isPlaying = false;				// Is playing the sound?
+		bool						m_isDone = false;
 
 		// OpenAL stuff
 		ALCdevice*					m_device;
@@ -112,6 +115,7 @@ namespace gw2b {
 		void selectEntry( const long p_index );
 		bool readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, ALenum p_format, ALsizei p_freqency );
 		void playSound( const int p_index );
+		void stopSound( );
 		void onListItemDoubleClickedEvt( wxListEvent& p_event );
 
 	}; // class SoundPlayer
