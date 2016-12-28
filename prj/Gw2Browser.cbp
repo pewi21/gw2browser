@@ -37,7 +37,11 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add library="../extern/freetype/objs/freetype.a" />
-					<Add library="libglew32.a" />
+					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libOpenAL32.dll.a" />
+					<Add library="libvorbisfile.a" />
+					<Add library="libvorbis.a" />
+					<Add library="libogg.a" />
 					<Add library="libgw2DatTools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />
@@ -62,11 +66,14 @@
 					<Add library="libwinspool.a" />
 					<Add library="libuuid.a" />
 					<Add library="libversion.a" />
+					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib" />
 					<Add directory="../extern/freetype/objs" />
 					<Add directory="../extern/glew/lib" />
 					<Add directory="../extern/gw2DatTools/lib/Debug" />
 					<Add directory="../extern/gw2formats/lib/Debug" />
+					<Add directory="../extern/libogg" />
+					<Add directory="../extern/libvorbis/lib" />
 					<Add directory="../extern/libwebp/src" />
 				</Linker>
 			</Target>
@@ -101,7 +108,11 @@
 				<Linker>
 					<Add option="-s" />
 					<Add library="../extern/freetype/objs/freetype.a" />
-					<Add library="libglew32.a" />
+					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libOpenAL32.dll.a" />
+					<Add library="libvorbisfile.a" />
+					<Add library="libvorbis.a" />
+					<Add library="libogg.a" />
 					<Add library="libgw2DatTools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />
@@ -126,11 +137,14 @@
 					<Add library="libwinspool.a" />
 					<Add library="libuuid.a" />
 					<Add library="libversion.a" />
+					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib" />
 					<Add directory="../extern/freetype/objs" />
 					<Add directory="../extern/glew/lib" />
 					<Add directory="../extern/gw2DatTools/lib/Release" />
 					<Add directory="../extern/gw2formats/lib/Release" />
+					<Add directory="../extern/libogg" />
+					<Add directory="../extern/libvorbis/lib" />
 					<Add directory="../extern/libwebp/src" />
 				</Linker>
 			</Target>
@@ -252,6 +266,10 @@
 		<Unit filename="../src/Viewers/ModelViewer/Text2D.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
+		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.cpp" />
+		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.h" />
+		<Unit filename="../src/Viewers/SoundPlayer/SoundPlayer.cpp" />
+		<Unit filename="../src/Viewers/SoundPlayer/SoundPlayer.h" />
 		<Unit filename="../src/Viewers/StringViewer/StringViewer.cpp" />
 		<Unit filename="../src/Viewers/StringViewer/StringViewer.h" />
 		<Unit filename="../src/Viewers/TextViewer/TextViewer.cpp" />
