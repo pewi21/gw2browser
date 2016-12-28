@@ -275,20 +275,20 @@ namespace gw2b {
 
 	bool SoundPlayer::readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALenum p_format, ALsizei p_freqency ) {
 		// 'count' should not be > MAX_AUDIO_SAMPLES
-		ALsizei acc = 0;
+		ALsizei bytes = 0;
 		ALsizei size = p_count * sizeof( ALshort );
-		while ( acc < size ) {
-			ALsizei read = ov_read( p_oggFile, p_databuffer + acc, size - acc, 0, 2, 1, 0 );
+		while ( bytes < size ) {
+			ALsizei read = ov_read( p_oggFile, p_databuffer + bytes, size - bytes, 0, 2, 1, 0 );
 			if ( read > 0 ) {
-				acc += read;
+				bytes += read;
 			} else {
 				break;
 			}
 		}
 
-		if ( acc > 0 ) {
-			alBufferData( p_buffer, p_format, p_databuffer, acc, p_freqency );
-			//wxLogMessage( wxT( "Read %d bytes" ), acc / 2 );
+		if ( bytes > 0 ) {
+			alBufferData( p_buffer, p_format, p_databuffer, bytes, p_freqency );
+			//wxLogMessage( wxT( "Read %d bytes" ), bytes / 2 );
 		} else {
 			return false;
 		}
