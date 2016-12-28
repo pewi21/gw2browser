@@ -12,7 +12,7 @@ will have to be re-indexed (for now).
 Keep in mind that if you keep tree items expanded while the indexer is running,
 or while an index is being read, the process is *a lot* slower.
 
-The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and [Here](http://goo.gl/4xMRVF) 
+The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and [Here](http://goo.gl/4xMRVF)
 
 For people who can't run Gw2Browser, download and Install
 [Microsoft Visual C++ 2015 Redistributable Update 3](https://www.microsoft.com/en-us/download/details.aspx?id=52982)
@@ -71,7 +71,7 @@ open source projects, academic research, education, and small professional teams
 
 * [TDM-GCC 4.8.1 or 5.1.0](http://tdm-gcc.tdragon.net/)
 
-* [CMake](https://cmake.org/) use for build glew when using GCC compiler.
+* [CMake](https://cmake.org/)
 
 * [CodeBlocks](http://www.codeblocks.org/) for use to open Gw2Browser's CodeBlocks solution file.
 
@@ -83,13 +83,16 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 ### Required libraries
 
-* [gw2DatTools](https://github.com/kytulendu/gw2DatTools)
-* [gw2formats](https://github.com/kytulendu/gw2formats)
+* [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
 * [wxWidgets 3.1.0](http://wxwidgets.org/)
+* [FreeType](http://www.freetype.org/) *Included*
+* [gw2DatTools](https://github.com/kytulendu/gw2DatTools) *Included*
+* [gw2formats](https://github.com/kytulendu/gw2formats) *Included*
+* [libogg](https://github.com/xiph/ogg) *Included*
+* [libvorbis](https://github.com/xiph/vorbis) *Included*
+* [libwebp](https://developers.google.com/speed/webp/download) *Included*
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
 * [The OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
-* [libwebp](https://developers.google.com/speed/webp/download) *Included*
-* [FreeType](http://www.freetype.org/) *Included*
 
 ### Optional libraries
 
@@ -108,9 +111,43 @@ in Gw2Browser.cpp.
 
 		git clone --recursive https://github.com/kytulendu/Gw2Browser.git
 
-This will download Gw2Browser and also gw2DatTools, gw2formats source code.
+This will download Gw2Browser and all included library source code.
+
+#### Getting the required library:
+
+* Download OpenAL-Soft binaries from [here](http://kcat.strangesoft.net/openal.html), extract it to
+the same directory that Gw2Browser directory is in. Or download the source code and build it your self.
+
+* Download wxWidgets source code from [here](http://wxwidgets.org/), extract it to the same directory
+that Gw2Browser directory is in. Or download and using the binaries.
+
+**Note:** Tthe library and source code directory must be in directory like this.
+The ROOT is the directory you created in Getting the source code.
+
+		[ROOT]
+		 |
+		 +--Gw2Browser
+		 |    |
+		 |    +--src
+		 |    +--...
+		 |
+		 +--openal-soft
+		 |    |
+		 |    +--bin
+		 |    +--include
+		 |    +--lib
+		 |    +--...
+		 |
+		 +--wxWidgets-3.1.0
+		      +--include
+			  +--src
+		      +--...
 
 #### Windows, building with Visual Studio:
+
+* Compile wxWidgets using solution file corresponding with your VS version in directory
+wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
+and VS2015 is wx_vc14.sln.
 
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
 by use these command at Gw2Browser/extern/libweb directory.
@@ -135,9 +172,9 @@ For 32 bit library.
 
 For 64 bit library.
 
-* Compile wxWidgets using solution file corresponding with your VS version in directory
-wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
-and VS2015 is wx_vc14.sln.
+* Compile libogg using libogg_static.sln solution file in Gw2Browser/extern/libogg/win32/VS2015.
+
+* Compile libvorbis using vorbis_static.sln solution file in Gw2Browser/extern/libvorbis/win32/VS2015.
 
 * Compile Gw2Browser using Gw2Browser.sln solution file in Gw2Browser/prj.
 
@@ -177,7 +214,11 @@ and VS2015 is wx_vc14.sln.
 
 * Build glew.
 
-1. Use cmake to generate glew's MinGW makefile.
+1. Use CMake-gui to generate glew's MinGW makefile.
+
+		In "Where is the source code:" box, enter Gw2Browser/extern/glew
+		In "Where to build the binaries:" box, enter Gw2Browser/extern/glew
+		Click "Configure", then click "Generate".
 
 2. Open CMakeCache.txt in Gw2Browser/extern/glew directory and change these line
 
@@ -193,11 +234,38 @@ and VS2015 is wx_vc14.sln.
 
 		mingw32-make
 
+* Build libogg
+
+1. Use CMake-gui to generate libogg's MinGW makefile.
+
+		In "Where is the source code:" box, enter Gw2Browser/extern/libogg
+		In "Where to build the binaries:" box, enter Gw2Browser/extern/libogg
+		Click "Configure", then click "Generate".
+
+2. Change directory of Git Bash window to Gw2Browser/extern/libogg and use these command
+
+		mingw32-make glew32.lib
+
+* Build libvorbis
+
+1. Use CMake-gui to generate libvorbis's MinGW makefile.
+
+		In "Where is the source code:" box, enter Gw2Browser/extern/libvorbis
+		In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis
+		Click "Configure",
+		Set "OGG_INCLUDE_DIRS" to "Gw2Browser/extern/libogg/include"
+		Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg.a"
+		Then, click "Generate".
+
+2. Change directory of Git Bash window to Gw2Browser/extern/libvorbis and use these command
+
+		mingw32-make
+
 * Build freetype
 
 1. Open Command Prompt window (cmd.exe).
 
-2. Change directory to Gw2Browser/extern/freetype and use these command
+2. Change directory to Gw2Browser/extern/freetype and use these command.
 
 		mkdir objs
 		mingw32-make
@@ -209,10 +277,11 @@ and VS2015 is wx_vc14.sln.
    to compile Gw2Browser.
 
 * Copy libgomp-1.dll or libgomp_64-1.dll from TDM-GCC install directory to Gw2Browser/bin
+* Copy soft_oal.dll from openal-soft/bin/Win32 or openal-soft/bin/Win64 directory to Gw2Browser/bin and rename it to OpenAL32.dll
 
 #### Linux, building with GCC
 
-* I haven't try to build Gw2Browser on Linux yet, but it probably build =P
+* I haven't try to build Gw2Browser on Linux yet, but it probably build :P
 
 Authors
 -------
@@ -222,18 +291,18 @@ Authors
 ### Thanks to:
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser and gw2formats
-* [Joey de Vries](http://learnopengl.com) and [opengl-tutorial.org](http://www.opengl-tutorial.org) : Great OpenGL 3.3 tutorial
-* [Inigo Quilez](http://www.iquilezles.org/www/articles/normals/normals.htm) : clever normalization of mesh
+* [Antoine Hom](https://github.com/ahom) : gw2DatTools
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
+* [DubyaDubyaDubyaDot](https://stackoverflow.com/questions/13437422/libvorbis-audio-decode-from-memory-in-c) : How to read Oggs from memory using custom ogg callbacks.
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
-* [Antoine Hom](https://github.com/ahom) : gw2DatTools
-* [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
+* [Inigo Quilez](http://www.iquilezles.org/www/articles/normals/normals.htm) : clever normalization of mesh
+* [Joey de Vries](http://learnopengl.com) and [opengl-tutorial.org](http://www.opengl-tutorial.org) : Great OpenGL 3.3 tutorial
 * [Liberation Sans Regular](https://fedorahosted.org/liberation-fonts/) : Font used by the model viewer
-* [Till034](https://github.com/Till034) : OnCompareItems function overload
+* [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
+* [Till034](https://github.com/Till034) : OnCompareItems function overload
 * [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
-* [DubyaDubyaDubyaDot](https://stackoverflow.com/questions/13437422/libvorbis-audio-decode-from-memory-in-c) : How to read Oggs from memory using custom callbacks.
 
 ### Special thanks to:
 
@@ -426,3 +495,69 @@ extern/freetype/*
 	Project (www.freetype.org).  All rights reserved.
 
 See extern/freetype/docs/FTL.TXT for more details.
+
+### libogg
+
+-----------------------------------------------------------------------------
+
+Copyright (c) 2002, Xiph.org Foundation
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+- Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+
+- Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+- Neither the name of the Xiph.org Foundation nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+### libvorbis
+
+-----------------------------------------------------------------------------
+
+Copyright (c) 2002-2008 Xiph.org Foundation
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+- Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+
+- Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+- Neither the name of the Xiph.org Foundation nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
