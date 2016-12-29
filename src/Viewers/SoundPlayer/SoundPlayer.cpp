@@ -57,9 +57,7 @@ namespace gw2b {
 	}
 
 	SoundPlayer::~SoundPlayer( ) {
-		if ( m_isPlaying ) {
-			this->stopSound( );
-		}
+		this->stopSound( );
 
 		// Delete buffers
 		alDeleteBuffers( NUM_BUFFERS, m_buffers );
@@ -71,9 +69,7 @@ namespace gw2b {
 	}
 
 	void SoundPlayer::clear( ) {
-		if ( m_isPlaying ) {
-			this->stopSound( );
-		}
+		this->stopSound( );
 
 		// Clear list control content
 		m_listCtrl->ClearAll( );
@@ -117,12 +113,10 @@ namespace gw2b {
 			// Select the first entry
 			this->selectEntry( 0 );
 			// Stop playing sound, if still playing it
-			if ( m_isPlaying ) {
-				this->stopSound( );
-			}
+			this->stopSound( );
 			// Play the first entry
-			m_thread = new std::thread( &SoundPlayer::playSound, this, 0 );
-			m_thread->detach( );
+			m_thread = std::thread( &SoundPlayer::playSound, this, 0 );
+			m_thread.detach( );
 		}
 	}
 
@@ -130,14 +124,15 @@ namespace gw2b {
 		if ( !p_list || *p_list == '\0' ) {
 			printf( "    !!! none !!!\n" );
 			wxLogMessage( wxT( "    !!! NONE !!!" ) );
-		} else
+		} else {
 			do {
 				wxLogMessage( wxT( "    %s" ), p_list );
 				p_list += strlen( p_list ) + 1;
 			} while ( *p_list != '\0' );
+		}
 	}
 
-	int SoundPlayer::initOAL( ) {
+	bool SoundPlayer::initOAL( ) {
 		wxLogMessage( wxT( "Initializing OpenAL..." ) );
 
 		ALboolean enumeration = alcIsExtensionPresent( NULL, "ALC_ENUMERATION_EXT" );
@@ -158,7 +153,7 @@ namespace gw2b {
 			wxLogMessage( wxT( "Default playback device: %s" ), alcGetString( NULL, ALC_DEFAULT_DEVICE_SPECIFIER ) );
 		}
 
-		const ALCchar *defaultDeviceName = alcGetString( NULL, ALC_DEFAULT_DEVICE_SPECIFIER );
+		const ALCchar* defaultDeviceName = alcGetString( NULL, ALC_DEFAULT_DEVICE_SPECIFIER );
 
 		m_device = alcOpenDevice( defaultDeviceName );
 		if ( !m_device ) {
@@ -170,6 +165,7 @@ namespace gw2b {
 
 		m_context = alcCreateContext( m_device, NULL );
 		if ( !alcMakeContextCurrent( m_context ) ) {
+			alcCloseDevice( m_device );
 			wxLogMessage( wxT( "Failed to make default context." ) );
 			return false;
 		}
@@ -247,7 +243,7 @@ namespace gw2b {
 		m_listCtrl->SetItemState( p_index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
 	}
 
-	void SoundPlayer::loadOggs( char* p_data, size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks ) {
+	int SoundPlayer::loadOggs( char* p_data, size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks ) {
 		p_oggStream.curPtr = p_oggStream.filePtr = p_data;
 		p_oggStream.fileSize = p_size;
 
@@ -256,11 +252,49 @@ namespace gw2b {
 		p_oggCallbacks.close_func = closeOgg;
 		p_oggCallbacks.tell_func = tellOgg;
 
-		int ret1 = ov_open_callbacks( static_cast<void*>( &p_oggStream ), p_oggFile, NULL, -1, p_oggCallbacks );
+		auto ret = ov_open_callbacks( static_cast<void*>( &p_oggStream ), p_oggFile, NULL, -1, p_oggCallbacks );
+		if ( ret ) {
+			wxLogMessage( wxT( "ov_open_callbacks error :(" ) );
+			switch ( ret ) {
+			case OV_EREAD:
+				wxLogMessage( wxT( "A read from media returned an error." ) );
+				break;
+			case OV_ENOTVORBIS:
+				wxLogMessage( wxT( "Bitstream does not contain any Vorbis data." ) );
+				break;
+			case OV_EVERSION:
+				wxLogMessage( wxT( "Vorbis version mismatch." ) );
+				break;
+			case OV_EBADHEADER:
+				wxLogMessage( wxT( "Invalid Vorbis bitstream header." ) );
+				break;
+			case OV_EFAULT:
+				wxLogMessage( wxT( "Internal logic fault; indicates a bug or heap/stack corruption." ) );
+				break;
+			default:
+				wxLogMessage( wxT( "Unknown error." ) );
+			}
+			return false;
+		}
 
 		// Get some information about the OGG file
 		vorbis_info* oggInfo = ov_info( p_oggFile, -1 );
-		assert( oggInfo );
+		if ( !oggInfo ) {
+			ov_clear( p_oggFile );
+			wxLogMessage( wxT( "Can't get vorbis information :(" ) );
+			return false;
+		}
+
+		vorbis_comment* oggComments = ov_comment( p_oggFile, -1 );
+		char **ptr = oggComments->user_comments;
+		while ( *ptr ) {
+			wxLogMessage( wxT( "%s" ), *ptr );
+			++ptr;
+		}
+		wxLogMessage( wxT( "Bitstream is %d channel, %ld Hz" ), oggInfo->channels, oggInfo->rate );
+		wxLogMessage( wxT( "Bitrate (variable) %ld kb/s" ), oggInfo->bitrate_nominal / 1000 );
+		wxLogMessage( wxT( "Decoded length: %ld samples" ), static_cast<long>( ov_pcm_total( p_oggFile, -1 ) ) );
+		wxLogMessage( wxT( "Encoded by: %s" ), oggComments->vendor );
 
 		// Check the number of channels
 		if ( oggInfo->channels == 1 ) {
@@ -271,6 +305,8 @@ namespace gw2b {
 
 		// The frequency of the sampling rate
 		m_frequency = oggInfo->rate;
+
+		return true;
 	}
 
 	bool SoundPlayer::readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALenum p_format, ALsizei p_freqency ) {
@@ -310,7 +346,7 @@ namespace gw2b {
 		ov_callbacks oggCallbacks;
 
 		m_isPlaying = true;
-		m_isDone = false;
+		m_isThreadEnded = false;
 
 		// Generate source
 		alGenSources( ( ALuint ) 1, &m_source );
@@ -331,7 +367,10 @@ namespace gw2b {
 
 		auto const fourcc = *reinterpret_cast<uint32*>( data );
 		if ( fourcc == FCC_OggS ) {
-			this->loadOggs( reinterpret_cast<char*>( data ), size, &oggFile, oggStream, oggCallbacks );
+			if ( !this->loadOggs( reinterpret_cast<char*>( data ), size, &oggFile, oggStream, oggCallbacks ) ) {
+				wxLogMessage( wxT( "Error loading Oggs data." ) );
+				return;
+			}
 		}
 
 		// Allocate buffer
@@ -366,8 +405,8 @@ namespace gw2b {
 		while ( ret && m_isPlaying ) {
 			ALuint buffer;
 
-			// sleep 100ms to make it not use too much CPU time
-			std::this_thread::sleep_for( std::chrono::microseconds( 100 ) );
+			// sleep 10ms to make it not use too much CPU time
+			std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
 
 			// Check if OpenAL is processed the buffer
 			alGetSourcei( m_source, AL_BUFFERS_PROCESSED, &processed );
@@ -383,9 +422,8 @@ namespace gw2b {
 					// Insert the buffer to the source queue
 					alSourceQueueBuffers( m_source, 1, &buffer );
 					if ( alGetError( ) != AL_NO_ERROR ) {
-						freePointer( buf );
 						wxLogMessage( wxT( "Error buffering :(" ) );
-						return;
+						break;
 					}
 				}
 			}
@@ -402,30 +440,33 @@ namespace gw2b {
 		alDeleteSources( 1, &m_source );
 
 		m_isPlaying = false;
-		m_isDone = true;
-		delete m_thread;
+		m_isThreadEnded = true;
 	}
 
 	void SoundPlayer::stopSound( ) {
-		// Stop OpenAL to play sound
-		alSourceStop( m_source );
-		// Signal player thread to stop playing
-		m_isPlaying = false;
+		if ( this->playing( ) ) {
+			// Stop OpenAL to play sound
+			alSourceStop( m_source );
+			// Signal player thread to stop playing
+			m_isPlaying = false;
+		}
 		// Wait until the thread is finished
-		while ( !m_isDone ) {
+		while ( !m_isThreadEnded ) {
 			std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
 		}
+	}
+
+	bool SoundPlayer::playing( ) {
+		return m_isPlaying;
 	}
 
 	void SoundPlayer::onListItemDoubleClickedEvt( wxListEvent& p_event ) {
 		auto index = p_event.m_itemIndex;
 
-		if ( m_isPlaying ) {
-			this->stopSound( );
-		}
+		this->stopSound( );
 
-		m_thread = new std::thread( &SoundPlayer::playSound, this, index );
-		m_thread->detach( );
+		m_thread = std::thread( &SoundPlayer::playSound, this, index );
+		m_thread.detach( );
 	}
 
 }; // namespace gw2b
