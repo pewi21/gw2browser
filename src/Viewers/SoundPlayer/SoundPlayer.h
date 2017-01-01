@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "OggCallback.h"
 #include "Readers/PackedSoundReader.h"
 #include "Readers/SoundBankReader.h"
+#include "Readers/asndMP3Reader.h"
 
 #include "Viewer.h"
 
@@ -52,8 +53,8 @@ namespace gw2b {
 		std::thread					m_thread;
 
 		// Constraint
-		#define	NUM_BUFFERS 2											// 2 Buffers
-		ALuint						m_bufferSize = 16384;				// 16k Buffer
+		#define	NUM_BUFFERS 3											// Number of buffers
+		ALuint						m_bufferSize = 4096;				// Buffer size
 
 		// Internal status
 		bool						m_alInitialized = false;			// Is OpenAL is initialized?
@@ -91,8 +92,8 @@ namespace gw2b {
 		SoundBankReader* sndBankReader( ) {
 			return reinterpret_cast<SoundBankReader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
-		  /** Gets the sound bank reader containing the data displayed by this viewer.
-		  *  \return SoundBankReader*    Reader containing the data. */
+		/** Gets the sound bank reader containing the data displayed by this viewer.
+		*  \return SoundBankReader*    Reader containing the data. */
 		const SoundBankReader* sndBankReader( ) const {
 			return reinterpret_cast<const SoundBankReader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
@@ -106,6 +107,17 @@ namespace gw2b {
 		*  \return PackedSoundReader*    Reader containing the data. */
 		const PackedSoundReader* pfSoundReader( ) const {
 			return reinterpret_cast<const PackedSoundReader*>( this->reader( ) );
+		} // already asserted with a dynamic_cast
+
+		/** Gets the image reader containing the data displayed by this viewer.
+		*  \return asndMP3Reader*    Reader containing the data. */
+		asndMP3Reader* asndSoundReader( ) {
+			return reinterpret_cast<asndMP3Reader*>( this->reader( ) );
+		} // already asserted with a dynamic_cast
+		/** Gets the image reader containing the data displayed by this viewer.
+		*  \return asndMP3Reader*    Reader containing the data. */
+		const asndMP3Reader* asndSoundReader( ) const {
+			return reinterpret_cast<const asndMP3Reader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
 
 	private:

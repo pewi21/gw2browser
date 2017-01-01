@@ -103,6 +103,17 @@ namespace gw2b {
 
 					m_sound.push_back( tmp );
 				}
+			} else if ( isOfType<asndMP3Reader>( p_reader ) ) {
+				if ( p_reader ) {
+					auto reader = this->asndSoundReader( );
+					auto sound = reader->getMP3Data( );
+
+					SoundBank tmp;
+					tmp.voiceId = 0;
+					tmp.data = sound;
+
+					m_sound.push_back( tmp );
+				}
 			} else {
 				// Hopefully, there aren't things gones here.
 				return;
@@ -310,7 +321,6 @@ namespace gw2b {
 	}
 
 	bool SoundPlayer::readOggs( char* p_databuffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALuint p_buffer, ALenum p_format, ALsizei p_freqency ) {
-		// 'count' should not be > MAX_AUDIO_SAMPLES
 		ALsizei bytes = 0;
 		ALsizei size = p_count * sizeof( ALshort );
 		while ( bytes < size ) {
@@ -388,8 +398,12 @@ namespace gw2b {
 		size_t decodedBytes = 0;
 
 		int ret = mpg123_decode( p_handle, NULL, 0, buffer, p_count, &decodedBytes );
-		if ( ret != MPG123_OK || decodedBytes == 0 ) {
+		if ( ret > MPG123_OK && ret != MPG123_NEED_MORE ) {
 			wxLogMessage( wxT( "Decoding error %d" ), ret );
+			return false;
+		}
+
+		if ( decodedBytes == 0 ) {
 			return false;
 		}
 
@@ -410,7 +424,7 @@ namespace gw2b {
 		m_isThreadEnded = false;
 
 		// Generate source
-		alGenSources( ( ALuint ) 1, &m_source );
+		alGenSources( 1, &m_source );
 
 		// Set sound source
 		{
@@ -441,7 +455,7 @@ namespace gw2b {
 				wxLogMessage( wxT( "Error loading Oggs data." ) );
 				return false;
 			}
-		} else {
+		} else if ( ( fourcc & 0xffff ) == FCC_MP3 ) {
 			// Initialize mpg123 library
 			mpg123_init( );
 			// Create new mpg123 handle
@@ -455,31 +469,26 @@ namespace gw2b {
 		}
 
 		// Allocate buffer
-		size_t bufSize = m_bufferSize * sizeof( ALshort );
-		if ( fourcc != FCC_OggS ) {
-			// If the data is MP3, no streaming :P
-			bufSize = mpg123_length( mpg123Handle );
-		}
-		auto buf = allocate<char>( bufSize );
+		auto buf = allocate<char>( m_bufferSize * sizeof( ALshort ) );
 
 		bool ret = false;
 
 		// Buffer audio data to OpenAL
 		for ( int i = 0; i < NUM_BUFFERS; i++ ) {
 			if ( fourcc == FCC_OggS ) {
-				ret = readOggs( buf, m_bufferSize, &oggFile, m_buffers[i], m_format, m_frequency );
+				ret = this->readOggs( buf, m_bufferSize, &oggFile, m_buffers[i], m_format, m_frequency );
+			} else if ( ( fourcc & 0xffff ) == FCC_MP3 ) {
+				ret = this->readMp3( buf, m_bufferSize, mpg123Handle, m_buffers[i], m_format, m_frequency );
 			}
 
+			//alBufferData( m_buffers[i], m_format, buf, m_bufferSize, m_frequency );
+			//alSourceQueueBuffers( m_source, 1, &m_buffers[i] );
 			if ( alGetError( ) != AL_NO_ERROR ) {
 				freePointer( buf );
 				wxLogMessage( wxT( "Error loading :(" ) );
 				return false;
 			}
 		}
-
-
-		// Read MP3, single big buffer?
-
 
 		// Queue the buffers onto the source
 		alSourceQueueBuffers( m_source, NUM_BUFFERS, m_buffers );
@@ -492,45 +501,59 @@ namespace gw2b {
 			return false;
 		}
 
-		ALint processed;
 		ALint state;
 		alGetSourcei( m_source, AL_SOURCE_STATE, &state );
 
 		while ( ret && m_isPlaying ) {
 			ALuint buffer;
+			ALint bufferProcessed;
+			ALint queuedBuffers;
 
 			// sleep 10ms to make it not use too much CPU time
 			std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
 
-			// Check if stopped playing
-			//alGetSourcei( m_source, AL_SOURCE_STATE, &state );
-
 			// Check if OpenAL is processed the buffer
-			alGetSourcei( m_source, AL_BUFFERS_PROCESSED, &processed );
-			if ( processed ) {
+			alGetSourcei( m_source, AL_BUFFERS_PROCESSED, &bufferProcessed );
+
+			if ( bufferProcessed ) {
 				// For each processed buffer
-				while ( processed-- ) {
+				while ( bufferProcessed-- ) {
 					// Remove processed buffer from the source queue
 					alSourceUnqueueBuffers( m_source, 1, &buffer );
 					// Read the next chunk of decoded audio data and fill the old buffer with new data
-					//if ( fourcc == FCC_OggS ) {
-						ret = readOggs( buf, m_bufferSize, &oggFile, buffer, m_format, m_frequency );
-					//}
-					// Insert the buffer to the source queue
-					alSourceQueueBuffers( m_source, 1, &buffer );
-					if ( alGetError( ) != AL_NO_ERROR ) {
-						wxLogMessage( wxT( "Error buffering :(" ) );
-						break;
+					if ( fourcc == FCC_OggS ) {
+						ret = this->readOggs( buf, m_bufferSize, &oggFile, buffer, m_format, m_frequency );
+					} else if ( ( fourcc & 0xffff ) == FCC_MP3 ) {
+						ret = this->readMp3( buf, m_bufferSize, mpg123Handle, buffer, m_format, m_frequency );
 					}
+
+					if ( ret ) {
+						// Insert the buffer to the source queue
+						alSourceQueueBuffers( m_source, 1, &buffer );
+						if ( alGetError( ) != AL_NO_ERROR ) {
+							wxLogMessage( wxT( "Error buffering :(" ) );
+							break;
+						}
+					}
+				}
+			}
+
+			alGetSourcei( m_source, AL_SOURCE_STATE, &state );
+			if ( state != AL_PLAYING ) {
+				alGetSourcei( m_source, AL_BUFFERS_QUEUED, &queuedBuffers );
+				if ( queuedBuffers ) {
+					alSourcePlay( m_source );
+				} else {
+					break;
 				}
 			}
 		}
 
 		if ( fourcc == FCC_OggS ) {
 			ov_clear( &oggFile );
-		} else {
+		} else if ( ( fourcc & 0xffff ) == FCC_MP3 ) {
 			error = mpg123_close( mpg123Handle );
-			if ( error == MPG123_OK ) {
+			if ( error != MPG123_OK ) {
 				wxLogMessage( wxT( "Error closing mpg123 handle." ) );
 			}
 			mpg123_delete( mpg123Handle );
