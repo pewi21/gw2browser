@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <mpg123.h>
 #include <vorbis/vorbisfile.h>
 
 #include "OggCallback.h"
@@ -52,7 +53,7 @@ namespace gw2b {
 
 		// Constraint
 		#define	NUM_BUFFERS 2											// 2 Buffers
-		const ALuint				m_bufferSize = 16384;				// 16k Buffer
+		ALuint						m_bufferSize = 16384;				// 16k Buffer
 
 		// Internal status
 		bool						m_alInitialized = false;			// Is OpenAL is initialized?
@@ -113,9 +114,11 @@ namespace gw2b {
 		void populateListCtrl( );
 		void insertItem( const int p_index );
 		void selectEntry( const long p_index );
-		int loadOggs( char* p_data, size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks );
-		bool readOggs( char* p_databuffer, ALuint p_buffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALenum p_format, ALsizei p_freqency );
-		void playSound( const int p_index );
+		bool loadOggs( char* p_data, size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks );
+		bool readOggs( char* p_databuffer, ALsizei p_count, OggVorbis_File* p_oggFile, ALuint p_buffer, ALenum p_format, ALsizei p_freqency );
+		bool loadMp3( char* p_data, size_t p_size, mpg123_handle* p_handle );
+		bool readMp3( char* p_databuffer, ALsizei p_count, mpg123_handle* p_handle, ALuint p_buffer, ALenum p_format, ALsizei p_freqency );
+		bool playSound( const int p_index );
 		void stopSound( );
 		bool playing( );
 		void onListItemDoubleClickedEvt( wxListEvent& p_event );
