@@ -428,7 +428,7 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::onTreeEntryClicked( CategoryTree& p_tree, const DatIndexEntry& p_entry ) {
-		wxLogMessage( wxT( "View Entry: %s" ), p_entry.name( ) );
+		wxLogMessage( wxT( "Open Entry: %s" ), p_entry.name( ) );
 		this->viewEntry( p_entry );
 	}
 
