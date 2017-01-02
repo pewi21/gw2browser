@@ -32,6 +32,8 @@ File Id			Format			Note
 106729			model			Charr cannon
 106572
 106935			model			Turret
+162177			soundbank		"I'm a Charr" (female)
+162177			soundbank		"I'm a Charr" (male)
 408554
 454456			model			Zhaitan
 543770			model			Legionnaire Weapon
@@ -42,3 +44,6 @@ File Id			Format			Note
 543947			model			Twilight
 908287			model			The Lost Ark
 915401			model			Cute male Charr NPC
+1417685			mp3				SAB sound effects start
+...
+1417808			mp3				SAB sound effects end
