@@ -382,6 +382,8 @@ namespace gw2b {
 						m_format = AL_FORMAT_STEREO16;
 					}
 
+					mpg123_scan( p_handle );
+
 					// Get some information about the Mp3 file
 					mpg123_frameinfo info;
 					mpg123_info( p_handle, &info );
@@ -430,6 +432,7 @@ namespace gw2b {
 						break;
 					}
 					wxLogMessage( wxT( "Bitrate: %s mode, %d kb/s" ), modeString, info.bitrate );
+					wxLogMessage( wxT( "Decoded length: %ld samples" ), mpg123_length( p_handle ) );
 
 					return true;
 				}
