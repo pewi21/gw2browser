@@ -42,9 +42,13 @@ namespace gw2b {
 		gw2f::pf::BankPackFile bankFile( m_data.GetPointer( ), m_data.GetSize( ) );
 		auto bankChunk = bankFile.chunk<gw2f::pf::BankChunks::BankFile>( );
 
-		int totalBank = bankChunk->asndFile.size( );
-
 		std::vector<SoundBank> outputBuffer;
+
+		if ( !bankChunk ) {
+			return outputBuffer;
+		}
+
+		int totalBank = bankChunk->asndFile.size( );
 
 		for ( int i = 0; i < totalBank; i++ ) {
 			auto asnd = bankChunk->asndFile[i];

@@ -118,16 +118,18 @@ namespace gw2b {
 				// Hopefully, there aren't things gones here.
 				return;
 			}
-
+			// Populate the list control with data list
 			this->populateListCtrl( );
 
-			// Select the first entry
-			this->selectEntry( 0 );
-			// Stop playing sound, if still playing it
-			this->stopSound( );
-			// Play the first entry
-			m_thread = std::thread( &SoundPlayer::playSound, this, 0 );
-			m_thread.detach( );
+			if ( !m_sound.empty( ) ) {
+				// Select the first entry
+				this->selectEntry( 0 );
+				// Stop playing sound, if still playing it
+				this->stopSound( );
+				// Play the first entry
+				m_thread = std::thread( &SoundPlayer::playSound, this, 0 );
+				m_thread.detach( );
+			}
 		}
 	}
 
