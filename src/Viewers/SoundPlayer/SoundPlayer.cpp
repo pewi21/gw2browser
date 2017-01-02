@@ -447,7 +447,6 @@ namespace gw2b {
 
 	bool SoundPlayer::readMp3( char* p_databuffer, ALsizei p_count, mpg123_handle* p_handle, ALuint p_buffer, ALenum p_format, ALsizei p_freqency ) {
 		auto buffer = reinterpret_cast<unsigned char*>( p_databuffer );
-		size_t size = p_count * sizeof( ALshort );
 		size_t decodedBytes = 0;
 
 		int ret = mpg123_decode( p_handle, NULL, 0, buffer, p_count, &decodedBytes );
