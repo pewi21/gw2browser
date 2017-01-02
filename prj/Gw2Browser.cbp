@@ -19,16 +19,17 @@
 					<Add option="-Wno-switch" />
 					<Add option="-std=gnu++11" />
 					<Add option="-DGLEW_STATIC" />
+					<Add directory="../../mpg123" />
+					<Add directory="../../openal-soft/include" />
 					<Add directory="../../wxWidgets-3.1.0/include" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib/mswud" />
-					<Add directory="../../openal-soft/include" />
-					<Add directory="../../libogg/include" />
-					<Add directory="../../libvorbis/include" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
 					<Add directory="../extern/gw2DatTools/include" />
 					<Add directory="../extern/gw2formats/include" />
+					<Add directory="../extern/libogg/include" />
+					<Add directory="../extern/libvorbis/include" />
 					<Add directory="../extern/libwebp/src" />
 					<Add directory="../src" />
 				</Compiler>
@@ -39,6 +40,7 @@
 					<Add library="../extern/freetype/objs/freetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
 					<Add library="libOpenAL32.dll.a" />
+					<Add library="libmpg123-0.a" />
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
@@ -66,6 +68,7 @@
 					<Add library="libwinspool.a" />
 					<Add library="libuuid.a" />
 					<Add library="libversion.a" />
+					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib" />
 					<Add directory="../extern/freetype/objs" />
@@ -89,16 +92,17 @@
 					<Add option="-Wno-switch" />
 					<Add option="-std=gnu++11" />
 					<Add option="-DGLEW_STATIC" />
+					<Add directory="../../mpg123" />
+					<Add directory="../../openal-soft/include" />
 					<Add directory="../../wxWidgets-3.1.0/include" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib/mswu" />
-					<Add directory="../../openal-soft/include" />
-					<Add directory="../../libogg/include" />
-					<Add directory="../../libvorbis/include" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
 					<Add directory="../extern/gw2DatTools/include" />
 					<Add directory="../extern/gw2formats/include" />
+					<Add directory="../extern/libogg/include" />
+					<Add directory="../extern/libvorbis/include" />
 					<Add directory="../extern/libwebp/src" />
 					<Add directory="../src" />
 				</Compiler>
@@ -110,6 +114,7 @@
 					<Add library="../extern/freetype/objs/freetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
 					<Add library="libOpenAL32.dll.a" />
+					<Add library="libmpg123-0" />
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
@@ -137,6 +142,7 @@
 					<Add library="libwinspool.a" />
 					<Add library="libuuid.a" />
 					<Add library="libversion.a" />
+					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib" />
 					<Add directory="../extern/freetype/objs" />
