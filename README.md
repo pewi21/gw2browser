@@ -83,6 +83,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 ### Required libraries
 
+* [mpg123](https://www.mpg123.de)
 * [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
 * [wxWidgets 3.1.0](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) *Included*
@@ -115,13 +116,18 @@ This will download Gw2Browser and all included library source code.
 
 #### Getting the required library:
 
-* Download OpenAL-Soft binaries from [here](http://kcat.strangesoft.net/openal.html), extract it to
-the same directory that Gw2Browser directory is in. Or download the source code and build it your self.
+* Download mpg123 binaries from [here](https://www.mpg123.de/), choose the lastest
+Win32 or Win64 file and extract it to the same directory that Gw2Browser directory is in.
+Or download the source code and build it your self.
+
+* Download OpenAL-Soft binaries from [here](http://kcat.strangesoft.net/openal.html),
+extract it to the same directory that Gw2Browser directory is in. Or download the source code
+and build it your self.
 
 * Download wxWidgets source code from [here](http://wxwidgets.org/), extract it to the same directory
-that Gw2Browser directory is in. Or download and using the binaries.
+that Gw2Browser directory is in. Or download and use the binaries.
 
-**Note:** Tthe library and source code directory must be in directory like this.
+**Note:** The library and source code directory must be in directory like this.
 The ROOT is the directory you created in Getting the source code.
 
 		[ROOT]
@@ -130,6 +136,8 @@ The ROOT is the directory you created in Getting the source code.
 		 |    |
 		 |    +--src
 		 |    +--...
+		 |
+		 +--mpg123
 		 |
 		 +--openal-soft
 		 |    |
@@ -171,6 +179,25 @@ For 32 bit library.
 		vcvarsall amd64
 
 For 64 bit library.
+
+* Build mpg123 library.
+
+1. "Visual Studio Native Tools Command Prompt" or "Developer Command Prompt for VS2015"
+and change it's directory to mpg123's directory.
+
+2. Rename export definition file by using this command.
+
+		ren libmpg123-0.dll.def libmpg123-0.def
+
+3. Build the library.
+
+for 32 bit binary, use this command.
+
+		lib /DEF:libmpg123-0.def /OUT:libmpg123-0.lib
+
+for 64 bit binary, use this command.
+
+		lib /MACHINE:X64 /DEF:libmpg123-0.def /OUT:libmpg123-0.lib
 
 * Compile libogg using libogg_static.sln solution file in Gw2Browser/extern/libogg/win32/VS2015.
 
