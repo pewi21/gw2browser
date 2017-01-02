@@ -304,8 +304,8 @@ namespace gw2b {
 			wxLogMessage( wxT( "%s" ), *ptr );
 			++ptr;
 		}
-		wxLogMessage( wxT( "Bitstream is %d channel, %ld Hz" ), oggInfo->channels, oggInfo->rate );
-		wxLogMessage( wxT( "Bitrate (variable) %ld kb/s" ), oggInfo->bitrate_nominal / 1000 );
+		wxLogMessage( wxT( "Bitstream is Ogg Vorbis, %d channel, %ld Hz" ), oggInfo->channels, oggInfo->rate );
+		wxLogMessage( wxT( "Bitrate (variable): %ld kb/s" ), oggInfo->bitrate_nominal / 1000 );
 		wxLogMessage( wxT( "Decoded length: %ld samples" ), static_cast<long>( ov_pcm_total( p_oggFile, -1 ) ) );
 		wxLogMessage( wxT( "Encoded by: %s" ), oggComments->vendor );
 
@@ -376,12 +376,60 @@ namespace gw2b {
 					// Set sample rate
 					m_frequency = sampleRate;
 					// set number of channels
-					//m_channels = channels;
 					if ( channels == 1 ) {
 						m_format = AL_FORMAT_MONO16;
 					} else {
 						m_format = AL_FORMAT_STEREO16;
 					}
+
+					// Get some information about the Mp3 file
+					mpg123_frameinfo info;
+					mpg123_info( p_handle, &info );
+
+					wxString versionString;
+					switch ( info.version ) {
+					case MPG123_1_0:
+						versionString = wxT( "MPEG Version 1.0" );
+						break;
+					case MPG123_2_0:
+						versionString = wxT( "MPEG Version 2.0" );
+						break;
+					case MPG123_2_5:
+						versionString = wxT( "MPEG Version 2.5" );
+						break;
+					}
+
+					wxString channelString;
+					switch ( info.mode ) {
+					case MPG123_M_STEREO:
+						channelString = wxT( "Standard Stereo" );
+						break;
+					case MPG123_M_JOINT:
+						channelString = wxT( "Joint Stereo" );
+						break;
+					case MPG123_M_DUAL:
+						channelString = wxT( "Dual Channel" );
+						break;
+					case MPG123_M_MONO:
+						channelString = wxT( "Single Channel" );
+						break;
+					}
+
+					wxLogMessage( wxT( "Bitstream is %s Layer %d, %s, %ld Hz " ), versionString, info.layer, channelString, info.rate );
+
+					wxString modeString;
+					switch ( info.vbr ) {
+					case MPG123_CBR:
+						modeString = wxT( "Constant Bitrate" );
+						break;
+					case MPG123_VBR:
+						modeString = wxT( "Variable Bitrate" );
+						break;
+					case MPG123_ABR:
+						modeString = wxT( "Average Bitrate" );
+						break;
+					}
+					wxLogMessage( wxT( "Bitrate: %s mode, %d kb/s" ), modeString, info.bitrate );
 
 					return true;
 				}
