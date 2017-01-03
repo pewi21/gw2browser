@@ -211,9 +211,26 @@ for 64 bit binary, use this command.
 
 * Open Git Bash command line window.
 
+* Build mpg123 library.
+
+1. Open libmpg123-0.dll.def with any text editor, like Notepad++ and insert this to the first line.
+
+		LIBRARY libmpg123-0.dll
+
+It will look some thing like this.
+
+		LIBRARY libmpg123-0.dll
+		EXPORTS
+		mpg123_add_string
+		...
+
+2. Change directory of Git Bash window to mpg123 directory and use these command.
+
+		dlltool -d libmpg123-0.dll.def -l libmpg123-0.a
+
 * Build wxWidgets.
 
-1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command
+1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command.
 
 		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug
 
@@ -304,7 +321,10 @@ for 64 bit binary, use this command.
    to compile Gw2Browser.
 
 * Copy libgomp-1.dll or libgomp_64-1.dll from TDM-GCC install directory to Gw2Browser/bin
+
 * Copy soft_oal.dll from openal-soft/bin/Win32 or openal-soft/bin/Win64 directory to Gw2Browser/bin and rename it to OpenAL32.dll
+
+* Copy libmpg123-0.dll from mpg123 directory to Gw2Browser/bin
 
 #### Linux, building with GCC
 
