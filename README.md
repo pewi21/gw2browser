@@ -363,7 +363,7 @@ For contributions, please go to [this project's page on GitHub](https://github.c
 Legal Disclaimer
 ----------------
 
-Guild Wars 2 © 2010-2016 ArenaNet, LLC. All rights reserved.
+Guild Wars 2 © 2010-2017 ArenaNet, LLC. All rights reserved.
 Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet, NCSOFT,
 the Interlocking NC Logo, and all associated logos and designs are trademarks
 or registered trademarks of NCSOFT Corporation.
@@ -372,7 +372,7 @@ All other trademarks are the property of their respective owners.
 License
 -------
 
-	Copyright © 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+	Copyright © 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 	Copyright © 2013 Till034 <https://github.com/Till034>
 	Copyright © 2012 Rhoot <https://github.com/rhoot>
 

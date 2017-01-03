@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -49,6 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	namespace {
+
 		enum {
 			ID_ShowFileList = wxID_HIGHEST + 1,
 			ID_ShowLog,							// Show log panel
@@ -474,11 +475,11 @@ namespace gw2b {
 			) );
 
 		info.SetCopyright( wxString::FromAscii(
-			"Copyright (C) 2014-2016 Khral Steelforge - https://github.com/kytulendu\n"
+			"Copyright (C) 2014-2017 Khral Steelforge - https://github.com/kytulendu\n"
 			"Copyright (C) 2013 Till034 - https://github.com/Till034\n"
 			"Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
 			"\n"
-			"Guild Wars 2 (C)2010-2015 ArenaNet, LLC. All rights reserved.\n"
+			"Guild Wars 2 (C)2010-2017 ArenaNet, LLC. All rights reserved.\n"
 			"Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet,\n"
 			"NCSOFT, the Interlocking NC Logo, and all associated logos and designs\n"
 			"are trademarks or registered trademarks of NCSOFT Corporation.\n"
