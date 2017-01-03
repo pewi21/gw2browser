@@ -74,18 +74,17 @@ namespace gw2b {
 				auto reader = this->eulaReader( );
 				m_string = reader->getString( );
 
-			} else {
-				// Hopefully, there aren't things gones here.
-				return;
 			}
 
-			for ( uint i = 0; i < m_string.size( ); i++ ) {
-				m_textEntry->AppendString( wxString::Format( wxT( "%d" ), i ) );
+			if ( !m_string.empty( ) ) {
+				// Populate entry list
+				for ( uint i = 0; i < m_string.size( ); i++ ) {
+					m_textEntry->AppendString( wxString::Format( wxT( "%u" ), i ) );
+				}
+				// Select entry 0
+				m_textEntry->SetSelection( 0 );
+				this->updateText( 0 );
 			}
-
-			// Select entry 0
-			m_textEntry->SetSelection( 0 );
-			this->updateText( 0 );
 		}
 	}
 

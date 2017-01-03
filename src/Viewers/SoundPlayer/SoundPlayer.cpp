@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SoundPlayer.h"
 #include "Exception.h"
 
-#include "Readers/ImageReader.h"
 #include "Data.h"
 
 namespace gw2b {
@@ -91,7 +90,6 @@ namespace gw2b {
 					auto reader = this->sndBankReader( );
 					m_sound = reader->getSoundData( );
 				}
-
 			} else if ( isOfType<PackedSoundReader>( p_reader ) ) {
 				if ( p_reader ) {
 					auto reader = this->pfSoundReader( );
@@ -114,9 +112,6 @@ namespace gw2b {
 
 					m_sound.push_back( tmp );
 				}
-			} else {
-				// Hopefully, there aren't things gones here.
-				return;
 			}
 			// Populate the list control with data list
 			this->populateListCtrl( );
@@ -194,8 +189,6 @@ namespace gw2b {
 	}
 
 	void SoundPlayer::populateListCtrl( ) {
-		// note that under MSW for SetColumnWidth() to work we need to create the
-		// items with images initially even if we specify dummy image id
 		wxListItem itemCol;
 		itemCol.SetText( wxT( "" ) );
 		m_listCtrl->InsertColumn( 0, itemCol );
