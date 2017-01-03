@@ -121,6 +121,8 @@ namespace gw2b {
 
 		// Text control use for loging
 		m_log = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 600, 70 ), wxTE_MULTILINE );
+		// Make log window read only
+		m_log->SetEditable( false );
 		m_logTarget = wxLog::SetActiveTarget( new wxLogTextCtrl( m_log ) );
 
 		// Add the panes to the manager
