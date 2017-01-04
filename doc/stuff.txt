@@ -15,6 +15,12 @@ File Id			Format			Note
 ...
 34178			model			Charr equipment end
 ...
+44165			model			Charr
+44242			model			Rytlock, intro cut scene
+44275			model			Charr
+44280			model			Rytlock, no sword
+44478			model			Charr
+44509			model			Rytlock, intro cut scene
 75001			model			Charr plateform
 ...
 91xxx			model			Charr Stuff!
@@ -31,9 +37,16 @@ File Id			Format			Note
 106728			model			Charr metal wall
 106729			model			Charr cannon
 106572
+106904			model			Charr weapon pack
+106933			model			Charr bomb shell
 106935			model			Turret
+106980			model			Charr poster
 162177			soundbank		"I'm a Charr" (female)
 162177			soundbank		"I'm a Charr" (male)
+187834			model			Charr's sigil (front of smelter)
+187835			model			Charr's stature axe
+187836			model			Charr's stature bow
+188772			model			firely dragon sword
 408554
 454456			model			Zhaitan
 543770			model			Legionnaire Weapon
@@ -51,4 +64,4 @@ File Id			Format			Note
 ...
 1417808			mp3				SAB sound effects end
 1419557			ogg				SAB music
-1419558			ogg				???? :D
+1419558			ogg				SAB metal music
