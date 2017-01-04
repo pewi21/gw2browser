@@ -187,6 +187,7 @@
 		<Unit filename="../src/Data.cpp" />
 		<Unit filename="../src/Data.h" />
 		<Unit filename="../src/Documentation/Namespaces.h" />
+		<Unit filename="../src/EventId.h" />
 		<Unit filename="../src/Exception.cpp" />
 		<Unit filename="../src/Exception.h" />
 		<Unit filename="../src/Exporter.cpp" />
