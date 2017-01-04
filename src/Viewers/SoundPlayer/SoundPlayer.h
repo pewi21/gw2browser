@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 #include <wx/listctrl.h>
+#include <wx/slider.h>
 
 #include <AL/al.h>
 #include <AL/alc.h>
@@ -50,6 +51,7 @@ namespace gw2b {
 		// Data
 		std::vector<SoundBank>		m_sound;
 		wxListCtrl*					m_listCtrl;
+		//wxSlider*					m_slider;
 		std::thread					m_thread;
 
 		// Constraint
@@ -130,10 +132,17 @@ namespace gw2b {
 		bool readOggs( char* p_data, const ALsizei p_count, OggVorbis_File* p_oggFile, ALuint p_buffer );
 		bool loadMp3( char* p_data, const size_t p_size, mpg123_handle* p_handle );
 		bool readMp3( char* p_data, const ALsizei p_count, mpg123_handle* p_handle, ALuint p_buffer );
-		bool playSound( const int p_index );
+		bool playSoundThread( const int p_index );
+		void playSound( const int p_index );
 		void stopSound( );
 		bool playing( );
 		void onListItemDoubleClickedEvt( wxListEvent& p_event );
+		void OnButtonEvt( wxCommandEvent& p_event );
+		void OnPlay( );
+		void OnPause( );
+		void OnStop( );
+		void OnNext( );
+		void OnPrev( );
 
 	}; // class SoundPlayer
 

@@ -25,6 +25,7 @@
     <ClInclude Include="..\src\Data.h" />
     <ClInclude Include="..\src\DatIndexIO.h" />
     <ClInclude Include="..\src\Documentation\Namespaces.h" />
+    <ClInclude Include="..\src\EventId.h" />
     <ClInclude Include="..\src\Exception.h" />
     <ClInclude Include="..\src\Exporter.h" />
     <ClInclude Include="..\src\FileReader.h" />

@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Imported/crc.h"
 
+#include "EventId.h"
 #include "CategoryTree.h"
 #include "Exporter.h"
 #include "FileReader.h"
@@ -47,20 +48,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "BrowserWindow.h"
 
 namespace gw2b {
-
-	namespace {
-
-		enum {
-			ID_ShowFileList = wxID_HIGHEST + 1,
-			ID_ShowLog,							// Show log panel
-			ID_ClearLog,						// Clear the log panel
-			//ID_ResetLayout,
-			//ID_SetBackgroundColor,
-			//ID_ShowGrid,		// Show grid on PreviewGLCanvas
-			//ID_ShowMask,		// Apply white texture with black background, no shader
-			//ID_SetCanvasSize,	// Set PreviewGLCanvas size
-		};
-	};
 
 	BrowserWindow::BrowserWindow( const wxString& p_title, const wxSize p_size )
 		: wxFrame( nullptr, wxID_ANY, p_title, wxDefaultPosition, p_size )

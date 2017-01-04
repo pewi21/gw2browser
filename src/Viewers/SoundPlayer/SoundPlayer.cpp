@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SoundPlayer.h"
 #include "Exception.h"
+#include "EventId.h"
 
 #include "Data.h"
 
@@ -42,17 +43,38 @@ namespace gw2b {
 			m_alInitialized = true;
 		}
 
-		auto sizer = new wxBoxSizer( wxHORIZONTAL );
+		auto sizer = new wxBoxSizer( wxVERTICAL );
+		//auto hsizer1 = new wxBoxSizer( wxHORIZONTAL );
+		auto hsizer2 = new wxBoxSizer( wxHORIZONTAL );
 
 		// List control
 		m_listCtrl = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL | wxBORDER_THEME );
 		sizer->Add( m_listCtrl, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
+		// Playback slider
+		//m_slider = new wxSlider( this, ID_SliderPlayback, 0, 0, 1, wxDefaultPosition, wxSize( 400, 25) );
+		//hsizer1->Add( m_slider );
+		//sizer->Add( hsizer1 );
+
+		// Sound control
+		auto back = new wxButton( this, ID_BtnBack, wxT( "|<" ) );
+		auto play = new wxButton( this, ID_BtnPlay, wxT( ">" ) );
+		auto stop = new wxButton( this, ID_BtnStop, wxT( "[]" ) );
+		auto forward = new wxButton( this, ID_BtnForward, wxT( ">|" ) );
+		hsizer2->Add( back );
+		hsizer2->Add( play );
+		hsizer2->Add( stop );
+		hsizer2->Add( forward );
+		sizer->Add( hsizer2 );
+
 		// Layout
 		this->SetSizer( sizer );
 		this->Layout( );
 
+		// List control events
 		this->Bind( wxEVT_LIST_ITEM_ACTIVATED, &SoundPlayer::onListItemDoubleClickedEvt, this );
+		// Button events
+		this->Bind( wxEVT_BUTTON, &SoundPlayer::OnButtonEvt, this );
 	}
 
 	SoundPlayer::~SoundPlayer( ) {
@@ -119,11 +141,8 @@ namespace gw2b {
 			if ( !m_sound.empty( ) ) {
 				// Select the first entry
 				this->selectEntry( 0 );
-				// Stop playing sound, if still playing it
-				this->stopSound( );
-				// Play the first entry
-				m_thread = std::thread( &SoundPlayer::playSound, this, 0 );
-				m_thread.detach( );
+				//Play the sound
+				this->playSound( 0 );
 			}
 		}
 	}
@@ -445,13 +464,18 @@ namespace gw2b {
 		return true;
 	}
 
-	bool SoundPlayer::playSound( const int p_index ) {
+	bool SoundPlayer::playSoundThread( const int p_index ) {
 		// Copy the data to this thread function, since some times the thread isn't finish
 		// but the data already destroyed when play new file
 		auto localData = m_sound[p_index].data;
 
 		auto data = localData.GetPointer( );
 		auto size = localData.GetSize( );
+
+		if ( p_index < m_listCtrl->GetItemCount( ) ) {
+			// Set first column text to indicate playing
+			m_listCtrl->SetItem( p_index, 0, wxT( ">" ) );
+		}
 
 		m_isPlaying = true;
 		m_isThreadEnded = false;
@@ -609,10 +633,24 @@ namespace gw2b {
 		m_isPlaying = false;
 		m_isThreadEnded = true;
 
+		if ( p_index < m_listCtrl->GetItemCount( ) ) {
+			// Reset first column text
+			m_listCtrl->SetItem( p_index, 0, wxT( "*" ) );
+		}
+
 		return true;
 	}
 
+	void SoundPlayer::playSound( const int p_index ) {
+		// Stop playing sound, if still playing it
+		this->stopSound( );
+		// Play the first entry
+		m_thread = std::thread( &SoundPlayer::playSoundThread, this, p_index );
+		m_thread.detach( );
+	}
+
 	void SoundPlayer::stopSound( ) {
+		// Is the sound still playing?
 		if ( this->playing( ) ) {
 			// Stop OpenAL to play sound
 			alSourceStop( m_source );
@@ -631,11 +669,81 @@ namespace gw2b {
 
 	void SoundPlayer::onListItemDoubleClickedEvt( wxListEvent& p_event ) {
 		auto index = p_event.m_itemIndex;
+		this->playSound( index );
+	}
 
+	void SoundPlayer::OnButtonEvt( wxCommandEvent& p_event ) {
+		auto id = p_event.GetId( );
+		switch ( id ) {
+		case ID_BtnBack:
+			this->OnPrev( );
+			break;
+		case ID_BtnPlay:
+			this->OnPlay( );
+			// Todo:change play button label
+			break;
+		case ID_BtnStop:
+			this->OnStop( );
+			break;
+		case ID_BtnForward:
+			this->OnNext( );
+			break;
+		}
+	}
+
+	void SoundPlayer::OnPlay( ) {
+		long index = -1;
+		if ( m_listCtrl->GetItemCount( ) == 0 ) {
+			return;
+		}
+		while ( ( index = m_listCtrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED ) ) != wxNOT_FOUND ) {
+			this->playSound( index );
+		}
+	}
+
+	void SoundPlayer::OnPause( ) {
+		// Pause the sound
+		alSourcePause( m_source );
+	}
+
+	void SoundPlayer::OnStop( ) {
 		this->stopSound( );
+	}
 
-		m_thread = std::thread( &SoundPlayer::playSound, this, index );
-		m_thread.detach( );
+	void SoundPlayer::OnNext( ) {
+		long index = -1;
+
+		auto count = m_listCtrl->GetItemCount( );
+		if ( count == 0 ) {
+			return;
+		}
+
+		while ( ( index = m_listCtrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED ) ) != wxNOT_FOUND ) {
+			index += 1;
+			if ( index > ( count - 1 ) ) {
+				index = 0;
+			}
+			this->selectEntry( index );
+			this->playSound( index );
+		}
+	}
+
+	void SoundPlayer::OnPrev( ) {
+		long index = -1;
+
+		auto count = m_listCtrl->GetItemCount( );
+		if ( count == 0 ) {
+			return;
+		}
+
+		while ( ( index = m_listCtrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED ) ) != wxNOT_FOUND ) {
+			index -= 1;
+			if ( index < 0 ) {
+				index = count - 1;
+			}
+			this->selectEntry( index );
+			this->playSound( index );
+		}
 	}
 
 }; // namespace gw2b
