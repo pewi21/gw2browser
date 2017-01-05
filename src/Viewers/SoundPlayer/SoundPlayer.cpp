@@ -61,10 +61,12 @@ namespace gw2b {
 		auto play = new wxButton( this, ID_BtnPlay, wxT( ">" ) );
 		auto stop = new wxButton( this, ID_BtnStop, wxT( "[]" ) );
 		auto forward = new wxButton( this, ID_BtnForward, wxT( ">|" ) );
+		m_volSlider = new wxSlider( this, ID_SliderVolume, 100, 0, 100, wxDefaultPosition, wxSize( 100, 25 ) );
 		hsizer2->Add( back );
 		hsizer2->Add( play );
 		hsizer2->Add( stop );
 		hsizer2->Add( forward );
+		hsizer2->Add( m_volSlider );
 		sizer->Add( hsizer2 );
 
 		// Layout
@@ -74,7 +76,9 @@ namespace gw2b {
 		// List control events
 		this->Bind( wxEVT_LIST_ITEM_ACTIVATED, &SoundPlayer::onListItemDoubleClickedEvt, this );
 		// Button events
-		this->Bind( wxEVT_BUTTON, &SoundPlayer::OnButtonEvt, this );
+		this->Bind( wxEVT_BUTTON, &SoundPlayer::onButtonEvt, this );
+		// Volume events
+		this->Bind( wxEVT_SLIDER, &SoundPlayer::onVolChange, this );
 	}
 
 	SoundPlayer::~SoundPlayer( ) {
@@ -667,31 +671,35 @@ namespace gw2b {
 		return m_isPlaying;
 	}
 
+	void SoundPlayer::setVolume( const ALfloat p_vol ) {
+		alListenerf( AL_GAIN, p_vol );
+	}
+
 	void SoundPlayer::onListItemDoubleClickedEvt( wxListEvent& p_event ) {
 		auto index = p_event.m_itemIndex;
 		this->playSound( index );
 	}
 
-	void SoundPlayer::OnButtonEvt( wxCommandEvent& p_event ) {
+	void SoundPlayer::onButtonEvt( wxCommandEvent& p_event ) {
 		auto id = p_event.GetId( );
 		switch ( id ) {
 		case ID_BtnBack:
-			this->OnPrev( );
+			this->onPrev( );
 			break;
 		case ID_BtnPlay:
-			this->OnPlay( );
+			this->onPlay( );
 			// Todo:change play button label
 			break;
 		case ID_BtnStop:
-			this->OnStop( );
+			this->onStop( );
 			break;
 		case ID_BtnForward:
-			this->OnNext( );
+			this->onNext( );
 			break;
 		}
 	}
 
-	void SoundPlayer::OnPlay( ) {
+	void SoundPlayer::onPlay( ) {
 		long index = -1;
 		if ( m_listCtrl->GetItemCount( ) == 0 ) {
 			return;
@@ -701,16 +709,16 @@ namespace gw2b {
 		}
 	}
 
-	void SoundPlayer::OnPause( ) {
+	void SoundPlayer::onPause( ) {
 		// Pause the sound
 		alSourcePause( m_source );
 	}
 
-	void SoundPlayer::OnStop( ) {
+	void SoundPlayer::onStop( ) {
 		this->stopSound( );
 	}
 
-	void SoundPlayer::OnNext( ) {
+	void SoundPlayer::onNext( ) {
 		long index = -1;
 
 		auto count = m_listCtrl->GetItemCount( );
@@ -728,7 +736,7 @@ namespace gw2b {
 		}
 	}
 
-	void SoundPlayer::OnPrev( ) {
+	void SoundPlayer::onPrev( ) {
 		long index = -1;
 
 		auto count = m_listCtrl->GetItemCount( );
@@ -744,6 +752,10 @@ namespace gw2b {
 			this->selectEntry( index );
 			this->playSound( index );
 		}
+	}
+
+	void SoundPlayer::onVolChange( wxCommandEvent& WXUNUSED( p_event ) ) {
+		this->setVolume( m_volSlider->GetValue( ) / 100.0 );
 	}
 
 }; // namespace gw2b
