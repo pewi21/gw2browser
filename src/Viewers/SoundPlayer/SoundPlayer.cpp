@@ -44,8 +44,8 @@ namespace gw2b {
 		}
 
 		auto sizer = new wxBoxSizer( wxVERTICAL );
-		//auto hsizer1 = new wxBoxSizer( wxHORIZONTAL );
-		auto hsizer2 = new wxBoxSizer( wxHORIZONTAL );
+		//auto vsizer1 = new wxBoxSizer( wxVERTICAL );
+		auto hsizer1 = new wxBoxSizer( wxHORIZONTAL );
 
 		// List control
 		m_listCtrl = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL | wxBORDER_THEME );
@@ -53,21 +53,23 @@ namespace gw2b {
 
 		// Playback slider
 		//m_slider = new wxSlider( this, ID_SliderPlayback, 0, 0, 1, wxDefaultPosition, wxSize( 400, 25) );
-		//hsizer1->Add( m_slider );
-		//sizer->Add( hsizer1 );
+		//vsizer1->Add( m_slider );
+		//sizer->Add( vsizer1 );
 
-		// Sound control
+		// Left sound control
 		auto back = new wxButton( this, ID_BtnBack, wxT( "|<" ) );
 		auto play = new wxButton( this, ID_BtnPlay, wxT( ">" ) );
 		auto stop = new wxButton( this, ID_BtnStop, wxT( "[]" ) );
 		auto forward = new wxButton( this, ID_BtnForward, wxT( ">|" ) );
 		m_volSlider = new wxSlider( this, ID_SliderVolume, 100, 0, 100, wxDefaultPosition, wxSize( 100, 25 ) );
-		hsizer2->Add( back );
-		hsizer2->Add( play );
-		hsizer2->Add( stop );
-		hsizer2->Add( forward );
-		hsizer2->Add( m_volSlider );
-		sizer->Add( hsizer2 );
+
+		hsizer1->Add( back, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+		hsizer1->Add( play, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+		hsizer1->Add( stop, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+		hsizer1->Add( forward, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+		hsizer1->Add( m_volSlider, 0, wxALL, 5 );
+
+		sizer->Add( hsizer1 );
 
 		// Layout
 		this->SetSizer( sizer );
