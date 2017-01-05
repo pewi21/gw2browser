@@ -51,6 +51,7 @@ namespace gw2b {
 		// Data
 		std::vector<SoundBank>		m_sound;
 		wxListCtrl*					m_listCtrl;
+		wxSlider*					m_volSlider;
 		//wxSlider*					m_slider;
 		std::thread					m_thread;
 
@@ -136,13 +137,15 @@ namespace gw2b {
 		void playSound( const int p_index );
 		void stopSound( );
 		bool playing( );
+		void setVolume( const ALfloat p_vol );
 		void onListItemDoubleClickedEvt( wxListEvent& p_event );
-		void OnButtonEvt( wxCommandEvent& p_event );
-		void OnPlay( );
-		void OnPause( );
-		void OnStop( );
-		void OnNext( );
-		void OnPrev( );
+		void onButtonEvt( wxCommandEvent& p_event );
+		void onPlay( );
+		void onPause( );
+		void onStop( );
+		void onNext( );
+		void onPrev( );
+		void onVolChange( wxCommandEvent& WXUNUSED( p_event ) );
 
 	}; // class SoundPlayer
 

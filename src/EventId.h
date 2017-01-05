@@ -39,6 +39,7 @@ namespace gw2b {
 			ID_BtnPlay,							// Sound player's play button
 			ID_BtnStop,							// Sound player's stop button
 			ID_BtnForward,						// Sound player's forward button
+			ID_SliderVolume,					// Sound player's volume slider
 			ID_SliderPlayback,					// Sound player's playback slider
 		};
 
