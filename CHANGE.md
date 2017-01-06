@@ -1,15 +1,15 @@
 Change log
 ----------
 
-Gw2Browser_2016-xx-xx (1.0.8.1)
+Gw2Browser_2017-01-07 (1.0.8.1)
 -------------------------------
 Change:
 - Add string, text and eula file viewer.
 - Add sound player.
 - Add normal maping, specular mapping, model lighting, Anisotropic texture filtering
 to model renderer. Set anisotropic texture filtering to maximumn supported by GPU.
-- Reduce texture memory usuage when model viewer load texture.
 - Add ModelViewer toggle indicator.
+- Reduce texture memory usuage when model viewer load texture.
 - Change model renderer fov to 45 degree.
 - When export model with textures, skip if the texture file is already exists.
 - PNG file support.
@@ -22,7 +22,7 @@ Fix:
 - Fix memory leak in model viewer.
 - Fix string and eula file export bug.
 - Fix text cliping when model is close to camera.
-- Fix crash on viewing model that have no material or uvs.
+- Fix crash on viewing model that have no material or uvs or missing texture.
 - Fix crash on reading some video file.
 - Fix model viewer not work on Intel HD Graphics.
 
