@@ -450,9 +450,9 @@ namespace gw2b {
 					// Black texture, for wireframe view
 					glBindTexture( GL_TEXTURE_2D, m_dummyBlackTexture );
 				} else if ( materialIndex >= 0 && m_textureList[materialIndex].diffuseMap ) {
-					auto& texture = m_textureMap.find( m_textureList[materialIndex].diffuseMap )->second;
-					if ( texture ) {
-						texture->bind( );
+					auto texture = m_textureMap.find( m_textureList[materialIndex].diffuseMap );
+					if ( texture != m_textureMap.end( ) ) {
+						texture->second->bind( );
 					}
 				}
 			} else {
@@ -472,9 +472,9 @@ namespace gw2b {
 			glActiveTexture( GL_TEXTURE1 );
 
 			if ( materialIndex >= 0 && m_textureList[materialIndex].normalMap ) {
-				auto& texture = m_textureMap.find( m_textureList[materialIndex].normalMap )->second;
-				if ( texture ) {
-					texture->bind( );
+				auto texture = m_textureMap.find( m_textureList[materialIndex].normalMap );
+				if ( texture != m_textureMap.end( ) ) {
+					texture->second->bind( );
 				}
 			}
 			// Set our "normalMap" sampler to user Texture Unit 1
