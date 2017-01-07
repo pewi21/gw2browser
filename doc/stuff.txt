@@ -7,13 +7,16 @@ File Id			Format			Note
 13848
 13854
 13861
+13979			model			Charr NPC
 14224			model			Flame Legion charr
 26667			model			Krait
 27218			model			White owl
 27351			model			Charr Tank
-32634			model			Charr equipment start
+32634			model			Charr equipment/character parts start
 ...
-34178			model			Charr equipment end
+33959
+33987			model			Rytlock character face
+34178			model			Charr equipment/character parts end
 ...
 44165			model			Charr
 44242			model			Rytlock, intro cut scene
