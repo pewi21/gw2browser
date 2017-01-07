@@ -522,6 +522,11 @@ namespace gw2b {
 
 			wxLogMessage( wxT( "Try another method..." ) );
 			this->readMaterialPF( p_model, p_modelPackFile );
+		} catch ( const std::out_of_range& outofrange ) {
+			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( outofrange.what( ) ) );
+
+			wxLogMessage( wxT( "Try another method..." ) );
+			this->readMaterialPF( p_model, p_modelPackFile );
 		} catch ( ... ) {
 			wxLogMessage( wxT( "An unknown error has occurred." ) );
 			return;
