@@ -9,6 +9,7 @@ File Id			Format			Note
 13861
 13979			model			Charr NPC
 14224			model			Flame Legion charr
+24526			model			Adelbern
 26667			model			Krait
 27218			model			White owl
 27351			model			Charr Tank
