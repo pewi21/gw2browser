@@ -94,4 +94,7 @@ namespace gw2b
 #include "Util/Ensure.h"
 #include "Util/Misc.h"
 
+// Version information
+#include "version.h"
+
 #endif // STDAFX_H_INCLUDED
