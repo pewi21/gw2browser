@@ -335,8 +335,6 @@ namespace gw2b {
 
 			// View matrix
 			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
-			// Model matrix
-			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
 
 			it->draw( p_shader, p_trans );
 			// Draw normal lines for debugging/visualization

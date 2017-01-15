@@ -114,6 +114,9 @@ namespace gw2b {
 
 		auto materialIndex = m_meshCache[p_meshIndex].materialIndex;
 
+		// Model matrix
+		glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
+
 		// Texture Maping
 		if ( !m_textureList.empty( ) ) {
 			// Use Texture Unit 0
