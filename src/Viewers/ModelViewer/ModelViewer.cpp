@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2015-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2015-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -255,8 +255,11 @@ namespace gw2b {
 
 		this->updateMatrices( );
 
-		// Setup light properties (currently is front of the model)
-		m_light.setPosition( m_model[0]->getBounds( ).center( ) + glm::vec3( 100, 25, 200 ) );
+		if ( !m_model.empty( ) ) {
+			// Setup light properties (currently is front of the model)
+			m_light.setPosition( m_model[0]->getBounds( ).center( ) + glm::vec3( 100, 25, 200 ) );
+		}
+
 		// No need since already initilized with this value
 		//m_light.setAmbient( glm::vec3( 0.5f, 0.5f, 0.5f ) );
 		//m_light.setDiffuse( glm::vec3( 0.5f, 0.5f, 0.5f ) );
@@ -419,27 +422,14 @@ namespace gw2b {
 		}
 	}
 
-	GLuint ModelViewer::createDummyTexture( const GLubyte* p_data ) {
-		// Create one OpenGL texture
-		GLuint Texture;
-		glGenTextures( 1, &Texture );
-
-		// "Bind" the newly created texture
-		glBindTexture( GL_TEXTURE_2D, Texture );
-
-		// Give the image to OpenGL
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, p_data );
-
-		glBindTexture( GL_TEXTURE_2D, 0 );
-
-		return Texture;
-	}
-
 	void ModelViewer::updateMatrices( ) {
 		// All models are located at 0,0,0 with no rotation, so no world matrix is needed
 
 		// Calculate minZ/maxZ
-		auto bounds = m_model[0]->getBounds( );
+		Bounds bounds;
+		if ( !m_model.empty( ) ) {
+			bounds = m_model[0]->getBounds( );
+		}
 		auto size = bounds.size( );
 		auto distance = m_camera.distance( );
 		auto extents = glm::vec3( size.x * 0.5f, size.y * 0.5f, size.z * 0.5f );
@@ -484,8 +474,11 @@ namespace gw2b {
 			return;
 		}
 
-		// Calculate complete bounds
-		Bounds bounds = m_model[0]->getBounds( );
+		Bounds bounds;
+		if ( !m_model.empty( ) ) {
+			// Calculate complete bounds
+			bounds = m_model[0]->getBounds( );
+		}
 		float height = bounds.max.y - bounds.min.y;
 		if ( height <= 0 ) {
 			return;

@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2015-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2015-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -131,7 +131,6 @@ namespace gw2b {
 		void render( );
 		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
 		void displayStatusText( );
-		GLuint createDummyTexture( const GLubyte* p_data );
 		void updateMatrices( );
 		void focus( );
 		void onMotionEvt( wxMouseEvent& p_event );
