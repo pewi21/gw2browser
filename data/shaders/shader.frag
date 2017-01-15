@@ -15,6 +15,8 @@ struct Light {
 };
 
 struct RenderMode {
+	bool wireframe;
+	bool textured;
 	bool normalMapping;
 	bool lighting;
 };
@@ -43,6 +45,24 @@ float alpha_threshold = 0.1f;
 
 void main( ) {
 	vec4 finalColor;
+	vec4 diffuseColor;
+
+	vec4 black = vec4( 0.0f, 0.0f, 0.0f, 1.0f );
+	vec4 white = vec4( 1.0f, 1.0f, 1.0f, 1.0f );
+
+	if ( mode.textured ) {
+		if ( mode.wireframe ) {
+			diffuseColor = black;
+		} else {
+			diffuseColor = texture( material.diffuseMap, fs_in.TexCoords );
+		}
+	} else {
+		if ( mode.wireframe ) {
+			diffuseColor = black;
+		} else {
+			diffuseColor = white;
+		}
+	}
 
 	if ( mode.lighting ) {
 		// Get normal
@@ -57,7 +77,7 @@ void main( ) {
 		}
 
 		// Get diffuse color
-		vec3 color = texture( material.diffuseMap, fs_in.TexCoords ).rgb;
+		vec3 color = diffuseColor.rgb;
 		// Ambient
 		vec3 ambient = light.ambient * color;
 		// Diffuse
@@ -88,7 +108,7 @@ void main( ) {
 
 		finalColor = vec4( ambient + ( diffuse + specular ), texture( material.diffuseMap, fs_in.TexCoords ).a );
 	} else {
-		finalColor = texture( material.diffuseMap, fs_in.TexCoords );
+		finalColor = diffuseColor;
 	}
 
 	// Alpha test

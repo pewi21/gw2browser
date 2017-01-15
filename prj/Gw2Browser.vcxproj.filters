@@ -222,6 +222,9 @@
     <ClInclude Include="..\src\EventId.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\Model.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\SoundPlayer\OggCallback.cpp">
       <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\Model.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

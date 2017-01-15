@@ -28,16 +28,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 #define VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 
-#include <map>
-#include <unordered_map>
 #include <vector>
 
 #include "Camera.h"
 #include "Light.h"
 #include "LightBox.h"
+#include "Model.h"
 #include "Shader.h"
 #include "Text2D.h"
-#include "Texture2D.h"
 
 #include "DatFile.h"
 #include "ViewerGLCanvas.h"
@@ -55,13 +53,6 @@ namespace gw2b {
 	}; // class RenderTimer
 
 	class ModelViewer : public ViewerGLCanvas {
-		struct MeshCache;
-		struct VAO;
-		struct VBO;
-		struct IBO;
-		struct TextureList;
-		struct PackedVertex;
-
 		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
@@ -81,18 +72,8 @@ namespace gw2b {
 		bool						m_statusVisualizeZbuffer = false;	// Toggle visualization of z-buffer
 		bool						m_cameraMode = false;				// Toggle camera mode
 
-		// Mesh
-		GW2Model                    m_model;
-		std::vector<MeshCache>		m_meshCache;
-		std::vector<VAO>			m_vertexArray;		// Vertex Array Object
-		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
-		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
-
-		// Textures
-		std::unordered_map<uint32, Texture2D*> m_textureMap;	// Texture Map
-		std::vector<TextureList>	m_textureList;		// Texture List, store texture list from material of GW2Model
-		GLuint						m_dummyBlackTexture;
-		GLuint						m_dummyWhiteTexture;
+		// Model
+		std::vector<Model*>			m_model;
 
 		// Light
 		Light						m_light;
@@ -142,7 +123,6 @@ namespace gw2b {
 		} // already asserted with a dynamic_cast
 
 	private:
-		void clearBuffer( );
 		void clearShader( );
 		void loadShader( );
 		void reloadShader( );
@@ -150,15 +130,7 @@ namespace gw2b {
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
 		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
-		void drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
 		void displayStatusText( );
-		void loadModel( GW2Model& p_model );
-		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
-		void computeTangent( MeshCache& p_mesh );
-		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
-		void indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh );
-		void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
-		void loadMaterial( GW2Model& p_model );
 		GLuint createDummyTexture( const GLubyte* p_data );
 		void updateMatrices( );
 		void focus( );
