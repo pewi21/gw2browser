@@ -30,8 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	Model::Model( GW2Model& p_model, DatFile& p_datFile ) :
-		m_datFile( p_datFile ) {
+	Model::Model( GW2Model& p_model, DatFile& p_datFile )
+		: m_datFile( p_datFile )
+		, m_bounds( p_model.bounds( ) ) {
 		this->loadModel( p_model );
 		this->loadMaterial( p_model );
 	}
@@ -163,8 +164,6 @@ namespace gw2b {
 
 		// Create mesh cache
 		m_meshCache.resize( m_numMeshes );
-
-		m_bounds = p_model.bounds( );
 
 		// Load mesh to mesh cache
 #pragma omp parallel for
