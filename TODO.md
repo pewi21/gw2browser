@@ -3,21 +3,27 @@ TODO list
 
 May change over time. :P
 
-Further plans
--------------
+Gw2Browser_2017-xx-xx (1.0.9.1)
+-------------------------------
 
-* In ModelReader make new function material( ) that return Material vector
-for use by range-base loop.
+* Mesh and Material class (texture, lighting).
 
-* Add way to position light (shift left click?) by using gobal variable or access class variable
+* Texture2D class parameters.
 
 * In ModelViewer, Optimize texture loader for faster loading, load DXT texture data directly, if possible?
 
 * Exporters class, like Reader/Viewer.
 
-* Material class (texture, lighting).
+* "Find by fileId" dialog.
 
-* Deferred shading (need for map viewer with many light)?
+Further plans
+-------------
+
+* COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
+
+* Add way to position light (shift left click?) by using gobal variable or access class variable
+
+* Deferred shading (need for map viewer with many light)
 
 * Frame Buffer.
 
@@ -25,15 +31,9 @@ for use by range-base loop.
 
 * Self shadowed model shading?
 
-* Texture2D class parameters.
-
 * Scene manager (need when implement map viewer).
 
 * Improve performance of ModelViewer's drawText function.
-
-* COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
-
-* "Find by fileId" dialog.
 
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
