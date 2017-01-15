@@ -7,11 +7,11 @@
 
 #define APP_MAJOR_VERSION      1
 #define APP_MINOR_VERSION      0
-#define APP_RELEASE_NUMBER     8
-#define APP_SUBRELEASE_NUMBER  1
+#define APP_RELEASE_NUMBER     9
+#define APP_SUBRELEASE_NUMBER  0
 
 #define APP_TITLE					"Gw2Browser\0"
-#define APP_FILEVERSION_STR         "1.0.8.1\0"
-#define APP_PRODUCTVERSION_STR      "1.0.8.1\0"
+#define APP_FILEVERSION_STR         "1.0.9.0\0"
+#define APP_PRODUCTVERSION_STR      "1.0.9.0\0"
 
 #endif // VERSION_H_INCLUDED
