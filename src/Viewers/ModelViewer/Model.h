@@ -94,9 +94,9 @@ namespace gw2b {
 		std::unordered_map<uint32, Texture2D*> m_textureMap;	// Texture Map
 		std::vector<TextureList>	m_textureList;		// Texture List, store texture list from material of GW2Model
 
-		size_t						m_numMeshes = 0;
-		size_t						m_numVertices = 0;
-		size_t						m_numTriangles = 0;
+		size_t						m_numMeshes;
+		size_t						m_numVertices;
+		size_t						m_numTriangles;
 		Bounds						m_bounds;			// Model's bounds
 
 	public:

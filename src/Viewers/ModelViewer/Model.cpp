@@ -32,6 +32,9 @@ namespace gw2b {
 
 	Model::Model( GW2Model& p_model, DatFile& p_datFile )
 		: m_datFile( p_datFile )
+		, m_numMeshes( 0 )
+		, m_numVertices( 0 )
+		, m_numTriangles( 0 )
 		, m_bounds( p_model.bounds( ) ) {
 		this->loadModel( p_model );
 		this->loadMaterial( p_model );
