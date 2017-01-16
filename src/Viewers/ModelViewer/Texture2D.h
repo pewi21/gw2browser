@@ -40,13 +40,23 @@ namespace gw2b {
 		/** Constructor. Create texture, default to create GL_TEXTURE_2D texture.
 		*  \param[in]  p_datFile    Reference to an instance of DatFile.
 		*  \param[in]  p_fileId     File id to load texture from DatFile.
-		*  \param[in]  p_textureType   Texture type. */
-		Texture2D( DatFile& p_datFile, const uint p_fileId, const GLenum p_textureType = GL_TEXTURE_2D );
+		*  \param[in]  p_textureType   Texture type.
+		*  \param[in]  p_wrapS      Texture wrap parameter.
+		*  \param[in]  p_wrapT      Texture wrap parameter.
+		*  \param[in]  p_anisotropic   Use anisotropic texture filtering? */
+		Texture2D( DatFile& p_datFile, const uint p_fileId,
+			const GLenum p_textureType = GL_TEXTURE_2D,
+			const GLint p_wrapS = GL_REPEAT,
+			const GLint p_wrapT = GL_REPEAT,
+			const bool p_anisotropic = true
+		);
 		/** Destructor. Clears all data. */
 		~Texture2D( );
 
 		/** Bind the texture. */
 		void bind( );
+		/** Un-bind the texture. */
+		void unbind( );
 		/** Get texture ID represented by this data.
 		*  \return GLuint			textureId. */
 		GLuint getTextureId( );
@@ -55,8 +65,16 @@ namespace gw2b {
 		uint getFileId( );
 
 	private:
-		/** Set texture parameters. */
-		void init( );
+		/** Create texture from given data.
+		*  \param[in]  p_data       Raw image Data.
+		*  \param[in]  p_width      Image width.
+		*  \param[in]  p_height     Image height.
+		*  \param[in]  p_alpha      Have alpha channel?
+		*  \param[in]  p_textureType   Texture type.
+		*  \param[in]  p_wrapS      Texture wrap parameter.
+		*  \param[in]  p_wrapT      Texture wrap parameter.
+		*  \param[in]  p_anisotropic   Use anisotropic texture filtering? */
+		void create( const GLubyte* p_data, const GLsizei p_width, const GLsizei p_height, const bool p_alpha, const GLint p_wrapS, const GLint p_wrapT, const bool p_anisotropic );
 
 	}; // class Texture2D
 

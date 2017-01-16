@@ -31,11 +31,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	Texture2D::Texture2D( DatFile& p_datFile, const uint p_fileId, const GLenum p_textureType )
+	Texture2D::Texture2D( DatFile& p_datFile, const uint p_fileId, const GLenum p_textureType, const GLint p_wrapS, const GLint p_wrapT, const bool p_anisotropic )
 		: m_fileId( p_fileId )
 		, m_textureType( p_textureType ) {
 		auto entryNumber = p_datFile.entryNumFromFileId( p_fileId );
-		auto& fileData = p_datFile.readEntry( entryNumber );
+		auto fileData = p_datFile.readEntry( entryNumber );
 
 		// Bail if read failed
 		if ( fileData.GetSize( ) == 0 ) {
@@ -55,54 +55,36 @@ namespace gw2b {
 		}
 
 		// Get image in wxImage
-		auto& imageData = imgReader->getImage( );
-
+		auto imageData = imgReader->getImage( );
 		if ( !imageData.IsOk( ) ) {
 			deletePointer( reader );
 			throw exception::Exception( "Failed to get image in wxImage." );
 		}
 
-		// Generate texture ID
-		glGenTextures( 1, &m_textureId );
-
-		// Assign texture to ID
-		glBindTexture( m_textureType, m_textureId );
-
-		// wxImage store seperate alpha channel if present
-		GLubyte* bitmapData = imageData.GetData( );
-		GLubyte* alphaData = imageData.GetAlpha( );
-
 		int imageWidth = imageData.GetWidth( );
 		int imageHeight = imageData.GetHeight( );
-		int bytesPerPixel = imageData.HasAlpha( ) ? 4 : 3;
-		int imageSize = imageWidth * imageHeight * bytesPerPixel;
+
+		// Get color data
+		GLubyte* bitmapData = imageData.GetData( );
 
 		if ( imageData.HasAlpha( ) ) {
+			// wxImage store seperate alpha channel if present
+			GLubyte* alphaData = imageData.GetAlpha( );
+			int bytesPerPixel = 4;
+			int imageSize = imageWidth * imageHeight * bytesPerPixel;
 			Array<GLubyte> image( imageSize );
 			// Merge wxImage alpha channel to RGBA
 #pragma omp parallel for
 			for ( int y = 0; y < imageHeight; y++ ) {
 				for ( int x = 0; x < imageWidth; x++ ) {
-					image[( x + y * imageWidth ) * bytesPerPixel + 0] = bitmapData[( x + y * imageWidth ) * 3];
-					image[( x + y * imageWidth ) * bytesPerPixel + 1] = bitmapData[( x + y * imageWidth ) * 3 + 1];
-					image[( x + y * imageWidth ) * bytesPerPixel + 2] = bitmapData[( x + y * imageWidth ) * 3 + 2];
-
-					if ( bytesPerPixel == 4 ) {
-						image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
-					}
+					::memcpy( &image[( x + y * imageWidth ) * bytesPerPixel], &bitmapData[( x + y * imageWidth ) * 3], 3 );
+					image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
 				}
 			}
-			// Give the image to OpenGL
-			glTexImage2D( m_textureType, 0, GL_RGBA8, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPointer( ) );
+			this->create( image.GetPointer( ), imageWidth, imageHeight, true, p_wrapS, p_wrapT, p_anisotropic );
 		} else {
-			// Give the image to OpenGL
-			glTexImage2D( m_textureType, 0, GL_RGB8, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData );
+			this->create( bitmapData, imageWidth, imageHeight, false, p_wrapS, p_wrapT, p_anisotropic );
 		}
-
-		// Common initialization
-		this->init( );
-
-		glBindTexture( m_textureType, 0 );
 
 		deletePointer( reader );
 	}
@@ -112,32 +94,12 @@ namespace gw2b {
 		glDeleteTextures( 1, &m_textureId );
 	}
 
-	void Texture2D::init( ) {
-		// Texture parameters
-
-		glTexParameteri( m_textureType, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameteri( m_textureType, GL_TEXTURE_WRAP_T, GL_REPEAT );
-		//glTexParameteri( m_textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-		//glTexParameteri( m_textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-		// Trilinear texture filtering
-		glTexParameteri( m_textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		glTexParameteri( m_textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-
-		// Set anisotropic texture filtering to maximumn supported by GPU
-		// No need to check if extension available since it is ubiquitous extension
-		// https://www.opengl.org/registry/specs/EXT/texture_filter_anisotropic.txt
-		GLfloat af = 0.0f;
-		glGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &af );
-		glTexParameterf( m_textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, af );
-
-		// Generate Mipmaps
-		glGenerateMipmap( m_textureType );
+	void Texture2D::bind( ) {
+		glBindTexture( m_textureType, m_textureId );
 	}
 
-	void Texture2D::bind( ) {
-		// Bind the texture
-		glBindTexture( m_textureType, m_textureId );
+	void Texture2D::unbind( ) {
+		glBindTexture( m_textureType, 0 );
 	}
 
 	GLuint Texture2D::getTextureId( ) {
@@ -146,6 +108,39 @@ namespace gw2b {
 
 	uint Texture2D::getFileId( ) {
 		return m_fileId;
+	}
+
+	void Texture2D::create( const GLubyte* p_data, const GLsizei p_width, const GLsizei p_height, const bool p_alpha, const GLint p_wrapS, const GLint p_wrapT, const bool p_anisotropic ) {
+		// Generate texture ID
+		glGenTextures( 1, &m_textureId );
+
+		// Assign texture to ID
+		glBindTexture( m_textureType, m_textureId );
+
+		// Texture wraping parameters
+		glTexParameteri( m_textureType, GL_TEXTURE_WRAP_S, p_wrapS );
+		glTexParameteri( m_textureType, GL_TEXTURE_WRAP_T, p_wrapT );
+
+		// Trilinear texture filtering
+		glTexParameteri( m_textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameteri( m_textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+
+		if ( p_anisotropic ) {
+			// Set anisotropic texture filtering to maximumn supported by GPU
+			// No need to check if extension available since it is ubiquitous extension
+			// https://www.opengl.org/registry/specs/EXT/texture_filter_anisotropic.txt
+			GLfloat af = 0.0f;
+			glGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &af );
+			glTexParameterf( m_textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, af );
+		}
+
+		// Give the image to OpenGL
+		glTexImage2D( m_textureType, 0, p_alpha ? GL_RGBA8 : GL_RGB8, p_width, p_height, 0, p_alpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, p_data );
+
+		// Generate Mipmaps
+		glGenerateMipmap( m_textureType );
+
+		glBindTexture( m_textureType, 0 );
 	}
 
 }; // namespace gw2b
