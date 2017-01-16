@@ -132,7 +132,7 @@ namespace gw2b {
 
 		// Load model
 		auto reader = this->modelReader( );
-		auto& model = reader->getModel( );
+		auto model = reader->getModel( );
 
 		// load model to m_model
 		m_model.push_back( new Model( model, m_datFile ) );
