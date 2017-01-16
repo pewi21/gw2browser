@@ -34,9 +34,8 @@ namespace gw2b {
 	Texture2D::Texture2D( DatFile& p_datFile, const uint p_fileId, const GLenum p_textureType )
 		: m_fileId( p_fileId )
 		, m_textureType( p_textureType ) {
-
 		auto entryNumber = p_datFile.entryNumFromFileId( p_fileId );
-		auto fileData = p_datFile.readEntry( entryNumber );
+		auto& fileData = p_datFile.readEntry( entryNumber );
 
 		// Bail if read failed
 		if ( fileData.GetSize( ) == 0 ) {
@@ -56,12 +55,18 @@ namespace gw2b {
 		}
 
 		// Get image in wxImage
-		auto imageData = imgReader->getImage( );
+		auto& imageData = imgReader->getImage( );
 
 		if ( !imageData.IsOk( ) ) {
 			deletePointer( reader );
 			throw exception::Exception( "Failed to get image in wxImage." );
 		}
+
+		// Generate texture ID
+		glGenTextures( 1, &m_textureId );
+
+		// Assign texture to ID
+		glBindTexture( m_textureType, m_textureId );
 
 		// wxImage store seperate alpha channel if present
 		GLubyte* bitmapData = imageData.GetData( );
@@ -72,38 +77,27 @@ namespace gw2b {
 		int bytesPerPixel = imageData.HasAlpha( ) ? 4 : 3;
 		int imageSize = imageWidth * imageHeight * bytesPerPixel;
 
-		Array<GLubyte> image( imageSize );
-
-		// Merge wxImage alpha channel to RGBA
+		if ( imageData.HasAlpha( ) ) {
+			Array<GLubyte> image( imageSize );
+			// Merge wxImage alpha channel to RGBA
 #pragma omp parallel for
-		for ( int y = 0; y < imageHeight; y++ ) {
-			for ( int x = 0; x < imageWidth; x++ ) {
-				image[( x + y * imageWidth ) * bytesPerPixel + 0] = bitmapData[( x + y * imageWidth ) * 3];
-				image[( x + y * imageWidth ) * bytesPerPixel + 1] = bitmapData[( x + y * imageWidth ) * 3 + 1];
-				image[( x + y * imageWidth ) * bytesPerPixel + 2] = bitmapData[( x + y * imageWidth ) * 3 + 2];
+			for ( int y = 0; y < imageHeight; y++ ) {
+				for ( int x = 0; x < imageWidth; x++ ) {
+					image[( x + y * imageWidth ) * bytesPerPixel + 0] = bitmapData[( x + y * imageWidth ) * 3];
+					image[( x + y * imageWidth ) * bytesPerPixel + 1] = bitmapData[( x + y * imageWidth ) * 3 + 1];
+					image[( x + y * imageWidth ) * bytesPerPixel + 2] = bitmapData[( x + y * imageWidth ) * 3 + 2];
 
-				if ( bytesPerPixel == 4 ) {
-					image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
+					if ( bytesPerPixel == 4 ) {
+						image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
+					}
 				}
 			}
+			// Give the image to OpenGL
+			glTexImage2D( m_textureType, 0, GL_RGBA8, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPointer( ) );
+		} else {
+			// Give the image to OpenGL
+			glTexImage2D( m_textureType, 0, GL_RGB8, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData );
 		}
-
-		// Generate texture ID
-		glGenTextures( 1, &m_textureId );
-
-		// Assign texture to ID
-		glBindTexture( m_textureType, m_textureId );
-
-		// Give the image to OpenGL
-		glTexImage2D( m_textureType,
-			0,
-			bytesPerPixel,
-			imageWidth,
-			imageHeight,
-			0,
-			imageData.HasAlpha( ) ? GL_RGBA : GL_RGB,
-			GL_UNSIGNED_BYTE,
-			image.GetPointer( ) );
 
 		// Common initialization
 		this->init( );
