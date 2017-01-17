@@ -265,6 +265,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Light.h" />
 		<Unit filename="../src/Viewers/ModelViewer/LightBox.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/LightBox.h" />
+		<Unit filename="../src/Viewers/ModelViewer/Model.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/Model.h" />
 		<Unit filename="../src/Viewers/ModelViewer/ModelViewer.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/ModelViewer.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Shader.cpp" />
