@@ -102,11 +102,11 @@ namespace gw2b {
 		glBindTexture( m_textureType, 0 );
 	}
 
-	GLuint Texture2D::getTextureId( ) {
+	GLuint Texture2D::getTextureId( ) const {
 		return m_textureId;
 	}
 
-	uint Texture2D::getFileId( ) {
+	uint Texture2D::getFileId( ) const {
 		return m_fileId;
 	}
 

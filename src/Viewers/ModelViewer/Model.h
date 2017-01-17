@@ -101,31 +101,31 @@ namespace gw2b {
 
 	public:
 		/** Constructor. Create model. */
-		Model( GW2Model& p_model, DatFile& p_datFile );
+		Model( const GW2Model& p_model, DatFile& p_datFile );
 		/** Destructor. Clears all data. */
 		~Model( );
 
 		/** Draw the model. */
 		void draw( Shader* p_shader, const glm::mat4& p_trans );
 		/** Get number of mesh. */
-		size_t getNumMeshes( );
+		size_t getNumMeshes( ) const;
 		/** Get number of vertices. */
-		size_t getVertSize( );
+		size_t getVertSize( ) const;
 		/** Get number of trangles. */
-		size_t getTriSize( );
+		size_t getTriSize( ) const;
 		/** Get model bounds. */
-		Bounds getBounds( );
+		Bounds getBounds( ) const;
 
 	private:
 		void clearBuffer( );
 		void drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
-		void loadModel( GW2Model& p_model );
+		void loadModel( const GW2Model& p_model );
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent( MeshCache& p_mesh );
 		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
 		void indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh );
 		void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
-		void loadMaterial( GW2Model& p_model );
+		void loadMaterial( const GW2Model& p_model );
 
 	}; // class Model
 

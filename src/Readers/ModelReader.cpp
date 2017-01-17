@@ -81,6 +81,10 @@ namespace gw2b {
 		return m_data->meshes[p_index];
 	}
 
+	const std::vector<GW2Mesh>& GW2Model::mesh( ) const {
+		return m_data->meshes;
+	}
+
 	GW2Mesh* GW2Model::addMeshes( uint p_amount ) {
 		this->unShare( );
 
@@ -94,14 +98,13 @@ namespace gw2b {
 		return m_data->material.size( );
 	}
 
-	GW2Material& GW2Model::material( uint p_index ) {
+	const GW2Material& GW2Model::material( uint p_index ) const {
 		Assert( p_index < this->numMaterial( ) );
 		return m_data->material[p_index];
 	}
 
-	const GW2Material& GW2Model::material( uint p_index ) const {
-		Assert( p_index < this->numMaterial( ) );
-		return m_data->material[p_index];
+	const std::vector<GW2Material>& GW2Model::material( ) const {
+		return m_data->material;
 	}
 
 	GW2Material* GW2Model::addMaterial( uint p_amount ) {

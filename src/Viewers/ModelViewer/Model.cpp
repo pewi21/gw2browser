@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	Model::Model( GW2Model& p_model, DatFile& p_datFile )
+	Model::Model( const GW2Model& p_model, DatFile& p_datFile )
 		: m_datFile( p_datFile )
 		, m_numMeshes( 0 )
 		, m_numVertices( 0 )
@@ -56,19 +56,19 @@ namespace gw2b {
 		}
 	}
 
-	size_t Model::getNumMeshes( ) {
+	size_t Model::getNumMeshes( ) const {
 		return m_numMeshes;
 	}
 
-	size_t Model::getVertSize( ) {
+	size_t Model::getVertSize( ) const {
 		return m_numVertices;
 	}
 
-	size_t Model::getTriSize( ) {
+	size_t Model::getTriSize( ) const {
 		return m_numTriangles;
 	}
 
-	Bounds Model::getBounds( ) {
+	Bounds Model::getBounds( ) const {
 		return m_bounds;
 	}
 
@@ -165,7 +165,7 @@ namespace gw2b {
 
 	}
 
-	void Model::loadModel( GW2Model& p_model ) {
+	void Model::loadModel( const GW2Model& p_model ) {
 		m_numMeshes = p_model.numMeshes( );
 
 		// Create mesh cache
@@ -371,7 +371,7 @@ namespace gw2b {
 		glBindVertexArray( 0 );
 	}
 
-	void Model::loadMaterial( GW2Model& p_model ) {
+	void Model::loadMaterial( const GW2Model& p_model ) {
 		auto numMaterial = p_model.numMaterial( );
 		auto& texture = m_textureMap;
 

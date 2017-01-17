@@ -59,10 +59,10 @@ namespace gw2b {
 		void unbind( );
 		/** Get texture ID represented by this data.
 		*  \return GLuint			textureId. */
-		GLuint getTextureId( );
+		GLuint getTextureId( ) const;
 		/** Get texture file ID from DatFile represented by this data.
 		*  \return uint				fileId. */
-		uint getFileId( );
+		uint getFileId( ) const;
 
 	private:
 		/** Create texture from given data.
