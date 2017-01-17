@@ -372,44 +372,44 @@ namespace gw2b {
 	}
 
 	void Model::loadMaterial( const GW2Model& p_model ) {
-		auto numMaterial = p_model.numMaterial( );
 		auto& texture = m_textureMap;
+		auto& material = p_model.material( );
+		auto numMaterial = p_model.numMaterial( );
 
 		// Load textures to texture map
-		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
-			auto& material = p_model.material( i );
+		for ( auto& mat : material ) {
 			std::unordered_map<uint32, Texture2D*>::iterator it;
 
 			// Load diffuse texture
-			if ( material.diffuseMap ) {
-				it = texture.find( material.diffuseMap );
+			if ( mat.diffuseMap ) {
+				it = texture.find( mat.diffuseMap );
 				if ( it == texture.end( ) ) {
 					try {
-						texture.insert( std::pair<uint32, Texture2D*>( material.diffuseMap, new Texture2D( m_datFile, material.diffuseMap ) ) );
+						texture.insert( std::pair<uint32, Texture2D*>( mat.diffuseMap, new Texture2D( m_datFile, mat.diffuseMap ) ) );
 					} catch ( const exception::Exception& err ) {
-						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.diffuseMap, wxString( err.what( ) ) );
+						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.diffuseMap, wxString( err.what( ) ) );
 					}
 				}
 			}
 
-			if ( material.normalMap ) {
-				it = texture.find( material.normalMap );
+			if ( mat.normalMap ) {
+				it = texture.find( mat.normalMap );
 				if ( it == texture.end( ) ) {
 					try {
-						texture.insert( std::pair<uint32, Texture2D*>( material.normalMap, new Texture2D( m_datFile, material.normalMap ) ) );
+						texture.insert( std::pair<uint32, Texture2D*>( mat.normalMap, new Texture2D( m_datFile, mat.normalMap ) ) );
 					} catch ( const exception::Exception& err ) {
-						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.normalMap, wxString( err.what( ) ) );
+						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.normalMap, wxString( err.what( ) ) );
 					}
 				}
 			}
 
-			if ( material.lightMap ) {
-				it = texture.find( material.lightMap );
+			if ( mat.lightMap ) {
+				it = texture.find( mat.lightMap );
 				if ( it == texture.end( ) ) {
 					try {
-						texture.insert( std::pair<uint32, Texture2D*>( material.lightMap, new Texture2D( m_datFile, material.lightMap ) ) );
+						texture.insert( std::pair<uint32, Texture2D*>( mat.lightMap, new Texture2D( m_datFile, mat.lightMap ) ) );
 					} catch ( const exception::Exception& err ) {
-						wxLogMessage( wxT( "Failed to load texture %d : %s" ), material.lightMap, wxString( err.what( ) ) );
+						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.lightMap, wxString( err.what( ) ) );
 					}
 				}
 			}
@@ -419,7 +419,7 @@ namespace gw2b {
 		m_textureList.resize( numMaterial );
 
 		// Copy texture information from material of GW2Model to m_textureList
-		for ( int i = 0; i < static_cast<int>( numMaterial ); i++ ) {
+		for ( size_t i = 0; i < numMaterial; ++i ) {
 			auto& material = p_model.material( i );
 			auto& list = m_textureList[i];
 
