@@ -477,7 +477,8 @@ namespace gw2b {
 
 		// verts[i].normal is already initialized with zero
 
-		for ( uint i = 0; i < faces.size( ); i++ ) {
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( faces.size( ) ); i++ ) {
 			// Re-flip the order of the faces of the triangle to original order
 			const int ia = faces[i].index1;
 			const int ib = faces[i].index3;
