@@ -271,8 +271,8 @@ namespace gw2b {
 		}
 	}
 
-	bool Model::getSimilarVertexIndex( PackedVertex & p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result ) {
-		std::map<PackedVertex, uint>::iterator it = p_vertexToOutIndex.find( p_packed );
+	bool Model::getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result ) {
+		auto it = p_vertexToOutIndex.find( p_packed );
 		if ( it == p_vertexToOutIndex.end( ) ) {
 			return false;
 		} else {
@@ -299,7 +299,6 @@ namespace gw2b {
 			// Try to find a similar vertex in p_outMesh
 			uint index;
 			bool found = getSimilarVertexIndex( packed, VertexToOutIndex, index );
-
 			if ( found ) { // A similar vertex is already in the VBO, use it instead !
 				p_outMesh.indices.push_back( index );
 
