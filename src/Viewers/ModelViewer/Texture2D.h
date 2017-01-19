@@ -65,16 +65,15 @@ namespace gw2b {
 		uint getFileId( ) const;
 
 	private:
-		/** Create texture from given data.
-		*  \param[in]  p_data       Raw image Data.
-		*  \param[in]  p_width      Image width.
-		*  \param[in]  p_height     Image height.
-		*  \param[in]  p_alpha      Have alpha channel?
-		*  \param[in]  p_textureType   Texture type.
+		/** Generate texture. */
+		void generate( );
+		/** Set texture wrap parameter.
 		*  \param[in]  p_wrapS      Texture wrap parameter.
-		*  \param[in]  p_wrapT      Texture wrap parameter.
-		*  \param[in]  p_anisotropic   Use anisotropic texture filtering? */
-		void create( const GLubyte* p_data, const GLsizei p_width, const GLsizei p_height, const bool p_alpha, const GLint p_wrapS, const GLint p_wrapT, const bool p_anisotropic );
+		*  \param[in]  p_wrapT      Texture wrap parameter. */
+		void setWraping( const GLint p_wrapS, const GLint p_wrapT );
+		/** Set texture filtering.
+		*  \param[in]  p_anisotropic   Anisotropic texture filtering? */
+		void setFiltering( const bool p_anisotropic );
 
 	}; // class Texture2D
 

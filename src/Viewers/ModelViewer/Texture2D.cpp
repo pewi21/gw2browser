@@ -54,39 +54,78 @@ namespace gw2b {
 			throw exception::Exception( "The file is not an image." );
 		}
 
-		// Get image in wxImage
-		auto imageData = imgReader->getImage( );
-		if ( !imageData.IsOk( ) ) {
-			deletePointer( reader );
-			throw exception::Exception( "Failed to get image in wxImage." );
-		}
+		// Generate texture
+		this->generate( );
+		// Bind current texture
+		this->bind( );
+		// Set texture wrap parameter
+		this->setWraping( p_wrapS, p_wrapT );
+		// Set texture filtering
+		this->setFiltering( p_anisotropic );
 
-		int imageWidth = imageData.GetWidth( );
-		int imageHeight = imageData.GetHeight( );
-
-		// Get color data
-		GLubyte* bitmapData = imageData.GetData( );
-
-		if ( imageData.HasAlpha( ) ) {
-			// wxImage store seperate alpha channel if present
-			GLubyte* alphaData = imageData.GetAlpha( );
-			int bytesPerPixel = 4;
-			int imageSize = imageWidth * imageHeight * bytesPerPixel;
-			Array<GLubyte> image( imageSize );
-			// Merge wxImage alpha channel to RGBA
-#pragma omp parallel for
-			for ( int y = 0; y < imageHeight; y++ ) {
-				for ( int x = 0; x < imageWidth; x++ ) {
-					::memcpy( &image[( x + y * imageWidth ) * bytesPerPixel], &bitmapData[( x + y * imageWidth ) * 3], 3 );
-					image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
-				}
+		auto atex = reinterpret_cast<const ANetAtexHeader*>( fileData.GetPointer( ) );
+		if ( ( fileType == ANFT_ATEX ) && ( atex->formatInteger == FCC_DXT5 ) ) {
+			auto dxtData = imgReader->getDXT( );
+			if ( dxtData.GetSize( ) == 0 ) {
+				deletePointer( reader );
+				throw exception::Exception( "Failed to get DXTn texture from ImageReader." );
 			}
-			this->create( image.GetPointer( ), imageWidth, imageHeight, true, p_wrapS, p_wrapT, p_anisotropic );
+
+			int width = atex->width;
+			int height = atex->height;
+
+			// TODO: Load mipmap
+
+			// Upload compressed texture to OpenGL
+			glCompressedTexImage2D( GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, width, height, 0, dxtData.GetSize( ), dxtData.GetPointer( ) );
+
 		} else {
-			this->create( bitmapData, imageWidth, imageHeight, false, p_wrapS, p_wrapT, p_anisotropic );
+			// Get image in wxImage
+			auto imageData = imgReader->getImage( );
+			if ( !imageData.IsOk( ) ) {
+				deletePointer( reader );
+				throw exception::Exception( "Failed to get image in wxImage." );
+			}
+
+			int imageWidth = imageData.GetWidth( );
+			int imageHeight = imageData.GetHeight( );
+
+			// Get color data
+			GLubyte* bitmapData = imageData.GetData( );
+
+			if ( imageData.HasAlpha( ) ) {
+				// wxImage store seperate alpha channel if present
+				GLubyte* alphaData = imageData.GetAlpha( );
+
+				int bytesPerPixel = 4;
+				int imageSize = imageWidth * imageHeight * bytesPerPixel;
+				Array<GLubyte> image( imageSize );
+
+				// Merge wxImage alpha channel to RGBA
+#pragma omp parallel for
+				for ( int y = 0; y < imageHeight; y++ ) {
+					for ( int x = 0; x < imageWidth; x++ ) {
+						::memcpy( &image[( x + y * imageWidth ) * bytesPerPixel], &bitmapData[( x + y * imageWidth ) * 3], 3 );
+						image[( x + y * imageWidth ) * bytesPerPixel + 3] = alphaData[x + y * imageWidth];
+					}
+				}
+				glTexImage2D( m_textureType, 0, GL_RGBA8, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPointer( ) );
+
+			} else {
+				glTexImage2D( m_textureType, 0, GL_RGB8, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData );
+			}
+
+			// Generate Mipmaps
+			//glGenerateMipmap( m_textureType );
+
 		}
 
 		deletePointer( reader );
+
+		// Generate Mipmaps
+		glGenerateMipmap( m_textureType );
+
+		this->unbind( );
 	}
 
 	Texture2D::~Texture2D( ) {
@@ -110,17 +149,17 @@ namespace gw2b {
 		return m_fileId;
 	}
 
-	void Texture2D::create( const GLubyte* p_data, const GLsizei p_width, const GLsizei p_height, const bool p_alpha, const GLint p_wrapS, const GLint p_wrapT, const bool p_anisotropic ) {
-		// Generate texture ID
+	void Texture2D::generate( ) {
 		glGenTextures( 1, &m_textureId );
+	}
 
-		// Assign texture to ID
-		glBindTexture( m_textureType, m_textureId );
-
+	void Texture2D::setWraping( const GLint p_wrapS, const GLint p_wrapT ) {
 		// Texture wraping parameters
 		glTexParameteri( m_textureType, GL_TEXTURE_WRAP_S, p_wrapS );
 		glTexParameteri( m_textureType, GL_TEXTURE_WRAP_T, p_wrapT );
+	}
 
+	void Texture2D::setFiltering( const bool p_anisotropic ) {
 		// Trilinear texture filtering
 		glTexParameteri( m_textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		glTexParameteri( m_textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
@@ -133,14 +172,6 @@ namespace gw2b {
 			glGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &af );
 			glTexParameterf( m_textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, af );
 		}
-
-		// Give the image to OpenGL
-		glTexImage2D( m_textureType, 0, p_alpha ? GL_RGBA8 : GL_RGB8, p_width, p_height, 0, p_alpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, p_data );
-
-		// Generate Mipmaps
-		glGenerateMipmap( m_textureType );
-
-		glBindTexture( m_textureType, 0 );
 	}
 
 }; // namespace gw2b

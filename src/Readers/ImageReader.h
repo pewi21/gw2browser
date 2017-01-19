@@ -66,12 +66,17 @@ namespace gw2b {
 		/** Gets the image contained in the data owned by this reader.
 		*  \return wxImage     Newly created image. */
 		wxImage getImage( ) const;
+		/** Gets the uncompressed DXTn texture contained in the data owned by this reader.
+		*   TODO: return all mipmap as an array vector.
+		*  \return Array<byte> Newly created DXTn texture. */
+		Array<byte> getDXT( ) const;
 		/** Determines whether the header of this image is valid.
 		*  \return bool    true if valid, false if not. */
 		static bool isValidHeader( const byte* p_data, size_t p_size );
 
 	private:
 		bool readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
+		size_t getUncompressedATEXSize( uint16 p_width, uint16 p_height, uint32 p_format ) const;
 		bool readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 		bool readWebP( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 
