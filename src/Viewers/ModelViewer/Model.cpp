@@ -96,13 +96,6 @@ namespace gw2b {
 			}
 		}
 
-		// Clean Texture Map
-		for ( auto& it : m_textureMap ) {
-			if ( it.second ) {
-				delete it.second;
-			}
-		}
-
 		// Clean VAO
 		for ( auto& it : m_vertexArray ) {
 			if ( it.vertexArray ) {
@@ -377,14 +370,14 @@ namespace gw2b {
 
 		// Load textures to texture map
 		for ( auto& mat : material ) {
-			std::unordered_map<uint32, Texture2D*>::iterator it;
+			std::unordered_map<uint32, texture_ptr>::iterator it;
 
 			// Load diffuse texture
 			if ( mat.diffuseMap ) {
 				it = texture.find( mat.diffuseMap );
 				if ( it == texture.end( ) ) {
 					try {
-						texture.insert( std::pair<uint32, Texture2D*>( mat.diffuseMap, new Texture2D( m_datFile, mat.diffuseMap ) ) );
+						texture.insert( std::pair<uint32, texture_ptr>( mat.diffuseMap, texture_ptr( new Texture2D( m_datFile, mat.diffuseMap ) ) ) );
 					} catch ( const exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.diffuseMap, wxString( err.what( ) ) );
 					}
@@ -395,7 +388,7 @@ namespace gw2b {
 				it = texture.find( mat.normalMap );
 				if ( it == texture.end( ) ) {
 					try {
-						texture.insert( std::pair<uint32, Texture2D*>( mat.normalMap, new Texture2D( m_datFile, mat.normalMap ) ) );
+						texture.insert( std::pair<uint32, texture_ptr>( mat.normalMap, texture_ptr( new Texture2D( m_datFile, mat.normalMap ) ) ) );
 					} catch ( const exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.normalMap, wxString( err.what( ) ) );
 					}
@@ -406,7 +399,7 @@ namespace gw2b {
 				it = texture.find( mat.lightMap );
 				if ( it == texture.end( ) ) {
 					try {
-						texture.insert( std::pair<uint32, Texture2D*>( mat.lightMap, new Texture2D( m_datFile, mat.lightMap ) ) );
+						texture.insert( std::pair<uint32, texture_ptr>( mat.lightMap, texture_ptr( new Texture2D( m_datFile, mat.lightMap ) ) ) );
 					} catch ( const exception::Exception& err ) {
 						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.lightMap, wxString( err.what( ) ) );
 					}

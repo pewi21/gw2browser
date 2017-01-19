@@ -73,11 +73,11 @@ namespace gw2b {
 		bool						m_cameraMode = false;				// Toggle camera mode
 
 		// Model
-		std::vector<Model*>			m_model;
+		std::vector<std::unique_ptr<Model>>	m_model;
 
 		// Light
 		Light						m_light;
-		LightBox*					m_lightBox;			// For render cube at light position
+		std::unique_ptr<LightBox>	m_lightBox;			// For render cube at light position
 
 		// Shader stuff
 		Shader*						m_mainShader;
@@ -91,7 +91,7 @@ namespace gw2b {
 		float                       m_maxDistance;
 
 		// Text rendering stuff
-		Text2D*						m_text;
+		std::unique_ptr<Text2D>		m_text;
 
 		//float angle = 0.0f;
 

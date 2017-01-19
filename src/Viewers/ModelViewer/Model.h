@@ -42,6 +42,8 @@ namespace gw2b {
 
 	class Model {
 
+		typedef	std::unique_ptr<Texture2D> texture_ptr; // Texture2D pointer
+
 		struct MeshCache {
 			std::vector<glm::vec3>	vertices;
 			std::vector<glm::vec3>	normals;
@@ -91,7 +93,7 @@ namespace gw2b {
 		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
 
 		// Textures
-		std::unordered_map<uint32, Texture2D*> m_textureMap;	// Texture Map
+		std::unordered_map<uint32, texture_ptr> m_textureMap;	// Texture Map
 		std::vector<TextureList>	m_textureList;		// Texture List, store texture list from material of GW2Model
 
 		size_t						m_numMeshes;

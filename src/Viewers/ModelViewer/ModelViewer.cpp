@@ -80,18 +80,8 @@ namespace gw2b {
 	}
 
 	ModelViewer::~ModelViewer( ) {
-		// Clean the model
-		for ( auto& it : m_model ) {
-			delete it;
-		}
-
 		// Clean shaders
 		this->clearShader( );
-
-		// Clean text renderer
-		delete m_text;
-		// Clean light box renderer
-		delete m_lightBox;
 
 		delete m_renderTimer;
 		delete m_movementKeyTimer;
@@ -100,10 +90,6 @@ namespace gw2b {
 	}
 
 	void ModelViewer::clear( ) {
-		// Clean the model
-		for ( auto& it : m_model ) {
-			delete it;
-		}
 		m_model.clear( );
 		ViewerGLCanvas::clear( );
 	}
@@ -135,7 +121,7 @@ namespace gw2b {
 		auto model = reader->getModel( );
 
 		// load model to m_model
-		m_model.push_back( new Model( model, m_datFile ) );
+		m_model.push_back( std::unique_ptr<Model>( new Model( model, m_datFile ) ));
 
 		// Re-focus and re-render
 		this->focus( );
@@ -212,7 +198,7 @@ namespace gw2b {
 
 		// Initialize text renderer stuff
 		try {
-			m_text = new Text2D( );
+			m_text = std::unique_ptr<Text2D>( new Text2D( ) );
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_text : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to initialize text renderer." );
@@ -220,7 +206,7 @@ namespace gw2b {
 
 		// Initialize lightbox renderer
 		try {
-			m_lightBox = new LightBox( );
+			m_lightBox = std::unique_ptr<LightBox>( new LightBox( ) );
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_lightBox : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to initialize lightbox renderer." );
