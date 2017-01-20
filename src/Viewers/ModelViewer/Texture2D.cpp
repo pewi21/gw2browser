@@ -65,7 +65,7 @@ namespace gw2b {
 
 		auto atex = reinterpret_cast<const ANetAtexHeader*>( fileData.GetPointer( ) );
 		if ( ( fileType == ANFT_ATEX ) && ( atex->formatInteger == FCC_DXT5 ) ) {
-			auto& textureData = imgReader->getDecompressedATEX( );
+			auto textureData = imgReader->getDecompressedATEX( );
 			if ( textureData.GetSize( ) == 0 ) {
 				deletePointer( reader );
 				throw exception::Exception( "Failed to get decompressed ATEX texture from ImageReader." );
