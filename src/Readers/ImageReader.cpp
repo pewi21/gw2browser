@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -194,7 +194,7 @@ namespace gw2b {
 		}
 	}
 
-	Array<byte> ImageReader::getDXT( ) const {
+	Array<byte> ImageReader::getDecompressedATEX( ) const {
 		Assert( m_data.GetSize( ) >= 4 );
 		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
 
@@ -204,21 +204,18 @@ namespace gw2b {
 			auto atex = reinterpret_cast<const ANetAtexHeader*>( data );
 			auto format = atex->formatInteger;
 
-			// Support only ATEX with DXT5 data for now.
-			if ( format == FCC_DXT5 ) {
-				uint32_t uncompressedSize = this->getUncompressedATEXSize( atex->width, atex->height, format );
-				Array<byte> buffer( uncompressedSize );
+			uint32_t uncompressedSize = this->getUncompressedATEXSize( atex->width, atex->height, format );
+			Array<byte> buffer( uncompressedSize );
 
-				// Decompress
-				try {
-					gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer.GetPointer( ) ) );
-				} catch ( const gw2dt::exception::Exception& err ) {
-					wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( err.what( ) ) );
-					return Array<byte>( );
-				}
-
-				return buffer;
+			// Decompress
+			try {
+				gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer.GetPointer( ) ) );
+			} catch ( const gw2dt::exception::Exception& err ) {
+				wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( err.what( ) ) );
+				return Array<byte>( );
 			}
+
+			return buffer;
 		}
 
 		return Array<byte>( );
@@ -359,7 +356,7 @@ namespace gw2b {
 		return true;
 	}
 
-	size_t ImageReader::getUncompressedATEXSize( uint16 p_width, uint16 p_height, uint32 p_format ) const {
+	size_t ImageReader::getUncompressedATEXSize( const uint16& p_width, const uint16& p_height, const uint32& p_format ) const {
 		// Calculate uncompressed data size
 		// from gw2formats\src\TextureFile.cpp
 		uint32 numBlocks = ( ( p_width + 3 ) >> 2 ) * ( ( p_height + 3 ) >> 2 );

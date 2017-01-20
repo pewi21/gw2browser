@@ -65,19 +65,17 @@ namespace gw2b {
 
 		auto atex = reinterpret_cast<const ANetAtexHeader*>( fileData.GetPointer( ) );
 		if ( ( fileType == ANFT_ATEX ) && ( atex->formatInteger == FCC_DXT5 ) ) {
-			auto dxtData = imgReader->getDXT( );
-			if ( dxtData.GetSize( ) == 0 ) {
+			auto& textureData = imgReader->getDecompressedATEX( );
+			if ( textureData.GetSize( ) == 0 ) {
 				deletePointer( reader );
-				throw exception::Exception( "Failed to get DXTn texture from ImageReader." );
+				throw exception::Exception( "Failed to get decompressed ATEX texture from ImageReader." );
 			}
 
 			int width = atex->width;
 			int height = atex->height;
 
-			// TODO: Load mipmap
-
 			// Upload compressed texture to OpenGL
-			glCompressedTexImage2D( GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, width, height, 0, dxtData.GetSize( ), dxtData.GetPointer( ) );
+			glCompressedTexImage2D( m_textureType, 0, GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, width, height, 0, textureData.GetSize( ), textureData.GetPointer( ) );
 
 		} else {
 			// Get image in wxImage
@@ -114,10 +112,6 @@ namespace gw2b {
 			} else {
 				glTexImage2D( m_textureType, 0, GL_RGB8, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData );
 			}
-
-			// Generate Mipmaps
-			//glGenerateMipmap( m_textureType );
-
 		}
 
 		deletePointer( reader );
