@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -81,6 +81,10 @@ namespace gw2b {
 		return m_data->meshes[p_index];
 	}
 
+	const std::vector<GW2Mesh>& GW2Model::mesh( ) const {
+		return m_data->meshes;
+	}
+
 	GW2Mesh* GW2Model::addMeshes( uint p_amount ) {
 		this->unShare( );
 
@@ -94,14 +98,13 @@ namespace gw2b {
 		return m_data->material.size( );
 	}
 
-	GW2Material& GW2Model::material( uint p_index ) {
+	const GW2Material& GW2Model::material( uint p_index ) const {
 		Assert( p_index < this->numMaterial( ) );
 		return m_data->material[p_index];
 	}
 
-	const GW2Material& GW2Model::material( uint p_index ) const {
-		Assert( p_index < this->numMaterial( ) );
-		return m_data->material[p_index];
+	const std::vector<GW2Material>& GW2Model::material( ) const {
+		return m_data->material;
 	}
 
 	GW2Material* GW2Model::addMaterial( uint p_amount ) {
@@ -474,7 +477,8 @@ namespace gw2b {
 
 		// verts[i].normal is already initialized with zero
 
-		for ( uint i = 0; i < faces.size( ); i++ ) {
+#pragma omp parallel for
+		for ( int i = 0; i < static_cast<int>( faces.size( ) ); i++ ) {
 			// Re-flip the order of the faces of the triangle to original order
 			const int ia = faces[i].index1;
 			const int ib = faces[i].index3;

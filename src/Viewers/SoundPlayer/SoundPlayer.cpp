@@ -155,7 +155,6 @@ namespace gw2b {
 
 	void SoundPlayer::printDeviceList( const char *p_list ) {
 		if ( !p_list || *p_list == '\0' ) {
-			printf( "    !!! none !!!\n" );
 			wxLogMessage( wxT( "    !!! NONE !!!" ) );
 		} else {
 			do {

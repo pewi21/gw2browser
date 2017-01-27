@@ -9,6 +9,8 @@ struct Light {
 };
 
 struct RenderMode {
+	bool wireframe;
+	bool textured;
 	bool normalMapping;
 	bool lighting;
 };

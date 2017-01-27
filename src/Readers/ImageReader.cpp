@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -194,6 +194,33 @@ namespace gw2b {
 		}
 	}
 
+	Array<byte> ImageReader::getDecompressedATEX( ) const {
+		Assert( m_data.GetSize( ) >= 4 );
+		Assert( isValidHeader( m_data.GetPointer( ), m_data.GetSize( ) ) );
+
+		auto fourcc = *reinterpret_cast<const uint32*>( m_data.GetPointer( ) );
+		if ( fourcc == FCC_ATEX ) {
+			auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
+			auto atex = reinterpret_cast<const ANetAtexHeader*>( data );
+			auto format = atex->formatInteger;
+
+			uint32_t uncompressedSize = this->getUncompressedATEXSize( atex->width, atex->height, format );
+			Array<byte> buffer( uncompressedSize );
+
+			// Decompress
+			try {
+				gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer.GetPointer( ) ) );
+			} catch ( const gw2dt::exception::Exception& err ) {
+				wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( err.what( ) ) );
+				return Array<byte>( );
+			}
+
+			return buffer;
+		}
+
+		return Array<byte>( );
+	}
+
 	bool ImageReader::readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
 		// Get header
 		auto header = reinterpret_cast<const DDSHeader*>( m_data.GetPointer( ) );
@@ -329,9 +356,29 @@ namespace gw2b {
 		return true;
 	}
 
-	bool ImageReader::readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
-		auto atex = reinterpret_cast<const ANetAtexHeader*>( m_data.GetPointer( ) );
+	size_t ImageReader::getUncompressedATEXSize( const uint16& p_width, const uint16& p_height, const uint32& p_format ) const {
+		// Calculate uncompressed data size
+		// from gw2formats\src\TextureFile.cpp
+		uint32 numBlocks = ( ( p_width + 3 ) >> 2 ) * ( ( p_height + 3 ) >> 2 );
+		switch ( p_format ) {
+		case FCC_DXT1:
+		case FCC_DXTA:
+			return numBlocks * 8;
+		case FCC_DXT2:
+		case FCC_DXT3:
+		case FCC_DXT4:
+		case FCC_DXT5:
+		case FCC_DXTL:
+		case FCC_DXTN:
+		case FCC_3DCX:
+			return numBlocks * 16;
+		default:
+			wxLogMessage( wxT( "Unsupported ATEX texture format." ) );
+			return false;
+		}
+	}
 
+	bool ImageReader::readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const {
 		// Determine mipmap0 size and bail if the file is too small
 		if ( m_data.GetSize( ) >= sizeof( ANetAtexHeader ) + sizeof( uint32 ) ) {
 			auto mipMap0Size = *reinterpret_cast<const uint32*>( &m_data[sizeof( ANetAtexHeader )] );
@@ -347,6 +394,7 @@ namespace gw2b {
 
 		// Init some fields
 		auto data = reinterpret_cast<const uint8_t*>( m_data.GetPointer( ) );
+		auto atex = reinterpret_cast<const ANetAtexHeader*>( data );
 
 		po_colors = nullptr;
 		po_alphas = nullptr;
@@ -359,29 +407,7 @@ namespace gw2b {
 			width = 128;
 		}
 
-		// Calculate uncompressed data size
-		// from gw2formats\src\TextureFile.cpp
-		uint32 numBlocks = ( ( width + 3 ) >> 2 ) * ( ( height + 3 ) >> 2 );
-		switch ( atex->formatInteger ) {
-		case FCC_DXT1:
-		case FCC_DXTA:
-			numBlocks = numBlocks * 8;
-			break;
-		case FCC_DXT2:
-		case FCC_DXT3:
-		case FCC_DXT4:
-		case FCC_DXT5:
-		case FCC_DXTL:
-		case FCC_DXTN:
-		case FCC_3DCX:
-			numBlocks = numBlocks * 16;
-			break;
-		default:
-			wxLogMessage( wxT( "Unsupported ATEX texture format." ) );
-			return false;
-		}
-
-		uint32_t uncompressedSize = numBlocks;
+		uint32_t uncompressedSize = this->getUncompressedATEXSize( width, height, atex->formatInteger );
 
 		// Allocate output
 		auto buffer = allocate<BGRA>( width * height );
@@ -389,7 +415,7 @@ namespace gw2b {
 		// Decompress
 		try {
 			gw2dt::compression::inflateTextureFileBuffer( m_data.GetSize( ), data, uncompressedSize, reinterpret_cast<uint8_t*>( buffer ) );
-		} catch( const gw2dt::exception::Exception& err ) {
+		} catch ( const gw2dt::exception::Exception& err ) {
 			wxLogMessage( wxT( "Failed decompress ATEX texture: %s" ), wxString( err.what( ) ) );
 			freePointer( buffer );
 			return false;

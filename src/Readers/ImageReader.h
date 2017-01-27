@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -66,12 +66,16 @@ namespace gw2b {
 		/** Gets the image contained in the data owned by this reader.
 		*  \return wxImage     Newly created image. */
 		wxImage getImage( ) const;
+		/** Gets the uncompressed DXT texture contained in the data owned by this reader.
+		*  \return Array<byte> Newly created DXT texture. */
+		Array<byte> getDecompressedATEX( ) const;
 		/** Determines whether the header of this image is valid.
 		*  \return bool    true if valid, false if not. */
 		static bool isValidHeader( const byte* p_data, size_t p_size );
 
 	private:
 		bool readDDS( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
+		size_t getUncompressedATEXSize( const uint16& p_width, const uint16& p_height, const uint32& p_format ) const;
 		bool readATEX( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 		bool readWebP( wxSize& po_size, BGR*& po_colors, uint8*& po_alphas ) const;
 

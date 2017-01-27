@@ -45,7 +45,7 @@ namespace gw2b {
 		void use( );
 		/** Get shader program ID represented by this data.
 		*  \return GLuint			programId. */
-		GLuint getProgramId( );
+		GLuint getProgramId( ) const;
 		/** Delete the shader. */
 		void clear( );
 

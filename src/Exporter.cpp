@@ -579,11 +579,14 @@ namespace gw2b {
 			materialName[mesh.materialIndex] = mesh.materialName.c_str( );
 		}
 
+		auto version = wxString::Format( "%d.%d.%d.%d", APP_MAJOR_VERSION, APP_MINOR_VERSION, APP_RELEASE_NUMBER, APP_SUBRELEASE_NUMBER );
+
 		// ----------------
 		// Export Materials
 		// ----------------
 
-		stream << "# Gw2Browser MTL File: \'" << m_filename.GetName( ) << "\'" << std::endl;
+		stream << "# Gw2Browser " << version << std::endl;
+		stream << "# MTL File: \'" << m_filename.GetName( ) << "\'" << std::endl;
 		stream << "# Material Count : " << model.numMaterial( ) << std::endl;
 		stream << std::endl;
 
@@ -674,7 +677,8 @@ namespace gw2b {
 		// Export to Wavefront .obj file
 		// https://en.wikipedia.org/wiki/Wavefront_.obj_file
 
-		stream << "# Gw2Browser OBJ File: \'" << m_filename.GetName( ) << "\'" << std::endl;
+		stream << "# Gw2Browser " << version << std::endl;
+		stream << "# OBJ File: \'" << m_filename.GetName( ) << "\'" << std::endl;
 		stream << "# Mesh Count : " << model.numMeshes( ) << std::endl;
 		stream << "mtllib " << m_filename.GetName( ) << ".mtl" << std::endl;
 		stream << std::endl;

@@ -162,7 +162,7 @@ namespace gw2b {
 		glUseProgram( m_program );
 	}
 
-	GLuint Shader::getProgramId( ) {
+	GLuint Shader::getProgramId( ) const {
 		return m_program;
 	}
 

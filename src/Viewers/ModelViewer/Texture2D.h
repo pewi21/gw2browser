@@ -40,23 +40,40 @@ namespace gw2b {
 		/** Constructor. Create texture, default to create GL_TEXTURE_2D texture.
 		*  \param[in]  p_datFile    Reference to an instance of DatFile.
 		*  \param[in]  p_fileId     File id to load texture from DatFile.
-		*  \param[in]  p_textureType   Texture type. */
-		Texture2D( DatFile& p_datFile, const uint p_fileId, const GLenum p_textureType = GL_TEXTURE_2D );
+		*  \param[in]  p_textureType   Texture type.
+		*  \param[in]  p_wrapS      Texture wrap parameter.
+		*  \param[in]  p_wrapT      Texture wrap parameter.
+		*  \param[in]  p_anisotropic   Use anisotropic texture filtering? */
+		Texture2D( DatFile& p_datFile, const uint p_fileId,
+			const GLenum p_textureType = GL_TEXTURE_2D,
+			const GLint p_wrapS = GL_REPEAT,
+			const GLint p_wrapT = GL_REPEAT,
+			const bool p_anisotropic = true
+		);
 		/** Destructor. Clears all data. */
 		~Texture2D( );
 
 		/** Bind the texture. */
 		void bind( );
+		/** Un-bind the texture. */
+		void unbind( );
 		/** Get texture ID represented by this data.
 		*  \return GLuint			textureId. */
-		GLuint getTextureId( );
+		GLuint getTextureId( ) const;
 		/** Get texture file ID from DatFile represented by this data.
 		*  \return uint				fileId. */
-		uint getFileId( );
+		uint getFileId( ) const;
 
 	private:
-		/** Set texture parameters. */
-		void init( );
+		/** Generate texture. */
+		void generate( );
+		/** Set texture wrap parameter.
+		*  \param[in]  p_wrapS      Texture wrap parameter.
+		*  \param[in]  p_wrapT      Texture wrap parameter. */
+		void setWraping( const GLint p_wrapS, const GLint p_wrapT );
+		/** Set texture filtering.
+		*  \param[in]  p_anisotropic   Anisotropic texture filtering? */
+		void setFiltering( const bool p_anisotropic );
 
 	}; // class Texture2D
 

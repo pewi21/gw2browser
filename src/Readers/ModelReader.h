@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2015 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -126,12 +126,13 @@ namespace gw2b {
 		// Submeshes
 		uint numMeshes( ) const;
 		const GW2Mesh& mesh( uint p_index ) const;
+		const std::vector<GW2Mesh>& mesh( ) const;
 		GW2Mesh* addMeshes( uint p_amount );
 
 		// Material data
 		uint numMaterial( ) const;
-		GW2Material& material( uint p_index );
 		const GW2Material& material( uint p_index ) const;
+		const std::vector<GW2Material>& material( ) const;
 		GW2Material* addMaterial( uint p_amount );
 
 		// helpers

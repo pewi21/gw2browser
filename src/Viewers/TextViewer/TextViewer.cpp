@@ -33,10 +33,15 @@ namespace gw2b {
 	TextViewer::TextViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
 		: Viewer( p_parent, p_pos, p_size ) {
 		auto sizer = new wxBoxSizer( wxVERTICAL );
+		auto hsizer = new wxBoxSizer( wxHORIZONTAL );
 
-		// Toolbar
-		auto toolbar = this->buildToolbar( );
-		sizer->Add( toolbar, wxSizerFlags( ).Expand( ).FixedMinSize( ) );
+		// "Entry:" text
+		auto text = new wxStaticText( this, wxID_ANY, wxT( "Entry:" ) );
+		// Choice box
+		m_textEntry = new wxChoice( this, wxID_ANY );
+		hsizer->Add( text, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+		hsizer->Add( m_textEntry, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+		sizer->Add( hsizer );
 
 		// Text control
 		m_text = new wxTextCtrl( this, wxID_ANY, wxT( "" ), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY );
@@ -45,6 +50,9 @@ namespace gw2b {
 		// Layout
 		this->SetSizer( sizer );
 		this->Layout( );
+
+		// Choice control event
+		this->Bind( wxEVT_CHOICE, &TextViewer::onToolbarEntrySelectEvt, this );
 	}
 
 	TextViewer::~TextViewer( ) {
@@ -91,15 +99,6 @@ namespace gw2b {
 	void TextViewer::updateText( size_t p_entry ) {
 		m_text->Clear( );
 		m_text->SetValue( m_string[p_entry] );
-	}
-
-	wxToolBar* TextViewer::buildToolbar( ) {
-		auto toolbar = new wxToolBar( this, wxID_ANY );
-		m_textEntry = new wxChoice( toolbar, wxID_ANY );
-		this->Bind( wxEVT_CHOICE, &TextViewer::onToolbarEntrySelectEvt, this );
-
-		toolbar->Realize( );
-		return toolbar;
 	}
 
 	void TextViewer::onToolbarEntrySelectEvt( wxCommandEvent& p_event ) {
