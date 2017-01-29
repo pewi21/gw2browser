@@ -288,7 +288,7 @@ It will look some thing like this.
 
 2. Change directory of Git Bash window to Gw2Browser/extern/libogg and use these command
 
-		mingw32-make glew32.lib
+		mingw32-make
 
 * Build libvorbis
 
