@@ -208,7 +208,7 @@
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.0\include\;..\..\wxWidgets-3.1.0\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.0\include\;..\..\wxWidgets-3.1.0\lib\vc_x64_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
     <LibraryPath>..\extern\freetype\objs\vc2015\x64;..\extern\glew\lib\Debug\x64;..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\GW2DatTools\lib\x64;..\extern\libogg\win32\VS2015\x64\Debug;..\extern\libvorbis\win32\VS2015\x64\Debug;..\..\wxWidgets-3.1.0\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
@@ -219,11 +219,11 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.0\include\;..\..\wxWidgets-3.1.0\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.0\include\;..\..\wxWidgets-3.1.0\lib\vc_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
     <LibraryPath>..\extern\freetype\objs\vc2015\Win32;..\extern\glew\lib\Release\Win32;..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\GW2DatTools\lib\x86;..\extern\libogg\win32\VS2015\Win32\Release;..\extern\libvorbis\win32\VS2015\Win32\Release;..\..\wxWidgets-3.1.0\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.0\include\;..\..\wxWidgets-3.1.0\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\GW2DatTools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.0\include\;..\..\wxWidgets-3.1.0\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
     <LibraryPath>..\extern\freetype\objs\vc2015\x64;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\GW2DatTools\lib\x64;..\extern\libogg\win32\VS2015\x64\Release;..\extern\libvorbis\win32\VS2015\x64\Release;..\..\wxWidgets-3.1.0\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
@@ -244,7 +244,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype265d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;wxbase31ud.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype265d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;wxbase31ud.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -267,7 +267,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype265d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;wxbase31ud.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype265d.lib;glew32sd.lib;gw2DatToolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;wxbase31ud.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -292,7 +292,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype265.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_core.lib;wxmsw31u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype265.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_core.lib;wxmsw31u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
@@ -317,7 +317,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype265.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_core.lib;wxmsw31u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype265.lib;glew32s.lib;gw2DatTools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_core.lib;wxmsw31u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
