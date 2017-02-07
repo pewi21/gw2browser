@@ -217,6 +217,12 @@ namespace gw2b {
 			case ANFT_MapShadow:
 				return wxT( "mpsd" );
 				break;
+			case ANFT_MapCollision:
+				return wxT( "havk" );
+				break;
+			case ANFT_MapPortalManifest:
+				return wxT( "prlt" );
+				break;
 			case ANFT_PagedImageTable:
 				return wxT( "pimg" );
 				break;
@@ -227,9 +233,6 @@ namespace gw2b {
 			case ANFT_Composite:
 				return wxT( "cmpc" );
 				break;
-			case ANFT_HavokCollision:
-				return wxT( "havk" );
-				break;
 			case ANFT_AnimSequences:
 				return wxT( "seqn" );
 				break;
@@ -239,10 +242,6 @@ namespace gw2b {
 
 			case ANFT_Cinematic:
 				return wxT( "cinp" );
-				break;
-
-			case ANFT_PortalManifest:
-				return wxT( "prlt" );
 				break;
 
 			case ANFT_TextPackManifest:

@@ -444,7 +444,7 @@ namespace gw2b {
 				po_fileType = ANFT_Manifest;
 				break;
 			case FCC_prlt:
-				po_fileType = ANFT_PortalManifest;
+				po_fileType = ANFT_MapPortalManifest;
 				break;
 			case FCC_txtm:
 				po_fileType = ANFT_TextPackManifest;
@@ -485,6 +485,9 @@ namespace gw2b {
 			case FCC_MODL:
 				po_fileType = ANFT_Model;
 				break;
+			case FCC_cmaC:
+				po_fileType = ANFT_ModelCollisionManifest;
+				break;
 			case FCC_DEPS:
 				po_fileType = ANFT_DependencyTable;
 				break;
@@ -492,7 +495,7 @@ namespace gw2b {
 				po_fileType = ANFT_EULA;
 				break;
 			case FCC_hvkC:
-				po_fileType = ANFT_HavokCollision;
+				po_fileType = ANFT_MapCollision;
 				break;
 			case FCC_cntc:
 				po_fileType = ANFT_MapContent;
@@ -502,6 +505,9 @@ namespace gw2b {
 				break;
 			case FCC_mpsd:
 				po_fileType = ANFT_MapShadow;
+				break;
+			case FCC_mMet:
+				po_fileType = ANFT_MapMetadata;
 				break;
 			case FCC_PIMG:
 				po_fileType = ANFT_PagedImageTable;

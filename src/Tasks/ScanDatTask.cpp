@@ -276,9 +276,6 @@ namespace gw2b {
 		case ANFT_Manifest:
 			MakeCategory( wxT( "Manifests" ) );
 			break;
-		case ANFT_PortalManifest:
-			MakeCategory( wxT( "Portal Manifests" ) );
-			break;
 		case ANFT_TEXT:
 		case ANFT_UTF8:
 			MakeCategory( wxT( "Text" ) );
@@ -304,6 +301,9 @@ namespace gw2b {
 		case ANFT_Model:
 			MakeCategory( wxT( "Models" ) );
 			break;
+		case ANFT_ModelCollisionManifest:
+			MakeCategory( wxT( "Model Collision Manifest" ) );
+			break;
 		case ANFT_DependencyTable:
 			MakeCategory( wxT( "Dependency Tables" ) );
 			break;
@@ -313,17 +313,23 @@ namespace gw2b {
 		case ANFT_Cinematic:
 			MakeCategory( wxT( "Cinematics" ) );
 			break;
-		case ANFT_HavokCollision:
-			MakeCategory( wxT( "Havok Collision" ) );
+		case ANFT_MapCollision:
+			MakeCategory( wxT( "Map Collision" ) );
 			break;
 		case ANFT_MapContent:
 			MakeCategory( wxT( "Map Content" ) );
 			break;
 		case ANFT_MapParam:
-			MakeCategory( wxT( "Map Parameter" ) );
+			MakeCategory( wxT( "Map" ) );
 			break;
 		case ANFT_MapShadow:
 			MakeCategory( wxT( "Map Shadow" ) );
+			break;
+		case ANFT_MapPortalManifest:
+			MakeCategory( wxT( "Map Portal Manifest" ) );
+			break;
+		case ANFT_MapMetadata:
+			MakeCategory( wxT( "Map Metadata" ) );
 			break;
 		case ANFT_PagedImageTable:
 			MakeCategory( wxT( "Paged Image Table" ) );

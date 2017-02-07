@@ -104,6 +104,8 @@ namespace gw2b {
 		FCC_txtV = 0x56747874,
 		FCC_txtv = 0x76747874,
 		FCC_PNG = 0x474e5089,
+		FCC_cmaC = 0x43616d63,
+		FCC_mMet = 0x74654d6d,
 
 		// Not quite FourCC
 		FCC_MZ = 0x5a4d,		// Executable or Dynamic Link Library
@@ -156,19 +158,21 @@ namespace gw2b {
 		ANFT_Bank,						/**< Soundbank file, contains other files. */
 		ANFT_BankIndex,					/**< Soundbank files index */
 		ANFT_Model,						/**< Model file. */
+		ANFT_ModelCollisionManifest,	/**< Model collision manifest file. */
 		ANFT_DependencyTable,			/**< Dependency table. */
 		ANFT_EULA,						/**< EULA file. */
-		ANFT_HavokCollision,			/**< Havok collision properties. */
+		ANFT_MapCollision,				/**< Map collision properties. */
 		ANFT_MapContent,				/**< Map content file. */
-		ANFT_MapParam,					/**< Map parameter file. */
+		ANFT_MapParam,					/**< Map file. */
 		ANFT_MapShadow,					/**< Map shadow file. */
+		ANFT_MapPortalManifest,			/**< Map portal Manifest file. */
+		ANFT_MapMetadata,				/**< Map metadata file. */
 		ANFT_PagedImageTable,			/**< Paged Image Table file. */
 		ANFT_Material,					/**< Compiled DirectX 9 shader. */
 		ANFT_Composite,					/**< Composite data. */
 		ANFT_Cinematic,					/**< Cinematic data. */
 		ANFT_AnimSequences,				/**< Animation Sequences data. */
 		ANFT_EmoteAnimation,			/**< Emote animation data. */
-		ANFT_PortalManifest,			/**< Portal Manifest file. */
 		ANFT_AudioScript,				/**< Audio script file. */
 		ANFT_ShaderCache,				/**< Shader cache file. */
 		ANFT_Config,					/**< Configuration file. */
