@@ -443,9 +443,6 @@ namespace gw2b {
 			case FCC_ARMF:
 				po_fileType = ANFT_Manifest;
 				break;
-			case FCC_prlt:
-				po_fileType = ANFT_MapPortalManifest;
-				break;
 			case FCC_txtm:
 				po_fileType = ANFT_TextPackManifest;
 				break;
@@ -494,11 +491,14 @@ namespace gw2b {
 			case FCC_EULA:
 				po_fileType = ANFT_EULA;
 				break;
+			case FCC_cntc:
+				po_fileType = ANFT_GameContent;
+				break;
+			case FCC_prlt:
+				po_fileType = ANFT_GameContentPortalManifest;
+				break;
 			case FCC_hvkC:
 				po_fileType = ANFT_MapCollision;
-				break;
-			case FCC_cntc:
-				po_fileType = ANFT_MapContent;
 				break;
 			case FCC_mapc:
 				po_fileType = ANFT_MapParam;

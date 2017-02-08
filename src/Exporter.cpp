@@ -207,10 +207,15 @@ namespace gw2b {
 				return wxT( "eula" );
 				break;
 
-				// Maps stuff
-			case ANFT_MapContent:
+
+			case ANFT_GameContent:
 				return wxT( "cntc" );
 				break;
+			case ANFT_GameContentPortalManifest:
+				return wxT( "prlt" );
+				break;
+
+				// Maps stuff
 			case ANFT_MapParam:
 				return wxT( "parm" );
 				break;
@@ -219,9 +224,6 @@ namespace gw2b {
 				break;
 			case ANFT_MapCollision:
 				return wxT( "havk" );
-				break;
-			case ANFT_MapPortalManifest:
-				return wxT( "prlt" );
 				break;
 			case ANFT_PagedImageTable:
 				return wxT( "pimg" );

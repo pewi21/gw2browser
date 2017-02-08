@@ -316,17 +316,17 @@ namespace gw2b {
 		case ANFT_MapCollision:
 			MakeCategory( wxT( "Map Collision" ) );
 			break;
-		case ANFT_MapContent:
-			MakeCategory( wxT( "Map Content" ) );
+		case ANFT_GameContent:
+			MakeCategory( wxT( "Game Content" ) );
+			break;
+		case ANFT_GameContentPortalManifest:
+			MakeCategory( wxT( "Game Content Portal Manifest" ) );
 			break;
 		case ANFT_MapParam:
 			MakeCategory( wxT( "Map" ) );
 			break;
 		case ANFT_MapShadow:
 			MakeCategory( wxT( "Map Shadow" ) );
-			break;
-		case ANFT_MapPortalManifest:
-			MakeCategory( wxT( "Map Portal Manifest" ) );
 			break;
 		case ANFT_MapMetadata:
 			MakeCategory( wxT( "Map Metadata" ) );

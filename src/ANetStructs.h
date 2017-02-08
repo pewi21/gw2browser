@@ -161,11 +161,11 @@ namespace gw2b {
 		ANFT_ModelCollisionManifest,	/**< Model collision manifest file. */
 		ANFT_DependencyTable,			/**< Dependency table. */
 		ANFT_EULA,						/**< EULA file. */
+		ANFT_GameContent,				/**< Game content file. */
+		ANFT_GameContentPortalManifest,	/**< Game content portal Manifest file. */
 		ANFT_MapCollision,				/**< Map collision properties. */
-		ANFT_MapContent,				/**< Map content file. */
 		ANFT_MapParam,					/**< Map file. */
 		ANFT_MapShadow,					/**< Map shadow file. */
-		ANFT_MapPortalManifest,			/**< Map portal Manifest file. */
 		ANFT_MapMetadata,				/**< Map metadata file. */
 		ANFT_PagedImageTable,			/**< Paged Image Table file. */
 		ANFT_Material,					/**< Compiled DirectX 9 shader. */
