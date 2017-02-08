@@ -6,11 +6,9 @@ May change over time. :P
 Gw2Browser_2017-xx-xx (1.0.9.1)
 -------------------------------
 
-* Mesh and Material class (texture, lighting).
+* Material class (texture, lighting).
 
-* Texture2D class parameters.
-
-* In ModelViewer, Optimize texture loader for faster loading, load DXT texture data directly, if possible?
+* Improve performance of ModelViewer's drawText function by using texture atlas.
 
 * Exporters class, like Reader/Viewer.
 
@@ -32,8 +30,6 @@ Further plans
 * Self shadowed model shading?
 
 * Scene manager (need when implement map viewer).
-
-* Improve performance of ModelViewer's drawText function.
 
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
