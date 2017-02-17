@@ -63,22 +63,25 @@ namespace gw2b {
 
 		// File menu
 		auto fileMenu = new wxMenu;
-		wxAcceleratorEntry accel( wxACCEL_CTRL, 'O' );
-		fileMenu->Append( wxID_OPEN, wxT( "&Open" ), wxT( "Open a file for browsing" ) )->SetAccel( &accel );
+		wxAcceleratorEntry openAccel( wxACCEL_CTRL, 'O' );
+		fileMenu->Append( wxID_OPEN, wxT( "&Open" ), wxT( "Open a file for browsing" ) )->SetAccel( &openAccel );
 		fileMenu->AppendSeparator( );
 		fileMenu->Append( wxID_EXIT, wxT( "E&xit\tAlt+F4" ) );
 		// View menu
 		auto viewMenu = new wxMenu;
-		viewMenu->AppendCheckItem( ID_ShowFileList, wxT( "&Show File List" ) );
-		viewMenu->AppendCheckItem( ID_ShowLog, wxT( "&Show Log" ) );
+		viewMenu->AppendCheckItem( ID_ShowFileList, wxT( "&Show File List" ), wxT( "Toggle show file list window" ) );
+		viewMenu->AppendCheckItem( ID_ShowLog, wxT( "&Show Log" ), wxT( "Toggle show log window" ) );
 		//viewMenu->Append( ID_ResetLayout, wxT( "&Reset Layout" ) );
 		viewMenu->AppendSeparator( );
-		viewMenu->Append( ID_ClearLog, wxT( "&Clear Log" ) );
+		viewMenu->Append( ID_ClearLog, wxT( "&Clear Log" ), wxT( "Clear log window content" ) );
 		//viewMenu->AppendSeparator( );
 		//viewMenu->Append( ID_SetBackgroundColor, wxT( "&Set Background color" ) );
 		//viewMenu->AppendCheckItem( ID_ShowGrid, wxT( "&Show Grid" ) );
 		//viewMenu->AppendSeparator( );
 		//viewMenu->Append( ID_SetCanvasSize, wxT( "&Set GLCanvas Size" ) );
+		// Tools menu
+		//auto toolsMenu = new wxMenu;
+		//toolsMenu->Append( ID_Settings, wxT( "&Settings" ) );
 		// Help menu
 		auto helpMenu = new wxMenu( );
 		helpMenu->Append( wxID_ABOUT, wxT( "&About Gw2Browser" ) );
@@ -86,7 +89,7 @@ namespace gw2b {
 		// Attach menu
 		menuBar->Append( fileMenu, wxT( "&File" ) );
 		menuBar->Append( viewMenu, wxT( "&View" ) );
-		//menuBar->Append( settingsMenu, wxT( "&Settings" ) );
+		//menuBar->Append( toolsMenu, wxT( "&Tools" ) );
 		menuBar->Append( helpMenu, wxT( "&Help" ) );
 		this->SetMenuBar( menuBar );
 
