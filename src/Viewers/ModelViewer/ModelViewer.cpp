@@ -435,15 +435,19 @@ namespace gw2b {
 		// View position
 		glUniform3fv( glGetUniformLocation( m_mainShader->getProgramId( ), "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
 
-		m_normalVisualizerShader->use( );
-		// Send projection matrix to normal visualizer shader
-		glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		if ( m_statusVisualizeNormal ) {
+			m_normalVisualizerShader->use( );
+			// Send projection matrix to normal visualizer shader
+			glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		}
 
-		m_zVisualizerShader->use( );
-		// Send projection matrix to Z-Buffer visualizer shader
-		glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-		glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "near" ), minZ );
-		glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "far" ), maxZ );
+		if ( m_statusVisualizeZbuffer ) {
+			m_zVisualizerShader->use( );
+			// Send projection matrix to Z-Buffer visualizer shader
+			glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+			glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "near" ), minZ );
+			glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "far" ), maxZ );
+		}
 
 		// Send projection matrix to lightbox renderer
 		m_lightBox->setProjectionMatrix( projection );
