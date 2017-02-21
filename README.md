@@ -48,8 +48,8 @@ first. Loading any model is also *far* from optimized!
 Decompressing one produces garbage blocks. Well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
-* **Some sound data in bank file(s) is unsupported.**
-The data seems to be compressed or encrypted. Might investigate on this in future.
+* **Some sound data in bank file(s) and text data in string file(s) are unsupported.**
+The data are encrypted, each entry/files have difference encryption keys.
 
 Building Gw2Browser
 -------------------
