@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 #include "Camera.h"
+#include "FrameBuffer.h"
 #include "Light.h"
 #include "LightBox.h"
 #include "Model.h"
@@ -56,8 +57,11 @@ namespace gw2b {
 		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
+		FrameBuffer*				m_framebuffer;
 		RenderTimer*				m_renderTimer;
 		wxTimer*					m_movementKeyTimer;
+
+		wxSize						m_clientSize;
 
 		// Internal status
 		bool						m_glInitialized = false;			// Is OpenGL is initialized?
@@ -83,6 +87,7 @@ namespace gw2b {
 		Shader*						m_mainShader;
 		Shader*						m_normalVisualizerShader;
 		Shader*						m_zVisualizerShader;
+		Shader*						m_screenShader;
 
 		// Camera
 		Camera                      m_camera;
@@ -133,11 +138,13 @@ namespace gw2b {
 		void displayStatusText( );
 		void updateMatrices( );
 		void focus( );
+		void createFrameBuffer( );
 		void onMotionEvt( wxMouseEvent& p_event );
 		void onMouseWheelEvt( wxMouseEvent& p_event );
 		void onKeyDownEvt( wxKeyEvent& p_event );
 		void onMovementKeyTimerEvt( wxTimerEvent&p_event );
 		void onClose( wxCloseEvent& evt );
+		void onResize( wxSizeEvent& evt );
 
 	}; // class ModelViewer
 

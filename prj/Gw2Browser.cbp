@@ -261,6 +261,8 @@
 		<Unit filename="../src/Viewers/ImageViewer/ImageViewer.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Camera.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Camera.h" />
+		<Unit filename="../src/Viewers/ModelViewer/FrameBuffer.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/FrameBuffer.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Light.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Light.h" />
 		<Unit filename="../src/Viewers/ModelViewer/LightBox.cpp" />

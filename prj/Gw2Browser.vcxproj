@@ -64,6 +64,7 @@
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageControl.h" />
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageViewer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Camera.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\FrameBuffer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Light.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Model.h" />
@@ -119,6 +120,7 @@
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageControl.cpp" />
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageViewer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Camera.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\FrameBuffer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Light.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\LightBox.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Model.cpp" />
@@ -132,6 +134,8 @@
     <ClCompile Include="..\src\Viewers\TextViewer\TextViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\data\shaders\framebuffer.frag" />
+    <None Include="..\data\shaders\framebuffer.vert" />
     <None Include="..\data\shaders\light_box.frag" />
     <None Include="..\data\shaders\light_box.vert" />
     <None Include="..\data\shaders\normal_visualizer.frag" />

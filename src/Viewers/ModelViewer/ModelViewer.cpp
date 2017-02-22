@@ -77,11 +77,16 @@ namespace gw2b {
 		this->Bind( wxEVT_MOUSEWHEEL, &ModelViewer::onMouseWheelEvt, this );
 		this->Bind( wxEVT_KEY_DOWN, &ModelViewer::onKeyDownEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &ModelViewer::onClose, this );
+		this->Bind( wxEVT_SIZE, &ModelViewer::onResize, this );
 	}
 
 	ModelViewer::~ModelViewer( ) {
 		// Clean shaders
 		this->clearShader( );
+
+		if ( m_framebuffer ) {
+			delete m_framebuffer;
+		}
 
 		delete m_renderTimer;
 		delete m_movementKeyTimer;
@@ -104,7 +109,9 @@ namespace gw2b {
 		if ( m_zVisualizerShader ) {
 			delete m_zVisualizerShader;
 		}
-
+		if ( m_screenShader ) {
+			delete m_screenShader;
+		}
 	}
 
 	void ModelViewer::setReader( FileReader* p_reader ) {
@@ -149,6 +156,13 @@ namespace gw2b {
 			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
+
+		try {
+			m_screenShader = new Shader( "..//data//shaders//framebuffer.vert", "..//data//shaders//framebuffer.frag" );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxT( "m_screenShader : %s" ), wxString( err.what( ) ) );
+			throw exception::Exception( "Failed to load shader." );
+		}
 	}
 
 	void ModelViewer::reloadShader( ) {
@@ -182,14 +196,11 @@ namespace gw2b {
 		wxLogMessage( wxT( "Running on %s from %s" ), wxString( glGetString( GL_RENDERER ) ), wxString( glGetString( GL_VENDOR ) ) );
 		wxLogMessage( wxT( "OpenGL version %s" ), wxString( glGetString( GL_VERSION ) ) );
 
+		// Update client size of wxGLCanvas.
+		m_clientSize = this->GetClientSize( );
+
 		// Set background color
 		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
-
-		// Enable multisampling, not really need since it was enabled at context creation
-		glEnable( GL_MULTISAMPLE );
-
-		// Enable depth test
-		glEnable( GL_DEPTH_TEST );
 
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc( GL_LESS );
@@ -216,6 +227,9 @@ namespace gw2b {
 		m_camera.setCameraMode( Camera::CameraMode::ORBITALCAM );
 		m_camera.setMouseSensitivity( 0.5f * ( glm::pi<float>( ) / 180.0f ) );  // 0.5 degrees per pixel
 
+		// create framebuffer
+		this->createFrameBuffer( );
+
 		return true;
 	}
 
@@ -232,9 +246,16 @@ namespace gw2b {
 		m_deltaTime = currentFrame - m_lastFrame;
 		m_lastFrame = currentFrame;
 
-		// Set the OpenGL viewport according to the client size of wxGLCanvas.
-		wxSize ClientSize = this->GetClientSize( );
-		glViewport( 0, 0, ClientSize.x, ClientSize.y );
+		// Update client size of wxGLCanvas
+		m_clientSize = this->GetClientSize( );
+		// Set the OpenGL viewport according to the client size of wxGLCanvas
+		glViewport( 0, 0, m_clientSize.x, m_clientSize.y );
+
+		// Bind to framebuffer and draw to framebuffer texture
+		m_framebuffer->bind( );
+
+		// Enable depth test
+		glEnable( GL_DEPTH_TEST );
 
 		// Clear color buffer and depth buffer
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -278,6 +299,17 @@ namespace gw2b {
 		if ( m_statusText ) {
 			this->displayStatusText( );
 		}
+
+		// Bind to default framebuffer again and draw the quad plane with attched screen texture
+		m_framebuffer->unbind( );
+
+		// Clear all relevant buffers
+		glClear( GL_COLOR_BUFFER_BIT );
+		glDisable( GL_DEPTH_TEST ); // We don't care about depth information when rendering a single quad
+
+		// Draw Screen
+		m_screenShader->use( );
+		m_framebuffer->draw( );
 
 		SwapBuffers( );
 	}
@@ -337,10 +369,8 @@ namespace gw2b {
 	}
 
 	void ModelViewer::displayStatusText( ) {
-		wxSize ClientSize = this->GetClientSize( );
-
 		// Send ClientSize variable to text renderer
-		m_text->setClientSize( ClientSize );
+		m_text->setClientSize( m_clientSize );
 
 		glm::vec3 color = glm::vec3( 1.0f );
 		GLfloat scale = 1.0f;
@@ -356,9 +386,9 @@ namespace gw2b {
 		}
 
 		// Top-left text
-		m_text->drawText( wxString::Format( wxT( "Meshes: %d" ), numMeshes ), 0.0f, ClientSize.y - 12.0f, scale, color );
-		m_text->drawText( wxString::Format( wxT( "Vertices: %d" ), vertexCount ), 0.0f, ClientSize.y - 24.0f, scale, color );
-		m_text->drawText( wxString::Format( wxT( "Triangles: %d" ), triangleCount ), 0.0f, ClientSize.y - 36.0f, scale, color );
+		m_text->drawText( wxString::Format( wxT( "Meshes: %d" ), numMeshes ), 0.0f, m_clientSize.y - 12.0f, scale, color );
+		m_text->drawText( wxString::Format( wxT( "Vertices: %d" ), vertexCount ), 0.0f, m_clientSize.y - 24.0f, scale, color );
+		m_text->drawText( wxString::Format( wxT( "Triangles: %d" ), triangleCount ), 0.0f, m_clientSize.y - 36.0f, scale, color );
 
 		// Bottom-left text
 		m_text->drawText( wxT( "Zoom: Scroll wheel" ), 0.0f, 0.0f + 2.0f, scale, color );
@@ -422,8 +452,7 @@ namespace gw2b {
 		auto maxZ = ( maxSize + distance ) * 10.0f;
 		auto minZ = maxZ * 0.001f;
 
-		const wxSize ClientSize = this->GetClientSize( );
-		float aspectRatio = ( static_cast<float>( ClientSize.x ) / static_cast<float>( ClientSize.y ) );
+		float aspectRatio = ( static_cast<float>( m_clientSize.x ) / static_cast<float>( m_clientSize.y ) );
 		auto fov = 45.0f;
 
 		// Projection matrix
@@ -481,6 +510,10 @@ namespace gw2b {
 		m_camera.setPivot( bounds.center( ) );
 		m_camera.setDistance( distance );
 		this->render( );
+	}
+
+	void ModelViewer::createFrameBuffer( ) {
+		m_framebuffer = new FrameBuffer( m_clientSize );
 	}
 
 	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
@@ -603,6 +636,18 @@ namespace gw2b {
 	void ModelViewer::onClose( wxCloseEvent& evt ) {
 		m_renderTimer->Stop( );
 		evt.Skip( );
+	}
+
+	void ModelViewer::onResize( wxSizeEvent& evt ) {
+		// Check if framebuffer is already create. If found, delete it.
+		if ( m_framebuffer ) {
+			delete m_framebuffer;
+		}
+
+		// Update client size of wxGLCanvas.
+		m_clientSize = this->GetClientSize( );
+
+		this->createFrameBuffer( );
 	}
 
 }; // namespace gw2b

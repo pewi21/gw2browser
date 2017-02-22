@@ -225,6 +225,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\Model.h">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\FrameBuffer.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -371,6 +374,9 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\Model.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\FrameBuffer.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\text.frag">
@@ -408,6 +414,12 @@
     </None>
     <None Include="..\src\Imported\half.inl">
       <Filter>Source Files\Imported</Filter>
+    </None>
+    <None Include="..\data\shaders\framebuffer.vert">
+      <Filter>Data Files\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\framebuffer.frag">
+      <Filter>Data Files\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
