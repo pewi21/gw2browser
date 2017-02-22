@@ -285,6 +285,10 @@ namespace gw2b {
 		if ( !m_statusVisualizeZbuffer ) {
 			// Draw normally
 			this->drawModel( m_mainShader, trans );
+			// Draw normal lines for debugging/visualization
+			if ( m_statusVisualizeNormal ) {
+				this->drawModel( m_normalVisualizerShader, trans );
+			}
 		} else {
 			// Draw only Z-Buffer (for debugging/visualization)
 			this->drawModel( m_zVisualizerShader, trans );
@@ -355,10 +359,6 @@ namespace gw2b {
 			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
 
 			it->draw( p_shader, p_trans );
-			// Draw normal lines for debugging/visualization
-			if ( m_statusVisualizeNormal ) {
-				it->draw( m_normalVisualizerShader, p_trans );
-			}
 		}
 
 		if ( m_statusWireframe ) {
