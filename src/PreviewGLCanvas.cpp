@@ -93,8 +93,6 @@ namespace gw2b {
 			WX_GL_RGBA,
 			WX_GL_DOUBLEBUFFER,
 			WX_GL_DEPTH_SIZE, 16,
-			WX_GL_SAMPLE_BUFFERS, 1,
-			WX_GL_SAMPLES, 4,
 			0
 		};
 
