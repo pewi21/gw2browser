@@ -47,6 +47,7 @@ File Id			Format			Note
 106980			model			Charr poster
 162177			soundbank		"I'm a Charr" (female)
 162177			soundbank		"I'm a Charr" (male)
+184738			ogg				Charr war music
 187834			model			Charr's sigil (front of smelter)
 187835			model			Charr's stature axe
 187836			model			Charr's stature bow
@@ -69,3 +70,4 @@ File Id			Format			Note
 1417808			mp3				SAB sound effects end
 1419557			ogg				SAB music
 1419558			ogg				SAB metal music
+1629793			model			Samarog
