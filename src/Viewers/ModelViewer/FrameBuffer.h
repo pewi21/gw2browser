@@ -44,9 +44,13 @@ namespace gw2b {
 		/** Destructor. Clears all data. */
 		~FrameBuffer( );
 
+		/** Draw framebuffer. */
 		void draw( );
+		/** Bind to framebuffer. */
 		void bind( );
+		/** Unbind to framebuffer. */
 		void unbind( );
+		/** Set framebuffer texture size. */
 		void setClientSize( const wxSize& p_size );
 
 	private:
