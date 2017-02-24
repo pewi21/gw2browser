@@ -30,8 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	class FrameBuffer {
-		GLuint						m_framebuffer;		// Framebuffer
-		GLuint						m_framebufferTexture; // Framebuffer texture
+		GLuint						m_fbo;				// Framebuffer object
+		GLuint						m_fbTexture;		// Framebuffer texture
 		GLuint						m_quadVAO;			// Quad vertex array object
 		GLuint						m_quadVBO;			// Quad buffer array object
 		GLuint						m_rbo;				// Renderbuffer object

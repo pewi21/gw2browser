@@ -34,11 +34,11 @@ namespace gw2b {
 		this->setupQuad( );
 
 		// Setup Framebuffers
-		glGenFramebuffers( 1, &m_framebuffer );
+		glGenFramebuffers( 1, &m_fbo );
 		this->bind( );
 		// Create a color attachment texture
-		m_framebufferTexture = generateAttachmentTexture( false, false );
-		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_framebufferTexture, 0 );
+		m_fbTexture = generateAttachmentTexture( false, false );
+		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbTexture, 0 );
 		// Create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
 		glGenRenderbuffers( 1, &m_rbo );
 		glBindRenderbuffer( GL_RENDERBUFFER, m_rbo );
@@ -56,21 +56,21 @@ namespace gw2b {
 	}
 
 	FrameBuffer::~FrameBuffer( ) {
-		if ( m_framebuffer ) {
-			glDeleteFramebuffers( 1, &m_framebuffer );
+		if ( m_fbo ) {
+			glDeleteFramebuffers( 1, &m_fbo );
 		}
 	}
 
 	void FrameBuffer::draw( ) {
 		glBindVertexArray( m_quadVAO );
 		// Use the color attachment texture as the texture of the quad plane
-		glBindTexture( GL_TEXTURE_2D, m_framebufferTexture );
+		glBindTexture( GL_TEXTURE_2D, m_fbTexture );
 		glDrawArrays( GL_TRIANGLES, 0, 6 );
 		glBindVertexArray( 0 );
 	}
 
 	void FrameBuffer::bind( ) {
-		glBindFramebuffer( GL_FRAMEBUFFER, m_framebuffer );
+		glBindFramebuffer( GL_FRAMEBUFFER, m_fbo );
 	}
 
 	void FrameBuffer::unbind( ) {
