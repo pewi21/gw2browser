@@ -57,7 +57,7 @@ namespace gw2b {
 		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
-		FrameBuffer*				m_framebuffer;
+		std::unique_ptr<FrameBuffer> m_framebuffer;
 		RenderTimer*				m_renderTimer;
 		wxTimer*					m_movementKeyTimer;
 
