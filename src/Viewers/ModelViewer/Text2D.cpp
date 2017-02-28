@@ -46,6 +46,12 @@ namespace gw2b {
 		// Load text shader
 		try {
 			m_textShader = new Shader( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+
+			m_textShader->use( );
+			// Get the uniform location
+			m_uniformProjection = glGetUniformLocation( m_textShader->getProgramId( ), "projection" );
+			m_uniformTextColor = glGetUniformLocation( m_textShader->getProgramId( ), "textColor" );
+
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "Failed to load text shader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load text shader." );
@@ -91,9 +97,9 @@ namespace gw2b {
 		m_textShader->use( );
 
 		glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( m_ClientSize.x ), 0.0f, static_cast<GLfloat>( m_ClientSize.y ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_textShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glUniformMatrix4fv( m_uniformProjection, 1, GL_FALSE, glm::value_ptr( projection ) );
 
-		glUniform3f( glGetUniformLocation( m_textShader->getProgramId( ), "textColor" ), p_color.x, p_color.y, p_color.z );
+		glUniform3f( m_uniformTextColor, p_color.x, p_color.y, p_color.z );
 
 		glActiveTexture( GL_TEXTURE0 );
 		glBindVertexArray( m_textVAO );

@@ -35,6 +35,10 @@ namespace gw2b {
 		GLuint						m_cubeVAO;
 		GLuint						m_cubeVBO;
 		Shader*						m_cubeShader;
+		GLuint						m_uniformProjection;
+		GLuint						m_uniformView;
+		GLuint						m_uniformModel;
+		GLuint						m_uniformLightColor;
 		glm::mat4					m_projection;
 		glm::mat4					m_view;
 
