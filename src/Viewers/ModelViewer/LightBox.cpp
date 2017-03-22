@@ -34,6 +34,14 @@ namespace gw2b {
 		// Load shader
 		try {
 			m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
+
+			m_cubeShader->use( );
+			// Get the uniform location
+			m_uniformProjection = glGetUniformLocation( m_cubeShader->getProgramId( ), "projection" );
+			m_uniformView = glGetUniformLocation( m_cubeShader->getProgramId( ), "view" );
+			m_uniformModel = glGetUniformLocation( m_cubeShader->getProgramId( ), "model" );
+			m_uniformLightColor = glGetUniformLocation( m_cubeShader->getProgramId( ), "lightColor" );
+
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "Failed to load lightbox shader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load lightbox shader." );
@@ -123,12 +131,12 @@ namespace gw2b {
 		glDisable( GL_CULL_FACE );
 
 		m_cubeShader->use( );
-		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( m_projection ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_view ) );
+		glUniformMatrix4fv( m_uniformProjection, 1, GL_FALSE, glm::value_ptr( m_projection ) );
+		glUniformMatrix4fv( m_uniformView, 1, GL_FALSE, glm::value_ptr( m_view ) );
 		auto model = glm::translate( glm::mat4( ), p_pos );
 		model = glm::scale( model, glm::vec3( 6.0f ) );
-		glUniformMatrix4fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( model ) );
-		glUniform3fv( glGetUniformLocation( m_cubeShader->getProgramId( ), "lightColor" ), 1, glm::value_ptr( p_color ) );
+		glUniformMatrix4fv( m_uniformModel, 1, GL_FALSE, glm::value_ptr( model ) );
+		glUniform3fv( m_uniformLightColor, 1, glm::value_ptr( p_color ) );
 
 		// Render Cube
 		glBindVertexArray( m_cubeVAO );

@@ -84,10 +84,6 @@ namespace gw2b {
 		// Clean shaders
 		this->clearShader( );
 
-		if ( m_framebuffer ) {
-			delete m_framebuffer;
-		}
-
 		delete m_renderTimer;
 		delete m_movementKeyTimer;
 
@@ -515,7 +511,7 @@ namespace gw2b {
 	}
 
 	void ModelViewer::createFrameBuffer( ) {
-		m_framebuffer = new FrameBuffer( m_clientSize );
+		m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize ) );
 	}
 
 	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
@@ -643,7 +639,7 @@ namespace gw2b {
 	void ModelViewer::onResize( wxSizeEvent& evt ) {
 		// Check if framebuffer is already create. If found, delete it.
 		if ( m_framebuffer ) {
-			delete m_framebuffer;
+			m_framebuffer.reset( );
 		}
 
 		// Update client size of wxGLCanvas.

@@ -43,6 +43,8 @@ namespace gw2b {
 		GLuint						m_textVAO;
 		GLuint						m_textVBO;
 		Shader*						m_textShader;
+		GLuint						m_uniformProjection;
+		GLuint						m_uniformTextColor;
 		wxSize						m_ClientSize;
 
 	public:

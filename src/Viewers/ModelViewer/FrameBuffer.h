@@ -30,8 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	class FrameBuffer {
-		GLuint						m_framebuffer;		// Framebuffer
-		GLuint						m_framebufferTexture; // Framebuffer texture
+		GLuint						m_fbo;				// Framebuffer object
+		GLuint						m_fbTexture;		// Framebuffer texture
 		GLuint						m_quadVAO;			// Quad vertex array object
 		GLuint						m_quadVBO;			// Quad buffer array object
 		GLuint						m_rbo;				// Renderbuffer object
@@ -44,9 +44,13 @@ namespace gw2b {
 		/** Destructor. Clears all data. */
 		~FrameBuffer( );
 
+		/** Draw framebuffer. */
 		void draw( );
+		/** Bind to framebuffer. */
 		void bind( );
+		/** Unbind to framebuffer. */
 		void unbind( );
+		/** Set framebuffer texture size. */
 		void setClientSize( const wxSize& p_size );
 
 	private:
