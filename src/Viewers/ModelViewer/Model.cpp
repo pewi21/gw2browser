@@ -50,9 +50,9 @@ namespace gw2b {
 		m_meshCache.clear( );
 	}
 
-	void Model::draw( Shader* p_shader, const glm::mat4& p_trans ) {
+	void Model::draw( Shader* p_shader ) {
 		for ( uint i = 0; i < static_cast<uint>( m_numMeshes ); i++ ) {
-			this->drawMesh( p_shader, p_trans, i );
+			this->drawMesh( p_shader, i );
 		}
 	}
 
@@ -104,14 +104,11 @@ namespace gw2b {
 		}
 	}
 
-	void Model::drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex ) {
+	void Model::drawMesh( Shader* p_shader, const uint p_meshIndex ) {
 		auto& vao = m_vertexArray[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
 
 		auto materialIndex = m_meshCache[p_meshIndex].materialIndex;
-
-		// Model matrix
-		glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
 
 		// Texture Maping
 		if ( !m_textureList.empty( ) ) {

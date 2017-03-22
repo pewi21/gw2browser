@@ -108,7 +108,7 @@ namespace gw2b {
 		~Model( );
 
 		/** Draw the model. */
-		void draw( Shader* p_shader, const glm::mat4& p_trans );
+		void draw( Shader* p_shader );
 		/** Get number of mesh. */
 		size_t getNumMeshes( ) const;
 		/** Get number of vertices. */
@@ -120,7 +120,7 @@ namespace gw2b {
 
 	private:
 		void clearBuffer( );
-		void drawMesh( Shader* p_shader, const glm::mat4& p_trans, const uint p_meshIndex );
+		void drawMesh( Shader* p_shader, const uint p_meshIndex );
 		void loadModel( const GW2Model& p_model );
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent( MeshCache& p_mesh );

@@ -355,10 +355,12 @@ namespace gw2b {
 			// Set material properties
 			glUniform1f( glGetUniformLocation( p_shader->getProgramId( ), "material.shininess" ), 32.0f );
 
+			// Model matrix
+			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
 			// View matrix
 			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
 
-			it->draw( p_shader, p_trans );
+			it->draw( p_shader );
 		}
 
 		if ( m_statusWireframe ) {
