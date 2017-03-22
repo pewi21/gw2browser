@@ -34,7 +34,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/StringReader.h"
 
 namespace gw2b {
-	class GridControl;
 
 	class StringViewer : public Viewer {
 		std::vector<StringStruct>	m_string;

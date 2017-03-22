@@ -35,7 +35,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/TextReader.h"
 
 namespace gw2b {
-	class GridControl;
 
 	class TextViewer : public Viewer {
 		std::vector<wxString>		m_string;
