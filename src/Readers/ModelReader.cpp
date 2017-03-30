@@ -171,11 +171,6 @@ namespace gw2b {
 
 		gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		//auto animationChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::Animation>( );
-		//auto propertiesChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::Properties>( );
-		//auto rootmotionChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::RootMotion>( );
-		//auto skeletonChunk = modelPackFile.chunk<gw2f::pf::ModelChunks::Skeleton>( );
-
 		this->readGeometry( newModel, modelPackFile );
 		this->readMaterial( newModel, modelPackFile );
 
