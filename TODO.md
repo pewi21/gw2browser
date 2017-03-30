@@ -6,24 +6,26 @@ May change over time. :P
 Gw2Browser_2017-xx-xx (1.0.9.1)
 -------------------------------
 
+* Create FBO, VBO, RBO, VAO class?
+
+* Seperate sound decoder class.
+
+* map file reader.
+
+* Add way to position light (shift left click?) by using gobal variable or access class variable?
+
+* Support for paged image files.
+
 * Material class (texture, lighting).
 
-* Improve performance of ModelViewer's drawText function by using texture atlas.
-
 * Exporters class, like Reader/Viewer.
-
-* "Find by fileId" dialog.
 
 Further plans
 -------------
 
 * COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
 
-* Add way to position light (shift left click?) by using gobal variable or access class variable
-
 * Deferred shading (need for map viewer with many light)
-
-* Frame Buffer.
 
 * SSAO?
 
@@ -31,12 +33,14 @@ Further plans
 
 * Scene manager (need when implement map viewer).
 
+* Improve performance of ModelViewer's drawText function by using texture atlas.
+
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
 
-* External file name database, for known files (such as the exe and dll files).
+* "Find by fileId" dialog, add this function seems are more complicate than I think...
 
-* Support for paged image files.
+* External file name database, for known files (such as the exe and dll files).
 
 * Support for R32f DDS files.
 
