@@ -217,6 +217,9 @@ namespace gw2b {
 		if ( !this->performTask( readIndexTask ) ) {
 			this->reIndexDat( );
 		}
+
+		// Fix bug when open other dat file and find by file id not working.
+		m_findFirstTime = true;
 	}
 
 	//============================================================================/
