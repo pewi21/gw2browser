@@ -27,14 +27,16 @@ namespace gw2b {
 	namespace {
 
 		enum {
-			ID_ShowFileList = wxID_HIGHEST + 1,
-			ID_ShowLog,							// Show log panel
-			ID_ClearLog,						// Clear the log panel
+			ID_ShowFindFile = wxID_HIGHEST + 1,	// Show find file window
+			ID_ShowFileList,					// Show file list window
+			ID_ShowLog,							// Show log window
+			ID_ClearLog,						// Clear the log window
 			//ID_ResetLayout,
 			//ID_SetBackgroundColor,
 			//ID_ShowGrid,						// Show grid on PreviewGLCanvas
 			//ID_ShowMask,						// Apply white texture with black background, no shader
 			//ID_SetCanvasSize,					// Set PreviewGLCanvas size
+			ID_BtnFindFile,						// Browser's find file button
 			ID_BtnBack,							// Sound player's back button
 			ID_BtnPlay,							// Sound player's play button
 			ID_BtnStop,							// Sound player's stop button

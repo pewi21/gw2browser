@@ -58,6 +58,8 @@ namespace gw2b {
 		PreviewGLCanvas*			m_previewGLCanvas;
 		wxTextCtrl*					m_log;
 		wxLog*						m_logTarget;
+		wxTextCtrl*					m_findTextBox;
+		bool						m_findFirstTime = true;
 
 	public:
 		/** Constructs the frame with the given title and size.
@@ -102,6 +104,9 @@ namespace gw2b {
 		/** Executed when the window is closing.
 		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
 		void onCloseEvt( wxCloseEvent& p_event );
+		/** Executed when the a button is pressed.
+		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
+		void onButtonEvt( wxCommandEvent& p_event );
 		/** Performs the currently active task repeatedly until it is complete.
 		*  \param[in]  p_event  Idle event object used to request more idle events. */
 		void onPerformTaskEvt( wxIdleEvent& p_event );
@@ -137,10 +142,13 @@ namespace gw2b {
 		*  \param[in]  p_tree	category tree invoking the callback.
 		*  \param[in]  p_mode	if false extract raw file, if true extract converted file. */
 		virtual void onTreeExtractFile( CategoryTree& p_tree, bool p_mode ) override;
+
 		/** Initialize about dialog data.*/
 		void InitAboutInfo( wxAboutDialogInfo& info );
 		/** Set menu default settings.*/
 		void SetDefaults( );
+		/** Call when "Go" button on find file panel is pressed. */
+		void onFindFile( );
 
 	}; // class BrowserWindow
 

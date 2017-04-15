@@ -167,6 +167,10 @@ namespace gw2b {
 		/** Gets the currently selected objects.
 		*  \return Array<DatIndexEntry*>  array of entries. */
 		Array<const DatIndexEntry*> getSelectedEntries( ) const;
+		/** Find entry id of given entry name.
+		*  \param[in]  p_root       Root entry.
+		*  \param[in]  p_string     Entry name to search. */
+		wxTreeItemId findEntry( wxTreeItemId p_root, const wxString& p_string );
 
 		/** Gets the .dat file index represented by this tree. */
 		std::shared_ptr<DatIndex> datIndex( ) const;

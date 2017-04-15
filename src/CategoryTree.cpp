@@ -345,6 +345,34 @@ namespace gw2b {
 
 	//============================================================================/
 
+	wxTreeItemId CategoryTree::findEntry( wxTreeItemId p_root, const wxString& p_string ) {
+		wxTreeItemId item = p_root;
+		wxTreeItemId child;
+		wxTreeItemIdValue cookie;
+		wxString findtext( p_string );
+		wxString itemtext;
+
+		while ( item.IsOk( ) ) {
+			itemtext = this->GetItemText( item );
+			// Found
+			if ( itemtext == findtext ) {
+				return item;
+			}
+			child = this->GetFirstChild( item, cookie );
+			if ( child.IsOk( ) ) {
+				child = this->findEntry( child, p_string );
+			}
+			if ( child.IsOk( ) ) {
+				return child;
+			}
+			item = this->GetNextSibling( item );
+		}
+		// Not found
+		return item;
+	}
+
+	//============================================================================/
+
 	void CategoryTree::addCategoryEntriesToArray( Array<const DatIndexEntry*>& p_array, uint& p_index, const DatIndexCategory& p_category ) const {
 		// Loop through subcategories
 		for ( uint i = 0; i < p_category.numSubCategories( ); i++ ) {

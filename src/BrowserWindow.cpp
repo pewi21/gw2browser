@@ -69,8 +69,9 @@ namespace gw2b {
 		fileMenu->Append( wxID_EXIT, wxT( "E&xit\tAlt+F4" ) );
 		// View menu
 		auto viewMenu = new wxMenu;
-		viewMenu->AppendCheckItem( ID_ShowFileList, wxT( "&Show File List" ), wxT( "Toggle show file list window" ) );
-		viewMenu->AppendCheckItem( ID_ShowLog, wxT( "&Show Log" ), wxT( "Toggle show log window" ) );
+		viewMenu->AppendCheckItem( ID_ShowFindFile, wxT( "&Show Find File Window" ), wxT( "Toggle show find file window" ) );
+		viewMenu->AppendCheckItem( ID_ShowFileList, wxT( "&Show File List Window" ), wxT( "Toggle show file list window" ) );
+		viewMenu->AppendCheckItem( ID_ShowLog, wxT( "&Show Log Window" ), wxT( "Toggle show log window" ) );
 		//viewMenu->Append( ID_ResetLayout, wxT( "&Reset Layout" ) );
 		viewMenu->AppendSeparator( );
 		viewMenu->Append( ID_ClearLog, wxT( "&Clear Log" ), wxT( "Clear log window content" ) );
@@ -114,7 +115,19 @@ namespace gw2b {
 		m_log->SetEditable( false );
 		m_logTarget = wxLog::SetActiveTarget( new wxLogTextCtrl( m_log ) );
 
+		// Find panel
+		auto findPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 170, 50 ), wxBORDER_SIMPLE | wxTAB_TRAVERSAL );
+		auto flex = new wxFlexGridSizer( 1, 2, 0, 0 );
+		m_findTextBox = new wxTextCtrl( findPanel, wxID_ANY, wxT( "" ), wxDefaultPosition, wxSize( 120, -1 ) );
+		auto btnFindFile = new wxButton( findPanel, ID_BtnFindFile, wxT( "Go" ), wxDefaultPosition, wxSize( 25, 25 ) );
+
+		flex->Add( m_findTextBox, 1, wxALL | wxALIGN_CENTRE, 5 );
+		flex->Add( btnFindFile, 1, wxALL | wxALIGN_CENTRE, 5 );
+		findPanel->SetSizer( flex );
+
 		// Add the panes to the manager
+		// Find file panel
+		m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
 		// CategoryTree
 		m_uiManager.AddPane( m_catTree, wxAuiPaneInfo( ).Name( wxT( "CategoryTree" ) ).Caption( wxT( "File List" ) ).BestSize( wxSize( 170, 500 ) ).Left( ) );
 		// Log window
@@ -133,9 +146,11 @@ namespace gw2b {
 		this->Bind( wxEVT_MENU, &BrowserWindow::onOpenEvt, this, wxID_OPEN );
 		this->Bind( wxEVT_MENU, &BrowserWindow::onExitEvt, this, wxID_EXIT );
 		this->Bind( wxEVT_MENU, &BrowserWindow::onAboutEvt, this, wxID_ABOUT );
+		this->Bind( wxEVT_MENU, &BrowserWindow::onTogglePaneEvt, this, ID_ShowFindFile );
 		this->Bind( wxEVT_MENU, &BrowserWindow::onTogglePaneEvt, this, ID_ShowFileList );
 		this->Bind( wxEVT_MENU, &BrowserWindow::onTogglePaneEvt, this, ID_ShowLog );
 		this->Bind( wxEVT_MENU, &BrowserWindow::onClearLogEvt, this, ID_ClearLog );
+		this->Bind( wxEVT_BUTTON, &BrowserWindow::onButtonEvt, this );
 		this->Bind( wxEVT_AUI_PANE_CLOSE, &BrowserWindow::onPaneCloseEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &BrowserWindow::onCloseEvt, this );
 	}
@@ -279,6 +294,17 @@ namespace gw2b {
 
 	//============================================================================/
 
+	void BrowserWindow::onButtonEvt( wxCommandEvent& p_event ) {
+		auto id = p_event.GetId( );
+		switch ( id ) {
+		case ID_BtnFindFile:
+			this->onFindFile( );
+			break;
+		}
+	}
+
+	//============================================================================/
+
 	void BrowserWindow::onCloseEvt( wxCloseEvent& p_event ) {
 		// Drop out if we can't cancel the window closing
 		if ( !p_event.CanVeto( ) ) {
@@ -344,6 +370,12 @@ namespace gw2b {
 
 	void BrowserWindow::onTogglePaneEvt( wxCommandEvent &event ) {
 		// wxAUI Stuff
+		if ( GetMenuBar( )->IsChecked( ID_ShowFindFile ) ) {
+			m_uiManager.GetPane( wxT( "FindFilePanel" ) ).Show( );
+		} else {
+			m_uiManager.GetPane( wxT( "FindFilePanel" ) ).Hide( );
+		}
+
 		if ( GetMenuBar( )->IsChecked( ID_ShowFileList ) ) {
 			m_uiManager.GetPane( wxT( "CategoryTree" ) ).Show( );
 		} else {
@@ -369,6 +401,9 @@ namespace gw2b {
 
 	void BrowserWindow::onPaneCloseEvt( wxAuiManagerEvent &event ) {
 		auto evt = event.GetPane( )->window;
+		if ( evt == m_uiManager.GetPane( wxT( "FindFilePanel" ) ).window ) {
+			this->GetMenuBar( )->Check( ID_ShowFindFile, false );
+		}
 		if ( evt == m_uiManager.GetPane( wxT( "CategoryTree" ) ).window ) {
 			this->GetMenuBar( )->Check( ID_ShowFileList, false );
 		}
@@ -508,8 +543,48 @@ namespace gw2b {
 	//============================================================================/
 
 	void BrowserWindow::SetDefaults( ) {
+		this->GetMenuBar( )->Check( ID_ShowFindFile, true );
 		this->GetMenuBar( )->Check( ID_ShowFileList, true );
 		this->GetMenuBar( )->Check( ID_ShowLog, false );
+	}
+
+	void BrowserWindow::onFindFile( ) {
+		wxArrayTreeItemIds Selections;
+		wxTreeItemId item;
+		wxTreeItemIdValue cookie;
+
+		if ( m_findFirstTime ) {
+			// Warning: This would slow down the browser, only use on first time
+			m_catTree->ExpandAll( );
+			m_catTree->CollapseAll( );
+
+			m_findFirstTime = false;
+		}
+
+		wxString value = m_findTextBox->GetValue( );
+		if ( value.IsEmpty( ) || !value.IsNumber( ) ) {
+			wxMessageBox( wxT( "Please enter file id in number." ), wxT( " " ), wxOK | wxICON_EXCLAMATION, this );
+			return;
+		}
+
+		//if ( m_catTree->GetSelections( Selections ) ) {
+		//	item = Selections[0];
+		//} else {
+			item = m_catTree->GetFirstChild( m_catTree->GetRootItem( ), cookie );
+		//}
+
+		item = m_catTree->findEntry( item, value );
+		if ( !item.IsOk( ) ) {
+			wxMessageBox( wxString::Format( "Cannot Find file id \"%s\".", value ), wxT( " " ), wxOK | wxICON_EXCLAMATION, this );
+			return;
+		}
+
+		// Deselect all
+		m_catTree->UnselectAll( );
+		// Select item
+		m_catTree->SelectItem( item );
+		// Scroll the specified item into view.
+		m_catTree->ScrollTo( item );
 	}
 
 }; // namespace gw2b
