@@ -90,6 +90,15 @@ namespace gw2b {
 		return false;
 	}
 
+	void PreviewPanel::destroyViewer( ) {
+		// Destroy the viewer
+		if ( m_currentView ) {
+			this->GetSizer( )->Remove( 0 );
+			m_currentView->Destroy( );
+			m_currentView = nullptr;
+		}
+	}
+
 	Viewer* PreviewPanel::createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile ) {
 		Viewer* newViewer = nullptr;
 		try {

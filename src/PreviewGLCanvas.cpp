@@ -87,6 +87,15 @@ namespace gw2b {
 		return false;
 	}
 
+	void PreviewGLCanvas::destroyViewer( ) {
+		// Destroy the viewer
+		if ( m_currentView ) {
+			this->GetSizer( )->Remove( 0 );
+			m_currentView->Destroy( );
+			m_currentView = nullptr;
+		}
+	}
+
 	ViewerGLCanvas* PreviewGLCanvas::createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile ) {
 
 		const int attrib[] = {

@@ -51,6 +51,8 @@ namespace gw2b {
 		*  \param[in]  p_entry      Entry to preview.
 		*  \return bool    true if successful, false if not. */
 		bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
+		/** Destroy the viewer in this preview panel. */
+		void destroyViewer( );
 	private:
 		/** Helper method to create a viewer control to handle the given data type.
 		*  The caller is responsible for freeing the viewer.

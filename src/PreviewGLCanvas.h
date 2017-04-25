@@ -40,18 +40,20 @@ namespace gw2b {
 		ViewerGLCanvas*			m_currentView;
 		FileReader::DataType	m_currentDataType;
 	public:
-		/** Constructor. Creates the preview panel with the given parent.
+		/** Constructor. Creates the preview GLCanvas with the given parent.
 		*  \param[in]  p_parent     Parent of the control.
 		*  \param[in]  p_location   Optional location of the control.
 		*  \param[in]  p_size       Optional size of the control. */
 		PreviewGLCanvas( wxWindow* p_parent, const wxPoint& p_location = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		/** Destructor. */
 		~PreviewGLCanvas( );
-		/** Tells this panel to preview a file.
+		/** Tells this GLCanvas to preview a file.
 		*  \param[in]  p_datFile    .dat file containing the file to preview.
 		*  \param[in]  p_entry      Entry to preview.
 		*  \return bool    true if successful, false if not. */
 		bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
+		/** Destroy the viewer in this preview GLCanvas. */
+		void destroyViewer( );
 	private:
 		/** Helper method to create a viewer control to handle the given data type.
 		*  The caller is responsible for freeing the viewer.

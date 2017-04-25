@@ -228,12 +228,14 @@ namespace gw2b {
 		switch ( p_entry.fileType( ) ) {
 		case ANFT_Model:
 			if ( m_previewGLCanvas->previewFile( m_datFile, p_entry ) ) {
+				m_previewPanel->destroyViewer( );
 				m_uiManager.GetPane( wxT( "panel_content" ) ).Hide( );
 				m_uiManager.GetPane( wxT( "gl_content" ) ).Show( );
 			}
 			break;
 		default:
 			if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
+				m_previewGLCanvas->destroyViewer( );
 				m_uiManager.GetPane( wxT( "panel_content" ) ).Show( );
 				m_uiManager.GetPane( wxT( "gl_content" ) ).Hide( );
 			}
