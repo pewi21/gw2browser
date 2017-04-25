@@ -6,9 +6,11 @@ May change over time. :P
 Gw2Browser_2017-xx-xx (1.0.9.1)
 -------------------------------
 
+* Re-add AA that work with frame buffer.
+
 * Seperate sound decoder class.
 
-* map file reader.
+* map file reader, renderer, exporter.
 
 * Add way to position light (shift left click?) by using gobal variable or access class variable?
 
@@ -17,6 +19,8 @@ Gw2Browser_2017-xx-xx (1.0.9.1)
 * Material class (texture, lighting).
 
 * Exporters class, like Reader/Viewer.
+
+* Add a way to config model viewer graphic option.
 
 Further plans
 -------------
@@ -36,15 +40,11 @@ Further plans
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
 
-* "Find by fileId" dialog, add this function seems are more complicate than I think...
-
 * External file name database, for known files (such as the exe and dll files).
 
 * Support for R32f DDS files.
 
 * Support NPOT textures.
-
-* Support map files, map renderer.
 
 * Support for model LODs, collision mesh rendering, bone, animation and more.
 

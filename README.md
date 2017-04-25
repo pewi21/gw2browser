@@ -2,8 +2,8 @@ Gw2Browser
 ==========
 
 Opens a Guild Wars 2 .dat file and allows the user to browse and extract its
-files. Currently it supports power-of-two textures, JPEG and WebP Images, models,
-126x64 ATEX textures, sound, sound bank, eula, strings and binary files.
+files. Currently it supports power-of-two textures, JPEG and WebP images, models,
+126x64 ATEX textures, sound, sound bank, eula, strings, text and binary files.
 
 When a .dat file is opened, it will first index the file. This makes it *a lot*
 faster to re-open the same .dat. Unfortunately, every time the .dat changes it
@@ -11,6 +11,10 @@ will have to be re-indexed (for now).
 
 Keep in mind that if you keep tree items expanded while the indexer is running,
 or while an index is being read, the process is *a lot* slower.
+
+Also,when you first use find by file id function, the browser will appear to freeze.
+This is normal since it will need to expand all file tree in oder to search for
+given file id.
 
 The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and [Here](http://goo.gl/4xMRVF)
 
@@ -35,7 +39,7 @@ Known issues
 * **Viewing or exporting some model may crash the browser.**
 This possibly cause by the file is in difference version and gw2formats library
 doesn't support it, or more likely, a bug in gw2formats library. This issue
-will (maybe) fixed on next Gw2Browser release.
+might fixed on next Gw2Browser release.
 
 * **Model rendering is still experimental stage.**
 Some of the model may use the wrong texture, or it might not. It entirely
@@ -60,16 +64,13 @@ Building Gw2Browser
 for use as command prompt to compile some required libraries if using GCC to compile.
 
 * Microsoft Visual Studio 2012 or better. Express version will work too.
-or use [Visual Studio Community 2015](https://www.visualstudio.com/products/visual-studio-community-vs)
-which have functionality like Professional version, but it free for individual developers,
-open source projects, academic research, education, and small professional teams.
-(you must register in order to use it tho).
+or use [Visual Studio Community 2015](https://www.visualstudio.com/products/visual-studio-community-vs).
 
 		or
 
 * [Git](https://git-scm.com/downloads)
 
-* [TDM-GCC 4.8.1 or 5.1.0](http://tdm-gcc.tdragon.net/)
+* [TDM-GCC 5.1.0](http://tdm-gcc.tdragon.net/)
 
 * [CMake](https://cmake.org/)
 
