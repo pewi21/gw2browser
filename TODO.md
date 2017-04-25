@@ -6,8 +6,6 @@ May change over time. :P
 Gw2Browser_2017-xx-xx (1.0.9.1)
 -------------------------------
 
-* Create FBO, VBO, RBO, VAO class?
-
 * Seperate sound decoder class.
 
 * map file reader.
