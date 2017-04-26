@@ -56,8 +56,25 @@ namespace gw2b {
 	}
 
 	FrameBuffer::~FrameBuffer( ) {
+		// Delete RBO
+		if ( m_rbo ) {
+			glDeleteRenderbuffers( 1, &m_rbo );
+		}
+		// Delete FBO
 		if ( m_fbo ) {
 			glDeleteFramebuffers( 1, &m_fbo );
+		}
+		// Delete screen texture
+		if ( m_fbTexture ) {
+			glDeleteTextures( 1, &m_fbTexture );
+		}
+		// Delete VBO
+		if ( m_quadVBO ) {
+			glDeleteBuffers( 1, &m_quadVBO );
+		}
+		// Delete VAO
+		if ( m_quadVAO ) {
+			glDeleteVertexArrays( 1, &m_quadVAO );
 		}
 	}
 
