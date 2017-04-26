@@ -1,73 +1,137 @@
 This file list will list the stuff in dat file,
 which mostly are Charr stuff! X3
 
-File Id			Format			Note
-13829			model			Gaheron Baelfire
-13840			model			God Gaheron Baelfire
+File Id		Format		Note
+13829		model		Old Gaheron Baelfire
+13840		model		Old God Gaheron Baelfire
 13848
 13854
 13861
-13979			model			Charr NPC
-14224			model			Flame Legion charr
-24526			model			Adelbern
-26667			model			Krait
-27218			model			White owl
-27351			model			Charr Tank
-32634			model			Charr equipment/character parts start
+13979		model		Charr NPC
+14224		model		Flame Legion charr
+14434		model		Gaheron Baelfire
+24526		model		Adelbern
+26667		model		Krait
+27218		model		White owl
+27351		model		Charr Tank
+32634		model		Charr equipment/character parts start
 ...
 33959
-33987			model			Rytlock character face
-34178			model			Charr equipment/character parts end
+33987		model		Rytlock character face
+34178		model		Charr equipment/character parts end
 ...
-44165			model			Charr
-44242			model			Rytlock, intro cut scene
-44275			model			Charr
-44280			model			Rytlock, no sword
-44478			model			Charr
-44509			model			Rytlock, intro cut scene
-75001			model			Charr plateform
+44165		model		Charr
+44242		model		Rytlock, intro cut scene
+44275		model		Charr
+44280		model		Rytlock, no sword
+44478		model		Charr
+44509		model		Rytlock, intro cut scene
+52092		model		Shadow Behemoth
+54305		model		The Shatterer
+75001		model		Charr plateform
 ...
-91xxx			model			Charr Stuff!
-184748			ogg				Charr Theme! Rrawr!
-104223			model			Dead Dragon
-104246			model			Snaff
-104415			model			Charr Tank
-104556			model			Hornny Charr...
-104598			model			Bear!
-106244			model			BREAK MEH!
-106499			model			Turret
-106724			model			Charr stuff
-106725			model			Charr metal parts
-106728			model			Charr metal wall
-106729			model			Charr cannon
-106572
-106904			model			Charr weapon pack
-106933			model			Charr bomb shell
-106935			model			Turret
-106980			model			Charr poster
-162177			soundbank		"I'm a Charr" (female)
-162177			soundbank		"I'm a Charr" (male)
-184738			ogg				Charr war music
-187834			model			Charr's sigil (front of smelter)
-187835			model			Charr's stature axe
-187836			model			Charr's stature bow
-188772			model			firely dragon sword
-408554
-454456			model			Zhaitan
-543770			model			Legionnaire Weapon
-543771			model			Legionnaire Weapon
-543772			model			Legionnaire Weapon
-543864			model			Plush Tybalt
-543946			model			Sunrise
-543947			model			Twilight
-630036			ogg				SAB music start
+76422		model		Charr bar
+88293		model		Wooden Dragon
+89629		model		Big boss golem
+91xxx		model		Charr Stuff!
+91298		model		Charr Black Citadel road
+91436		model		Charr Command Core
+91516		model		Charr Black Catadel Hero's Canton interor
+91518		model		Charr Black Citadel armory
+184748		ogg			Charr Theme! Rrawr!
+104223		model		Dead Dragon
+104246		model		Snaff
+104274		model		Giganticus Lupicus
+104415		model		Charr Tank
+104556		model		Hornny Charr...
+104598		model		Bear!
+106244		model		BREAK MEH!
+106499		model		Turret
+106724		model		Charr stuff
+106725		model		Charr metal parts
+106728		model		Charr metal wall
+106729		model		Charr cannon
+106572		model		Claw of Jormag
+106904		model		Charr weapon pack
+106933		model		Charr bomb shell
+106935		model		Turret
+106980		model		Charr poster
+162177		soundbank	"I'm a Charr" (female)
+162177		soundbank	"I'm a Charr" (male)
+184738		ogg			Charr war music
+187834		model		Charr's sigil (front of smelter)
+187835		model		Charr's stature axe
+187836		model		Charr's stature bow
+188772		model		Firely Dragon Sword
+217735		model		The Shatterer
+224438		model		Sorrow's Furnace robot boss
+228384		model		Charr base
+230025		model		Gaheron Baelfire
+230252		model		Pact air ship
+230462		model		Lion Guard's ship
+231336		model		Lion Guard's ship
+234532		model		Twilight Arbor Nightmare Tree
+234810		model		Teq hi-res
+242055		model		Teq hi-res
+242236		model		Ship
+242240		model		Ship
+299986		model		Charr tank (small)
+408554		model		Teq low-res
+454456		model		Zhaitan
+469869		model		Teq
+506537		model		Mad king's clock tower
+506586		model		Mad king's clock tower
+514529		model		Bug eye monster in fractal
+543770		model		Legionnaire Weapon
+543771		model		Legionnaire Weapon
+543772		model		Legionnaire Weapon
+543864		model		Plush Tybalt
+543946		model		Sunrise
+543947		model		Twilight
+565039		model		SAB King Toad
+582708		model		Ship
+591753		model		The Shatterer hologram
+630036		ogg			SAB music start
 ...
-635089			ogg				SAB music end
-908287			model			The Lost Ark
-915401			model			Cute male Charr NPC
-1417685			mp3				SAB sound effects start
+633381		model		SAB flying path
+635089		ogg			SAB music end
+681491		model		Some kind of UFO?
+712271		model		Twisted Marionnete
+728627		model		Mechanical Devourer
+740508		model		LA big digging machine
+740389		model		LA big digging machine, inside
+757509		model		Robot with jetpack
+798269		model		Monkey King
+870928		model		House
+904350		model		Marjory Delaqua and Kasmeer Meade
+905457		model		Pact air ship
+908178		ogg			That theme song
+908287		model		The Lost Ark
+915401		model		Cute male Charr NPC
+959297		model		Ventari's Tablet
+968306		ogg			Some music
+1058446		model		HoT metal tower
+1062247		ogg			Some music
+1168588		model		Mordremoth avatar
+1213614		model		A noodle
+1213878		model		Wyvern boss
+1214405		model		Wyvern boss
+1226732		model		Drake
+1299838		model		Gorseval the Multifarious
+1300015		model		Charr blade armor
+1417685		mp3			SAB sound effects start
 ...
-1417808			mp3				SAB sound effects end
-1419557			ogg				SAB music
-1419558			ogg				SAB metal music
-1629793			model			Samarog
+1417808		mp3			SAB sound effects end
+1419557		ogg			SAB music
+1419558		ogg			SAB metal music
+1465971		model		Pact air ship
+1466077		model		Lion Guard's ship
+1624022		model		Chicken
+1629195		model		Deimos
+1629793		model		Samarog
+1633242		model		Samarog
+1633909		model		Deimos statue
+1634661		model		Deimos
+1634836		model		Deimos statue gold
+1634839		model		Deimos statue bronze
+1634842		model		Deimos statue silver
