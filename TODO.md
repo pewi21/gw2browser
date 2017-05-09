@@ -50,6 +50,6 @@ models could get an *export with textures* option.
 
 * Support for text manifest and text voice files.
 
-* Linux and Mac OS X port.
+* Linux port.
 
 * Support Guild Wars (1) files.
