@@ -35,10 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <mpg123.h>
-#include <vorbis/vorbisfile.h>
 
-#include "OggCallback.h"
 #include "Readers/PackedSoundReader.h"
 #include "Readers/SoundBankReader.h"
 #include "Readers/asndMP3Reader.h"
@@ -67,8 +64,6 @@ namespace gw2b {
 		// OpenAL stuff
 		ALCdevice*					m_device;
 		ALCcontext*					m_context;
-		ALsizei						m_frequency;						// Frequency of the sound data
-		ALenum						m_format;							// Sound data format
 		ALuint						m_buffers[NUM_BUFFERS];				// OpenAL sound buffer ID
 		ALuint						m_source;							// OpenAL sound source
 
@@ -129,10 +124,6 @@ namespace gw2b {
 		void populateListCtrl( );
 		void insertItem( const int p_index );
 		void selectEntry( const long p_index );
-		bool loadOggs( char* p_data, const size_t p_size, OggVorbis_File* p_oggFile, ogg_file& p_oggStream, ov_callbacks& p_oggCallbacks );
-		bool readOggs( char* p_data, const ALsizei p_count, OggVorbis_File* p_oggFile, ALuint p_buffer );
-		bool loadMp3( char* p_data, const size_t p_size, mpg123_handle* p_handle );
-		bool readMp3( char* p_data, const ALsizei p_count, mpg123_handle* p_handle, ALuint p_buffer );
 		bool playSoundThread( const int p_index );
 		void playSound( const int p_index );
 		void stopSound( );

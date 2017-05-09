@@ -8,8 +8,6 @@ Gw2Browser_2017-xx-xx (1.0.9.1)
 
 * Re-add AA that work with frame buffer.
 
-* Seperate sound decoder class.
-
 * map file reader, renderer, exporter.
 
 * Add way to position light (shift left click?) by using gobal variable or access class variable?

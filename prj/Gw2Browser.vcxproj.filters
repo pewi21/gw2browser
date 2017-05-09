@@ -228,6 +228,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\FrameBuffer.h">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\SoundPlayer\SoundDecoder.h">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -376,6 +379,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\ModelViewer\FrameBuffer.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\SoundPlayer\SoundDecoder.cpp">
+      <Filter>Source Files\Viewers\SoundPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
