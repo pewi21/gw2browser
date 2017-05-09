@@ -279,6 +279,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
 		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.cpp" />
 		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.h" />
+		<Unit filename="../src/Viewers/SoundPlayer/SoundDecoder.cpp" />
+		<Unit filename="../src/Viewers/SoundPlayer/SoundDecoder.h" />
 		<Unit filename="../src/Viewers/SoundPlayer/SoundPlayer.cpp" />
 		<Unit filename="../src/Viewers/SoundPlayer/SoundPlayer.h" />
 		<Unit filename="../src/Viewers/StringViewer/StringViewer.cpp" />
