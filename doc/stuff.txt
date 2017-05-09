@@ -9,11 +9,26 @@ File Id		Format		Note
 13861
 13979		model		Charr NPC
 14224		model		Flame Legion charr
+14396		model		Flame Legion charr
+14408		model		Flame Legion charr
+14424		model		Flame Legion charr
 14434		model		Gaheron Baelfire
+14444		model		Blue Tengu
+14452		model		Red Tengu
+22276		model		Cathie
+23557		model		Fire storm
 24526		model		Adelbern
+25388		model		Cats Start
+...
+25418		model		Cats End
+25522		model		Crystal griffon
 26667		model		Krait
 27218		model		White owl
 27351		model		Charr Tank
+31239		model		Norn bear
+31263		model		Norn showleopard
+31288		model		Norn raven
+31316		model		Norn werewolf
 32634		model		Charr equipment/character parts start
 ...
 33959
