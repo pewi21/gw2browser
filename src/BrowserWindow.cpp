@@ -118,7 +118,7 @@ namespace gw2b {
 		// Find panel
 		auto findPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 170, 50 ), wxBORDER_SIMPLE | wxTAB_TRAVERSAL );
 		auto flex = new wxFlexGridSizer( 1, 2, 0, 0 );
-		m_findTextBox = new wxTextCtrl( findPanel, wxID_ANY, wxT( "" ), wxDefaultPosition, wxSize( 120, -1 ) );
+		m_findTextBox = new wxTextCtrl( findPanel, wxID_ANY, wxT( "" ), wxDefaultPosition, wxSize( 120, -1 ), wxTE_PROCESS_ENTER );
 		auto btnFindFile = new wxButton( findPanel, ID_BtnFindFile, wxT( "Go" ), wxDefaultPosition, wxSize( 25, 25 ) );
 
 		flex->Add( m_findTextBox, 1, wxALL | wxALIGN_CENTRE, 5 );
@@ -151,6 +151,7 @@ namespace gw2b {
 		this->Bind( wxEVT_MENU, &BrowserWindow::onTogglePaneEvt, this, ID_ShowLog );
 		this->Bind( wxEVT_MENU, &BrowserWindow::onClearLogEvt, this, ID_ClearLog );
 		this->Bind( wxEVT_BUTTON, &BrowserWindow::onButtonEvt, this );
+		this->Bind( wxEVT_TEXT_ENTER, &BrowserWindow::onEnterPressedInSrchBoxEvt, this );
 		this->Bind( wxEVT_AUI_PANE_CLOSE, &BrowserWindow::onPaneCloseEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &BrowserWindow::onCloseEvt, this );
 	}
@@ -373,7 +374,7 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::onTogglePaneEvt( wxCommandEvent &event ) {
+	void BrowserWindow::onTogglePaneEvt( wxCommandEvent &p_event ) {
 		// wxAUI Stuff
 		if ( GetMenuBar( )->IsChecked( ID_ShowFindFile ) ) {
 			m_uiManager.GetPane( wxT( "FindFilePanel" ) ).Show( );
@@ -398,14 +399,14 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void BrowserWindow::onClearLogEvt( wxCommandEvent &event ) {
+	void BrowserWindow::onClearLogEvt( wxCommandEvent &p_event ) {
 		m_log->Clear( );
 	}
 
 	//============================================================================/
 
-	void BrowserWindow::onPaneCloseEvt( wxAuiManagerEvent &event ) {
-		auto evt = event.GetPane( )->window;
+	void BrowserWindow::onPaneCloseEvt( wxAuiManagerEvent &p_event ) {
+		auto evt = p_event.GetPane( )->window;
 		if ( evt == m_uiManager.GetPane( wxT( "FindFilePanel" ) ).window ) {
 			this->GetMenuBar( )->Check( ID_ShowFindFile, false );
 		}
@@ -417,6 +418,12 @@ namespace gw2b {
 		}
 
 		m_uiManager.Update( );
+	}
+
+	//============================================================================/
+
+	void BrowserWindow::onEnterPressedInSrchBoxEvt( wxCommandEvent &p_event ) {
+		this->onFindFile( );
 	}
 
 	//============================================================================/

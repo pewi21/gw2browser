@@ -534,7 +534,7 @@ namespace gw2b {
 
 	//============================================================================/
 
-	void CategoryTree::onSelChanged( wxTreeEvent& pEvent ) {
+	void CategoryTree::onSelChanged( wxTreeEvent& p_event ) {
 		wxArrayTreeItemIds ids;
 		this->GetSelections( ids );
 
