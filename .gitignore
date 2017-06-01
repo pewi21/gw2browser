@@ -37,5 +37,8 @@ extern/libvorbis/win32/VS2015/vorbisenc/x64
 *.layout
 *.db
 *.opendb
+*.psess
+*.vsps
+*.vspx
 CMakeCache.txt
 cmake_install.cmake
