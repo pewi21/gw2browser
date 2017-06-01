@@ -71,6 +71,7 @@ namespace gw2b {
 		bool						m_statusTextured = true;			// Toggle texture
 		bool						m_statusNormalMapping = true;		// Toggle normal maping
 		bool						m_statusLighting = true;			// Toggle lighting
+		bool						m_statusAntiAlising = true;			// Toggle anti alising
 		bool						m_statusRenderLightSource = false;	// Toggle visualization of light source
 		bool						m_statusVisualizeNormal = false;	// Toggle visualization of normal
 		bool						m_statusVisualizeZbuffer = false;	// Toggle visualization of z-buffer

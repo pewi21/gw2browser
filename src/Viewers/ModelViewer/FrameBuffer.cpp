@@ -29,30 +29,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace gw2b {
 
 	FrameBuffer::FrameBuffer( const wxSize& p_size )
-		: m_clientSize( p_size ) {
+		: m_clientSize( p_size )
+		, m_isMultisample( false ) {
 
 		this->setupQuad( );
 
-		// Setup Framebuffers
-		glGenFramebuffers( 1, &m_fbo );
-		this->bind( );
-		// Create a color attachment texture
-		m_fbTexture = generateAttachmentTexture( false, false );
-		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbTexture, 0 );
-		// Create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
-		glGenRenderbuffers( 1, &m_rbo );
-		glBindRenderbuffer( GL_RENDERBUFFER, m_rbo );
-		// Use a single renderbuffer object for both a depth AND stencil buffer
-		glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_clientSize.x, m_clientSize.y );
-		glBindRenderbuffer( GL_RENDERBUFFER, 0 );
-		// Now actually attach it
-		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo );
-
+		// Create normal framebuffer
+		this->setupFramebuffer( );
 		// Now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
-		if ( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ) {
+		if ( !this->checkFrameBufferStatus( ) ) {
 			wxLogMessage( wxT( "Framebuffer is not complete!" ) );
 		}
-		this->unbind( );
+
+		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	}
+
+	FrameBuffer::FrameBuffer( const wxSize& p_size, GLuint p_samples )
+		: m_clientSize( p_size )
+		, m_isMultisample( true ) {
+
+		this->setupQuad( );
+
+		// Create multi-sample framebuffer
+		this->setupMultiSampleFramebuffer( p_samples );
+
+		// Create normal framebuffer
+		this->setupFramebuffer( );
+		// Now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+		if ( !this->checkFrameBufferStatus( ) ) {
+			wxLogMessage( wxT( "Framebuffer is not complete!" ) );
+		}
+
+		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 	}
 
 	FrameBuffer::~FrameBuffer( ) {
@@ -64,6 +72,22 @@ namespace gw2b {
 		if ( m_fbo ) {
 			glDeleteFramebuffers( 1, &m_fbo );
 		}
+
+		if ( m_isMultisample ) {
+			// Delete multi-sample RBO
+			if ( m_rboMultiSample ) {
+				glDeleteRenderbuffers( 1, &m_rboMultiSample );
+			}
+			// Delete multi-sample texture
+			if ( m_fbTexture ) {
+				glDeleteTextures( 1, &m_textureColorBufferMultiSampled );
+			}
+			// Delete multi-sample FBO
+			if ( m_fboMultiSample ) {
+				glDeleteFramebuffers( 1, &m_fboMultiSample );
+			}
+		}
+
 		// Delete screen texture
 		if ( m_fbTexture ) {
 			glDeleteTextures( 1, &m_fbTexture );
@@ -83,6 +107,7 @@ namespace gw2b {
 		glBindVertexArray( m_quadVAO );
 		// Use Texture Unit 0
 		glActiveTexture( GL_TEXTURE0 );
+
 		// Use the color attachment texture as the texture of the quad plane
 		glBindTexture( GL_TEXTURE_2D, m_fbTexture );
 		// Draw the quad
@@ -94,10 +119,24 @@ namespace gw2b {
 	}
 
 	void FrameBuffer::bind( ) {
-		glBindFramebuffer( GL_FRAMEBUFFER, m_fbo );
+		if ( m_isMultisample ) {
+			glBindFramebuffer( GL_FRAMEBUFFER, m_fboMultiSample );
+		} else {
+			glBindFramebuffer( GL_FRAMEBUFFER, m_fbo );
+		}
 	}
 
 	void FrameBuffer::unbind( ) {
+		if ( m_isMultisample ) {
+			// Blit rendered image from MSAA (multi-sample) framebuffer to normal (single-sample) framebuffer
+			glBindFramebuffer( GL_READ_FRAMEBUFFER, m_fboMultiSample );
+			glBindFramebuffer( GL_DRAW_FRAMEBUFFER, m_fbo );
+			glBlitFramebuffer( 0, 0, m_clientSize.x, m_clientSize.y,	// src rect
+				0, 0, m_clientSize.x, m_clientSize.y,					// dst rect
+				GL_COLOR_BUFFER_BIT,									// buffer mask
+				GL_LINEAR );											// scale filter
+		}
+
 		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 	}
 
@@ -131,32 +170,105 @@ namespace gw2b {
 		glBindVertexArray( 0 );
 	}
 
-	GLuint FrameBuffer::generateAttachmentTexture( const GLboolean p_depth, const GLboolean p_stencil ) {
-		// What enum to use?
-		GLenum attachment_type;
-		if ( !p_depth && !p_stencil ) {
-			attachment_type = GL_RGB;
-		} else if ( p_depth && !p_stencil ) {
-			attachment_type = GL_DEPTH_COMPONENT;
-		} else if ( !p_depth && p_stencil ) {
-			attachment_type = GL_STENCIL_INDEX;
-		}
+	void FrameBuffer::setupFramebuffer( ) {
+		// Create a FBO to hold a render-to-texture
+		glGenFramebuffers( 1, &m_fbo );
+		glBindFramebuffer( GL_FRAMEBUFFER, m_fbo );
 
-		// Generate texture ID and load texture data
+		// Create a color attachment texture
+		m_fbTexture = generateAttachmentTexture( );
+		// Attach a texture to FBO color attachement point
+		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbTexture, 0 );
+
+		// Create a renderbuffer object
+		glGenRenderbuffers( 1, &m_rbo );
+		glBindRenderbuffer( GL_RENDERBUFFER, m_rbo );
+		glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_clientSize.x, m_clientSize.y );
+		glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+		// Attach a RBO to FBO attachement point
+		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo );
+
+	}
+
+	void FrameBuffer::setupMultiSampleFramebuffer( GLuint p_samples ) {
+		// Create a multi-sample framebuffer object
+		glGenFramebuffers( 1, &m_fboMultiSample );
+		glBindFramebuffer( GL_FRAMEBUFFER, m_fboMultiSample );
+
+		// Create a multi-sampled color attachment texture
+		m_textureColorBufferMultiSampled = generateMultiSampleTexture( p_samples );
+		// Attach a texture to FBO color attachement point
+		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_textureColorBufferMultiSampled, 0 );
+
+		// Create a renderbuffer object for depth and stencil attachments
+		glGenRenderbuffers( 1, &m_rboMultiSample );
+		glBindRenderbuffer( GL_RENDERBUFFER, m_rboMultiSample );
+		glRenderbufferStorageMultisample( GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, m_clientSize.x, m_clientSize.y );
+		glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+		// Attach msaa RBO to FBO attachment points
+		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rboMultiSample );
+	}
+
+	GLuint FrameBuffer::generateAttachmentTexture( ) {
+		// Generate texture
 		GLuint textureID;
 		glGenTextures( 1, &textureID );
+
 		glBindTexture( GL_TEXTURE_2D, textureID );
-		if ( !p_depth && !p_stencil ) {
-			glTexImage2D( GL_TEXTURE_2D, 0, attachment_type, m_clientSize.x, m_clientSize.y, 0, attachment_type, GL_UNSIGNED_BYTE, NULL );
-		} else {
-			// Using both a stencil and depth test, needs special format arguments
-			glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, m_clientSize.x, m_clientSize.y, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL );
-		}
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, m_clientSize.x, m_clientSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
 		return textureID;
+	}
+
+	GLuint FrameBuffer::generateMultiSampleTexture( GLuint p_samples ) {
+		GLuint texture;
+		glGenTextures( 1, &texture );
+
+		glBindTexture( GL_TEXTURE_2D_MULTISAMPLE, texture );
+		glTexImage2DMultisample( GL_TEXTURE_2D_MULTISAMPLE, p_samples, GL_RGBA, m_clientSize.x, m_clientSize.y, GL_TRUE );
+		glBindTexture( GL_TEXTURE_2D_MULTISAMPLE, 0 );
+
+		return texture;
+	}
+
+	bool FrameBuffer::checkFrameBufferStatus( ) {
+		GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
+		switch ( status ) {
+		case GL_FRAMEBUFFER_COMPLETE:
+			wxLogMessage( wxT( "Framebuffer complete." ) );
+			return true;
+
+		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+			wxLogMessage( wxT( "Framebuffer : Attachment is not complete." ) );
+			return false;
+
+		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+			wxLogMessage( wxT( "Framebuffer : No image is attached to FBO." ) );
+			return false;
+
+		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+			wxLogMessage( wxT( "Framebuffer : Incomplete draw buffer." ) );
+			return false;
+
+		case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+			wxLogMessage( wxT( "Framebuffer : Incomplete read buffer." ) );
+			return false;
+
+		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+			wxLogMessage( wxT( "Framebuffer : Incomplete multisample." ) );
+			return false;
+
+		case GL_FRAMEBUFFER_UNSUPPORTED:
+			wxLogMessage( wxT( "Framebuffer : Unsupported by FBO implementation." ) );
+			return false;
+
+		default:
+			wxLogMessage( wxT( "Framebuffer : Unknown error." ) );
+			return false;
+		}
 	}
 
 }; // namespace gw2b

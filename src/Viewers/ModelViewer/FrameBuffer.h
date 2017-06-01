@@ -31,16 +31,27 @@ namespace gw2b {
 
 	class FrameBuffer {
 		GLuint						m_fbo;				// Framebuffer object
+		GLuint						m_rbo;				// Renderbuffer object
 		GLuint						m_fbTexture;		// Framebuffer texture
+
+		GLuint						m_fboMultiSample;
+		GLuint						m_rboMultiSample;
+		GLuint						m_textureColorBufferMultiSampled;
+
 		GLuint						m_quadVAO;			// Quad vertex array object
 		GLuint						m_quadVBO;			// Quad buffer array object
-		GLuint						m_rbo;				// Renderbuffer object
 		wxSize						m_clientSize;		// Size of OpenGL control
+
+		bool						m_isMultisample;
 
 	public:
 		/** Constructor. Create framebuffer object.
 		*  \param[in]  p_size       Size of the OpenGL screen. */
 		FrameBuffer( const wxSize& p_size );
+		/** Constructor. Create multi-sample framebuffer object.
+		*  \param[in]  p_size       Size of the OpenGL screen.
+		*  \param[in]  p_samples    Number of sample for multi-sample texture.*/
+		FrameBuffer( const wxSize& p_size, GLuint p_samples );
 		/** Destructor. Clears all data. */
 		~FrameBuffer( );
 
@@ -56,8 +67,18 @@ namespace gw2b {
 	private:
 		/** Setup screen quad. */
 		void setupQuad( );
+		/** Create normal framebuffer. */
+		void setupFramebuffer( );
+		/** Create multi-sample framebuffer.
+		*  \param[in]  p_samples    Number of samples. */
+		void setupMultiSampleFramebuffer( GLuint p_samples );
 		/** Generates a texture that is suited for attachments to a framebuffer. */
-		GLuint generateAttachmentTexture( const GLboolean p_depth, const GLboolean p_stencil );
+		GLuint generateAttachmentTexture( );
+		/** Generates a multi-sample texture.
+		*  \param[in]  p_samples    Number of samples for multi-sample texture.*/
+		GLuint generateMultiSampleTexture( GLuint p_samples );
+		/** Check the frame buffer status. */
+		bool checkFrameBufferStatus( );
 
 	}; // class FrameBuffer
 

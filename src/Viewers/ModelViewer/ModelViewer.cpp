@@ -201,6 +201,8 @@ namespace gw2b {
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc( GL_LESS );
 
+		glEnable( GL_MULTISAMPLE );
+
 		this->loadShader( );
 
 		// Initialize text renderer stuff
@@ -393,45 +395,54 @@ namespace gw2b {
 		m_text->drawText( wxT( "Rotate: Left mouse button" ), 0.0f, 12.0f + 2.0f, scale, color );
 		m_text->drawText( wxT( "Pan: Right mouse button" ), 0.0f, 24.0f + 2.0f, scale, color );
 		m_text->drawText( wxT( "Focus: press F" ), 0.0f, 36.0f + 2.0f, scale, color );
-		m_text->drawText( wxT( "Toggle normal mapping: press 6" ), 25.0f, 48.0f + 2.0f, scale, color );
-		m_text->drawText( wxT( "Toggle lighting: press 5" ), 25.0f, 60.0f + 2.0f, scale, color );
-		m_text->drawText( wxT( "Toggle texture: press 4" ), 25.0f, 72.0f + 2.0f, scale, color );
-		m_text->drawText( wxT( "Toggle back-face culling: press 3" ), 25.0f, 84.0f + 2.0f, scale, color );
-		m_text->drawText( wxT( "Toggle wireframe: press 2" ), 25.0f, 96.0f + 2.0f, scale, color );
-		m_text->drawText( wxT( "Toggle status text: press 1" ), 25.0f, 108.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle anti alising: press 7" ), 25.0f, 48.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle normal mapping: press 6" ), 25.0f, 60.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle lighting: press 5" ), 25.0f, 72.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle texture: press 4" ), 25.0f, 84.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle back-face culling: press 3" ), 25.0f, 96.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle wireframe: press 2" ), 25.0f, 108.0f + 2.0f, scale, color );
+		m_text->drawText( wxT( "Toggle status text: press 1" ), 25.0f, 120.0f + 2.0f, scale, color );
 
 		// Status text
 		auto gray = glm::vec3( 0.5f, 0.5f, 0.5f );
 		auto green = glm::vec3( 0.0f, 1.0f, 0.0f );
-		if ( m_statusNormalMapping ) {
+
+		if ( m_statusAntiAlising ) {
 			m_text->drawText( wxT( "ON" ), 0.0f, 48.0f + 2.0f, scale, green );
 		} else {
 			m_text->drawText( wxT( "OFF" ), 0.0f, 48.0f + 2.0f, scale, gray );
 		}
 
-		if ( m_statusLighting ) {
+		if ( m_statusNormalMapping ) {
 			m_text->drawText( wxT( "ON" ), 0.0f, 60.0f + 2.0f, scale, green );
 		} else {
 			m_text->drawText( wxT( "OFF" ), 0.0f, 60.0f + 2.0f, scale, gray );
 		}
 
-		if ( m_statusTextured ) {
+		if ( m_statusLighting ) {
 			m_text->drawText( wxT( "ON" ), 0.0f, 72.0f + 2.0f, scale, green );
 		} else {
 			m_text->drawText( wxT( "OFF" ), 0.0f, 72.0f + 2.0f, scale, gray );
 		}
 
-		if ( m_statusCullFace ) {
+		if ( m_statusTextured ) {
 			m_text->drawText( wxT( "ON" ), 0.0f, 84.0f + 2.0f, scale, green );
 		} else {
 			m_text->drawText( wxT( "OFF" ), 0.0f, 84.0f + 2.0f, scale, gray );
 		}
 
-		if ( m_statusWireframe ) {
+		if ( m_statusCullFace ) {
 			m_text->drawText( wxT( "ON" ), 0.0f, 96.0f + 2.0f, scale, green );
 		} else {
 			m_text->drawText( wxT( "OFF" ), 0.0f, 96.0f + 2.0f, scale, gray );
 		}
+
+		if ( m_statusWireframe ) {
+			m_text->drawText( wxT( "ON" ), 0.0f, 108.0f + 2.0f, scale, green );
+		} else {
+			m_text->drawText( wxT( "OFF" ), 0.0f, 108.0f + 2.0f, scale, gray );
+		}
+
 	}
 
 	void ModelViewer::updateMatrices( ) {
@@ -511,7 +522,11 @@ namespace gw2b {
 	}
 
 	void ModelViewer::createFrameBuffer( ) {
-		m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize ) );
+		if ( m_statusAntiAlising ) {
+			m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize, 4 ) );
+		} else {
+			m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize ) );
+		}
 	}
 
 	void ModelViewer::onMotionEvt( wxMouseEvent& p_event ) {
@@ -566,6 +581,10 @@ namespace gw2b {
 			m_statusLighting = !m_statusLighting;
 		} else if ( p_event.GetKeyCode( ) == '6' ) {
 			m_statusNormalMapping = !m_statusNormalMapping;
+		} else if ( p_event.GetKeyCode( ) == '7' ) {
+			m_statusAntiAlising = !m_statusAntiAlising;
+			// Force re-create framebuffer
+			this->createFrameBuffer( );
 		}
 
 		// Rendering debugging/visualization control
