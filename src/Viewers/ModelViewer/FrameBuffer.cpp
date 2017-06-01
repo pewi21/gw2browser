@@ -79,7 +79,7 @@ namespace gw2b {
 				glDeleteRenderbuffers( 1, &m_rboMultiSample );
 			}
 			// Delete multi-sample texture
-			if ( m_fbTexture ) {
+			if ( m_textureColorBufferMultiSampled ) {
 				glDeleteTextures( 1, &m_textureColorBufferMultiSampled );
 			}
 			// Delete multi-sample FBO
