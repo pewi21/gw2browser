@@ -16,7 +16,7 @@ Also,when you first use find by file id function, the browser will appear to fre
 This is normal since it will need to expand all file tree in oder to search for
 given file id.
 
-The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and [Here](http://goo.gl/4xMRVF)
+The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and git binary build [Here](http://goo.gl/4xMRVF)
 
 For people who can't run Gw2Browser, download and Install
 [Microsoft Visual C++ 2015 Redistributable Update 3](https://www.microsoft.com/en-us/download/details.aspx?id=52982)
