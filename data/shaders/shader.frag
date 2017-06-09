@@ -66,7 +66,7 @@ uniform Material material;
 uniform Light light;
 uniform RenderMode mode;
 
-float alpha_threshold = 0.1f;
+float alpha_threshold = 0.5f;
 
 void main( ) {
 	vec4 finalColor;
@@ -137,9 +137,9 @@ void main( ) {
 		}
 
 		// Extract alpha from diffuse texture's alpha channel
-		//vec3 alphaMask = LevelsControl( alphaColor, 0.0f, 1.0f, 64.0f / 255.0f, 0.0f, 255.0f / 255.0f );;
+		vec3 alphaMask = LevelsControl( alphaColor, 0.0f, 1.0f, 64.0f / 255.0f, 0.0f, 255.0f / 255.0f );
 
-		finalColor = vec4( ambient + ( diffuse + specular ), alphaColor.r );
+		finalColor = vec4( ambient + ( diffuse + specular ), alphaMask.r );
 
 	} else {
 		finalColor = diffuseColor;
