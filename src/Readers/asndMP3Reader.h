@@ -47,8 +47,8 @@ namespace gw2b {
 		virtual DataType dataType( ) const override {
 			return DT_Sound;
 		}
-		/** Gets the strings contained in the data owned by this reader.
-		*  \return wxString     MP3 format. */
+		/** Gets the mp3 data contained in the data owned by this reader.
+		*  \return Array<byte>  MP3 data. */
 		Array<byte> getMP3Data( ) const;
 
 	}; // class MP3Reader
