@@ -6,8 +6,6 @@ May change over time. :P
 Gw2Browser_2017-xx-xx (1.0.9.1)
 -------------------------------
 
-* Re-add AA that work with frame buffer.
-
 * map file reader, renderer, exporter.
 
 * Add way to position light (shift left click?) by using gobal variable or access class variable?
@@ -16,9 +14,9 @@ Gw2Browser_2017-xx-xx (1.0.9.1)
 
 * Material class (texture, lighting).
 
-* Exporters class, like Reader/Viewer.
-
 * Add a way to config model viewer graphic option.
+
+* Support model light map.
 
 Further plans
 -------------
@@ -37,6 +35,8 @@ Further plans
 
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
+
+* Allow to extract raw data with raw texture.
 
 * External file name database, for known files (such as the exe and dll files).
 
