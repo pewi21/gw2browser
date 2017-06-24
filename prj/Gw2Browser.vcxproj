@@ -40,6 +40,7 @@
     <ClInclude Include="..\src\PreviewPanel.h" />
     <ClInclude Include="..\src\ProgressStatusBar.h" />
     <ClInclude Include="..\src\Readers\asndMP3Reader.h" />
+    <ClInclude Include="..\src\Readers\MapReader.h" />
     <ClInclude Include="..\src\Readers\EulaReader.h" />
     <ClInclude Include="..\src\Readers\ImageReader.h" />
     <ClInclude Include="..\src\Readers\ModelReader.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="..\src\PreviewPanel.cpp" />
     <ClCompile Include="..\src\ProgressStatusBar.cpp" />
     <ClCompile Include="..\src\Readers\asndMP3Reader.cpp" />
+    <ClCompile Include="..\src\Readers\MapReader.cpp" />
     <ClCompile Include="..\src\Readers\EulaReader.cpp" />
     <ClCompile Include="..\src\Readers\ImageReader.cpp" />
     <ClCompile Include="..\src\Readers\ModelReader.cpp" />

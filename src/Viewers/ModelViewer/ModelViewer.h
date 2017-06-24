@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DatFile.h"
 #include "ViewerGLCanvas.h"
+#include "Readers/MapReader.h"
 #include "Readers/ModelReader.h"
 
 namespace gw2b {
@@ -64,6 +65,7 @@ namespace gw2b {
 		wxSize						m_clientSize;
 
 		// Internal status
+		bool						m_isViewingMap = false;				// Is we are viewing map?
 		bool						m_glInitialized = false;			// Is OpenGL is initialized?
 		bool						m_statusText = true;				// Toggle display text
 		bool						m_statusWireframe = false;			// Toggle wireframe rendering
@@ -126,6 +128,16 @@ namespace gw2b {
 		*  \return ModelReader*    Reader containing the data. */
 		const ModelReader* modelReader( ) const {
 			return reinterpret_cast<const ModelReader*>( this->reader( ) );
+		} // already asserted with a dynamic_cast
+		/** Gets the map reader containing the data displayed by this viewer.
+		*  \return MapReader*    Reader containing the data. */
+		MapReader* mapReader( ) {
+			return reinterpret_cast<MapReader*>( this->reader( ) );
+		} // already asserted with a dynamic_cast
+		/** Gets the map reader containing the data displayed by this viewer.
+		*  \return MapReader*    Reader containing the data. */
+		const MapReader* mapReader( ) const {
+			return reinterpret_cast<const MapReader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
 
 	private:

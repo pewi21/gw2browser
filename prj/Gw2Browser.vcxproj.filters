@@ -231,6 +231,9 @@
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundDecoder.h">
       <Filter>Source Files\Viewers\SoundPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Readers\MapReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -382,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\SoundPlayer\SoundDecoder.cpp">
       <Filter>Source Files\Viewers\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\MapReader.cpp">
+      <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

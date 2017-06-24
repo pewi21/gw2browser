@@ -54,6 +54,7 @@ namespace gw2b {
 			DT_String,          /**< String data. */
 			DT_EULA,            /**< EULA data. */
 			DT_Text,            /**< Text data. */
+			DT_Map,             /**< Map data. */
 		};
 	public:
 		/** Constructor.

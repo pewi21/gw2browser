@@ -116,15 +116,27 @@ namespace gw2b {
 			return;
 		}
 
-		Ensure::isOfType<ModelReader>( p_reader );
 		ViewerGLCanvas::setReader( p_reader );
+		if ( !p_reader ) {
+			return;
+		}
 
-		// Load model
-		auto reader = this->modelReader( );
-		auto model = reader->getModel( );
+		if ( isOfType<MapReader>( p_reader ) ) {
+			// we are viewing a map file
+			m_isViewingMap = true;
 
-		// load model to m_model
-		m_model.push_back( std::unique_ptr<Model>( new Model( model, m_datFile ) ));
+			auto reader = this->mapReader( );
+			auto test = reader->getMapData( );
+
+
+		} if ( isOfType<ModelReader>( p_reader ) ) {
+			// Load model
+			auto reader = this->modelReader( );
+			auto model = reader->getModel( );
+
+			// load model to m_model
+			m_model.push_back( std::unique_ptr<Model>( new Model( model, m_datFile ) ) );
+		}
 
 		// Re-focus and re-render
 		this->focus( );
