@@ -218,6 +218,8 @@
 		<Unit filename="../src/Readers/EulaReader.h" />
 		<Unit filename="../src/Readers/ImageReader.cpp" />
 		<Unit filename="../src/Readers/ImageReader.h" />
+		<Unit filename="../src/Readers/MapReader.cpp" />
+		<Unit filename="../src/Readers/MapReader.h" />
 		<Unit filename="../src/Readers/ModelReader.cpp" />
 		<Unit filename="../src/Readers/ModelReader.h" />
 		<Unit filename="../src/Readers/PackedSoundReader.cpp" />
