@@ -73,6 +73,7 @@ File Id		Format		Note
 106980		model		Charr poster
 162177		soundbank	"I'm a Charr" (female)
 162177		soundbank	"I'm a Charr" (male)
+184705		mp3			GW2 Main Theme
 184738		ogg			Charr war music
 187834		model		Charr's sigil (front of smelter)
 187835		model		Charr's stature axe
@@ -93,6 +94,7 @@ File Id		Format		Note
 299986		model		Charr tank (small)
 408554		model		Teq low-res
 454456		model		Zhaitan
+463763		mp3			Fear Not This Night
 469869		model		Teq
 506537		model		Mad king's clock tower
 506586		model		Mad king's clock tower
@@ -125,6 +127,7 @@ File Id		Format		Note
 915401		model		Cute male Charr NPC
 959297		model		Ventari's Tablet
 968306		ogg			Some music
+968308		mp3			GW2: HoT Theme
 1058446		model		HoT metal tower
 1062247		ogg			Some music
 1168588		model		Mordremoth avatar
@@ -150,3 +153,7 @@ File Id		Format		Note
 1634836		model		Deimos statue gold
 1634839		model		Deimos statue bronze
 1634842		model		Deimos statue silver
+1789436		mp3			GW2 Path of Fire Soundtrack - Character Select
+1791757		model		Food sign
+1791810		model		Skritt construct?
+1792304		model		Unknown board/card game
