@@ -273,8 +273,8 @@ namespace gw2b {
 		this->updateMatrices( );
 
 		if ( !m_model.empty( ) ) {
-			// Setup light properties (currently is front of the model)
-			m_light.setPosition( m_model[0]->getBounds( ).center( ) + glm::vec3( 100, 25, 200 ) );
+			// Set light position at camera position
+			m_light.setPosition( m_camera.position( ) );
 		}
 
 		// No need since already initilized with this value
