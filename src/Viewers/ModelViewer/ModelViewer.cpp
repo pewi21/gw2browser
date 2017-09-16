@@ -213,8 +213,6 @@ namespace gw2b {
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc( GL_LESS );
 
-		glEnable( GL_MULTISAMPLE );
-
 		this->loadShader( );
 
 		// Initialize text renderer stuff
@@ -309,11 +307,6 @@ namespace gw2b {
 			m_lightBox->renderCube( m_light.position( ), m_light.specular( ) );
 		}
 
-		// Draw status text
-		if ( m_statusText ) {
-			this->displayStatusText( );
-		}
-
 		// Bind to default framebuffer again and draw the quad plane with attched screen texture
 		m_framebuffer->unbind( );
 
@@ -321,9 +314,17 @@ namespace gw2b {
 		glClear( GL_COLOR_BUFFER_BIT );
 		glDisable( GL_DEPTH_TEST ); // We don't care about depth information when rendering a single quad
 
-		// Draw Screen
+		// Use the hdr framebuffer shader
 		m_screenShader->use( );
+		// Set exposure
+		glUniform1f( glGetUniformLocation( m_screenShader->getProgramId( ), "exposure" ), 1.0f );
+		// Draw the frame buffer
 		m_framebuffer->draw( );
+
+		// Draw status text
+		if ( m_statusText ) {
+			this->displayStatusText( );
+		}
 
 		SwapBuffers( );
 	}

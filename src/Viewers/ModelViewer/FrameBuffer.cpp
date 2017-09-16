@@ -203,7 +203,7 @@ namespace gw2b {
 		// Create a renderbuffer object for depth and stencil attachments
 		glGenRenderbuffers( 1, &m_rboMultiSample );
 		glBindRenderbuffer( GL_RENDERBUFFER, m_rboMultiSample );
-		glRenderbufferStorageMultisample( GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, m_clientSize.x, m_clientSize.y );
+		glRenderbufferStorageMultisample( GL_RENDERBUFFER, p_samples, GL_DEPTH24_STENCIL8, m_clientSize.x, m_clientSize.y );
 		glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 		// Attach msaa RBO to FBO attachment points
 		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rboMultiSample );
@@ -215,7 +215,7 @@ namespace gw2b {
 		glGenTextures( 1, &textureID );
 
 		glBindTexture( GL_TEXTURE_2D, textureID );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, m_clientSize.x, m_clientSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA16F, m_clientSize.x, m_clientSize.y, 0, GL_RGBA, GL_FLOAT, NULL );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		glBindTexture( GL_TEXTURE_2D, 0 );
@@ -228,7 +228,7 @@ namespace gw2b {
 		glGenTextures( 1, &texture );
 
 		glBindTexture( GL_TEXTURE_2D_MULTISAMPLE, texture );
-		glTexImage2DMultisample( GL_TEXTURE_2D_MULTISAMPLE, p_samples, GL_RGBA, m_clientSize.x, m_clientSize.y, GL_TRUE );
+		glTexImage2DMultisample( GL_TEXTURE_2D_MULTISAMPLE, p_samples, GL_RGBA16F, m_clientSize.x, m_clientSize.y, GL_TRUE );
 		glBindTexture( GL_TEXTURE_2D_MULTISAMPLE, 0 );
 
 		return texture;
