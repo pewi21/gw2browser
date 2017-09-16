@@ -28,6 +28,7 @@
 struct Material {
 	sampler2D diffuseMap;
 	sampler2D normalMap;
+	sampler2D lightMap;
 	float     shininess;
 };
 
@@ -102,7 +103,7 @@ void main( ) {
 			// Transform normal vector to range [-1,1]
 			normal = normalize( normal * 2.0f - 1.0f );
 		} else {
-			normal = fs_in.Normal;
+			normal = normalize( fs_in.Normal );
 		}
 
 		// Get diffuse color

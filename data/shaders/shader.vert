@@ -52,7 +52,7 @@ void main( ) {
 
 	// todo: for performance reason, inverse the matrix before send to shader
 	mat3 normalMatrix = transpose( inverse( mat3( model ) ) );
-	vs_out.Normal = normalize( normalMatrix * normal );
+	vs_out.Normal = normalMatrix * normal;
 
 	if ( mode.normalMapping ) {
 		vec3 T = normalize( mat3( model ) * tangent );
