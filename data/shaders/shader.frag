@@ -94,6 +94,9 @@ void main( ) {
 	// GW2 store specular and alpha in texture's alpha channel
 	alphaColor = vec3( diffuseColor.a );
 
+	// Extract alpha from diffuse texture's alpha channel
+	vec3 alphaMask = LevelsControl( alphaColor, 0.0f, 1.0f, 64.0f / 255.0f, 0.0f, 255.0f / 255.0f );
+
 	if ( mode.lighting ) {
 		// Get normal
 		vec3 normal;
@@ -137,13 +140,10 @@ void main( ) {
 			specular = light.specular * spec * specularTexture;
 		}
 
-		// Extract alpha from diffuse texture's alpha channel
-		vec3 alphaMask = LevelsControl( alphaColor, 0.0f, 1.0f, 64.0f / 255.0f, 0.0f, 255.0f / 255.0f );
-
 		finalColor = vec4( ambient + ( diffuse + specular ), alphaMask.r );
 
 	} else {
-		finalColor = diffuseColor;
+		finalColor = vec4( diffuseColor.rgb, alphaMask.r );
 	}
 
 	// Alpha test
