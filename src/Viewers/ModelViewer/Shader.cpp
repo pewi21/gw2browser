@@ -170,9 +170,55 @@ namespace gw2b {
 		glDeleteProgram( m_program );
 	}
 
+	// ------------------------------------------------------------------------
+	void Shader::setBool( const std::string &p_name, bool p_value ) const {
+		glUniform1i( glGetUniformLocation( m_program, p_name.c_str( ) ), static_cast<int> ( p_value ) );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setInt( const std::string &p_name, int p_value ) const {
+		glUniform1i( glGetUniformLocation( m_program, p_name.c_str( ) ), p_value );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setFloat( const std::string &p_name, float p_value ) const {
+		glUniform1f( glGetUniformLocation( m_program, p_name.c_str( ) ), p_value );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setVec2( const std::string &p_name, const glm::vec2 &p_value ) const {
+		glUniform2fv( glGetUniformLocation( m_program, p_name.c_str( ) ), 1, glm::value_ptr( p_value ) );
+	}
+	void Shader::setVec2( const std::string &p_name, float p_x, float p_y ) const {
+		glUniform2f( glGetUniformLocation( m_program, p_name.c_str( ) ), p_x, p_y );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setVec3( const std::string &p_name, const glm::vec3 &p_value ) const {
+		glUniform3fv( glGetUniformLocation( m_program, p_name.c_str( ) ), 1, glm::value_ptr( p_value ) );
+	}
+	void Shader::setVec3( const std::string &p_name, float p_x, float p_y, float p_z ) const {
+		glUniform3f( glGetUniformLocation( m_program, p_name.c_str( ) ), p_x, p_y, p_z );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setVec4( const std::string &p_name, const glm::vec4 &p_value ) const {
+		glUniform4fv( glGetUniformLocation( m_program, p_name.c_str( ) ), 1, glm::value_ptr( p_value ) );
+	}
+	void Shader::setVec4( const std::string &p_name, float p_x, float p_y, float p_z, float p_w ) const {
+		glUniform4f( glGetUniformLocation( m_program, p_name.c_str( ) ), p_x, p_y, p_z, p_w );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setMat2( const std::string &p_name, const glm::mat2 &p_mat ) const {
+		glUniformMatrix2fv( glGetUniformLocation( m_program, p_name.c_str( ) ), 1, GL_FALSE, glm::value_ptr( p_mat ) );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setMat3( const std::string &p_name, const glm::mat3 &p_mat ) const {
+		glUniformMatrix3fv( glGetUniformLocation( m_program, p_name.c_str( ) ), 1, GL_FALSE, glm::value_ptr( p_mat ) );
+	}
+	// ------------------------------------------------------------------------
+	void Shader::setMat4( const std::string &p_name, const glm::mat4 &p_mat ) const {
+		glUniformMatrix4fv( glGetUniformLocation( m_program, p_name.c_str( ) ), 1, GL_FALSE, glm::value_ptr( p_mat ) );
+	}
+	// ------------------------------------------------------------------------
+
 	bool Shader::checkCompileErrors( GLuint shader, std::string type ) {
 		GLint success;
-		//GLchar infoLog[1024];
 		GLint infoLogLength = 0;
 		if ( type != "PROGRAM" ) {
 			glGetShaderiv( shader, GL_COMPILE_STATUS, &success );
