@@ -580,8 +580,7 @@ namespace gw2b {
 						material.materialFlags = mat.materialFlags;
 
 						// Get material filename from each materials
-						auto ref = reinterpret_cast<const ANetFileReference*>( &mat.filename );
-						material.materialFile = DatFile::fileIdFromFileReference( *ref );
+						material.materialFile = mat.filename.fileId( );
 
 						if ( !mat.textures.size( ) ) {
 							continue;
@@ -589,8 +588,6 @@ namespace gw2b {
 
 						for ( uint t = 0; t < mat.textures.size( ); t++ ) {
 							auto& texture = mat.textures[t];
-							// Get file reference
-							auto fileReference = reinterpret_cast<const ANetFileReference*>( &texture.filename );
 
 							// 0x67531924	01100111010100110001100100100100	Diffuse
 							// 0x1816c9ee	00011000000101101100100111101110	Normal
@@ -599,17 +596,17 @@ namespace gw2b {
 							// todo: figure out this
 							// Diffuse?
 							if ( ( texture.token & 0xffffffff ) == 0x67531924 ) {
-								material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+								material.diffuseMap = texture.filename.fileId( ) + 1;
 							}
 
 							// Normal?
 							else if ( ( texture.token & 0xffffffff ) == 0x1816c9ee ) {
-								material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+								material.normalMap = texture.filename.fileId( ) + 1;
 							}
 
 							// Light Map?
 							else if ( ( texture.token & 0xffffffff ) == 0x680bbd87 ) {
-								material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+								material.lightMap = texture.filename.fileId( ) + 1;
 								break;
 							}
 						}
