@@ -603,10 +603,7 @@ namespace gw2b {
 							}
 
 							// Normal?
-							else if ( ( ( texture.token & 0xffffffff ) == 0x1816c9ee )
-								//|| ( ( texture.token& 0xffffffff ) == 0x8b0bbd87 )
-								//|| ( ( texture.token& 0xffffffff ) == 0xa55a48b0 )
-								) {
+							else if ( ( texture.token & 0xffffffff ) == 0x1816c9ee ) {
 								material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
 							}
 
