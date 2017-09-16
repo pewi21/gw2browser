@@ -52,7 +52,47 @@ namespace gw2b {
 
 	void Model::draw( Shader* p_shader ) {
 		for ( uint i = 0; i < static_cast<uint>( m_numMeshes ); i++ ) {
-			this->drawMesh( p_shader, i );
+			auto materialIndex = m_meshCache[i].materialIndex;
+
+			// Texture Maping
+			if ( !m_textureList.empty( ) ) {
+
+				if ( materialIndex >= 0 && m_textureList[materialIndex].diffuseMap ) {
+					auto texture = m_textureMap.find( m_textureList[materialIndex].diffuseMap );
+					if ( texture != m_textureMap.end( ) ) {
+						// Use Texture Unit 0
+						glActiveTexture( GL_TEXTURE0 );
+						texture->second->bind( );
+						// Set our "diffuseMap" sampler to user Texture Unit 0
+						p_shader->setInt( "material.diffuseMap", 0 );
+					}
+				}
+
+				if ( materialIndex >= 0 && m_textureList[materialIndex].normalMap ) {
+					auto texture = m_textureMap.find( m_textureList[materialIndex].normalMap );
+					if ( texture != m_textureMap.end( ) ) {
+						// Bind our normal texture in Texture Unit 1
+						glActiveTexture( GL_TEXTURE1 );
+						texture->second->bind( );
+						// Set our "normalMap" sampler to user Texture Unit 1
+						p_shader->setInt( "material.normalMap", 1 );
+					}
+				}
+
+				if ( materialIndex >= 0 && m_textureList[materialIndex].lightMap ) {
+					auto texture = m_textureMap.find( m_textureList[materialIndex].lightMap );
+					if ( texture != m_textureMap.end( ) ) {
+						// Bind our lightmap texture in Texture Unit 2
+						glActiveTexture( GL_TEXTURE2 );
+						texture->second->bind( );
+						// Set our "lightMap" sampler to user Texture Unit 2
+						p_shader->setInt( "material.lightMap", 2 );
+					}
+				}
+			}
+
+			// Draw mesh
+			this->drawMesh( i );
 		}
 	}
 
@@ -104,39 +144,9 @@ namespace gw2b {
 		}
 	}
 
-	void Model::drawMesh( Shader* p_shader, const uint p_meshIndex ) {
+	void Model::drawMesh( const uint p_meshIndex ) {
 		auto& vao = m_vertexArray[p_meshIndex];
 		auto& cache = m_meshCache[p_meshIndex];
-
-		auto materialIndex = m_meshCache[p_meshIndex].materialIndex;
-
-		// Texture Maping
-		if ( !m_textureList.empty( ) ) {
-			// Use Texture Unit 0
-			glActiveTexture( GL_TEXTURE0 );
-
-			if ( materialIndex >= 0 && m_textureList[materialIndex].diffuseMap ) {
-				auto texture = m_textureMap.find( m_textureList[materialIndex].diffuseMap );
-				if ( texture != m_textureMap.end( ) ) {
-					texture->second->bind( );
-				}
-			}
-
-			// Set our "diffuseMap" sampler to user Texture Unit 0
-			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "material.diffuseMap" ), 0 );
-
-			// Bind our normal texture in Texture Unit 1
-			glActiveTexture( GL_TEXTURE1 );
-
-			if ( materialIndex >= 0 && m_textureList[materialIndex].normalMap ) {
-				auto texture = m_textureMap.find( m_textureList[materialIndex].normalMap );
-				if ( texture != m_textureMap.end( ) ) {
-					texture->second->bind( );
-				}
-			}
-			// Set our "normalMap" sampler to user Texture Unit 1
-			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "material.normalMap" ), 1 );
-		}
 
 		// Bind Vertex Array Object
 		glBindVertexArray( vao.vertexArray );

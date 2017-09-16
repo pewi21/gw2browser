@@ -120,7 +120,7 @@ namespace gw2b {
 
 	private:
 		void clearBuffer( );
-		void drawMesh( Shader* p_shader, const uint p_meshIndex );
+		void drawMesh( const uint p_meshIndex );
 		void loadModel( const GW2Model& p_model );
 		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
 		void computeTangent( MeshCache& p_mesh );
