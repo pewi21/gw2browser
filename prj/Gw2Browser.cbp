@@ -224,11 +224,6 @@
 		<Unit filename="../src/Readers/ModelReader.h" />
 		<Unit filename="../src/Readers/PackedSoundReader.cpp" />
 		<Unit filename="../src/Readers/PackedSoundReader.h" />
-		<Unit filename="../src/Readers/PagedImageReader.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../src/Readers/PagedImageReader.h" />
 		<Unit filename="../src/Readers/SoundBankReader.cpp" />
 		<Unit filename="../src/Readers/SoundBankReader.h" />
 		<Unit filename="../src/Readers/StringReader.cpp" />
