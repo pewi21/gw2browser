@@ -171,6 +171,7 @@ namespace gw2b {
 			wxLogMessage( wxT( "m_screenShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
+
 	}
 
 	void ModelViewer::reloadShader( ) {
@@ -235,7 +236,7 @@ namespace gw2b {
 		m_camera.setCameraMode( Camera::CameraMode::ORBITALCAM );
 		m_camera.setMouseSensitivity( 0.5f * ( glm::pi<float>( ) / 180.0f ) );  // 0.5 degrees per pixel
 
-		// create framebuffer
+		// Create framebuffer
 		this->createFrameBuffer( );
 
 		return true;
@@ -259,6 +260,8 @@ namespace gw2b {
 		// Set the OpenGL viewport according to the client size of wxGLCanvas
 		glViewport( 0, 0, m_clientSize.x, m_clientSize.y );
 
+#pragma region render scene
+
 		// Bind to framebuffer and draw to framebuffer texture
 		m_framebuffer->bind( );
 
@@ -266,6 +269,7 @@ namespace gw2b {
 		glEnable( GL_DEPTH_TEST );
 
 		// Clear color buffer and depth buffer
+		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		this->updateMatrices( );
@@ -310,14 +314,19 @@ namespace gw2b {
 		// Bind to default framebuffer again and draw the quad plane with attched screen texture
 		m_framebuffer->unbind( );
 
+#pragma endregion Render scene into framebuffer
+
 		// Clear all relevant buffers
+		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
 		glClear( GL_COLOR_BUFFER_BIT );
 		glDisable( GL_DEPTH_TEST ); // We don't care about depth information when rendering a single quad
 
 		// Use the hdr framebuffer shader
 		m_screenShader->use( );
+
 		// Set exposure
-		glUniform1f( glGetUniformLocation( m_screenShader->getProgramId( ), "exposure" ), 1.0f );
+		m_screenShader->setFloat( "exposure", 1.0f );
+
 		// Draw the frame buffer
 		m_framebuffer->draw( );
 
@@ -352,24 +361,24 @@ namespace gw2b {
 			p_shader->use( );
 
 			// Set renderer status flag
-			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "mode.wireframe" ), m_statusWireframe );
-			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "mode.textured" ), m_statusTextured );
-			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "mode.normalMapping" ), m_statusNormalMapping );
-			glUniform1i( glGetUniformLocation( p_shader->getProgramId( ), "mode.lighting" ), m_statusLighting );
+			p_shader->setInt( "mode.wireframe", m_statusWireframe );
+			p_shader->setInt( "mode.textured", m_statusTextured );
+			p_shader->setInt( "mode.normalMapping", m_statusNormalMapping );
+			p_shader->setInt( "mode.lighting", m_statusLighting );
 
 			// Set lights properties
-			glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.position" ), 1, glm::value_ptr( m_light.position( ) ) );
-			glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.ambient" ), 1, glm::value_ptr( m_light.ambient( ) ) );
-			glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.diffuse" ), 1, glm::value_ptr( m_light.diffuse( ) ) );
-			glUniform3fv( glGetUniformLocation( p_shader->getProgramId( ), "light.specular" ), 1, glm::value_ptr( m_light.specular( ) ) );
+			p_shader->setVec3( "light.position", m_light.position( ) );
+			p_shader->setVec3( "light.ambient", m_light.ambient( ) );
+			p_shader->setVec3( "light.diffuse", m_light.diffuse( ) );
+			p_shader->setVec3( "light.specular", m_light.specular( ) );
 
 			// Set material properties
-			glUniform1f( glGetUniformLocation( p_shader->getProgramId( ), "material.shininess" ), 32.0f );
+			p_shader->setFloat( "material.shininess", 32.0f );
 
 			// Model matrix
-			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "model" ), 1, GL_FALSE, glm::value_ptr( p_trans ) );
+			p_shader->setMat4( "model", p_trans );
 			// View matrix
-			glUniformMatrix4fv( glGetUniformLocation( p_shader->getProgramId( ), "view" ), 1, GL_FALSE, glm::value_ptr( m_camera.calculateViewMatrix( ) ) );
+			p_shader->setMat4( "view", m_camera.calculateViewMatrix( ) );
 
 			it->draw( p_shader );
 		}
@@ -482,22 +491,22 @@ namespace gw2b {
 
 		m_mainShader->use( );
 		// Send projection matrix to main shader
-		glUniformMatrix4fv( glGetUniformLocation( m_mainShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		m_mainShader->setMat4( "projection", projection );
 		// View position
-		glUniform3fv( glGetUniformLocation( m_mainShader->getProgramId( ), "viewPos" ), 1, glm::value_ptr( m_camera.position( ) ) );
+		m_mainShader->setVec3( "viewPos", m_camera.position( ) );
 
 		if ( m_statusVisualizeNormal ) {
 			m_normalVisualizerShader->use( );
 			// Send projection matrix to normal visualizer shader
-			glUniformMatrix4fv( glGetUniformLocation( m_normalVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+			m_normalVisualizerShader->setMat4( "projection", projection );
 		}
 
 		if ( m_statusVisualizeZbuffer ) {
 			m_zVisualizerShader->use( );
 			// Send projection matrix to Z-Buffer visualizer shader
-			glUniformMatrix4fv( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-			glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "near" ), minZ );
-			glUniform1f( glGetUniformLocation( m_zVisualizerShader->getProgramId( ), "far" ), maxZ );
+			m_zVisualizerShader->setMat4( "projection", projection );
+			m_zVisualizerShader->setFloat( "near", minZ );
+			m_zVisualizerShader->setFloat( "far", maxZ );
 		}
 
 		// Send projection matrix to lightbox renderer

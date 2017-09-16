@@ -58,7 +58,6 @@ namespace gw2b {
 		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
-		std::unique_ptr<FrameBuffer> m_framebuffer;
 		RenderTimer*				m_renderTimer;
 		wxTimer*					m_movementKeyTimer;
 
@@ -78,6 +77,9 @@ namespace gw2b {
 		bool						m_statusVisualizeNormal = false;	// Toggle visualization of normal
 		bool						m_statusVisualizeZbuffer = false;	// Toggle visualization of z-buffer
 		bool						m_cameraMode = false;				// Toggle camera mode
+
+		// Framebuffer
+		std::unique_ptr<FrameBuffer> m_framebuffer;
 
 		// Model
 		std::vector<std::unique_ptr<Model>>	m_model;
