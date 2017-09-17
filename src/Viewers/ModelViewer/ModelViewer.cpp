@@ -260,7 +260,8 @@ namespace gw2b {
 		// Set the OpenGL viewport according to the client size of wxGLCanvas
 		glViewport( 0, 0, m_clientSize.x, m_clientSize.y );
 
-#pragma region render scene
+		// ------------------------------------------------
+		// Render the scene into m_framebuffer frame buffer.
 
 		// Bind to framebuffer and draw to framebuffer texture
 		m_framebuffer->bind( );
@@ -314,7 +315,7 @@ namespace gw2b {
 		// Bind to default framebuffer again and draw the quad plane with attched screen texture
 		m_framebuffer->unbind( );
 
-#pragma endregion Render scene into framebuffer
+		// ------------------------------------------------
 
 		// Clear all relevant buffers
 		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
