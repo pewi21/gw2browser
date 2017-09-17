@@ -7,6 +7,7 @@ Change:
 - Add Find by file id function.
 - Model viewer now load DXT5 texture directly from ATEX file.
 - Properly implement specular maping for Guild Wars 2 texture.
+- Set Model viewer light position at camera position.
 - Update category name.
 - Minor model viewer purrformance improvement.
 
