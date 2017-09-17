@@ -125,8 +125,8 @@ namespace gw2b {
 			// we are viewing a map file
 			m_isViewingMap = true;
 
-			auto reader = this->mapReader( );
-			auto test = reader->getMapData( );
+			//auto reader = this->mapReader( );
+			//auto test = reader->getMapData( );
 
 
 		} if ( isOfType<ModelReader>( p_reader ) ) {

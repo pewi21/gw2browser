@@ -227,7 +227,7 @@ namespace gw2b {
 
 	void BrowserWindow::viewEntry( const DatIndexEntry& p_entry ) {
 		switch ( p_entry.fileType( ) ) {
-		case ANFT_MapParam:
+		//case ANFT_MapParam:
 		case ANFT_Model:
 			if ( m_previewGLCanvas->previewFile( m_datFile, p_entry ) ) {
 				m_previewPanel->destroyViewer( );

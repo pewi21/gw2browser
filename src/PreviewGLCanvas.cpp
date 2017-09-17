@@ -110,7 +110,7 @@ namespace gw2b {
 		ViewerGLCanvas* newViewer = nullptr;
 		try {
 			switch ( p_dataType ) {
-			case FileReader::DT_Map:
+			//case FileReader::DT_Map:
 			case FileReader::DT_Model:
 				newViewer = new ModelViewer( this, attrib, wxDefaultPosition, wxDefaultSize, style, p_datFile );
 				break;
