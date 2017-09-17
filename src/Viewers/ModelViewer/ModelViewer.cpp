@@ -325,9 +325,6 @@ namespace gw2b {
 		// Use the hdr framebuffer shader
 		m_screenShader->use( );
 
-		// Set exposure
-		m_screenShader->setFloat( "exposure", 1.0f );
-
 		// Draw the frame buffer
 		m_framebuffer->draw( );
 
