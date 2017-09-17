@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_TEXTVIEWER_TEXTVIEWER_H_INCLUDED
 #define VIEWERS_TEXTVIEWER_TEXTVIEWER_H_INCLUDED
 
+#include <vector>
 #include <wx/grid.h>
 
 #include "Viewer.h"
