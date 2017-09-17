@@ -86,7 +86,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 * [mpg123](https://www.mpg123.de)
 * [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
-* [wxWidgets 3.1.0](http://wxwidgets.org/)
+* [wxWidgets](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) *Included*
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools) *Included*
 * [gw2formats](https://github.com/kytulendu/gw2formats) *Included*
@@ -125,7 +125,8 @@ Or download the source code and build it your self.
 extract it to the same directory that Gw2Browser directory is in. Or download the source code
 and build it your self.
 
-* Download wxWidgets source code from [here](http://wxwidgets.org/), extract it to the same directory
+* Download wxWidgets source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
+choose wxWidgets-3.0.3.1.zip or wxWidgets-3.0.3.1.7z and extract it to the same directory
 that Gw2Browser directory is in. Or download and use the binaries.
 
 **Note:** The library and source code directory must be in directory like this.
@@ -147,7 +148,7 @@ The ROOT is the directory you created in Getting the source code.
 		 |    +--lib
 		 |    +--...
 		 |
-		 +--wxWidgets-3.1.0
+		 +--wxWidgets-3.0.3.1
 			  +--include
 			  +--src
 			  +--...
@@ -155,8 +156,9 @@ The ROOT is the directory you created in Getting the source code.
 #### Windows, building with Visual Studio:
 
 * Compile wxWidgets using solution file corresponding with your VS version in directory
-wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
-and VS2015 is wx_vc14.sln.
+wxWidgets-3.0.3.1/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
+and VS2015 is wx_vc14.sln, if there is no corresponding solution file for your newer VS,
+just open the higest version of solution file available.
 
 * Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
 by use these command at Gw2Browser/extern/libweb directory.
@@ -231,25 +233,25 @@ It will look some thing like this.
 
 * Build wxWidgets.
 
-1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command.
+1. Change directory of Git Bash window to wxWidgets-3.0.3.1/build/msw and use these command.
 
-		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug
 
    If it give error, re-type it again.
    Wait for it to finish, then use these command
 
-		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release
 
    This will build wxWidgets in debug and release configuration as a static
    library, or add "SHARED=1" for building dynamiclink library.
 
-		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug SHARED=1
-		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release SHARED=1
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug SHARED=1
+		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release SHARED=1
 
 2. If you need to rebuild, use "clean" target first.
 
-		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=debug clean
-		mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=gnu++11" BUILD=release clean
+		mingw32-make -j 4 -f makefile.gcc BUILD=debug clean
+		mingw32-make -j 4 -f makefile.gcc BUILD=release clean
 
 * Build libwebp.
 
@@ -346,6 +348,7 @@ Authors
 * [hackedd](https://github.com/hackedd) : Idea for fix extraction of uncompressed files larger than 65532 bytes.
 * [Inigo Quilez](http://www.iquilezles.org/www/articles/normals/normals.htm) : clever normalization of mesh
 * [Joey de Vries](http://learnopengl.com) and [opengl-tutorial.org](http://www.opengl-tutorial.org) : Great OpenGL 3.3 tutorial
+* [John Hable](http://filmicworlds.com/blog/filmic-tonemapping-operators/) : Uncharted 2 tone maping function
 * [Liberation Sans Regular](https://fedorahosted.org/liberation-fonts/) : Font used by the model viewer
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
@@ -366,9 +369,9 @@ Legal Disclaimer
 ----------------
 
 Guild Wars 2 © 2010-2017 ArenaNet, LLC. All rights reserved.
-Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet, NCSOFT,
-the Interlocking NC Logo, and all associated logos and designs are trademarks
-or registered trademarks of NCSOFT Corporation.
+Guild Wars, Guild Wars 2, Heart of Thorns, Guild Wars 2: Path of Fire,
+ArenaNet, NCSOFT, the Interlocking NC Logo, and all associated logos
+and designs are trademarks or registered trademarks of NCSOFT Corporation.
 All other trademarks are the property of their respective owners.
 
 License
