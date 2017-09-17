@@ -28,14 +28,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	FrameBuffer::FrameBuffer( const wxSize& p_size )
+	FrameBuffer::FrameBuffer( const wxSize& p_size, GLuint p_attachCount )
 		: m_clientSize( p_size )
 		, m_isMultisample( false ) {
 
 		this->setupQuad( );
 
 		// Create normal framebuffer
-		this->setupFramebuffer( );
+		this->setupFramebuffer( p_attachCount );
 		// Now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
 		if ( !this->checkFrameBufferStatus( ) ) {
 			wxLogMessage( wxT( "Framebuffer is not complete!" ) );
@@ -44,17 +44,17 @@ namespace gw2b {
 		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 	}
 
-	FrameBuffer::FrameBuffer( const wxSize& p_size, GLuint p_samples )
+	FrameBuffer::FrameBuffer( const wxSize& p_size, GLuint p_samples, GLuint p_attachCount )
 		: m_clientSize( p_size )
 		, m_isMultisample( true ) {
 
 		this->setupQuad( );
 
 		// Create multi-sample framebuffer
-		this->setupMultiSampleFramebuffer( p_samples );
+		this->setupMultiSampleFramebuffer( p_samples, p_attachCount );
 
 		// Create normal framebuffer
-		this->setupFramebuffer( );
+		this->setupFramebuffer( p_attachCount );
 		// Now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
 		if ( !this->checkFrameBufferStatus( ) ) {
 			wxLogMessage( wxT( "Framebuffer is not complete!" ) );
@@ -79,8 +79,8 @@ namespace gw2b {
 				glDeleteRenderbuffers( 1, &m_rboMultiSample );
 			}
 			// Delete multi-sample texture
-			if ( m_textureColorBufferMultiSampled ) {
-				glDeleteTextures( 1, &m_textureColorBufferMultiSampled );
+			for ( auto& it : m_textureColorBufferMultiSampled ) {
+				glDeleteTextures( 1, &it );
 			}
 			// Delete multi-sample FBO
 			if ( m_fboMultiSample ) {
@@ -89,8 +89,8 @@ namespace gw2b {
 		}
 
 		// Delete screen texture
-		if ( m_fbTexture ) {
-			glDeleteTextures( 1, &m_fbTexture );
+		for ( auto& it : m_fbTexture ) {
+			glDeleteTextures( 1, &it );
 		}
 		// Delete VBO
 		if ( m_quadVBO ) {
@@ -109,7 +109,7 @@ namespace gw2b {
 		glActiveTexture( GL_TEXTURE0 );
 
 		// Use the color attachment texture as the texture of the quad plane
-		glBindTexture( GL_TEXTURE_2D, m_fbTexture );
+		glBindTexture( GL_TEXTURE_2D, m_fbTexture[0] );
 		// Draw the quad
 		glDrawArrays( GL_TRIANGLES, 0, 6 );
 		// Unbind texture
@@ -170,15 +170,17 @@ namespace gw2b {
 		glBindVertexArray( 0 );
 	}
 
-	void FrameBuffer::setupFramebuffer( ) {
+	void FrameBuffer::setupFramebuffer( GLuint p_numTex ) {
 		// Create a FBO to hold a render-to-texture
 		glGenFramebuffers( 1, &m_fbo );
 		glBindFramebuffer( GL_FRAMEBUFFER, m_fbo );
 
-		// Create a color attachment texture
-		m_fbTexture = generateAttachmentTexture( );
-		// Attach a texture to FBO color attachement point
-		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbTexture, 0 );
+		for ( GLuint i = 0; i < p_numTex; i++ ) {
+			// Create a color attachment texture
+			m_fbTexture.push_back( generateAttachmentTexture( ) );
+			// Attach a texture to FBO color attachement point
+			glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_fbTexture[i], 0 );
+		}
 
 		// Create a renderbuffer object
 		glGenRenderbuffers( 1, &m_rbo );
@@ -188,17 +190,25 @@ namespace gw2b {
 		// Attach a RBO to FBO attachement point
 		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo );
 
+		std::vector<GLuint> attachments;
+		// Tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
+		for ( GLuint i = 0; i < m_fbTexture.size( ); i++ ) {
+			attachments.push_back( GL_COLOR_ATTACHMENT0 + i );
+		}
+		glDrawBuffers( attachments.size( ), &attachments[0] );
 	}
 
-	void FrameBuffer::setupMultiSampleFramebuffer( GLuint p_samples ) {
+	void FrameBuffer::setupMultiSampleFramebuffer( GLuint p_samples, GLuint p_numTex ) {
 		// Create a multi-sample framebuffer object
 		glGenFramebuffers( 1, &m_fboMultiSample );
 		glBindFramebuffer( GL_FRAMEBUFFER, m_fboMultiSample );
 
-		// Create a multi-sampled color attachment texture
-		m_textureColorBufferMultiSampled = generateMultiSampleTexture( p_samples );
-		// Attach a texture to FBO color attachement point
-		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_textureColorBufferMultiSampled, 0 );
+		for ( GLuint i = 0; i < p_numTex; i++ ) {
+			// Create a multi-sampled color attachment texture
+			m_textureColorBufferMultiSampled.push_back( generateMultiSampleTexture( p_samples ) );
+			// Attach a texture to FBO color attachement point
+			glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D_MULTISAMPLE, m_textureColorBufferMultiSampled[i], 0 );
+		}
 
 		// Create a renderbuffer object for depth and stencil attachments
 		glGenRenderbuffers( 1, &m_rboMultiSample );
@@ -207,6 +217,13 @@ namespace gw2b {
 		glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 		// Attach msaa RBO to FBO attachment points
 		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rboMultiSample );
+
+		std::vector<GLuint> attachments;
+		// Tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
+		for ( GLuint i = 0; i < m_textureColorBufferMultiSampled.size( ); i++ ) {
+			attachments.push_back( GL_COLOR_ATTACHMENT0 + i );
+		}
+		glDrawBuffers( attachments.size( ), &attachments[0] );
 	}
 
 	GLuint FrameBuffer::generateAttachmentTexture( ) {
@@ -218,6 +235,8 @@ namespace gw2b {
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA16F, m_clientSize.x, m_clientSize.y, 0, GL_RGBA, GL_FLOAT, NULL );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
 		return textureID;

@@ -546,9 +546,9 @@ namespace gw2b {
 
 	void ModelViewer::createFrameBuffer( ) {
 		if ( m_statusAntiAlising ) {
-			m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize, 4 ) );
+			m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize, 4, 1 ) );
 		} else {
-			m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize ) );
+			m_framebuffer = std::unique_ptr<FrameBuffer>( new FrameBuffer( m_clientSize, 1 ) );
 		}
 	}
 
