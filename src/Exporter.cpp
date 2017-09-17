@@ -57,27 +57,34 @@ namespace gw2b {
 		// If it's just one file, we could handle it here
 		if ( m_entries.GetSize( ) == 1 ) {
 			auto& entry = m_entries[0];
+			auto entryData = m_datFile.readFile( entry->mftEntry( ) );
+			// Valid data?
+			if ( !entryData.GetSize( ) ) {
+				wxMessageBox( wxT( "Failed to get file data, most likely due to a decompression error." ), wxT( "Error" ), wxOK | wxICON_ERROR );
+				return;
+			}
+
+			// Identify file type
+			m_datFile.identifyFileType( entryData.GetPointer( ), entryData.GetSize( ), m_fileType );
 
 			// Ask for location
 			wxFileDialog dialog( this,
 				wxString::Format( wxT( "Extract %s..." ), entry->name( ) ),
 				wxEmptyString,
-				entry->name( ),
-				wxFileSelectorDefaultWildcardStr,
+				wxString::Format( wxT( "%s" ), entry->name( ) ),
+				this->GetWildcard( ),
 				wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
 
 			// Open file for writing
-			if ( dialog.ShowModal( ) == wxID_CANCEL ) {
-				return;
+			if ( dialog.ShowModal( ) == wxID_OK ) {
+				// Set file path
+				m_filename.SetPath( dialog.GetDirectory( ) );
+				// Set file name
+				m_filename.SetName( dialog.GetFilename( ) );
+
+				// Convert and export file
+				this->extractFile( *entry );
 			}
-
-			// Set file path
-			m_filename.SetPath( dialog.GetDirectory( ) );
-			// Set file name
-			m_filename.SetName( dialog.GetFilename( ) );
-
-			// Convert and export file
-			this->extractFile( *entry );
 
 		// More than one files
 		} else {
@@ -100,11 +107,25 @@ namespace gw2b {
 						break;
 					}
 
+					auto entry = m_entries[m_currentProgress];
+
+					// Set file path
+					m_filename.SetPath( m_path );
+					// Set file name
+					m_filename.SetName( entry->name( ) );
+
+					// Appen category name as path
+					this->appendPaths( m_filename, *entry->category( ) );
+
+					// Create directory if not exist
+					if ( !m_filename.DirExists( ) ) {
+						m_filename.Mkdir( 511, wxPATH_MKDIR_FULL );
+					}
+
 					// Extract current file
-					this->extractFiles( *m_entries[m_currentProgress] );
+					this->extractFile( *m_entries[m_currentProgress] );
 
 					bool shouldContinue = m_progress->Update( m_currentProgress, wxString::Format( wxT( "Extracting file %d/%d..." ), m_currentProgress, numFile ) );
-
 					if ( shouldContinue ) {
 						m_currentProgress++;
 					} else {
@@ -328,6 +349,217 @@ namespace gw2b {
 		}
 	}
 
+	const wxString Exporter::GetWildcard( ) const {
+		if ( m_mode ) {
+			switch ( m_fileType ) {
+			case ANFT_ATEX:
+			case ANFT_ATTX:
+			case ANFT_ATEC:
+			case ANFT_ATEP:
+			case ANFT_ATEU:
+			case ANFT_ATET:
+			case ANFT_DDS:
+			case ANFT_JPEG:
+			case ANFT_WEBP:
+			case ANFT_PNG:
+				return wxT( "Portable Network Graphic file (*.png)|*.png" );
+				break;
+			case ANFT_Model:
+				return wxT( "Wavefront Object file (*.obj;*.mtl)|*.obj;*.mtl" );
+				break;
+			case ANFT_StringFile:
+				return wxT( "Comma-separated values file (*.csv)|*.csv" );
+				break;
+			case ANFT_PackedOgg:
+			case ANFT_Ogg:
+				return wxT( "Ogg file (*.ogg)|*.ogg" );
+				break;
+			case ANFT_PackedMP3:
+			case ANFT_asndMP3:
+			case ANFT_MP3:
+			case ANFT_Bank:
+				return wxT( "MPEG Layer 3 file (*.mp3)|*.mp3" );
+				break;
+			case ANFT_EULA:
+			case ANFT_TEXT:
+			case ANFT_UTF8:
+				return wxT( "Text file (*.txt)|*.txt" );
+				break;
+			case ANFT_Bink2Video:
+				return wxT( "Bink 2 Video file (*.bk2)|*.bk2" );
+				break;
+			case ANFT_DLL:
+				return wxT( "Dynamic-link library file (*.dll)|*.dll" );
+				break;
+			case ANFT_EXE:
+				return wxT( "Executable file (*.exe)|*.exe" );
+				break;
+			default:
+				return wxT( "Raw Guild Wars 2 file (*.raw)|*.raw" );
+				break;
+			}
+		} else {
+			switch ( m_fileType ) {
+				// Texture
+			case ANFT_ATEX:
+				return wxT( "Guild Wars 2 Generic Texture file (*.atex)|*.atex" );
+				break;
+			case ANFT_ATTX:
+				return wxT( "Guild Wars 2 Texture file (*.attx)|*.attx" );
+				break;
+			case ANFT_ATEC:
+				return wxT( "Guild Wars 2 Texture file (*.atec)|*.atec" );
+				break;
+			case ANFT_ATEP:
+				return wxT( "Guild Wars 2 Maps Texture file (*.atep)|*.atep" );
+				break;
+			case ANFT_ATEU:
+				return wxT( "Guild Wars 2 UI Texture file (*.ateu)|*.ateu" );
+				break;
+			case ANFT_ATET:
+				return wxT( "Guild Wars 2 Texture file (*.atet)|*.atet" );
+				break;
+			case ANFT_DDS:
+				return wxT( "DirectDraw Surface file (*.dds)|*.dds" );
+				break;
+			case ANFT_JPEG:
+				return wxT( "JPEG file (*.jpg)|*.jpg" );
+				break;
+			case ANFT_WEBP:
+				return wxT( "WebP file (*.webp)|*.webp" );
+				break;
+			case ANFT_PNG:
+				return wxT( "Portable Network Graphic file (*.png)|*.png" );
+				break;
+
+				// String files
+			case ANFT_StringFile:
+				return wxT( "Guild Wars 2 String file (*.strs)|*.strs" );
+				break;
+			case ANFT_EULA:
+				return wxT( "Guild Wars 2 EULA file (*.eula)|*.eula" );
+				break;
+
+			case ANFT_GameContent:
+				return wxT( "Guild Wars 2 Game Content file (*.cntc)|*.cntc" );
+				break;
+			case ANFT_GameContentPortalManifest:
+				return wxT( "Guild Wars 2 Game Content Portal Manifest file (*.prlt)|*.prlt" );
+				break;
+
+				// Maps stuff
+			case ANFT_MapParam:
+				return wxT( "Guild Wars 2 Map Parameter file (*.parm)|*.parm" );
+				break;
+			case ANFT_MapShadow:
+				return wxT( "Guild Wars 2 Map Shadow file (*.mpsd)|*.mpsd" );
+				break;
+			case ANFT_MapCollision:
+				return wxT( "Guild Wars 2 Map Collision file (*.havk)|*.havk" );
+				break;
+			case ANFT_PagedImageTable:
+				return wxT( "Guild Wars 2 Paged Image Table file (*.pimg)|*.pimg" );
+				break;
+
+			case ANFT_Material:
+				return wxT( "Guild Wars 2 Material file (*.amat)|*.amat" );
+				break;
+			case ANFT_Composite:
+				return wxT( "Guild Wars 2 Composite file (*.cmpc)|*.cmpc" );
+				break;
+			case ANFT_AnimSequences:
+				return wxT( "Guild Wars 2 Animation Sequences file (*.seqn)|*.seqn" );
+				break;
+			case ANFT_EmoteAnimation:
+				return wxT( "Guild Wars 2 Emote Animation file (*.emoc)|*.emoc" );
+				break;
+
+			case ANFT_Cinematic:
+				return wxT( "Guild Wars 2 Cinematic file (*.cinp)|*.cinp" );
+				break;
+
+			case ANFT_TextPackManifest:
+				return wxT( "Guild Wars 2 Text Pack Manifest file (*.txtm)|*.txtm" );
+				break;
+			case ANFT_TextPackVariant:
+				return wxT( "Guild Wars 2 Text Pack Variant file (*.txtvar)|*.txtvar" );
+				break;
+			case ANFT_TextPackVoices:
+				return wxT( "Guild Wars 2 Text Pack Voices file (*.txtv)|*.txtv" );
+				break;
+
+				// Sound
+			case ANFT_Sound:
+			case ANFT_asndMP3:
+			case ANFT_asndOgg:
+				return wxT( "Guild Wars 2 Sound file (*.sound)|*.sound" );
+				break;
+			case ANFT_PackedMP3:
+			case ANFT_PackedOgg:
+				return wxT( "Guild Wars 2 Packed Sound file (*.asnd)|*.asnd" );
+				break;
+			case ANFT_MP3:
+				return wxT( "MPEG Layer 3 file (*.mp3)|*.mp3" );
+				break;
+			case ANFT_Ogg:
+				return wxT( "Ogg file (*.ogg)|*.ogg" );
+				break;
+			case ANFT_Bank:
+				return wxT( "Guild Wars 2 Bank file (*.abnk)|*.abnk" );
+				break;
+
+				// Audio script
+			case ANFT_AudioScript:
+				return wxT( "Guild Wars 2 Audio Script file (*.amsp)|*.amsp" );
+				break;
+
+				// Font file
+			case ANFT_FontFile:
+				return wxT( "Embedded OpenType Font file (*.eot)|*.eot" );
+				break;
+
+				// Bink2 Video file
+			case ANFT_Bink2Video:
+				return wxT( "Bink 2 Video file (*.bk2)|*.bk2" );
+				break;
+
+			case ANFT_ShaderCache:
+				return wxT( "Guild Wars 2 Shader Cache file (*.cdhs)|*.cdhs" );
+				break;
+
+			case ANFT_Model:
+				return wxT( "Guild Wars 2 Model file (*.modl)|*.modl" );
+				break;
+
+				// Binary
+			case ANFT_DLL:
+				return wxT( "Dynamic-link library file (*.dll)|*.dll" );
+				break;
+			case ANFT_EXE:
+				return wxT( "Executable file (*.exe)|*.exe" );
+				break;
+
+			case ANFT_Config:
+				return wxT( "Guild Wars 2 Config file (*.locl)|*.locl" );
+				break;
+
+			case ANFT_ARAP:
+				return wxT( "Guild Wars 2 ARAP file (*.arap)|*.arap" );
+				break;
+
+				// Text file
+			case ANFT_TEXT:
+			case ANFT_UTF8:
+				return wxT( "Text file (*.txt)|*.txt" );
+				break;
+
+			default:
+				return wxT( "Guild Wars 2 Raw file (*.raw)|*.raw" );
+				break;
+			}
+		}
+	}
+
 	void Exporter::extractFile( const DatIndexEntry& p_entry ) {
 		auto entryData = m_datFile.readFile( p_entry.mftEntry( ) );
 		// Valid data?
@@ -342,8 +574,11 @@ namespace gw2b {
 		auto reader = FileReader::readerForData( entryData, m_datFile, m_fileType );
 
 		if ( reader ) {
-			// Set file extension
-			m_filename.SetExt( wxString( this->GetExtension( ) ) );
+			// If extract 1 file, not apply extension
+			if ( m_entries.GetSize( ) > 1 ) {
+				// Set file extension
+				m_filename.SetExt( wxString( this->GetExtension( ) ) );
+			}
 
 			// Should we convert the file?
 			if ( m_mode == EM_Converted ) {
@@ -391,24 +626,6 @@ namespace gw2b {
 		} else {
 			this->writeFile( entryData );
 		}
-	}
-
-	void Exporter::extractFiles( const DatIndexEntry& p_entry ) {
-		// Set file path
-		m_filename.SetPath( m_path );
-		// Set file name
-		m_filename.SetName( p_entry.name( ) );
-
-		// Appen category name as path
-		this->appendPaths( m_filename, *p_entry.category( ) );
-
-		// Create directory if not exist
-		if ( !m_filename.DirExists( ) ) {
-			m_filename.Mkdir( 511, wxPATH_MKDIR_FULL );
-		}
-
-		// Extract file
-		this->extractFile( p_entry );
 	}
 
 	void Exporter::exportImage( FileReader* p_reader, const wxString& p_entryname ) {

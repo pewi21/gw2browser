@@ -63,15 +63,16 @@ namespace gw2b {
 		/** Constructor.
 		*  \param[in]  p_entries       Entry to extract.
 		*  \param[in]  p_datFile       .dat file containing the file.
-		*  \param[in]  p_mode          File extract mode. */
+		*  \param[in]  p_mode          File extract mode.
+		*  \param[in]  p_filename      File name to save to.*/
 		Exporter( const Array<const DatIndexEntry*>& p_entries, DatFile& p_datFile, ExtractionMode p_mode );
 
 	private:
 		/** Gets an appropriate file extension for the contents.
 		*  \return wxString				File extension. */
 		const wxChar* GetExtension( ) const;
+		const wxString GetWildcard( ) const;
 		void extractFile( const DatIndexEntry& p_entry );
-		void extractFiles( const DatIndexEntry& p_entry );
 		void exportImage( FileReader* p_reader, const wxString& p_entryname );
 		void exportString( FileReader* p_reader, const wxString& p_entryname );
 		void exportEula( FileReader* p_reader, const wxString& p_entryname );
