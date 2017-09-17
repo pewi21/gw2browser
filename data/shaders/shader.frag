@@ -67,27 +67,40 @@ uniform Material material;
 uniform Light light;
 uniform RenderMode mode;
 
-float alpha_threshold = 0.5f;
+vec4 getBlackTexture( ) {
+	return vec4( 0.0f, 0.0f, 0.0f, 1.0f );
+}
+
+vec4 getWhiteTexture( ) {
+	return vec4( 1.0f, 1.0f, 1.0f, 1.0f );
+}
+
+vec3 getAlphaMask( vec3 alphaColor ) {
+	return LevelsControl( alphaColor, 0.0f, 1.0f, 64.0f / 255.0f, 0.0f, 255.0f / 255.0f );
+}
+
+vec3 getSpecularTexture( vec3 alphaColor ) {
+	return LevelsControl( alphaColor, 128.0f / 255.0f, 1.0f, 255.0f / 255.0f, 0.0f, 255.0f / 255.0f );
+}
 
 void main( ) {
 	vec4 finalColor;
 	vec4 diffuseColor;
 	vec3 alphaColor;
 
-	vec4 black = vec4( 0.0f, 0.0f, 0.0f, 1.0f );
-	vec4 white = vec4( 1.0f, 1.0f, 1.0f, 1.0f );
+	const float alpha_threshold = 0.5f;
 
 	if ( mode.textured ) {
 		if ( mode.wireframe ) {
-			diffuseColor = black;
+			diffuseColor = getBlackTexture( );
 		} else {
 			diffuseColor = texture( material.diffuseMap, fs_in.TexCoords );
 		}
 	} else {
 		if ( mode.wireframe ) {
-			diffuseColor = black;
+			diffuseColor = getBlackTexture( );
 		} else {
-			diffuseColor = white;
+			diffuseColor = getWhiteTexture( );
 		}
 	}
 
@@ -95,7 +108,7 @@ void main( ) {
 	alphaColor = vec3( diffuseColor.a );
 
 	// Extract alpha from diffuse texture's alpha channel
-	vec3 alphaMask = LevelsControl( alphaColor, 0.0f, 1.0f, 64.0f / 255.0f, 0.0f, 255.0f / 255.0f );
+	vec3 alphaMask = getAlphaMask( alphaColor );
 
 	if ( mode.lighting ) {
 		// Get normal
@@ -135,7 +148,7 @@ void main( ) {
 			vec3 halfwayDir = normalize( lightDir + viewDir );
 			float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), material.shininess );
 			// Extract specular map from diffuse texture's alpha channel
-			vec3 specularTexture = LevelsControl( alphaColor, 128.0f / 255.0f, 1.0f, 255.0f / 255.0f, 0.0f, 255.0f / 255.0f );
+			vec3 specularTexture = getSpecularTexture( alphaColor );
 
 			specular = light.specular * spec * specularTexture;
 		}
