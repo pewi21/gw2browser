@@ -81,9 +81,6 @@ namespace gw2b {
 	}
 
 	ModelViewer::~ModelViewer( ) {
-		// Clean shaders
-		this->clearShader( );
-
 		delete m_renderTimer;
 		delete m_movementKeyTimer;
 
@@ -97,16 +94,16 @@ namespace gw2b {
 
 	void ModelViewer::clearShader( ) {
 		if ( m_mainShader ) {
-			delete m_mainShader;
+			m_mainShader.reset( );
 		}
 		if ( m_normalVisualizerShader ) {
-			delete m_normalVisualizerShader;
+			m_normalVisualizerShader.reset( );
 		}
 		if ( m_zVisualizerShader ) {
-			delete m_zVisualizerShader;
+			m_zVisualizerShader.reset( );
 		}
 		if ( m_screenShader ) {
-			delete m_screenShader;
+			m_screenShader.reset( );
 		}
 	}
 
@@ -145,28 +142,28 @@ namespace gw2b {
 
 	void ModelViewer::loadShader( ) {
 		try {
-			m_mainShader = new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" );
+			m_mainShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) );
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_mainShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
 
 		try {
-			m_normalVisualizerShader = new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" );
+			m_normalVisualizerShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" ) );
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_normalVisualizerShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
 
 		try {
-			m_zVisualizerShader = new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" );
+			m_zVisualizerShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" ) );
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
 		}
 
 		try {
-			m_screenShader = new Shader( "..//data//shaders//framebuffer.vert", "..//data//shaders//framebuffer.frag" );
+			m_screenShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//framebuffer.vert", "..//data//shaders//framebuffer.frag" ) );
 		} catch ( const exception::Exception& err ) {
 			wxLogMessage( wxT( "m_screenShader : %s" ), wxString( err.what( ) ) );
 			throw exception::Exception( "Failed to load shader." );
@@ -174,9 +171,29 @@ namespace gw2b {
 
 	}
 
+	bool ModelViewer::isShaderOK( ) {
+		if ( m_mainShader ) {
+			if ( m_normalVisualizerShader ) {
+				if ( m_zVisualizerShader ) {
+					if ( m_screenShader ) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	void ModelViewer::reloadShader( ) {
 		this->clearShader( );
-		this->loadShader( );
+
+		try {
+			this->loadShader( );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxT( "%s" ), wxString( err.what( ) ) );
+			this->clearShader( );
+		}
+
 	}
 
 	int ModelViewer::initGL( ) {
@@ -260,6 +277,18 @@ namespace gw2b {
 		// Set the OpenGL viewport according to the client size of wxGLCanvas
 		glViewport( 0, 0, m_clientSize.x, m_clientSize.y );
 
+		// Check if shader is properly loaded
+		if ( !this->isShaderOK( ) ) {
+			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+			// Send ClientSize variable to text renderer
+			m_text->setClientSize( m_clientSize );
+			// Display error message
+			m_text->drawText( wxString::Format( wxT( "SHADER ERROR!!! PRESS = KEY TO RELOAD SHADER!" ) ), 0.0f, m_clientSize.y - 12.0f, 1.0f, glm::vec3( 1.0f ) );
+
+			SwapBuffers( );
+			return;
+		}
+
 		// ------------------------------------------------
 		// Render the scene into m_framebuffer frame buffer.
 
@@ -270,7 +299,6 @@ namespace gw2b {
 		glEnable( GL_DEPTH_TEST );
 
 		// Clear color buffer and depth buffer
-		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		this->updateMatrices( );
@@ -318,7 +346,6 @@ namespace gw2b {
 		// ------------------------------------------------
 
 		// Clear all relevant buffers
-		glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );
 		glClear( GL_COLOR_BUFFER_BIT );
 		glDisable( GL_DEPTH_TEST ); // We don't care about depth information when rendering a single quad
 
@@ -336,7 +363,7 @@ namespace gw2b {
 		SwapBuffers( );
 	}
 
-	void ModelViewer::drawModel( Shader* p_shader, const glm::mat4& p_trans ) {
+	void ModelViewer::drawModel( std::unique_ptr<Shader>& p_shader, const glm::mat4& p_trans ) {
 		bool oldStatusLighting = m_statusLighting;
 
 		if ( m_statusCullFace ) {

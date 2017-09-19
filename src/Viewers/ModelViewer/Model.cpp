@@ -50,7 +50,7 @@ namespace gw2b {
 		m_meshCache.clear( );
 	}
 
-	void Model::draw( Shader* p_shader ) {
+	void Model::draw( std::unique_ptr<Shader>& p_shader ) {
 		for ( uint i = 0; i < static_cast<uint>( m_numMeshes ); i++ ) {
 			auto materialIndex = m_meshCache[i].materialIndex;
 

@@ -89,10 +89,10 @@ namespace gw2b {
 		std::unique_ptr<LightBox>	m_lightBox;			// For render cube at light position
 
 		// Shader stuff
-		Shader*						m_mainShader;
-		Shader*						m_normalVisualizerShader;
-		Shader*						m_zVisualizerShader;
-		Shader*						m_screenShader;
+		std::unique_ptr<Shader>		m_mainShader;
+		std::unique_ptr<Shader>		m_normalVisualizerShader;
+		std::unique_ptr<Shader>		m_zVisualizerShader;
+		std::unique_ptr<Shader>		m_screenShader;
 
 		// Camera
 		Camera                      m_camera;
@@ -145,11 +145,12 @@ namespace gw2b {
 	private:
 		void clearShader( );
 		void loadShader( );
+		bool isShaderOK( );
 		void reloadShader( );
 		int initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
+		void drawModel( std::unique_ptr<Shader>& p_shader, const glm::mat4& p_trans );
 		void displayStatusText( );
 		void updateMatrices( );
 		void focus( );
