@@ -5,11 +5,8 @@ in vec2 TexCoords;
 out vec4 FragColor;
 
 uniform sampler2D screenTexture;
-//uniform float exposure;
-//uniform float whitePoint;
-
-float exposure = 2.0f;
-float whitePoint = 11.2f;
+uniform float exposure;
+uniform float whitePoint;
 
 vec3 Uncharted2Tonemap( vec3 x ) {
 	float A = 0.15;
@@ -24,6 +21,8 @@ vec3 Uncharted2Tonemap( vec3 x ) {
 
 void main( ) {
 	//const float gamma = 2.2f;
+	//const float exposure = 6.0f;
+	//const float whitePoint = 11.2f;
 
 	vec3 hdrColor = texture( screenTexture, TexCoords ).rgb;
 	// Uncharted 2 tone mapping
