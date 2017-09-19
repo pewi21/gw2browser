@@ -88,6 +88,11 @@ namespace gw2b {
 						// Set our "lightMap" sampler to user Texture Unit 2
 						p_shader->setInt( "material.lightMap", 2 );
 					}
+				} else {
+					glActiveTexture( GL_TEXTURE2 );
+					glBindTexture( GL_TEXTURE_2D, 0 );
+					// Set our "lightMap" sampler to user Texture Unit 2
+					p_shader->setInt( "material.lightMap", 2 );
 				}
 			}
 

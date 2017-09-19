@@ -87,6 +87,7 @@ void main( ) {
 	vec4 finalColor;
 	vec4 diffuseColor;
 	vec3 alphaColor;
+	vec3 lightmap = getBlackTexture( ).rgb;
 
 	const float alpha_threshold = 0.5f;
 
@@ -95,6 +96,7 @@ void main( ) {
 			diffuseColor = getBlackTexture( );
 		} else {
 			diffuseColor = texture( material.diffuseMap, fs_in.TexCoords );
+			lightmap = texture( material.lightMap, fs_in.TexCoords ).rgb;
 		}
 	} else {
 		if ( mode.wireframe ) {
@@ -153,7 +155,7 @@ void main( ) {
 			specular = light.specular * spec * specularTexture;
 		}
 
-		finalColor = vec4( ambient + ( diffuse + specular ), alphaMask.r );
+		finalColor = vec4( ambient + ( diffuse + specular ) + lightmap, alphaMask.r );
 
 	} else {
 		finalColor = vec4( diffuseColor.rgb, alphaMask.r );
