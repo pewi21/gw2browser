@@ -105,15 +105,23 @@ namespace gw2b {
 	void FrameBuffer::draw( ) {
 		// Bind the quad VAO
 		glBindVertexArray( m_quadVAO );
-		// Use Texture Unit 0
-		glActiveTexture( GL_TEXTURE0 );
 
-		// Use the color attachment texture as the texture of the quad plane
-		glBindTexture( GL_TEXTURE_2D, m_fbTexture[0] );
+		for ( GLuint i = 0; i < m_fbTexture.size( ); i++ ) {
+			// Use Texture Unit i
+			glActiveTexture( GL_TEXTURE0 + i );
+			// Use the color attachment texture as the texture of the quad plane
+			glBindTexture( GL_TEXTURE_2D, m_fbTexture[i] );
+		}
+
 		// Draw the quad
 		glDrawArrays( GL_TRIANGLES, 0, 6 );
+
 		// Unbind texture
-		glBindTexture( GL_TEXTURE_2D, 0 );
+		for ( GLuint i = 0; i < m_fbTexture.size( ); i++ ) {
+			glActiveTexture( GL_TEXTURE0 + i );
+			glBindTexture( GL_TEXTURE_2D, 0 );
+		}
+
 		// Unbind VAO
 		glBindVertexArray( 0 );
 	}
