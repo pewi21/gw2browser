@@ -25,8 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <chrono>
-
 #include "Exception.h"
 
 #include "ModelViewer.h"
@@ -234,6 +232,8 @@ namespace gw2b {
 		// Create framebuffer
 		this->createFrameBuffer( );
 
+		m_fpsStartTime = Time::now( );
+
 		return true;
 	}
 
@@ -244,11 +244,12 @@ namespace gw2b {
 	}
 
 	void ModelViewer::render( ) {
-		// Set frame time
-		auto now = std::chrono::high_resolution_clock::now( );
-		auto currentFrame = std::chrono::duration_cast<std::chrono::duration<float>>( now.time_since_epoch( ) ).count( );
-		m_deltaTime = currentFrame - m_lastFrame;
-		m_lastFrame = currentFrame;
+		// Get current time
+		auto currentTime = Time::now( );
+		// Get time elapsed
+		m_deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>( currentTime - m_oldstartTime ).count( );
+		m_oldstartTime = currentTime;
+
 
 		// Update client size of wxGLCanvas
 		m_clientSize = this->GetClientSize( );
@@ -336,6 +337,21 @@ namespace gw2b {
 		// Draw status text
 		if ( m_statusText ) {
 			this->displayStatusText( );
+
+			// fps meter
+			m_frameCounter++;
+			// Get time elapsed
+			m_fpsDiffTime = std::chrono::duration_cast<std::chrono::duration<double>>( currentTime - m_fpsStartTime ).count( );
+
+			if ( m_fpsDiffTime > 0.5 && m_frameCounter > 10 ) {
+				// Calculate frame per secound
+				m_fps = static_cast<float>( static_cast<double>( m_frameCounter ) / m_fpsDiffTime );
+				// Reset frame counter
+				m_frameCounter = 0;
+				m_fpsStartTime = Time::now( );
+			}
+			// Draw fps meter to screen
+			m_text->drawText( wxString::Format( wxT( "%.2f fps" ), m_fps ), 0.0f, m_clientSize.y - 48.0f, 1.0f, glm::vec3( 1.0f ) );
 		}
 
 		SwapBuffers( );

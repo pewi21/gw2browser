@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 #define VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 
+#include <chrono>
 #include <vector>
 
 #include "Camera.h"
@@ -55,6 +56,8 @@ namespace gw2b {
 	}; // class RenderTimer
 
 	class ModelViewer : public ViewerGLCanvas {
+		typedef std::chrono::high_resolution_clock Time;
+
 		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
@@ -107,9 +110,15 @@ namespace gw2b {
 
 		//float angle = 0.0f;
 
-		// Frame time
-		GLfloat						m_deltaTime = 0.0f;
-		GLfloat						m_lastFrame = 0.0f;
+		// Movement key related
+		float						m_deltaTime;
+		Time::time_point			m_oldstartTime;
+
+		// fps counter
+		Time::time_point			m_fpsStartTime;
+		double						m_fpsDiffTime = 0.0;
+		int							m_frameCounter = 0;
+		float						m_fps = 0.0f;
 
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
