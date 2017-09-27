@@ -50,7 +50,7 @@ namespace gw2b {
 		m_meshCache.clear( );
 	}
 
-	void Model::draw( std::unique_ptr<Shader>& p_shader ) {
+	void Model::draw( ) {
 		for ( uint i = 0; i < static_cast<uint>( m_numMeshes ); i++ ) {
 			auto materialIndex = m_meshCache[i].materialIndex;
 
@@ -63,8 +63,6 @@ namespace gw2b {
 						// Use Texture Unit 0
 						glActiveTexture( GL_TEXTURE0 );
 						texture->second->bind( );
-						// Set our "diffuseMap" sampler to user Texture Unit 0
-						p_shader->setInt( "material.diffuseMap", 0 );
 					}
 				}
 
@@ -74,8 +72,6 @@ namespace gw2b {
 						// Bind our normal texture in Texture Unit 1
 						glActiveTexture( GL_TEXTURE1 );
 						texture->second->bind( );
-						// Set our "normalMap" sampler to user Texture Unit 1
-						p_shader->setInt( "material.normalMap", 1 );
 					}
 				}
 
@@ -85,14 +81,11 @@ namespace gw2b {
 						// Bind our lightmap texture in Texture Unit 2
 						glActiveTexture( GL_TEXTURE2 );
 						texture->second->bind( );
-						// Set our "lightMap" sampler to user Texture Unit 2
-						p_shader->setInt( "material.lightMap", 2 );
 					}
 				} else {
 					glActiveTexture( GL_TEXTURE2 );
+					// Bind default (black) texture if no lightmap
 					glBindTexture( GL_TEXTURE_2D, 0 );
-					// Set our "lightMap" sampler to user Texture Unit 2
-					p_shader->setInt( "material.lightMap", 2 );
 				}
 			}
 

@@ -93,18 +93,7 @@ namespace gw2b {
 	}
 
 	void ModelViewer::clearShader( ) {
-		if ( m_mainShader ) {
-			m_mainShader.reset( );
-		}
-		if ( m_normalVisualizerShader ) {
-			m_normalVisualizerShader.reset( );
-		}
-		if ( m_zVisualizerShader ) {
-			m_zVisualizerShader.reset( );
-		}
-		if ( m_screenShader ) {
-			m_screenShader.reset( );
-		}
+		m_shaders.clear( );
 	}
 
 	void ModelViewer::setReader( FileReader* p_reader ) {
@@ -140,63 +129,47 @@ namespace gw2b {
 		this->render( );
 	}
 
-	void ModelViewer::loadShader( ) {
-		try {
-			m_mainShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_mainShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
+	bool ModelViewer::loadShader( ) {
+		if ( !m_shaders.add( "main", "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
+			return false;
 		}
-
-		try {
-			m_normalVisualizerShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" ) );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_normalVisualizerShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
+		if ( !m_shaders.add( "framebuffer", "..//data//shaders//framebuffer.vert", "..//data//shaders//framebuffer.frag" ) ) {
+			return false;
 		}
-
-		try {
-			m_zVisualizerShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" ) );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_zVisualizerShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
+		if ( !m_shaders.add( "normal_visualizer", "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" ) ) {
+			return false;
 		}
-
-		try {
-			m_screenShader = std::unique_ptr<Shader>( new Shader( "..//data//shaders//framebuffer.vert", "..//data//shaders//framebuffer.frag" ) );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "m_screenShader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load shader." );
+		if ( !m_shaders.add( "z_visualizer", "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" ) ) {
+			return false;
 		}
+		this->initShaderValue( );
 
+		return true;
 	}
 
-	bool ModelViewer::isShaderOK( ) {
-		if ( m_mainShader ) {
-			if ( m_normalVisualizerShader ) {
-				if ( m_zVisualizerShader ) {
-					if ( m_screenShader ) {
-						return true;
-					}
-				}
-			}
+	void ModelViewer::initShaderValue( ) {
+		if ( !m_shaders.empty( ) ) {
+			m_shaders.get( "main" )->use( );
+			m_shaders.get( "main" )->setTexture( "material.diffuseMap", 0 );	// Set our "diffuseMap" sampler to user Texture Unit 0
+			m_shaders.get( "main" )->setTexture( "material.normalMap", 1 );		// Set our "normalMap" sampler to user Texture Unit 1
+			m_shaders.get( "main" )->setTexture( "material.lightMap", 2 );		// Set our "lightMap" sampler to user Texture Unit 2
+
+			m_shaders.get( "framebuffer" )->use( );
+			m_shaders.get( "framebuffer" )->setFloat( "exposure", 6.0f );
+			m_shaders.get( "framebuffer" )->setFloat( "whitePoint", 11.2f );
+			m_shaders.get( "framebuffer" )->setTexture( "screenTexture", 0 );
 		}
-		return false;
 	}
 
 	void ModelViewer::reloadShader( ) {
 		this->clearShader( );
-
-		try {
-			this->loadShader( );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "%s" ), wxString( err.what( ) ) );
+		if ( !this->loadShader( ) ) {
 			this->clearShader( );
+			wxLogMessage( wxT( "SHADER ERROR!!! PRESS = KEY TO RELOAD SHADER!" ) );
 		}
-
 	}
 
-	int ModelViewer::initGL( ) {
+	bool ModelViewer::initGL( ) {
 		wxLogMessage( wxT( "Initializing OpenGL..." ) );
 		// Create OpenGL context
 		m_glContext = new wxGLContext( this );
@@ -211,6 +184,7 @@ namespace gw2b {
 		GLenum glewerr = glewInit( );
 		if ( GLEW_OK != glewerr ) {
 			wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( glewerr ) ) );
+			delete m_glContext;
 			return false;
 		}
 
@@ -231,7 +205,11 @@ namespace gw2b {
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc( GL_LESS );
 
-		this->loadShader( );
+		if ( !this->loadShader( ) ) {
+			this->clearShader( );
+			delete m_glContext;
+			return false;
+		}
 
 		// Initialize text renderer stuff
 		try {
@@ -278,7 +256,7 @@ namespace gw2b {
 		glViewport( 0, 0, m_clientSize.x, m_clientSize.y );
 
 		// Check if shader is properly loaded
-		if ( !this->isShaderOK( ) ) {
+		if ( m_shaders.empty( ) ) {
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 			// Send ClientSize variable to text renderer
 			m_text->setClientSize( m_clientSize );
@@ -325,14 +303,14 @@ namespace gw2b {
 
 		if ( !m_statusVisualizeZbuffer ) {
 			// Draw normally
-			this->drawModel( m_mainShader, trans );
+			this->drawModel( m_shaders.get( "main" ), trans );
 			// Draw normal lines for debugging/visualization
 			if ( m_statusVisualizeNormal ) {
-				this->drawModel( m_normalVisualizerShader, trans );
+				this->drawModel( m_shaders.get( "normal_visualizer" ), trans );
 			}
 		} else {
 			// Draw only Z-Buffer (for debugging/visualization)
-			this->drawModel( m_zVisualizerShader, trans );
+			this->drawModel( m_shaders.get( "z_visualizer" ), trans );
 		}
 
 		// Render light source (for debugging/visualization)
@@ -350,9 +328,7 @@ namespace gw2b {
 		glDisable( GL_DEPTH_TEST ); // We don't care about depth information when rendering a single quad
 
 		// Use the hdr framebuffer shader
-		m_screenShader->use( );
-		m_screenShader->setFloat( "exposure", 6.0f );
-		m_screenShader->setFloat( "whitePoint", 11.2f );
+		m_shaders.get( "framebuffer" )->use( );
 
 		// Draw the frame buffer
 		m_framebuffer->draw( );
@@ -365,8 +341,7 @@ namespace gw2b {
 		SwapBuffers( );
 	}
 
-	void ModelViewer::drawModel( std::unique_ptr<Shader>& p_shader, const glm::mat4& p_trans ) {
-		bool oldStatusLighting = m_statusLighting;
+	void ModelViewer::drawModel( Shader* p_shader, const glm::mat4& p_trans ) {
 
 		if ( m_statusCullFace ) {
 			glEnable( GL_CULL_FACE );
@@ -377,7 +352,7 @@ namespace gw2b {
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 			// Disable lighting for wireframe rendering
-			m_statusLighting = false;
+			m_shaders.get( "main" )->setInt( "mode.lighting", 0 );
 		} else {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
@@ -387,18 +362,6 @@ namespace gw2b {
 			// Use the shader
 			p_shader->use( );
 
-			// Set renderer status flag
-			p_shader->setInt( "mode.wireframe", m_statusWireframe );
-			p_shader->setInt( "mode.textured", m_statusTextured );
-			p_shader->setInt( "mode.normalMapping", m_statusNormalMapping );
-			p_shader->setInt( "mode.lighting", m_statusLighting );
-
-			// Set lights properties
-			p_shader->setVec3( "light.position", m_light.position( ) );
-			p_shader->setVec3( "light.ambient", m_light.ambient( ) );
-			p_shader->setVec3( "light.diffuse", m_light.diffuse( ) );
-			p_shader->setVec3( "light.specular", m_light.specular( ) );
-
 			// Set material properties
 			p_shader->setFloat( "material.shininess", 32.0f );
 
@@ -407,13 +370,11 @@ namespace gw2b {
 			// View matrix
 			p_shader->setMat4( "view", m_camera.calculateViewMatrix( ) );
 
-			it->draw( p_shader );
+			it->draw( );
 		}
 
 		if ( m_statusWireframe ) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-			// Set lighting flag to old value
-			m_statusLighting = oldStatusLighting;
 		}
 	}
 
@@ -516,24 +477,36 @@ namespace gw2b {
 		// Projection matrix
 		auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 
-		m_mainShader->use( );
+		m_shaders.get( "main" )->use( );
 		// Send projection matrix to main shader
-		m_mainShader->setMat4( "projection", projection );
+		m_shaders.get( "main" )->setMat4( "projection", projection );
 		// View position
-		m_mainShader->setVec3( "viewPos", m_camera.position( ) );
+		m_shaders.get( "main" )->setVec3( "viewPos", m_camera.position( ) );
+
+		// Set the shader render status flag
+		m_shaders.get( "main" )->setInt( "mode.wireframe", m_statusWireframe );
+		m_shaders.get( "main" )->setInt( "mode.textured", m_statusTextured );
+		m_shaders.get( "main" )->setInt( "mode.normalMapping", m_statusNormalMapping );
+		m_shaders.get( "main" )->setInt( "mode.lighting", m_statusLighting );
+
+		// Set lights properties
+		m_shaders.get( "main" )->setVec3( "light.position", m_light.position( ) );
+		m_shaders.get( "main" )->setVec3( "light.ambient", m_light.ambient( ) );
+		m_shaders.get( "main" )->setVec3( "light.diffuse", m_light.diffuse( ) );
+		m_shaders.get( "main" )->setVec3( "light.specular", m_light.specular( ) );
 
 		if ( m_statusVisualizeNormal ) {
-			m_normalVisualizerShader->use( );
+			m_shaders.get( "normal_visualizer" )->use( );
 			// Send projection matrix to normal visualizer shader
-			m_normalVisualizerShader->setMat4( "projection", projection );
+			m_shaders.get( "normal_visualizer" )->setMat4( "projection", projection );
 		}
 
 		if ( m_statusVisualizeZbuffer ) {
-			m_zVisualizerShader->use( );
+			m_shaders.get( "z_visualizer" )->use( );
 			// Send projection matrix to Z-Buffer visualizer shader
-			m_zVisualizerShader->setMat4( "projection", projection );
-			m_zVisualizerShader->setFloat( "near", minZ );
-			m_zVisualizerShader->setFloat( "far", maxZ );
+			m_shaders.get( "z_visualizer" )->setMat4( "projection", projection );
+			m_shaders.get( "z_visualizer" )->setFloat( "near", minZ );
+			m_shaders.get( "z_visualizer" )->setFloat( "far", maxZ );
 		}
 
 		// Send projection matrix to lightbox renderer

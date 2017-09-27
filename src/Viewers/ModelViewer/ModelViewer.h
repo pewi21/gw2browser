@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Light.h"
 #include "LightBox.h"
 #include "Model.h"
-#include "Shader.h"
+#include "ShaderManager.h"
 #include "Text2D.h"
 
 #include "DatFile.h"
@@ -89,10 +89,12 @@ namespace gw2b {
 		std::unique_ptr<LightBox>	m_lightBox;			// For render cube at light position
 
 		// Shader stuff
-		std::unique_ptr<Shader>		m_mainShader;
-		std::unique_ptr<Shader>		m_normalVisualizerShader;
-		std::unique_ptr<Shader>		m_zVisualizerShader;
-		std::unique_ptr<Shader>		m_screenShader;
+		// List of shaders :
+		// - main
+		// - framebuffer
+		// - normal_visualizer
+		// - z_visualizer
+		ShaderManager				m_shaders;
 
 		// Camera
 		Camera                      m_camera;
@@ -144,13 +146,13 @@ namespace gw2b {
 
 	private:
 		void clearShader( );
-		void loadShader( );
-		bool isShaderOK( );
+		bool loadShader( );
+		void initShaderValue( );
 		void reloadShader( );
-		int initGL( );
+		bool initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
-		void drawModel( std::unique_ptr<Shader>& p_shader, const glm::mat4& p_trans );
+		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
 		void displayStatusText( );
 		void updateMatrices( );
 		void focus( );

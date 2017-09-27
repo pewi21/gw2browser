@@ -234,6 +234,9 @@
     <ClInclude Include="..\src\Readers\MapReader.h">
       <Filter>Source Files\Readers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\ShaderManager.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -388,6 +391,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Readers\MapReader.cpp">
       <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\ShaderManager.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

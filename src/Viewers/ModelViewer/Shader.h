@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2016-2017 Khral Steelforge <https://github.com/kytulendu>
 
 This file is part of Gw2Browser.
 
@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef VIEWERS_MODELVIEWER_SHADER_H_INCLUDED
 #define VIEWERS_MODELVIEWER_SHADER_H_INCLUDED
+
+#include <string>
 
 namespace gw2b {
 
@@ -50,18 +52,19 @@ namespace gw2b {
 		void clear( );
 
 		/** Utility uniform functions. */
-		void setBool( const std::string &p_name, bool p_value ) const;
-		void setInt( const std::string &p_name, int p_value ) const;
-		void setFloat( const std::string &p_name, float p_value ) const;
-		void setVec2( const std::string &p_name, const glm::vec2 &p_value ) const;
-		void setVec2( const std::string &p_name, float p_x, float p_y ) const;
-		void setVec3( const std::string &p_name, const glm::vec3 &p_value ) const;
-		void setVec3( const std::string &p_name, float p_x, float p_y, float p_z ) const;
-		void setVec4( const std::string &p_name, const glm::vec4 &p_value ) const;
-		void setVec4( const std::string &p_name, float p_x, float p_y, float p_z, float p_w ) const;
-		void setMat2( const std::string &p_name, const glm::mat2 &p_mat ) const;
-		void setMat3( const std::string &p_name, const glm::mat3 &p_mat ) const;
-		void setMat4( const std::string &p_name, const glm::mat4 &p_mat ) const;
+		void setBool( const std::string& p_name, const bool p_value ) const;
+		void setInt( const std::string& p_name, const int p_value ) const;
+		void setFloat( const std::string& p_name, const float p_value ) const;
+		void setVec2( const std::string& p_name, const glm::vec2& p_value ) const;
+		void setVec2( const std::string& p_name, const float p_x, const float p_y ) const;
+		void setVec3( const std::string& p_name, const glm::vec3& p_value ) const;
+		void setVec3( const std::string& p_name, const float p_x, const float p_y, const float p_z ) const;
+		void setVec4( const std::string& p_name, const glm::vec4& p_value ) const;
+		void setVec4( const std::string& p_name, const float p_x, const float p_y, const float p_z, const float p_w ) const;
+		void setMat2( const std::string& p_name, const glm::mat2& p_mat ) const;
+		void setMat3( const std::string& p_name, const glm::mat3& p_mat ) const;
+		void setMat4( const std::string& p_name, const glm::mat4& p_mat ) const;
+		void setTexture( const std::string& p_name, const int p_tmu ) const;
 
 	private:
 		/** Check for shader compilation error. */

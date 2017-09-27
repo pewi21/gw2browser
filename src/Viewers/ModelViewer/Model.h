@@ -108,7 +108,7 @@ namespace gw2b {
 		~Model( );
 
 		/** Draw the model. */
-		void draw( std::unique_ptr<Shader>& p_shader );
+		void draw( );
 		/** Get number of mesh. */
 		size_t getNumMeshes( ) const;
 		/** Get number of vertices. */
