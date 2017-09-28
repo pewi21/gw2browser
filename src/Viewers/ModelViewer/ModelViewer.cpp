@@ -232,7 +232,7 @@ namespace gw2b {
 		// Create framebuffer
 		this->createFrameBuffer( );
 
-		m_fpsStartTime = Time::now( );
+		//m_fpsStartTime = Time::now( );
 
 		return true;
 	}
@@ -337,7 +337,7 @@ namespace gw2b {
 		// Draw status text
 		if ( m_statusText ) {
 			this->displayStatusText( );
-
+			/*
 			// fps meter
 			m_frameCounter++;
 			// Get time elapsed
@@ -352,6 +352,7 @@ namespace gw2b {
 			}
 			// Draw fps meter to screen
 			m_text->drawText( wxString::Format( wxT( "%.2f fps" ), m_fps ), 0.0f, m_clientSize.y - 48.0f, 1.0f, glm::vec3( 1.0f ) );
+			*/
 		}
 
 		SwapBuffers( );

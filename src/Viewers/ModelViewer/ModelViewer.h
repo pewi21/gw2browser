@@ -114,11 +114,11 @@ namespace gw2b {
 		float						m_deltaTime;
 		Time::time_point			m_oldstartTime;
 
-		// fps counter
-		Time::time_point			m_fpsStartTime;
-		double						m_fpsDiffTime = 0.0;
-		int							m_frameCounter = 0;
-		float						m_fps = 0.0f;
+		// fps meter
+		//Time::time_point			m_fpsStartTime;
+		//double					m_fpsDiffTime = 0.0;
+		//int						m_frameCounter = 0;
+		//float						m_fps = 0.0f;
 
 	public:
 		/** Constructor. Creates the model viewer with the given parent.
