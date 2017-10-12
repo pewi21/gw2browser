@@ -28,21 +28,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIEWERS_MODELVIEWER_MODEL_H_INCLUDED
 
 #include <map>
-#include <unordered_map>
 #include <vector>
 
-//#include "Meshes.h"
-#include "Shader.h"
-#include "Texture2D.h"
-
-#include "DatFile.h"
+#include "TextureManager.h"
 #include "Readers/ModelReader.h"
 
 namespace gw2b {
 
 	class Model {
-
-		typedef	std::unique_ptr<Texture2D> texture_ptr; // Texture2D pointer
 
 		struct MeshCache {
 			std::vector<glm::vec3>	vertices;
@@ -84,8 +77,6 @@ namespace gw2b {
 			};
 		};
 
-		DatFile&                    m_datFile;
-		
 		// Mesh
 		std::vector<MeshCache>		m_meshCache;
 		std::vector<VAO>			m_vertexArray;		// Vertex Array Object
@@ -93,7 +84,6 @@ namespace gw2b {
 		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
 
 		// Textures
-		std::unordered_map<uint32, texture_ptr> m_textureMap;	// Texture Map
 		std::vector<TextureList>	m_textureList;		// Texture List, store texture list from material of GW2Model
 
 		size_t						m_numMeshes;
@@ -103,12 +93,12 @@ namespace gw2b {
 
 	public:
 		/** Constructor. Create model. */
-		Model( const GW2Model& p_model, DatFile& p_datFile );
+		Model( const GW2Model& p_model );
 		/** Destructor. Clears all data. */
 		~Model( );
 
 		/** Draw the model. */
-		void draw( );
+		void draw( TextureManager& p_textureManager );
 		/** Get number of mesh. */
 		size_t getNumMeshes( ) const;
 		/** Get number of vertices. */

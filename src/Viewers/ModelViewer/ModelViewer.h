@@ -38,8 +38,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Model.h"
 #include "ShaderManager.h"
 #include "Text2D.h"
+#include "TextureManager.h"
 
-#include "DatFile.h"
 #include "ViewerGLCanvas.h"
 #include "Readers/MapReader.h"
 #include "Readers/ModelReader.h"
@@ -57,8 +57,6 @@ namespace gw2b {
 
 	class ModelViewer : public ViewerGLCanvas {
 		typedef std::chrono::high_resolution_clock Time;
-
-		DatFile&                    m_datFile;
 
 		wxGLContext*				m_glContext;
 		RenderTimer*				m_renderTimer;
@@ -86,6 +84,9 @@ namespace gw2b {
 
 		// Model
 		std::vector<std::unique_ptr<Model>>	m_model;
+
+		// Textures
+		TextureManager				m_texture;
 
 		// Light
 		Light						m_light;
@@ -155,6 +156,7 @@ namespace gw2b {
 
 	private:
 		void clearShader( );
+		void loadTexture( const GW2Model& p_model );
 		bool loadShader( );
 		void initShaderValue( );
 		void reloadShader( );
@@ -169,7 +171,7 @@ namespace gw2b {
 		void onMotionEvt( wxMouseEvent& p_event );
 		void onMouseWheelEvt( wxMouseEvent& p_event );
 		void onKeyDownEvt( wxKeyEvent& p_event );
-		void onMovementKeyTimerEvt( wxTimerEvent&p_event );
+		void onMovementKeyTimerEvt( wxTimerEvent& p_event );
 		void onClose( wxCloseEvent& evt );
 		void onResize( wxSizeEvent& evt );
 

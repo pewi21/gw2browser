@@ -237,6 +237,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\ShaderManager.h">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Viewers\ModelViewer\TextureManager.h">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -393,6 +396,9 @@
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Viewers\ModelViewer\ShaderManager.cpp">
+      <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Viewers\ModelViewer\TextureManager.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
   </ItemGroup>

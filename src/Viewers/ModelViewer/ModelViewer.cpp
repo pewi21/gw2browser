@@ -53,7 +53,7 @@ namespace gw2b {
 
 	ModelViewer::ModelViewer( wxWindow* p_parent, const int *p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile )
 		: ViewerGLCanvas( p_parent, p_attrib, p_pos, p_size, p_style )
-		, m_datFile( p_datFile )
+		, m_texture( p_datFile )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
 		// Initialize OpenGL
@@ -87,6 +87,7 @@ namespace gw2b {
 
 	void ModelViewer::clear( ) {
 		m_model.clear( );
+		m_texture.clear( );
 		ViewerGLCanvas::clear( );
 	}
 
@@ -119,12 +120,34 @@ namespace gw2b {
 			auto model = reader->getModel( );
 
 			// load model to m_model
-			m_model.push_back( std::unique_ptr<Model>( new Model( model, m_datFile ) ) );
+			m_model.push_back( std::unique_ptr<Model>( new Model( model ) ) );
+			// load texture into texture manager
+			this->loadTexture( model );
 		}
 
 		// Re-focus and re-render
 		this->focus( );
 		this->render( );
+	}
+
+	void ModelViewer::loadTexture( const GW2Model& p_model ) {
+		auto& material = p_model.material( );
+
+		// Load textures into texture manager
+		for ( auto& mat : material ) {
+			// Load diffuse texture
+			if ( mat.diffuseMap ) {
+				m_texture.load( mat.diffuseMap );
+			}
+			// Load normal map texture
+			if ( mat.normalMap ) {
+				m_texture.load( mat.normalMap );
+			}
+			// Load light map texture
+			if ( mat.lightMap ) {
+				m_texture.load( mat.lightMap );
+			}
+		}
 	}
 
 	bool ModelViewer::loadShader( ) {
@@ -387,7 +410,7 @@ namespace gw2b {
 			// View matrix
 			p_shader->setMat4( "view", m_camera.calculateViewMatrix( ) );
 
-			it->draw( );
+			it->draw( m_texture );
 		}
 
 		if ( m_statusWireframe ) {

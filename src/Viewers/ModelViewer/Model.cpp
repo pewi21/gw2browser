@@ -30,9 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	Model::Model( const GW2Model& p_model, DatFile& p_datFile )
-		: m_datFile( p_datFile )
-		, m_numMeshes( 0 )
+	Model::Model( const GW2Model& p_model )
+		: m_numMeshes( 0 )
 		, m_numVertices( 0 )
 		, m_numTriangles( 0 )
 		, m_bounds( p_model.bounds( ) ) {
@@ -46,11 +45,10 @@ namespace gw2b {
 		m_vertexBuffer.clear( );
 		m_indexBuffer.clear( );
 		m_textureList.clear( );
-		m_textureMap.clear( );
 		m_meshCache.clear( );
 	}
 
-	void Model::draw( ) {
+	void Model::draw( TextureManager& p_textureManager ) {
 		for ( uint i = 0; i < static_cast<uint>( m_numMeshes ); i++ ) {
 			auto materialIndex = m_meshCache[i].materialIndex;
 
@@ -58,29 +56,29 @@ namespace gw2b {
 			if ( !m_textureList.empty( ) ) {
 
 				if ( materialIndex >= 0 && m_textureList[materialIndex].diffuseMap ) {
-					auto texture = m_textureMap.find( m_textureList[materialIndex].diffuseMap );
-					if ( texture != m_textureMap.end( ) ) {
+					auto texture = p_textureManager.get( m_textureList[materialIndex].diffuseMap );
+					if ( texture != nullptr ) {
 						// Use Texture Unit 0
 						glActiveTexture( GL_TEXTURE0 );
-						texture->second->bind( );
+						texture->bind( );
 					}
 				}
 
 				if ( materialIndex >= 0 && m_textureList[materialIndex].normalMap ) {
-					auto texture = m_textureMap.find( m_textureList[materialIndex].normalMap );
-					if ( texture != m_textureMap.end( ) ) {
+					auto texture = p_textureManager.get( m_textureList[materialIndex].normalMap );
+					if ( texture != nullptr ) {
 						// Bind our normal texture in Texture Unit 1
 						glActiveTexture( GL_TEXTURE1 );
-						texture->second->bind( );
+						texture->bind( );
 					}
 				}
 
 				if ( materialIndex >= 0 && m_textureList[materialIndex].lightMap ) {
-					auto texture = m_textureMap.find( m_textureList[materialIndex].lightMap );
-					if ( texture != m_textureMap.end( ) ) {
+					auto texture = p_textureManager.get( m_textureList[materialIndex].lightMap );
+					if ( texture != nullptr ) {
 						// Bind our lightmap texture in Texture Unit 2
 						glActiveTexture( GL_TEXTURE2 );
-						texture->second->bind( );
+						texture->bind( );
 					}
 				} else {
 					glActiveTexture( GL_TEXTURE2 );
@@ -152,15 +150,6 @@ namespace gw2b {
 		glDrawElements( GL_TRIANGLES, cache.indices.size( ), GL_UNSIGNED_INT, ( GLvoid* ) 0 );
 		// Unbind Vertex Array Object
 		glBindVertexArray( 0 );
-
-		// Unbind texture from Texture Unit 1
-		//glActiveTexture( GL_TEXTURE1 );
-		glBindTexture( GL_TEXTURE_2D, 0 );
-
-		// Unbind texture from Texture Unit 0
-		glActiveTexture( GL_TEXTURE0 );
-		glBindTexture( GL_TEXTURE_2D, 0 );
-
 	}
 
 	void Model::loadModel( const GW2Model& p_model ) {
@@ -369,48 +358,7 @@ namespace gw2b {
 	}
 
 	void Model::loadMaterial( const GW2Model& p_model ) {
-		auto& texture = m_textureMap;
-		auto& material = p_model.material( );
 		auto numMaterial = p_model.numMaterial( );
-
-		// Load textures to texture map
-		for ( auto& mat : material ) {
-			std::unordered_map<uint32, texture_ptr>::iterator it;
-
-			// Load diffuse texture
-			if ( mat.diffuseMap ) {
-				it = texture.find( mat.diffuseMap );
-				if ( it == texture.end( ) ) {
-					try {
-						texture.insert( std::pair<uint32, texture_ptr>( mat.diffuseMap, texture_ptr( new Texture2D( m_datFile, mat.diffuseMap ) ) ) );
-					} catch ( const exception::Exception& err ) {
-						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.diffuseMap, wxString( err.what( ) ) );
-					}
-				}
-			}
-
-			if ( mat.normalMap ) {
-				it = texture.find( mat.normalMap );
-				if ( it == texture.end( ) ) {
-					try {
-						texture.insert( std::pair<uint32, texture_ptr>( mat.normalMap, texture_ptr( new Texture2D( m_datFile, mat.normalMap ) ) ) );
-					} catch ( const exception::Exception& err ) {
-						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.normalMap, wxString( err.what( ) ) );
-					}
-				}
-			}
-
-			if ( mat.lightMap ) {
-				it = texture.find( mat.lightMap );
-				if ( it == texture.end( ) ) {
-					try {
-						texture.insert( std::pair<uint32, texture_ptr>( mat.lightMap, texture_ptr( new Texture2D( m_datFile, mat.lightMap ) ) ) );
-					} catch ( const exception::Exception& err ) {
-						wxLogMessage( wxT( "Failed to load texture %d : %s" ), mat.lightMap, wxString( err.what( ) ) );
-					}
-				}
-			}
-		}
 
 		// Create Texture Buffer Object
 		m_textureList.resize( numMaterial );

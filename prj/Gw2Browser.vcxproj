@@ -74,6 +74,7 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\ShaderManager.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\TextureManager.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundDecoder.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\OggCallback.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundPlayer.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="..\src\Viewers\ModelViewer\ShaderManager.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Texture2D.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\TextureManager.cpp" />
     <ClCompile Include="..\src\Viewers\SoundPlayer\SoundDecoder.cpp" />
     <ClCompile Include="..\src\Viewers\SoundPlayer\OggCallback.cpp" />
     <ClCompile Include="..\src\Viewers\SoundPlayer\SoundPlayer.cpp" />

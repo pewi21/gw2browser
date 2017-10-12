@@ -7,16 +7,13 @@ Gw2Browser_2017-xx-xx (1.0.9.1)
 -------------------------------
 
 * map file reader, renderer, exporter.
+see Tyria-3D code for this.
 
-* Add way to position light (shift left click?) by using gobal variable or access class variable?
-
-* Support for paged image files.
-
-* Material class (texture, lighting).
+* Scene manager (need when implement map viewer).
 
 * Add a way to config model viewer graphic option.
 
-* Support model light map.
+* Use wxDataView or wxListCtrl with combo box for folder and file list.
 
 Further plans
 -------------
@@ -25,13 +22,11 @@ Further plans
 
 * Deferred shading (need for map viewer with many light)
 
+* Improve performance of ModelViewer's drawText function by using texture atlas.
+
 * SSAO?
 
 * Self shadowed model shading?
-
-* Scene manager (need when implement map viewer).
-
-* Improve performance of ModelViewer's drawText function by using texture atlas.
 
 * Allow individual file types to add entries to the context menu. For example,
 models could get an *export with textures* option.
@@ -39,6 +34,8 @@ models could get an *export with textures* option.
 * Allow to extract raw data with raw texture.
 
 * External file name database, for known files (such as the exe and dll files).
+
+* Support for paged image files.
 
 * Support for R32f DDS files.
 
