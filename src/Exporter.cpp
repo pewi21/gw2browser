@@ -5,7 +5,7 @@
 */
 
 /*
-Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2016-2017 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -350,55 +350,7 @@ namespace gw2b {
 	}
 
 	const wxString Exporter::GetWildcard( ) const {
-		if ( m_mode ) {
-			switch ( m_fileType ) {
-			case ANFT_ATEX:
-			case ANFT_ATTX:
-			case ANFT_ATEC:
-			case ANFT_ATEP:
-			case ANFT_ATEU:
-			case ANFT_ATET:
-			case ANFT_DDS:
-			case ANFT_JPEG:
-			case ANFT_WEBP:
-			case ANFT_PNG:
-				return wxT( "Portable Network Graphic file (*.png)|*.png" );
-				break;
-			case ANFT_Model:
-				return wxT( "Wavefront Object file (*.obj;*.mtl)|*.obj;*.mtl" );
-				break;
-			case ANFT_StringFile:
-				return wxT( "Comma-separated values file (*.csv)|*.csv" );
-				break;
-			case ANFT_PackedOgg:
-			case ANFT_Ogg:
-				return wxT( "Ogg file (*.ogg)|*.ogg" );
-				break;
-			case ANFT_PackedMP3:
-			case ANFT_asndMP3:
-			case ANFT_MP3:
-			case ANFT_Bank:
-				return wxT( "MPEG Layer 3 file (*.mp3)|*.mp3" );
-				break;
-			case ANFT_EULA:
-			case ANFT_TEXT:
-			case ANFT_UTF8:
-				return wxT( "Text file (*.txt)|*.txt" );
-				break;
-			case ANFT_Bink2Video:
-				return wxT( "Bink 2 Video file (*.bk2)|*.bk2" );
-				break;
-			case ANFT_DLL:
-				return wxT( "Dynamic-link library file (*.dll)|*.dll" );
-				break;
-			case ANFT_EXE:
-				return wxT( "Executable file (*.exe)|*.exe" );
-				break;
-			default:
-				return wxT( "Raw Guild Wars 2 file (*.raw)|*.raw" );
-				break;
-			}
-		} else {
+		if ( m_mode == EM_Raw ) {
 			switch ( m_fileType ) {
 				// Texture
 			case ANFT_ATEX:
@@ -557,6 +509,8 @@ namespace gw2b {
 				return wxT( "Guild Wars 2 Raw file (*.raw)|*.raw" );
 				break;
 			}
+		} else {
+			return wxFileSelectorDefaultWildcardStr;
 		}
 	}
 
@@ -574,11 +528,8 @@ namespace gw2b {
 		auto reader = FileReader::readerForData( entryData, m_datFile, m_fileType );
 
 		if ( reader ) {
-			// If extract 1 file, not apply extension
-			if ( m_entries.GetSize( ) > 1 ) {
-				// Set file extension
-				m_filename.SetExt( wxString( this->GetExtension( ) ) );
-			}
+			// Set file extension
+			m_filename.SetExt( wxString( this->GetExtension( ) ) );
 
 			// Should we convert the file?
 			if ( m_mode == EM_Converted ) {
@@ -712,6 +663,7 @@ namespace gw2b {
 			::memcpy( data.GetPointer( ), StringOut.utf8_str( ), strlen( StringOut.utf8_str( ) ) );
 
 			m_filename.SetName( wxString::Format( wxT( "%s_%d" ), filename, i ) );
+
 			// Write to file
 			this->writeFile( data );
 		}
