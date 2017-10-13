@@ -52,8 +52,11 @@ namespace gw2b {
 		*  \param[in]  p_id			   File id of the texture to load. */
 		bool load( const uint32 p_id );
 		/** Find and get texture by texture file id.
-		*  \param[in]  p_id			   File id of the texture to load. */
+		*  \param[in]  p_id			   File id of the texture to get. */
 		Texture2D* get( const uint32 p_id );
+		/** Find and remove texture by texture file id.
+		*  \param[in]  p_id			   File id of the texture to remove. */
+		bool remove( const uint32 p_id );
 		/** Check if the object is empty */
 		bool empty( );
 

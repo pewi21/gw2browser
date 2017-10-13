@@ -73,6 +73,16 @@ namespace gw2b {
 		return it->second;
 	}
 
+	bool TextureManager::remove( const uint32 p_id ) {
+		auto it = m_texture.find( p_id );
+		if ( it != m_texture.end( ) ) {
+			delete it->second;
+			m_texture.erase( it );
+			return true;
+		}
+		return false;
+	}
+
 	bool TextureManager::empty( ) {
 		if ( m_texture.empty( ) ) {
 			return true;
