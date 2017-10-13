@@ -156,7 +156,8 @@ namespace gw2b {
 
 	private:
 		void clearShader( );
-		void loadTexture( const GW2Model& p_model );
+		bool isLightmapExcluded( const uint32& p_id );
+		void loadModel( const GW2Model& p_model );
 		bool loadShader( );
 		void initShaderValue( );
 		void reloadShader( );

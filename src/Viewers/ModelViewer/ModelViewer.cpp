@@ -119,10 +119,7 @@ namespace gw2b {
 			auto reader = this->modelReader( );
 			auto model = reader->getModel( );
 
-			// load model to m_model
-			m_model.push_back( std::unique_ptr<Model>( new Model( model ) ) );
-			// load texture into texture manager
-			this->loadTexture( model );
+			this->loadModel( model );
 		}
 
 		// Re-focus and re-render
@@ -130,10 +127,23 @@ namespace gw2b {
 		this->render( );
 	}
 
-	void ModelViewer::loadTexture( const GW2Model& p_model ) {
+	bool ModelViewer::isLightmapExcluded( const uint32& p_id ) {
+		switch ( p_id ) {
+		// Zhaitan (454456) model
+		case 454385:
+		case 454421:
+			return true;
+		}
+		return false;
+	}
+
+	void ModelViewer::loadModel( const GW2Model& p_model ) {
 		auto& material = p_model.material( );
 
-		// Load textures into texture manager
+		// load model to m_model
+		m_model.push_back( std::unique_ptr<Model>( new Model( p_model ) ) );
+
+		// load texture into texture manager
 		for ( auto& mat : material ) {
 			// Load diffuse texture
 			if ( mat.diffuseMap ) {
@@ -145,9 +155,13 @@ namespace gw2b {
 			}
 			// Load light map texture
 			if ( mat.lightMap ) {
-				m_texture.load( mat.lightMap );
+				// check for excluded lightmap texture
+				if ( !this->isLightmapExcluded( mat.lightMap ) ) {
+					m_texture.load( mat.lightMap );
+				}
 			}
 		}
+
 	}
 
 	bool ModelViewer::loadShader( ) {
