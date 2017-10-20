@@ -4,9 +4,9 @@ which mostly are Charr stuff! X3
 File Id		Format		Note
 13829		model		Old Gaheron Baelfire
 13840		model		Old God Gaheron Baelfire
-13848
-13854
-13861
+13848		model		Charr
+13854		model		Charr
+13861		model		Charr
 13979		model		Charr NPC
 14224		model		Flame Legion charr
 14396		model		Flame Legion charr
@@ -26,7 +26,7 @@ File Id		Format		Note
 27218		model		White owl
 27351		model		Charr Tank
 31239		model		Norn bear
-31263		model		Norn showleopard
+31263		model		Norn snowleopard
 31288		model		Norn raven
 31316		model		Norn werewolf
 32634		model		Charr equipment/character parts start
@@ -75,9 +75,9 @@ File Id		Format		Note
 162177		soundbank	"I'm a Charr" (male)
 184705		mp3			GW2 Main Theme
 184738		ogg			Charr war music
-187834		model		Charr's sigil (front of smelter)
-187835		model		Charr's stature axe
-187836		model		Charr's stature bow
+187834		model		Charr sigil (front of smelter)
+187835		model		Charr stature axe
+187836		model		Charr stature bow
 188772		model		Firely Dragon Sword
 217735		model		The Shatterer
 224438		model		Sorrow's Furnace robot boss
@@ -153,7 +153,66 @@ File Id		Format		Note
 1634836		model		Deimos statue gold
 1634839		model		Deimos statue bronze
 1634842		model		Deimos statue silver
+
+
+.....
+1761599
+
+
+
+1762011		model		mount, rabit
+1762848		model		sand shark
+1766143		model		wooden stick
+1766874		model		Balthazar's sword
+1767373		model		jaffa staff
+1767439		model		light saber
+1767446		model		Firely dragon sword
+1767448		model		Firely dragon sword
+1767450		model		Firely dragon sword
+1767508		model		Khal Drogo's sword
+1768021		model		Mount, spider
+1768278		model		Mount, Sand Jackal
+1768614		model		airship
+1768888		model		banner with text
+1768895		model		banner with text
+1769021		model		sand shark
+1769037		model		tablet with unknown text
+1769063		model		a stick
+1769199		model		Taimi in mech golem
+1789389		ogg			Need for Speed, Raptor Edition
 1789436		mp3			GW2 Path of Fire Soundtrack - Character Select
+1791124		model		painting start
+...
+1791127		model		painting end
+1791130		model		cards
+1791482		model		cards
 1791757		model		Food sign
 1791810		model		Skritt construct?
 1792304		model		Unknown board/card game
+1819091		model		Kormir?
+1820283		model		Balthazar
+1820289		model		a dragon
+1820842		model		Palawa Joko
+1820968		model		mount, cat-owl
+1821082		model		mini raptor start
+...
+1821129		model		mini raptor end
+1821162		model		Boss, with Aurene as hostage
+1822071		model		Sunrise
+1822074		model		Twilight
+1822126		model		snake flute?
+1822129		model		Ancient staff
+1822155		model		mini Sand Jackal
+1822177		model		Choya on stick
+1822199		model		fire snake septer?
+1823063		model		Crystal dragon head
+1823203		model		Abandon's head
+1823328		model		Anubis
+1823808		model		Forgetten statue
+1823918		model		Ancient staff
+1833245		model		stone gargoy
+1836308		model		Palawa Joko's drawing
+1843814		model		Charr statue, Kalla Scorchrazor
+1847520		model		Mount, Sand Jackal
+
+1850834		model		*** 14/10/2017
