@@ -15,6 +15,9 @@ see Tyria-3D code for this.
 
 * Use wxDataView or wxListCtrl with combo box for folder and file list.
 
+* Since lod model use low-res texture, load only hi-res mesh?
+figure out how gw2 do it.
+
 Further plans
 -------------
 
