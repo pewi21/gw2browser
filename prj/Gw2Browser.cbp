@@ -3,7 +3,6 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="Gw2Browser" />
-		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
@@ -12,16 +11,15 @@
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-g" />
+					<Add option="-D__WXDEBUG__" />
 					<Add option="-fopenmp" />
 					<Add option="-Wno-deprecated-declarations" />
 					<Add option="-Wno-switch" />
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/include" />
-					<Add directory="../../wxWidgets-3.0.3.1/include" />
 					<Add directory="../../wxWidgets-3.0.3.1/lib/gcc_lib/mswud" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
@@ -33,9 +31,6 @@
 					<Add directory="../extern/libwebp/src" />
 					<Add directory="../src" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="../../wxWidgets-3.0.3.1/include" />
-				</ResourceCompiler>
 				<Linker>
 					<Add library="../extern/freetype/objs/freetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
@@ -56,18 +51,12 @@
 					<Add library="libwxtiffd.a" />
 					<Add library="libwxzlibd.a" />
 					<Add library="libwxjpegd.a" />
-					<Add library="libgomp.a" />
-					<Add library="libpthread.a" />
 					<Add library="libcomctl32.a" />
-					<Add library="libcomdlg32.a" />
-					<Add library="libgdi32.a" />
 					<Add library="libole32.a" />
 					<Add library="liboleaut32.a" />
 					<Add library="libopengl32.a" />
-					<Add library="libshlwapi.a" />
 					<Add library="libwinspool.a" />
 					<Add library="libuuid.a" />
-					<Add library="libversion.a" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.0.3.1/lib/gcc_lib" />
@@ -94,7 +83,6 @@
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/include" />
-					<Add directory="../../wxWidgets-3.0.3.1/include" />
 					<Add directory="../../wxWidgets-3.0.3.1/lib/gcc_lib/mswu" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
@@ -106,9 +94,6 @@
 					<Add directory="../extern/libwebp/src" />
 					<Add directory="../src" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="../../wxWidgets-3.0.3.1/include" />
-				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
 					<Add library="../extern/freetype/objs/freetype.a" />
@@ -130,18 +115,12 @@
 					<Add library="libwxtiff.a" />
 					<Add library="libwxzlib.a" />
 					<Add library="libwxjpeg.a" />
-					<Add library="libgomp.a" />
-					<Add library="libpthread.a" />
 					<Add library="libcomctl32.a" />
-					<Add library="libcomdlg32.a" />
-					<Add library="libgdi32.a" />
 					<Add library="libole32.a" />
 					<Add library="liboleaut32.a" />
 					<Add library="libopengl32.a" />
-					<Add library="libshlwapi.a" />
 					<Add library="libwinspool.a" />
 					<Add library="libuuid.a" />
-					<Add library="libversion.a" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.0.3.1/lib/gcc_lib" />
@@ -156,8 +135,35 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-pipe" />
+			<Add option="-mthreads" />
+			<Add option="-D__GNUWIN32__" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-include wx_pch.h" />
+			<Add option="-DWX_PRECOMP" />
 			<Add option="-Wall" />
+			<Add directory="../../wxWidgets-3.0.3.1/include" />
 		</Compiler>
+		<ResourceCompiler>
+			<Add directory="../../wxWidgets-3.0.3.1/include" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-mthreads" />
+			<Add library="libgomp.a" />
+			<Add library="libpthread.a" />
+			<Add library="libkernel32.a" />
+			<Add library="libuser32.a" />
+			<Add library="libgdi32.a" />
+			<Add library="libcomdlg32.a" />
+			<Add library="libadvapi32.a" />
+			<Add library="libshell32.a" />
+			<Add library="libshlwapi.a" />
+			<Add library="libversion.a" />
+			<Add library="libwsock32.a" />
+			<Add library="libodbc32.a" />
+		</Linker>
 		<Unit filename="../CHANGE.md" />
 		<Unit filename="../COPYING.txt" />
 		<Unit filename="../README.md" />
@@ -289,14 +295,14 @@
 		<Unit filename="../src/Viewers/TextViewer/TextViewer.cpp" />
 		<Unit filename="../src/Viewers/TextViewer/TextViewer.h" />
 		<Unit filename="../src/resource.h" />
-		<Unit filename="../src/stdafx.cpp" />
-		<Unit filename="../src/stdafx.h" />
 		<Unit filename="../src/version.h" />
+		<Unit filename="../src/wx_pch.h">
+			<Option weight="0" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
 			<debugger />
-			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
