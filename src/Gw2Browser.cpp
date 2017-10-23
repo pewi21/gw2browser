@@ -31,51 +31,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Gw2Browser.h"
 
-namespace gw2b {
+IMPLEMENT_APP( Gw2Browser );
 
-	wxIMPLEMENT_APP( Gw2Browser );
+//============================================================================/
 
-	//============================================================================/
+namespace {
 
-	namespace {
+    struct ArgumentOptions {
+        wxString datPath;
+    };
 
-		struct ArgumentOptions {
-			wxString datPath;
-		};
+    ArgumentOptions parseArguments( int argc, wchar_t** argv ) {
+        ArgumentOptions options;
+        if ( argc > 1 ) {
+            options.datPath = argv[1];
+        }
+        return options;
+    }
 
-		ArgumentOptions parseArguments( int argc, wchar_t** argv ) {
-			ArgumentOptions options;
-			if ( argc > 1 ) {
-				options.datPath = argv[1];
-			}
-			return options;
-		}
+}; // anon namespace
 
-	}; // anon namespace
+//============================================================================/
 
-	//============================================================================/
+bool Gw2Browser::OnInit( ) {
+    bool wxsOK = true;
+    wxInitAllImageHandlers( );
+    if ( wxsOK ) {
+        auto window = new gw2b::BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
+        window->Show( );
+        SetTopWindow( window );
 
-	bool Gw2Browser::OnInit( ) {
-		bool wxsOK = true;
-		wxInitAllImageHandlers( );
-		if ( wxsOK ) {
-			auto window = new BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
-			window->Show( );
-			SetTopWindow( window );
+        // Set BrowserWindow to center of screen
+        window->Centre( );
+        // Set window icon
+        //window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
 
-			// Set BrowserWindow to center of screen
-			window->Centre( );
-			// Set window icon
-			window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
+        auto options = parseArguments( this->argc, this->argv );
+        if ( !options.datPath.IsEmpty( ) ) {
+            window->openFile( options.datPath );
+        }
+    }
+    return wxsOK;
+}
 
-			auto options = parseArguments( this->argc, this->argv );
-			if ( !options.datPath.IsEmpty( ) ) {
-				window->openFile( options.datPath );
-			}
-		}
-		return wxsOK;
-	}
-
-	//============================================================================/
-
-}; // namespace gw2b
+//============================================================================/

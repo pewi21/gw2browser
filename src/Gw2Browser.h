@@ -27,17 +27,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef GW2BROWSER_H_INCLUDED
 #define GW2BROWSER_H_INCLUDED
 
-namespace gw2b {
+/** Represents the Gw2Browser application. */
+class Gw2Browser : public wxApp {
+public:
+    /** Initializes the application (acts as the application entry-point).
+    *  \return bool    True if initialization was successful, false if not. */
+    virtual bool OnInit( ) override;
 
-	/** Represents the Gw2Browser application. */
-	class Gw2Browser : public wxApp {
-	public:
-		/** Initializes the application (acts as the application entry-point).
-		*  \return bool    True if initialization was successful, false if not. */
-		virtual bool OnInit( ) override;
-
-	}; // class Gw2Browser
-
-}; // namespace gw2b
+}; // class Gw2Browser
 
 #endif // GW2BROWSER_H_INCLUDED

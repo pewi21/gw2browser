@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <locale>
 
 #include <wx/mstream.h>
+#include <wx/string.h>
 
 #include "StringReader.h"
 
@@ -89,15 +90,23 @@ namespace gw2b {
 
 				auto isEncrypted = entry.decryptionOffset != 0 || entry.bitsPerSymbol != 0x10;
 				if ( !isEncrypted ) {
+#if defined(_MSC_VER)
 					auto retval = allocate<char16>( size );
 
 					// Read UTF-16 data
 					stream.Read( retval, sizeof( char16 ) * size );
 
-					std::basic_string<char16> rawEntryString;
-					rawEntryString.assign( retval, size );
+                    str.string = wxString::Format( wxT( "%s" ), retval );
+#elif defined(__GNUC__) || defined(__GNUG__)
+                    auto retval = allocate<char16_t>( size );
 
-					str.string = wxString( rawEntryString );
+					// Read UTF-16 data
+					stream.Read( retval, sizeof( char16_t ) * size );
+
+                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
+                    std::string mbs = temp.to_bytes( retval );
+                    str.string = wxString( mbs.c_str( ) );
+#endif
 
 					freePointer( retval );
 

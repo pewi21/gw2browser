@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="Gw2Browser-linux.cbp">
+			<Depends filename="../extern/gw2DatTools/prj/gw2DatTools.cbp" />
+			<Depends filename="../extern/gw2formats/prj/gw2formats.cbp" />
+		</Project>
+		<Project filename="../extern/gw2DatTools/prj/gw2DatTools.cbp" />
+		<Project filename="../extern/gw2formats/prj/gw2formats.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

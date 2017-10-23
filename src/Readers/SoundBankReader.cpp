@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
-#include <gw2formats\pf\BankPackFile.h>
-#include <gw2formats\pf\AudioPackFile.h>
+#include <gw2formats/pf/BankPackFile.h>
+#include <gw2formats/pf/AudioPackFile.h>
 
 #include "SoundBankReader.h"
 
