@@ -18,6 +18,8 @@ see Tyria-3D code for this.
 * Since lod model use low-res texture, load only hi-res mesh?
 figure out how gw2 do it.
 
+* Finish the linux port.
+
 Further plans
 -------------
 
@@ -47,7 +49,5 @@ models could get an *export with textures* option.
 * Support for model LODs, collision mesh rendering, bone, animation and more.
 
 * Support for text manifest and text voice files.
-
-* Linux port.
 
 * Support Guild Wars (1) files.
