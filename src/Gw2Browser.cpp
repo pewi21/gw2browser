@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Gw2Browser.h"
 
-IMPLEMENT_APP( Gw2Browser );
+wxIMPLEMENT_APP( Gw2Browser );
 
 //============================================================================/
 
