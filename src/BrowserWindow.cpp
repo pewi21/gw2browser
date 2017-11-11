@@ -126,10 +126,10 @@ namespace gw2b {
 		findPanel->SetSizer( flex );
 
 		// Add the panes to the manager
-		// Find file panel
-		m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
 		// CategoryTree
 		m_uiManager.AddPane( m_catTree, wxAuiPaneInfo( ).Name( wxT( "CategoryTree" ) ).Caption( wxT( "File List" ) ).BestSize( wxSize( 170, 500 ) ).Left( ) );
+		// Find file panel
+		m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
 		// Log window
 		m_uiManager.AddPane( m_log, wxAuiPaneInfo( ).Name( wxT( "LogWindow" ) ).Caption( wxT( "Log" ) ).Bottom( ).Layer( 1 ).Position( 1 ).Hide( ) );
 		// Main content window
@@ -249,7 +249,7 @@ namespace gw2b {
 
 	wxFileName BrowserWindow::findDatIndex( ) {
 		wxStandardPathsBase& stdp = wxStandardPaths::Get( );
-		auto configPath = stdp.GetDataDir( );
+		auto configPath = stdp.GetUserDataDir( );
 
 		auto datPathCrc = ::compute_crc( INITIAL_CRC, m_datPath.char_str( ), m_datPath.Length( ) );
 		auto indexFileName = wxString::Format( wxT( "%x.idx" ), datPathCrc );
