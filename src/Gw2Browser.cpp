@@ -27,6 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //#include <vld.h>
 
+#if !defined(_WIN32) || !defined(_WIN64)
+    #include "Gw2Browser.xpm"
+#endif
+
 #include "BrowserWindow.h"
 
 #include "Gw2Browser.h"
@@ -64,7 +68,11 @@ bool Gw2Browser::OnInit( ) {
         // Set BrowserWindow to center of screen
         window->Centre( );
         // Set window icon
-        //window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
+#if defined(_WIN32) || defined(_WIN64)
+        window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
+#else
+        window->SetIcon( wxICON( Gw2Browser ) );
+#endif
 
         auto options = parseArguments( this->argc, this->argv );
         if ( !options.datPath.IsEmpty( ) ) {
