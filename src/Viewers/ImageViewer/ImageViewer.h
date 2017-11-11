@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIEWERS_IMAGEVIEWER_IMAGEVIEWER_H_INCLUDED
 
 #include <vector>
+#include <wx/tglbtn.h>
 
 #include "Viewer.h"
 
@@ -40,7 +41,7 @@ namespace gw2b {
 		wxImage                     m_image;
 		Array<wxWindowID>           m_toolbarButtonIds;
 		std::vector<wxBitmap>       m_toolbarButtonIcons;
-		Array<wxToolBarToolBase*>   m_toolbarButtons;
+		Array<wxToggleButton*>      m_toolbarButtons;
 	public:
 		ImageViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
 		virtual ~ImageViewer( );
@@ -58,7 +59,7 @@ namespace gw2b {
 			return reinterpret_cast<const ImageReader*>( this->reader( ) );
 		} // already asserted with a dynamic_cast
 	private:
-		wxToolBar* buildToolbar( );
+		wxPanel* buildToolbar( );
 		void onToolbarClickedEvt( wxCommandEvent& p_event );
 	}; // class ImageViewer
 

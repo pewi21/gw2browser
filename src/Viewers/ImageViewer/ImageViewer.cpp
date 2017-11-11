@@ -68,8 +68,9 @@ namespace gw2b {
 		}
 	}
 
-	wxToolBar* ImageViewer::buildToolbar( ) {
-		auto toolbar = new wxToolBar( this, wxID_ANY );
+	wxPanel* ImageViewer::buildToolbar( ) {
+        auto toolbar = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 170, 40 ), wxBORDER_SIMPLE );
+		auto flex = new wxFlexGridSizer( 1, 4, 0, 0 );
 		auto id = this->NewControlId( 4 );
 
 		// Add the newly generated IDs
@@ -77,8 +78,7 @@ namespace gw2b {
 			m_toolbarButtonIds.Add( id++ );
 		}
 
-		// Load all toolbar button icons
-		toolbar->SetToolBitmapSize( wxSize( 16, 16 ) );
+        // Load all toolbar button icons
 		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_red_png, data::toggle_red_png_size ) );
 		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_green_png, data::toggle_green_png_size ) );
 		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_blue_png, data::toggle_blue_png_size ) );
@@ -86,14 +86,16 @@ namespace gw2b {
 
 		// Toggle channel buttons
 		for ( uint i = 0; i < 4; i++ ) {
-			auto button = new wxToolBarToolBase( toolbar, m_toolbarButtonIds[i], wxEmptyString, m_toolbarButtonIcons[i], m_toolbarButtonIcons[i], wxITEM_CHECK );
-			toolbar->AddTool( button );
-			button->Toggle( true );
-			m_toolbarButtons.Add( button );
-			this->Bind( wxEVT_TOOL, &ImageViewer::onToolbarClickedEvt, this, m_toolbarButtonIds[i] );
+			wxToggleButton* button = new wxToggleButton( toolbar, m_toolbarButtonIds[i], wxEmptyString, wxDefaultPosition, wxSize( 25, 25 ) );
+            button->SetBitmapLabel( m_toolbarButtonIcons[i] );
+            button->SetValue( true );
+            flex->Add( button, 1, wxALL | wxALIGN_CENTRE, 5 );
+            m_toolbarButtons.Add( button );
+            this->Bind( wxEVT_TOGGLEBUTTON, &ImageViewer::onToolbarClickedEvt, this, m_toolbarButtonIds[i] );
 		}
 
-		toolbar->Realize( );
+		toolbar->SetSizer( flex );
+
 		return toolbar;
 	}
 
@@ -102,16 +104,16 @@ namespace gw2b {
 
 		// Toggle red
 		if ( id == m_toolbarButtonIds[0] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Red, m_toolbarButtons[0]->IsToggled( ) );
+			m_imageControl->ToggleChannel( ImageControl::IC_Red, m_toolbarButtons[0]->GetValue( ) );
 			// Toggle green
 		} else if ( id == m_toolbarButtonIds[1] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Green, m_toolbarButtons[1]->IsToggled( ) );
+			m_imageControl->ToggleChannel( ImageControl::IC_Green, m_toolbarButtons[1]->GetValue( ) );
 			// Toggle blue
 		} else if ( id == m_toolbarButtonIds[2] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Blue, m_toolbarButtons[2]->IsToggled( ) );
+			m_imageControl->ToggleChannel( ImageControl::IC_Blue, m_toolbarButtons[2]->GetValue( ) );
 			// Toggle alpha
 		} else if ( id == m_toolbarButtonIds[3] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Alpha, m_toolbarButtons[3]->IsToggled( ) );
+			m_imageControl->ToggleChannel( ImageControl::IC_Alpha, m_toolbarButtons[3]->GetValue( ) );
 		} else {
 			p_event.Skip( );
 		}
