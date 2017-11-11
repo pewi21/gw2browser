@@ -36,7 +36,7 @@ namespace gw2b {
 
 		wxBitmap loadPNG( const byte* p_data, size_t p_size ) {
 			wxMemoryInputStream stream( p_data, p_size );
-			return wxBitmap( stream, wxBITMAP_TYPE_PNG );
+			return wxBitmap( wxImage( stream, wxBITMAP_TYPE_PNG, -1), wxBITMAP_SCREEN_DEPTH );
 		}
 
 		//============================================================================/
