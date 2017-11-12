@@ -87,7 +87,7 @@ namespace gw2b {
 		// Toggle channel buttons
 		for ( uint i = 0; i < 4; i++ ) {
 			wxToggleButton* button = new wxToggleButton( toolbar, m_toolbarButtonIds[i], wxEmptyString, wxDefaultPosition, wxSize( 25, 25 ) );
-            button->SetBitmapLabel( m_toolbarButtonIcons[i] );
+            button->SetBitmap( m_toolbarButtonIcons[i] );
             button->SetValue( true );
             flex->Add( button, 1, wxALL | wxALIGN_CENTRE, 5 );
             m_toolbarButtons.Add( button );
