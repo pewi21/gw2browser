@@ -144,10 +144,10 @@
 			<Add option="-include wx_pch.h" />
 			<Add option="-DWX_PRECOMP" />
 			<Add option="-Wall" />
-			<Add directory="../../wxWidgets-3.1/include" />
+			<Add directory="../../wxWidgets-3.1.0/include" />
 		</Compiler>
 		<ResourceCompiler>
-			<Add directory="../../wxWidgets-3.1/include" />
+			<Add directory="../../wxWidgets-3.1.0/include" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />
