@@ -142,6 +142,8 @@ namespace gw2b {
 		/** Clear the viewer. */
 		void clear( );
 
+		bool initGL( );
+
 	private:
 		/** Helper method to create a viewer control to handle the given data type.
 		*  The caller is responsible for freeing the viewer.
@@ -188,7 +190,6 @@ namespace gw2b {
 		bool loadShader( );
 		void initShaderValue( );
 		void reloadShader( );
-		bool initGL( );
 		void onPaintEvt( wxPaintEvent& p_event );
 		void render( );
 		void drawModel( Shader* p_shader, const glm::mat4& p_trans );

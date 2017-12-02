@@ -145,8 +145,8 @@ namespace gw2b {
 		// Log window
 		m_uiManager.AddPane( m_log, wxAuiPaneInfo( ).Name( wxT( "LogWindow" ) ).Caption( wxT( "Log" ) ).Bottom( ).Layer( 1 ).Position( 1 ).Hide( ) );
 		// Main content window
-		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ).CenterPane( ).Hide( ) );
-		m_uiManager.AddPane( m_previewGLCanvas, wxAuiPaneInfo( ).Name( wxT( "gl_content" ) ).CenterPane( ).Hide( ) );
+		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ).Right( ) );
+		m_uiManager.AddPane( m_previewGLCanvas, wxAuiPaneInfo( ).Name( wxT( "gl_content" ) ).CenterPane( ) );
 
 		// Set default settings
 		this->SetDefaults( );
@@ -166,6 +166,11 @@ namespace gw2b {
 		this->Bind( wxEVT_TEXT_ENTER, &BrowserWindow::onEnterPressedInSrchBoxEvt, this );
 		this->Bind( wxEVT_AUI_PANE_CLOSE, &BrowserWindow::onPaneCloseEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &BrowserWindow::onCloseEvt, this );
+
+		Show( true );
+		Raise( );
+
+		m_previewGLCanvas->initGL( );
 	}
 
 	//============================================================================/
@@ -243,16 +248,12 @@ namespace gw2b {
 		case ANFT_Model:
 			if ( m_previewGLCanvas->previewFile( m_datFile, p_entry ) ) {
 				m_previewPanel->destroyViewer( );
-				m_uiManager.GetPane( wxT( "panel_content" ) ).Hide( );
-				m_uiManager.GetPane( wxT( "gl_content" ) ).Show( );
 			}
 			break;
 		default:
 			if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
 				// Clear the OpenGL canvas to reduce memory usuage
 				m_previewGLCanvas->clear( );
-				m_uiManager.GetPane( wxT( "panel_content" ) ).Show( );
-				m_uiManager.GetPane( wxT( "gl_content" ) ).Hide( );
 			}
 		}
 		m_uiManager.Update( );

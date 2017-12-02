@@ -58,17 +58,13 @@ namespace gw2b {
 		, m_reader( nullptr )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
-		// Initialize OpenGL
-		if ( !m_glInitialized ) {
-			if ( !this->initGL( ) ) {
-				throw exception::Exception( "Could not initialize OpenGL." );
-			}
-			m_glInitialized = true;
-
-			m_renderTimer = new RenderTimer( this );
-			m_renderTimer->start( );
+		// Create OpenGL context
+		m_glContext = new wxGLContext( this );
+		if ( !m_glContext ) {
+			throw exception::Exception( "Unable to create OpenGL context." );
 		}
 
+		m_renderTimer = new RenderTimer( this );
 		m_movementKeyTimer = new wxTimer( this );
 
 		// Hook up events
@@ -90,11 +86,6 @@ namespace gw2b {
 	}
 
 	bool PreviewGLCanvas::previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry ) {
-		if ( !m_glInitialized ) {
-			// Could not initialize OpenGL
-			return false;
-		}
-
 		this->clear( );
 
 		auto entryData = p_datFile.readFile( p_entry.mftEntry( ) );
@@ -132,6 +123,8 @@ namespace gw2b {
 			// Re-focus and re-render
 			this->focus( );
 			this->render( );
+			// Start render timer
+			m_renderTimer->start( );
 
 			return true;
 		}
@@ -140,6 +133,8 @@ namespace gw2b {
 	}
 
 	void PreviewGLCanvas::clear( ) {
+		m_renderTimer->Stop( );
+
 		m_model.clear( );
 		m_texture.clear( );
 
@@ -231,13 +226,8 @@ namespace gw2b {
 
 	bool PreviewGLCanvas::initGL( ) {
 		wxLogMessage( wxT( "Initializing OpenGL..." ) );
-		// Create OpenGL context
-		m_glContext = new wxGLContext( this );
-		if ( !m_glContext ) {
-			wxLogMessage( wxT( "Unable to create OpenGL context." ) );
-			return false;
-		}
-		m_glContext->SetCurrent( *this );
+
+		this->SetCurrent( *m_glContext );
 
 		// Initialize GLEW to setup the OpenGL Function pointers
 		glewExperimental = true;
@@ -251,6 +241,8 @@ namespace gw2b {
 		if ( !GLEW_VERSION_3_3 ) {
 			throw exception::Exception( "The PreviewGLCanvas required OpenGL 3.3 support." );
 		}
+
+		m_glInitialized = true;
 
 		wxLogMessage( wxT( "GLEW version %s" ), wxString( glewGetString( GLEW_VERSION ) ) );
 		wxLogMessage( wxT( "Running on %s from %s" ), wxString( glGetString( GL_RENDERER ) ), wxString( glGetString( GL_VENDOR ) ) );
@@ -267,8 +259,6 @@ namespace gw2b {
 
 		if ( !this->loadShader( ) ) {
 			this->clearShader( );
-			delete m_glContext;
-			return false;
 		}
 
 		// Initialize text renderer stuff
@@ -291,7 +281,7 @@ namespace gw2b {
 		m_camera.setCameraMode( Camera::CameraMode::ORBITALCAM );
 		m_camera.setMouseSensitivity( 0.5f * ( glm::pi<float>( ) / 180.0f ) );  // 0.5 degrees per pixel
 
-																				// Create framebuffer
+		// Create framebuffer
 		this->createFrameBuffer( );
 
 		//m_fpsStartTime = Time::now( );
@@ -306,12 +296,14 @@ namespace gw2b {
 	}
 
 	void PreviewGLCanvas::render( ) {
+	    if ( !m_glInitialized ) { return; }
 		// Get current time
 		auto currentTime = Time::now( );
 		// Get time elapsed
 		m_deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>( currentTime - m_oldstartTime ).count( );
 		m_oldstartTime = currentTime;
 
+		this->SetCurrent( *m_glContext );
 
 		// Update client size of wxGLCanvas
 		m_clientSize = this->GetClientSize( );
@@ -406,11 +398,11 @@ namespace gw2b {
 			m_fpsDiffTime = std::chrono::duration_cast<std::chrono::duration<double>>( currentTime - m_fpsStartTime ).count( );
 
 			if ( m_fpsDiffTime > 0.5 && m_frameCounter > 10 ) {
-			// Calculate frame per secound
-			m_fps = static_cast<float>( static_cast<double>( m_frameCounter ) / m_fpsDiffTime );
-			// Reset frame counter
-			m_frameCounter = 0;
-			m_fpsStartTime = Time::now( );
+				// Calculate frame per secound
+				m_fps = static_cast<float>( static_cast<double>( m_frameCounter ) / m_fpsDiffTime );
+				// Reset frame counter
+				m_frameCounter = 0;
+				m_fpsStartTime = Time::now( );
 			}
 			// Draw fps meter to screen
 			m_text->drawText( wxString::Format( wxT( "%.2f fps" ), m_fps ), 0.0f, m_clientSize.y - 48.0f, 1.0f, glm::vec3( 1.0f ) );
@@ -757,6 +749,11 @@ namespace gw2b {
 	}
 
 	void PreviewGLCanvas::onResize( wxSizeEvent& evt ) {
+		if ( !IsShownOnScreen( ) ) { return; }
+		if ( !m_glInitialized ) { return; }
+
+		this->SetCurrent( *m_glContext );
+
 		// Check if framebuffer is already create. If found, delete it.
 		if ( m_framebuffer ) {
 			m_framebuffer.reset( );
