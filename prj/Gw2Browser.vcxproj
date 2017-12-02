@@ -59,7 +59,6 @@
     <ClInclude Include="..\src\Util\Misc.h" />
     <ClInclude Include="..\src\version.h" />
     <ClInclude Include="..\src\Viewer.h" />
-    <ClInclude Include="..\src\ViewerGLCanvas.h" />
     <ClInclude Include="..\src\Viewers\BinaryViewer\BinaryViewer.h" />
     <ClInclude Include="..\src\Viewers\BinaryViewer\HexControl.h" />
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageControl.h" />
@@ -119,7 +118,6 @@
     <ClCompile Include="..\src\Tasks\WriteIndexTask.cpp" />
     <ClCompile Include="..\src\Util\Misc.cpp" />
     <ClCompile Include="..\src\Viewer.cpp" />
-    <ClCompile Include="..\src\ViewerGLCanvas.cpp" />
     <ClCompile Include="..\src\Viewers\BinaryViewer\BinaryViewer.cpp" />
     <ClCompile Include="..\src\Viewers\BinaryViewer\HexControl.cpp" />
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageControl.cpp" />

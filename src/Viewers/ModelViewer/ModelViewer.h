@@ -4,8 +4,7 @@
 */
 
 /*
-Copyright (C) 2015-2017 Khral Steelforge <https://github.com/kytulendu>
-Copyright (C) 2012 Rhoot <https://github.com/rhoot>
+Copyright (C) 2017 Khral Steelforge <https://github.com/kytulendu>
 
 This file is part of Gw2Browser.
 
@@ -28,153 +27,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 #define VIEWERS_MODELVIEWER_MODELVIEWER_H_INCLUDED
 
-#include <chrono>
-#include <vector>
-
-#include "Camera.h"
-#include "FrameBuffer.h"
-#include "Light.h"
-#include "LightBox.h"
-#include "Model.h"
-#include "ShaderManager.h"
-#include "Text2D.h"
-#include "TextureManager.h"
-
-#include "ViewerGLCanvas.h"
-#include "Readers/MapReader.h"
-#include "Readers/ModelReader.h"
-
 namespace gw2b {
 
-	class ModelViewer;
-	class RenderTimer : public wxTimer {
-		ModelViewer* canvas;
-	public:
-		RenderTimer( ModelViewer* canvas );
-		void Notify( );
-		void start( );
-	}; // class RenderTimer
-
-	class ModelViewer : public ViewerGLCanvas {
-		typedef std::chrono::high_resolution_clock Time;
-
-		wxGLContext*				m_glContext;
-		RenderTimer*				m_renderTimer;
-		wxTimer*					m_movementKeyTimer;
-
-		wxSize						m_clientSize;
-
-		// Internal status
-		bool						m_isViewingMap = false;				// Is we are viewing map?
-		bool						m_glInitialized = false;			// Is OpenGL is initialized?
-		bool						m_statusText = true;				// Toggle display text
-		bool						m_statusWireframe = false;			// Toggle wireframe rendering
-		bool						m_statusCullFace = false;			// Cull triangles which normal is not towards the camera
-		bool						m_statusTextured = true;			// Toggle texture
-		bool						m_statusNormalMapping = true;		// Toggle normal maping
-		bool						m_statusLighting = true;			// Toggle lighting
-		bool						m_statusAntiAlising = true;			// Toggle anti alising
-		bool						m_statusRenderLightSource = false;	// Toggle visualization of light source
-		bool						m_statusVisualizeNormal = false;	// Toggle visualization of normal
-		bool						m_statusVisualizeZbuffer = false;	// Toggle visualization of z-buffer
-		bool						m_cameraMode = false;				// Toggle camera mode
-
-		// Framebuffer
-		std::unique_ptr<FrameBuffer> m_framebuffer;
-
-		// Model
-		std::vector<std::unique_ptr<Model>>	m_model;
-
-		// Textures
-		TextureManager				m_texture;
-
-		// Light
-		Light						m_light;
-		std::unique_ptr<LightBox>	m_lightBox;			// For render cube at light position
-
-		// Shader stuff
-		// List of shaders :
-		// - main
-		// - framebuffer
-		// - normal_visualizer
-		// - z_visualizer
-		ShaderManager				m_shaders;
-
-		// Camera
-		Camera                      m_camera;
-		wxPoint                     m_lastMousePos;
-		float                       m_minDistance;
-		float                       m_maxDistance;
-
-		// Text rendering stuff
-		std::unique_ptr<Text2D>		m_text;
-
-		//float angle = 0.0f;
-
-		// Movement key related
-		float						m_deltaTime;
-		Time::time_point			m_oldstartTime;
-
-		// fps meter
-		//Time::time_point			m_fpsStartTime;
-		//double					m_fpsDiffTime = 0.0;
-		//int						m_frameCounter = 0;
-		//float						m_fps = 0.0f;
+	class ModelViewer {
 
 	public:
-		/** Constructor. Creates the model viewer with the given parent.
-		*  \param[in]  p_parent     Parent of the control.
-		*  \param[in]  p_pos        Optional position of the control.
-		*  \param[in]  p_size       Optional size of the control. */
-		ModelViewer( wxWindow* p_parent, const int* p_attrib, const wxPoint& p_pos, const wxSize& p_size, long p_style, DatFile& p_datFile );
+		/** Constructor. */
+		ModelViewer( );
 		/** Destructor. */
 		virtual ~ModelViewer( );
-
-		/** Clear the viewer. */
-		virtual void clear( ) override;
-		virtual void setReader( FileReader* p_reader ) override;
-		/** Gets the model reader containing the data displayed by this viewer.
-		*  \return ModelReader*    Reader containing the data. */
-		ModelReader* modelReader( ) {
-			return reinterpret_cast<ModelReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		/** Gets the model reader containing the data displayed by this viewer.
-		*  \return ModelReader*    Reader containing the data. */
-		const ModelReader* modelReader( ) const {
-			return reinterpret_cast<const ModelReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		/** Gets the map reader containing the data displayed by this viewer.
-		*  \return MapReader*    Reader containing the data. */
-		MapReader* mapReader( ) {
-			return reinterpret_cast<MapReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		/** Gets the map reader containing the data displayed by this viewer.
-		*  \return MapReader*    Reader containing the data. */
-		const MapReader* mapReader( ) const {
-			return reinterpret_cast<const MapReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-
-	private:
-		void clearShader( );
-		bool isLightmapExcluded( const uint32& p_id );
-		void loadModel( const GW2Model& p_model );
-		bool loadShader( );
-		void initShaderValue( );
-		void reloadShader( );
-		bool initGL( );
-		void onPaintEvt( wxPaintEvent& p_event );
-		void render( );
-		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
-		void displayStatusText( );
-		void updateMatrices( );
-		void focus( );
-		void createFrameBuffer( );
-		void onMotionEvt( wxMouseEvent& p_event );
-		void onMouseWheelEvt( wxMouseEvent& p_event );
-		void onKeyDownEvt( wxKeyEvent& p_event );
-		void onMovementKeyTimerEvt( wxTimerEvent& p_event );
-		void onClose( wxCloseEvent& evt );
-		void onResize( wxSizeEvent& evt );
 
 	}; // class ModelViewer
 

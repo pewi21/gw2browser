@@ -252,8 +252,6 @@
 		<Unit filename="../src/Util/Misc.h" />
 		<Unit filename="../src/Viewer.cpp" />
 		<Unit filename="../src/Viewer.h" />
-		<Unit filename="../src/ViewerGLCanvas.cpp" />
-		<Unit filename="../src/ViewerGLCanvas.h" />
 		<Unit filename="../src/Viewers/BinaryViewer/BinaryViewer.cpp" />
 		<Unit filename="../src/Viewers/BinaryViewer/BinaryViewer.h" />
 		<Unit filename="../src/Viewers/BinaryViewer/HexControl.cpp" />

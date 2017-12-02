@@ -36,12 +36,11 @@ namespace gw2b {
 
 	class TextureManager {
 
-		DatFile&                    m_datFile;
 		std::map<uint32, Texture2D*> m_texture;
 
 	public:
 		/** Constructor. */
-		TextureManager( DatFile& p_datFile );
+		TextureManager( );
 		/** Destructor. */
 		~TextureManager( );
 
@@ -50,7 +49,7 @@ namespace gw2b {
 
 		/** Load a texture.
 		*  \param[in]  p_id			   File id of the texture to load. */
-		bool load( const uint32 p_id );
+		bool load( DatFile& p_datFile, const uint32 p_id );
 		/** Find and get texture by texture file id.
 		*  \param[in]  p_id			   File id of the texture to get. */
 		Texture2D* get( const uint32 p_id );

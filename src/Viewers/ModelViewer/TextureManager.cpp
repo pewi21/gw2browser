@@ -32,8 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	TextureManager::TextureManager( DatFile& p_datFile )
-		: m_datFile( p_datFile ) {
+	TextureManager::TextureManager( ) {
 
 	}
 
@@ -48,11 +47,11 @@ namespace gw2b {
 		m_texture.clear( );
 	}
 
-	bool TextureManager::load( const uint32 p_id ) {
+	bool TextureManager::load( DatFile& p_datFile, const uint32 p_id ) {
 		auto it = m_texture.find( p_id );
 		if ( it == m_texture.end( ) ) {
 			try {
-				m_texture.insert( std::pair<uint32, Texture2D*>( p_id, new Texture2D( m_datFile, p_id ) ) );
+				m_texture.insert( std::pair<uint32, Texture2D*>( p_id, new Texture2D( p_datFile, p_id ) ) );
 			} catch ( const exception::Exception& err ) {
 				wxLogMessage( wxT( "Failed to load texture %d : %s" ), p_id, wxString( err.what( ) ) );
 				return false;

@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "EventId.h"
 #include "CategoryTree.h"
 #include "Exporter.h"
+#include "Exception.h"
 #include "FileReader.h"
 #include "ProgressStatusBar.h"
 #include "PreviewPanel.h"
@@ -98,6 +99,12 @@ namespace gw2b {
 		m_progress = new ProgressStatusBar( this );
 		this->SetStatusBar( m_progress );
 
+		// Text control use for loging
+		m_log = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 600, 70 ), wxTE_MULTILINE );
+		// Make log window read only
+		m_log->SetEditable( false );
+		m_logTarget = wxLog::SetActiveTarget( new wxLogTextCtrl( m_log ) );
+
 		// Category tree
 		m_catTree = new CategoryTree( this );
 		m_catTree->setDatIndex( m_index );
@@ -107,13 +114,18 @@ namespace gw2b {
 		m_previewPanel = new PreviewPanel( this );
 
 		// Model Viewer
-		m_previewGLCanvas = new PreviewGLCanvas( this );
+		const int attrib[] = {
+			WX_GL_RGBA,
+			WX_GL_DOUBLEBUFFER,
+			WX_GL_DEPTH_SIZE, 16,
+			0
+		};
 
-		// Text control use for loging
-		m_log = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 600, 70 ), wxTE_MULTILINE );
-		// Make log window read only
-		m_log->SetEditable( false );
-		m_logTarget = wxLog::SetActiveTarget( new wxLogTextCtrl( m_log ) );
+		try {
+			m_previewGLCanvas = new PreviewGLCanvas( this, attrib );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxString( err.what( ) ) );
+		}
 
 		// Find panel
 		auto findPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 170, 50 ), wxBORDER_SIMPLE | wxTAB_TRAVERSAL );
@@ -237,7 +249,8 @@ namespace gw2b {
 			break;
 		default:
 			if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
-				m_previewGLCanvas->destroyViewer( );
+				// Clear the OpenGL canvas to reduce memory usuage
+				m_previewGLCanvas->clear( );
 				m_uiManager.GetPane( wxT( "panel_content" ) ).Show( );
 				m_uiManager.GetPane( wxT( "gl_content" ) ).Hide( );
 			}
