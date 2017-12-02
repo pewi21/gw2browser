@@ -58,8 +58,11 @@ namespace gw2b {
 		, m_reader( nullptr )
 		, m_lastMousePos( std::numeric_limits<int>::min( ), std::numeric_limits<int>::min( ) ) {
 
+		wxGLContextAttrs contextAttr;
+		contextAttr.PlatformDefaults( ).CoreProfile( ).OGLVersion( 3, 3 ).EndList( );
+
 		// Create OpenGL context
-		m_glContext = new wxGLContext( this );
+		m_glContext = new wxGLContext( this, nullptr, &contextAttr );
 		if ( !m_glContext ) {
 			throw exception::Exception( "Unable to create OpenGL context." );
 		}
@@ -290,13 +293,23 @@ namespace gw2b {
 	}
 
 	void PreviewGLCanvas::onPaintEvt( wxPaintEvent& p_event ) {
+		// This is a dummy, to avoid an endless succession of paint messages.
+		// OnPaint handlers must always create a wxPaintDC.
 		wxPaintDC dc( this );
+
+		// Avoid painting when we have not yet a size
+		if ( m_clientSize.y < 1 || !m_glInitialized ) {
+			return;
+		}
+
+		// This should not be needed, while we have only one canvas
+		this->SetCurrent( *m_glContext );
 
 		this->render( );
 	}
 
 	void PreviewGLCanvas::render( ) {
-	    if ( !m_glInitialized ) { return; }
+		if ( !m_glInitialized ) { return; }
 		// Get current time
 		auto currentTime = Time::now( );
 		// Get time elapsed
@@ -748,21 +761,38 @@ namespace gw2b {
 		evt.Skip( );
 	}
 
+	//Note:
+	// You may wonder why OpenGL initialization was not done at wxGLCanvas ctor.
+	// The reason is due to GTK+/X11 working asynchronously, we can't call
+	// SetCurrent() before the window is shown on screen (GTK+ doc's say that the
+	// window must be realized first).
+	// In wxGTK, window creation and sizing requires several size-events. At least
+	// one of them happens after GTK+ has notified the realization. We use this
+	// circumstance and do initialization then.
+
 	void PreviewGLCanvas::onResize( wxSizeEvent& evt ) {
+		evt.Skip( );
+
+		// If this window is not fully initialized, dismiss this event
 		if ( !IsShownOnScreen( ) ) { return; }
 		if ( !m_glInitialized ) { return; }
 
+		// This is normally only necessary if there is more than one wxGLCanvas
+		// or more than one wxGLContext in the application.
 		this->SetCurrent( *m_glContext );
+
+		// Update client size of wxGLCanvas.
+		m_clientSize = this->GetClientSize( );
 
 		// Check if framebuffer is already create. If found, delete it.
 		if ( m_framebuffer ) {
 			m_framebuffer.reset( );
 		}
 
-		// Update client size of wxGLCanvas.
-		m_clientSize = this->GetClientSize( );
-
 		this->createFrameBuffer( );
+
+		// Generate paint event without erasing the background.
+		Refresh( false );
 	}
 
 }; // namespace gw2b

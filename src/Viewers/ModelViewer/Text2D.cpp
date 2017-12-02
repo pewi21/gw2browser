@@ -37,8 +37,7 @@ namespace gw2b {
 		GLuint Advance;			// Horizontal offset to advance to next glyph
 	};
 
-	Text2D::Text2D( const char* p_fontfile, const FT_UInt p_fontsize )
-		: m_ClientSize( wxSize( 0, 0 ) ) {
+	Text2D::Text2D( const char* p_fontfile, const FT_UInt p_fontsize ) {
 		// Load font
 		if ( !loadFont( m_characterTextureMap, p_fontfile, p_fontsize ) ) {
 			throw exception::Exception( "Failed to load font." );

@@ -77,6 +77,9 @@ namespace gw2b {
 		/** Opens the preview pane with the given entry's contents in it.
 		*  \param[in]  p_entry  entry to view. */
 		void viewEntry( const DatIndexEntry& p_entry );
+		/** Check if OpenGL context can be create. */
+		bool OGLAvailable( );
+
 	private:
 		/** Performs the given task periodically, until it is done.
 		*  \param[in]  p_task   Task to perform. Ownership is taken.

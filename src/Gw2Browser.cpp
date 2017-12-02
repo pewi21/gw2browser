@@ -58,28 +58,31 @@ namespace {
 //============================================================================/
 
 bool Gw2Browser::OnInit( ) {
-    bool wxsOK = true;
-    wxInitAllImageHandlers( );
-    if ( wxsOK ) {
-        auto window = new gw2b::BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
-        window->Show( );
-        SetTopWindow( window );
-
-        // Set BrowserWindow to center of screen
-        window->Centre( );
-        // Set window icon
+    // Create the main application window
+    auto window = new gw2b::BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
+    // As of October 2015 GTK+ needs the frame to be shown before we call SetCurrent()
+    window->Show( true );
+    SetTopWindow( window );
+    // Set BrowserWindow to center of screen
+    window->Centre( );
+    // Set window icon
 #if defined(_WIN32) || defined(_WIN64)
-        window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
+    window->SetIcon( wxICON( aaaaGW2BROWSER_ICON ) );
 #else
-        window->SetIcon( wxICON( Gw2Browser ) );
+    window->SetIcon( wxICON( Gw2Browser ) );
 #endif
 
-        auto options = parseArguments( this->argc, this->argv );
-        if ( !options.datPath.IsEmpty( ) ) {
-            window->openFile( options.datPath );
-        }
+    // Exit if the required visual attributes or OGL context can't be created
+    if ( ! window->OGLAvailable( ) ){
+        return false;
     }
-    return wxsOK;
+
+    auto options = parseArguments( this->argc, this->argv );
+    if ( !options.datPath.IsEmpty( ) ) {
+        window->openFile( options.datPath );
+    }
+
+    return true;
 }
 
 //============================================================================/

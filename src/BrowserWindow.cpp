@@ -57,6 +57,7 @@ namespace gw2b {
 		, m_catTree( nullptr )
 		, m_previewPanel( nullptr )
 		, m_previewGLCanvas( nullptr ) {
+		wxInitAllImageHandlers( );
 		// Notify wxAUI which frame to use
 		m_uiManager.SetManagedWindow( this );
 
@@ -145,7 +146,7 @@ namespace gw2b {
 		// Log window
 		m_uiManager.AddPane( m_log, wxAuiPaneInfo( ).Name( wxT( "LogWindow" ) ).Caption( wxT( "Log" ) ).Bottom( ).Layer( 1 ).Position( 1 ).Hide( ) );
 		// Main content window
-		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ).Right( ) );
+		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ) );
 		m_uiManager.AddPane( m_previewGLCanvas, wxAuiPaneInfo( ).Name( wxT( "gl_content" ) ).CenterPane( ) );
 
 		// Set default settings
@@ -257,6 +258,18 @@ namespace gw2b {
 			}
 		}
 		m_uiManager.Update( );
+	}
+
+	//============================================================================/
+
+	bool BrowserWindow::OGLAvailable( ) {
+		//Test if visual attributes were accepted.
+		if ( !m_previewGLCanvas ) {
+			return false;
+		}
+
+		//Test if OGL context could be created.
+		return m_previewGLCanvas->OglCtxAvailable( );
 	}
 
 	//============================================================================/

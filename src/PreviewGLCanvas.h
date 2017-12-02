@@ -144,6 +144,9 @@ namespace gw2b {
 
 		bool initGL( );
 
+		/** Used just to know if we must end the program now because OpenGL 3.3 is not available. */
+		bool OglCtxAvailable( ) { return m_glContext != NULL; }
+
 	private:
 		/** Helper method to create a viewer control to handle the given data type.
 		*  The caller is responsible for freeing the viewer.
