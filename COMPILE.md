@@ -31,7 +31,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 * [mpg123](https://www.mpg123.de)
 * [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
-* [wxWidgets](http://wxwidgets.org/)
+* [wxWidgets 3.1.0 or higher](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) *Included*
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools) *Included*
 * [gw2formats](https://github.com/kytulendu/gw2formats) *Included*
@@ -71,7 +71,7 @@ extract it to the same directory that Gw2Browser directory is in. Or download th
 and build it your self.
 
 * Download wxWidgets source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose wxWidgets-3.0.3.1.zip or wxWidgets-3.0.3.1.7z and extract it to the same directory
+choose wxWidgets-3.1.0.zip or wxWidgets-3.1.0.7z and extract it to the same directory
 that Gw2Browser directory is in. Or download and use the binaries.
 
 **Note:** The library and source code directory must be in directory like this.
@@ -93,7 +93,7 @@ The ROOT is the directory you created in Getting the source code.
          |    +--lib
          |    +--...
          |
-         +--wxWidgets-3.0.3.1
+         +--wxWidgets-3.1.0
               +--include
               +--src
               +--...
@@ -101,7 +101,7 @@ The ROOT is the directory you created in Getting the source code.
 #### Windows, building with Visual Studio:
 
 * Compile wxWidgets using solution file corresponding with your VS version in directory
-wxWidgets-3.0.3.1/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
+wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
 and VS2015 is wx_vc14.sln, if there is no corresponding solution file for your newer VS,
 just open the higest version of solution file available.
 
@@ -178,7 +178,7 @@ It will look some thing like this.
 
 * Build wxWidgets.
 
-1. Change directory of Git Bash window to wxWidgets-3.0.3.1/build/msw and use these command.
+1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command.
 
         mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug
 
@@ -282,6 +282,11 @@ For this guide, I was using Kubuntu, but this guide will work with any Linux dis
 
 #### Getting the required library and tools:
 
+* Download wxWidgets 3.1 source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
+choose wxWidgets-3.1.0.zip or wxWidgets-3.1.0.7z and extract it to somewhere, for example, your home directory. If your system have wxWidgets 3.1 package, you can skip this and use a command like below command to install wxWidgets 3.1.
+
+        sudo apt install libwxbase3.1-dev libwxgtk3.1-dev
+
 * Open a terminal window, the directory would be in your home directory.
 * Use these command to install the required package.
 
@@ -291,7 +296,7 @@ Incase you haven't have git installed use this command.
 
 Use this command to install required library and tools.
 
-        sudo apt install build-essentials codeblocks libwebp-dev libglew-dev libglew2.0 libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libwxbase3.0-dev libwxgtk3.0-dev libfreetype6 libfreetype6-dev
+        sudo apt install build-essential codeblocks libwebp-dev libglew-dev libglew2.0 libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev
 
 #### Getting the source code:
 
@@ -301,6 +306,37 @@ Use this command to install required library and tools.
 
 This will download Gw2Browser and all included library source code, although we won't use most of the library that was included in the repo.
 
+#### Compiling wxWidgets:
+
+* Open a terminal window and change directory to wxWidgets source code directory you have extracted.
+* Make a directory using this command
+
+        mkdir gtk-build
+
+* Change directory to the directory you make previously, in this case, gtk-build directory.
+
+        cd gtk-build
+
+* Use this command to config the build script and wait for it to finish.
+
+        ../configure --enable-unicode --enable-debug --with-opengl
+
+* Use this command to compile wxWidgets source code.
+
+        make
+
+or
+
+        make -j 4
+
+* When finished, use this command to install wxWidgets
+
+        sudo make install
+
+after that use this command
+
+        sudo ldconfig
+
 #### Compiling the source:
 
-* Open solution file Gw2Browser.workspace in Gw2Browser/prj/ with CodeBlocks. Then, compile it.
+* Open solution file Gw2Browser-linux.workspace in Gw2Browser/prj/ with CodeBlocks. Then, compile it.
