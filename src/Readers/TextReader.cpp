@@ -44,7 +44,9 @@ namespace gw2b {
 
 		wxString str;
 		for ( uint i = 0; i < size; i++ ) {
-			str << data[i];
+            if ( isprint( data[i] ) || iscntrl( data[i] ) ) {
+                str << data[i];
+            }
 		}
 
 		return str;
