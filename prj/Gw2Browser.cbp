@@ -51,6 +51,8 @@
 					<Add library="libwxtiffd.a" />
 					<Add library="libwxzlibd.a" />
 					<Add library="libwxjpegd.a" />
+					<Add library="libversion.a" />
+					<Add library="libshlwapi.a" />
 					<Add library="libcomctl32.a" />
 					<Add library="libole32.a" />
 					<Add library="liboleaut32.a" />
@@ -115,6 +117,8 @@
 					<Add library="libwxtiff.a" />
 					<Add library="libwxzlib.a" />
 					<Add library="libwxjpeg.a" />
+					<Add library="libversion.a" />
+					<Add library="libshlwapi.a" />
 					<Add library="libcomctl32.a" />
 					<Add library="libole32.a" />
 					<Add library="liboleaut32.a" />
@@ -159,8 +163,6 @@
 			<Add library="libcomdlg32.a" />
 			<Add library="libadvapi32.a" />
 			<Add library="libshell32.a" />
-			<Add library="libshlwapi.a" />
-			<Add library="libversion.a" />
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
