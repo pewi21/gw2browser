@@ -47,13 +47,12 @@ namespace gw2b {
 		std::vector<wxString> eula;
 		if ( size ) {
 			for ( size_t i = 0; i < size; i++ ) {
-				wxString str;
 #if defined(_MSC_VER)
-				str = wxString::Format( wxT( "%s" ), chunk->languages[i].text.data( ) );
+				wxString str( wxString::Format( wxT( "%s" ), chunk->languages[i].text.data( ) ) );
 #elif defined(__GNUC__) || defined(__GNUG__)
 				std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
 				std::string mbs = temp.to_bytes( chunk->languages[i].text.data( ) );
-				str = wxString( mbs.c_str( ) );
+				wxString str( mbs.c_str(), wxConvUTF8 );
 #endif
 				eula.push_back( str );
 			}
