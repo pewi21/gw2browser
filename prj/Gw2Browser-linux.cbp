@@ -7,9 +7,11 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="../bin/Gw2Browserd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/" />
 				<Option object_output="../obj/Debug/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters="Gw2.dat" />
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
@@ -24,8 +26,8 @@
 					<Add directory="../src" />
 				</Compiler>
 				<Linker>
-                    <Add library="libgomp.a" />
-                    <Add library="libGL.a" />
+					<Add library="libgomp.a" />
+					<Add library="libGL.a" />
 					<Add library="libGLEW.a" />
 					<Add library="libopenal.a" />
 					<Add library="libmpg123.a" />
@@ -41,9 +43,11 @@
 			</Target>
 			<Target title="Release">
 				<Option output="../bin/Gw2Browser" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/" />
 				<Option object_output="../obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters="Gw2.dat" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
@@ -58,8 +62,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-                    <Add library="libgomp.a" />
-                    <Add library="libGL.a" />
+					<Add library="libgomp.a" />
+					<Add library="libGL.a" />
 					<Add library="libGLEW.a" />
 					<Add library="libopenal.a" />
 					<Add library="libmpg123.a" />
@@ -76,7 +80,7 @@
 		</Build>
 		<Compiler>
 			<Add option="`wx-config --cflags`" />
-            <Add option="`freetype-config --cflags`" />
+			<Add option="`freetype-config --cflags`" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-include wx_pch.h" />
 			<Add option="-DWX_PRECOMP" />
@@ -84,7 +88,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="`wx-config --libs gl,aui,adv,core,base`" />
-            <Add option="`freetype-config --libs`" />
+			<Add option="`freetype-config --libs`" />
 		</Linker>
 		<Unit filename="../CHANGE.md" />
 		<Unit filename="../COPYING.txt" />
@@ -122,7 +126,7 @@
 		<Unit filename="../src/Exporter.h" />
 		<Unit filename="../src/FileReader.cpp" />
 		<Unit filename="../src/FileReader.h" />
-        <Unit filename="../src/Gw2Browser.cpp" />
+		<Unit filename="../src/Gw2Browser.cpp" />
 		<Unit filename="../src/Gw2Browser.h" />
 		<Unit filename="../src/Identifiers/BaseIdentifier.h" />
 		<Unit filename="../src/Imported/crc.cpp" />
@@ -170,8 +174,6 @@
 		<Unit filename="../src/Util/Misc.h" />
 		<Unit filename="../src/Viewer.cpp" />
 		<Unit filename="../src/Viewer.h" />
-		<Unit filename="../src/ViewerGLCanvas.cpp" />
-		<Unit filename="../src/ViewerGLCanvas.h" />
 		<Unit filename="../src/Viewers/BinaryViewer/BinaryViewer.cpp" />
 		<Unit filename="../src/Viewers/BinaryViewer/BinaryViewer.h" />
 		<Unit filename="../src/Viewers/BinaryViewer/HexControl.cpp" />
