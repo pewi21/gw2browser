@@ -292,6 +292,10 @@ namespace gw2b {
 		return true;
 	}
 
+	void PreviewGLCanvas::shown( bool p_status ) {
+        m_isShown = p_status;
+	}
+
 	void PreviewGLCanvas::onPaintEvt( wxPaintEvent& p_event ) {
 		// This is a dummy, to avoid an endless succession of paint messages.
 		// OnPaint handlers must always create a wxPaintDC.
@@ -302,19 +306,24 @@ namespace gw2b {
 			return;
 		}
 
-		// This should not be needed, while we have only one canvas
-		this->SetCurrent( *m_glContext );
-
 		this->render( );
 	}
 
 	void PreviewGLCanvas::render( ) {
-		if ( !m_glInitialized ) { return; }
-		// Get current time
+	    // Get current time
 		auto currentTime = Time::now( );
 		// Get time elapsed
 		m_deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>( currentTime - m_oldstartTime ).count( );
 		m_oldstartTime = currentTime;
+
+		if ( !m_glInitialized ) {
+                return;
+        }
+
+        // Make sure OpenGL canvas is visible before calling SetCurrent()
+        if ( !m_isShown ) {
+                return;
+        }
 
 		this->SetCurrent( *m_glContext );
 
@@ -395,7 +404,7 @@ namespace gw2b {
 		glClear( GL_COLOR_BUFFER_BIT );
 		glDisable( GL_DEPTH_TEST ); // We don't care about depth information when rendering a single quad
 
-									// Use the hdr framebuffer shader
+		// Use the hdr framebuffer shader
 		m_shaders.get( "framebuffer" )->use( );
 
 		// Draw the frame buffer
@@ -774,8 +783,14 @@ namespace gw2b {
 		evt.Skip( );
 
 		// If this window is not fully initialized, dismiss this event
-		if ( !IsShownOnScreen( ) ) { return; }
-		if ( !m_glInitialized ) { return; }
+		if ( !m_glInitialized ) {
+                return;
+        }
+
+		// Make sure OpenGL canvas is visible before calling SetCurrent()
+        if ( !m_isShown ) {
+                return;
+        }
 
 		// This is normally only necessary if there is more than one wxGLCanvas
 		// or more than one wxGLContext in the application.

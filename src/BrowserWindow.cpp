@@ -57,6 +57,7 @@ namespace gw2b {
 		, m_catTree( nullptr )
 		, m_previewPanel( nullptr )
 		, m_previewGLCanvas( nullptr ) {
+        // Initializes all available image handlers
 		wxInitAllImageHandlers( );
 		// Notify wxAUI which frame to use
 		m_uiManager.SetManagedWindow( this );
@@ -111,23 +112,6 @@ namespace gw2b {
 		m_catTree->setDatIndex( m_index );
 		m_catTree->addListener( this );
 
-		// Preview panel
-		m_previewPanel = new PreviewPanel( this );
-
-		// Model Viewer
-		const int attrib[] = {
-			WX_GL_RGBA,
-			WX_GL_DOUBLEBUFFER,
-			WX_GL_DEPTH_SIZE, 16,
-			0
-		};
-
-		try {
-			m_previewGLCanvas = new PreviewGLCanvas( this, attrib );
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxString( err.what( ) ) );
-		}
-
 		// Find panel
 		auto findPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 170, 50 ), wxBORDER_SIMPLE | wxTAB_TRAVERSAL );
 		auto flex = new wxFlexGridSizer( 1, 2, 0, 0 );
@@ -145,9 +129,33 @@ namespace gw2b {
 		m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
 		// Log window
 		m_uiManager.AddPane( m_log, wxAuiPaneInfo( ).Name( wxT( "LogWindow" ) ).Caption( wxT( "Log" ) ).Bottom( ).Layer( 1 ).Position( 1 ).Hide( ) );
-		// Main content window
-		m_uiManager.AddPane( m_previewPanel, wxAuiPaneInfo( ).Name( wxT( "panel_content" ) ) );
-		m_uiManager.AddPane( m_previewGLCanvas, wxAuiPaneInfo( ).Name( wxT( "gl_content" ) ).CenterPane( ) );
+
+		// Main content notebook
+
+        // Create the notebook
+        m_notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, GetClientSize( ), wxAUI_NB_TOP | wxNO_BORDER );
+
+        // Preview panel
+		m_previewPanel = new PreviewPanel( m_notebook );
+
+		// Model Viewer
+		const int attrib[] = {
+			WX_GL_RGBA,
+			WX_GL_DOUBLEBUFFER,
+			WX_GL_DEPTH_SIZE, 16,
+			0
+		};
+		try {
+			m_previewGLCanvas = new PreviewGLCanvas( m_notebook, attrib );
+		} catch ( const exception::Exception& err ) {
+			wxLogMessage( wxString( err.what( ) ) );
+		}
+
+        m_notebook->AddPage( m_previewGLCanvas, wxT( "3D File Viewer" ), true );
+        m_notebook->AddPage( m_previewPanel, wxT( "File Viewer" ), false );
+
+        m_uiManager.AddPane( m_notebook, wxAuiPaneInfo( ).Name( wxT( "notebook_content" ) ).CenterPane( ).PaneBorder( false ) );
+        m_uiManager.GetPane( wxT("notebook_content" ) ).Show( );
 
 		// Set default settings
 		this->SetDefaults( );
@@ -167,6 +175,7 @@ namespace gw2b {
 		this->Bind( wxEVT_TEXT_ENTER, &BrowserWindow::onEnterPressedInSrchBoxEvt, this );
 		this->Bind( wxEVT_AUI_PANE_CLOSE, &BrowserWindow::onPaneCloseEvt, this );
 		this->Bind( wxEVT_CLOSE_WINDOW, &BrowserWindow::onCloseEvt, this );
+        this->Bind( wxEVT_AUINOTEBOOK_PAGE_CHANGING, &BrowserWindow::onNBPageChangingEvt, this );
 
 		Show( true );
 		Raise( );
@@ -247,13 +256,15 @@ namespace gw2b {
 		switch ( p_entry.fileType( ) ) {
 		//case ANFT_MapParam:
 		case ANFT_Model:
+            m_notebook->SetSelection( 0 );
 			if ( m_previewGLCanvas->previewFile( m_datFile, p_entry ) ) {
 				m_previewPanel->destroyViewer( );
 			}
 			break;
 		default:
+            m_notebook->SetSelection( 1 );
 			if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
-				// Clear the OpenGL canvas to reduce memory usuage
+				// Clear the OpenGL canvas to reduce memory usage
 				m_previewGLCanvas->clear( );
 			}
 		}
@@ -456,6 +467,16 @@ namespace gw2b {
 
 	//============================================================================/
 
+	void BrowserWindow::onNBPageChangingEvt( wxAuiNotebookEvent &p_event ) {
+	    if ( m_notebook->GetSelection( ) == 0 ) {
+            m_previewGLCanvas->shown( false );
+	    } else if ( m_notebook->GetSelection( ) == 1 ) {
+	        m_previewGLCanvas->shown( true );
+	    }
+	}
+
+	//============================================================================/
+
 	void BrowserWindow::onReadIndexComplete( ) {
 		// If it failed, it was cleared.
 		if ( m_index->datTimestamp( ) == 0 || m_index->numEntries( ) == 0 ) {
@@ -546,9 +567,10 @@ namespace gw2b {
 			"Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
 			"\n"
 			"Guild Wars 2 (C)2010-2017 ArenaNet, LLC. All rights reserved.\n"
-			"Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns, ArenaNet,\n"
-			"NCSOFT, the Interlocking NC Logo, and all associated logos and designs\n"
-			"are trademarks or registered trademarks of NCSOFT Corporation.\n"
+			"Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns,\n"
+			"Guild Wars 2: Path of Fire, ArenaNet, NCSOFT, the Interlocking NC Logo,\n"
+			"and all associated logos and designs are trademarks or registered\n"
+			"trademarks of NCSOFT Corporation.\n"
 			"All other trademarks are the property of their respective owners.\n"
 			) );
 

@@ -53,6 +53,7 @@ namespace gw2b {
 		ProgressStatusBar*          m_progress;
 		Task*                       m_currentTask;
 		wxAuiManager				m_uiManager;
+		wxAuiNotebook*              m_notebook;
 		CategoryTree*               m_catTree;
 		PreviewPanel*				m_previewPanel;
 		PreviewGLCanvas*			m_previewGLCanvas;
@@ -125,6 +126,9 @@ namespace gw2b {
 		/** Executed when the user press enter key in search box.
 		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
 		void onEnterPressedInSrchBoxEvt( wxCommandEvent &p_event );
+		/** Executed when the user change notebook tab.
+		*  \param[in]  p_event  Unused event object handed to us by wxWidgets. */
+		void onNBPageChangingEvt( wxAuiNotebookEvent &p_event );
 
 		/** Raised when the index has been read. */
 		void onReadIndexComplete( );

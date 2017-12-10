@@ -70,6 +70,8 @@ namespace gw2b {
 
 		wxSize						m_clientSize;
 
+		bool                        m_isShown = true;
+
 		// Internal status
 		bool						m_isViewingMap = false;				// Is we are viewing map?
 		bool						m_glInitialized = false;			// Is OpenGL is initialized?
@@ -141,20 +143,15 @@ namespace gw2b {
 		bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
 		/** Clear the viewer. */
 		void clear( );
-
+        /** Initialize the GLCanvas. */
 		bool initGL( );
-
+		/** For setting status if GLCanvas is shown.
+		*  \param[in]  p_status      GLCanvas visible status. */
+		void shown( bool p_status );
 		/** Used just to know if we must end the program now because OpenGL 3.3 is not available. */
 		bool OglCtxAvailable( ) { return m_glContext != NULL; }
 
 	private:
-		/** Helper method to create a viewer control to handle the given data type.
-		*  The caller is responsible for freeing the viewer.
-		*  \param[in]  p_dataType   Type of data to create a viewer for.
-		*  \param[in]  p_datFile    Reference to an instance of DatFile.
-		*  \return Viewer* Newly created viewer. */
-		//ViewerGLCanvas* createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile );
-
 		/** Gets the reader containing the data displayed by this viewer.
 		*  \return FileReader*     Reader containing the data. */
 		FileReader* reader( ) {
