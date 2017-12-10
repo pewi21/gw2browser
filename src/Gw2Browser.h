@@ -32,7 +32,7 @@ class Gw2Browser : public wxApp {
 public:
     /** Initializes the application (acts as the application entry-point).
     *  \return bool    True if initialization was successful, false if not. */
-    virtual bool OnInit( ) override;
+    virtual bool OnInit( ) wxOVERRIDE;
 
 }; // class Gw2Browser
 
