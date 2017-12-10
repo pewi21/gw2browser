@@ -114,7 +114,7 @@ void main( ) {
 
 	if ( mode.lighting ) {
 		// Get normal
-		vec3 normal;
+		vec3 normal = vec3( 0.0f, 0.0f, 0.0f );
 		if ( mode.normalMapping ) {
 			// Obtain normal from normal map in range [0,1]
 			normal = texture( material.normalMap, fs_in.TexCoords ).rgb;
@@ -138,7 +138,7 @@ void main( ) {
 		float lambertian = max( dot( lightDir, normal ), 0.0f );
 		vec3 diffuse = light.diffuse * lambertian * color;
 		// Specular
-		vec3 specular;
+		vec3 specular = vec3( 0.0f, 0.0f, 0.0f );
 		if ( lambertian > 0.0f ) {
 			vec3 viewDir;
 			if ( mode.normalMapping ) {
