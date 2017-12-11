@@ -18,8 +18,6 @@ see Tyria-3D code for this.
 * Since lod model use low-res texture, load only hi-res mesh?
 figure out how gw2 do it.
 
-* Finish the linux port.
-
 Further plans
 -------------
 
