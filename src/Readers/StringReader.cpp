@@ -26,23 +26,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <codecvt>
 #include <locale>
-
-#include <wx/mstream.h>
 #include <wx/string.h>
+#include <gw2formats/StringsFile.h>
 
 #include "StringReader.h"
 
 namespace gw2b {
-
-#pragma pack(push, 1)
-
-	struct StringReader::entryHeader {
-		uint16 size;
-		uint16 decryptionOffset;
-		uint16 bitsPerSymbol;
-	};
-
-#pragma pack(pop)
 
 	StringReader::StringReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
 		: FileReader( p_data, p_datFile, p_fileType ) {
@@ -52,90 +41,35 @@ namespace gw2b {
 	}
 
 	std::vector<StringStruct> StringReader::getString( ) const {
-		wxMemoryInputStream stream( m_data.GetPointer( ), m_data.GetSize( ) );
+        std::vector<StringStruct> string;
+        uint32 entryIndex = 0;
 
-		auto end = stream.GetLength( ) - 2;
-		//auto language = static_cast<language::Type>( *end );
+        gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		// Skip past fcc
-		stream.SeekI( 4 );
-		// Get current stream position
-		auto pos = stream.TellI( );
+	    for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
+            auto& entry = stringFile.entry( i );
 
-		std::vector<StringStruct> string;
-
-		// For track each entry in string file, usually have 1024 entry
-		auto entryIndex = 0;
-
-		while ( pos < end ) {
-			if ( end - pos < 6 ) {
-				wxLogMessage( wxT( "String file size is less than 6 bytes." ) );
-				return string;
-			}
-
-			entryHeader entry;
-
-			// Set stream position to begining of entry header
-			stream.SeekI( pos );
-			// Read the entry header
-			stream.Read( reinterpret_cast<entryHeader*>( &entry ), sizeof( entryHeader ) );
-
-			if ( entry.size > 0 ) {
-				StringStruct str;
-
-				// Set stream position to begining of entry data
-				stream.SeekI( pos + 6 );
-
-				auto size = ( entry.size - 6 ) >> 1;	// ( entry.size - 6 ) / 2
-
-				auto isEncrypted = entry.decryptionOffset != 0 || entry.bitsPerSymbol != 0x10;
-				if ( !isEncrypted ) {
+            StringStruct str;
+			if ( entry.isEncrypted( ) ) {
+				//str.string = L"Encrypted string";
+			} else {
 #if defined(_MSC_VER)
-					auto retval = allocate<char16>( size );
-
-					// Read UTF-16 data
-					stream.Read( retval, sizeof( char16 ) * size );
-
-                    str.string = wxString::Format( wxT( "%s" ), retval );
+                str.string = wxString::Format( wxT( "%s" ), entry.get( ) );
 #elif defined(__GNUC__) || defined(__GNUG__)
-                    auto retval = allocate<char16_t>( size );
-
-					// Read UTF-16 data
-					stream.Read( retval, sizeof( char16_t ) * size );
-
-                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
-                    std::string mbs = temp.to_bytes( retval );
-                    str.string = wxString( mbs.c_str( ) );
+                std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> conv;
+                std::string mbs = conv.to_bytes( entry.get( ) );
+                str.string = wxString( mbs.c_str( ), wxConvUTF8 );
 #endif
-
-					freePointer( retval );
-
-					if ( str.string.IsEmpty( ) ) {
-						//str.string = wxT( "Empty string" );
-
-						// Comment this out if enable above command
-						pos = pos + entry.size;
-						entryIndex++;
-						continue;
-					}
-				} else {
-					//str.string = wxT( "Encrypted string" );
-
-					// Comment this out if enable above command
-					pos = pos + entry.size;
-					entryIndex++;
+				if ( str.string.IsEmpty( ) ) {
+					//str.string = L"Empty string";
 					continue;
 				}
-
-				str.id = entryIndex;
-				string.push_back( str );
-
-				pos = pos + entry.size;
-				entryIndex++;
+                str.id = entryIndex;
+                string.push_back( str );
+                entryIndex++;
 			}
 		}
-
-		return string;
+        return string;
 	}
 
 	bool StringReader::isValidHeader( const byte* p_data ) {

@@ -52,7 +52,7 @@ namespace gw2b {
 #elif defined(__GNUC__) || defined(__GNUG__)
 				std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> temp;
 				std::string mbs = temp.to_bytes( chunk->languages[i].text.data( ) );
-				wxString str( mbs.c_str(), wxConvUTF8 );
+				wxString str( mbs.c_str( ), wxConvUTF8 );
 #endif
 				eula.push_back( str );
 			}
