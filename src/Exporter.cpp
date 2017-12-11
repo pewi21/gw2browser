@@ -528,11 +528,11 @@ namespace gw2b {
 		auto reader = FileReader::readerForData( entryData, m_datFile, m_fileType );
 
 		if ( reader ) {
-			// Set file extension
-			m_filename.SetExt( wxString( this->GetExtension( ) ) );
-
 			// Should we convert the file?
 			if ( m_mode == EM_Converted ) {
+                // Set file extension
+                m_filename.SetExt( wxString( this->GetExtension( ) ) );
+
 				switch ( m_fileType ) {
 				case ANFT_ATEX:
 				case ANFT_ATTX:
