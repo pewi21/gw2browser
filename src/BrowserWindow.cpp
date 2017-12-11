@@ -123,10 +123,16 @@ namespace gw2b {
 		findPanel->SetSizer( flex );
 
 		// Add the panes to the manager
+#if defined(_WIN32)
+        // Find file panel
+        m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
+#endif // defined
 		// CategoryTree
 		m_uiManager.AddPane( m_catTree, wxAuiPaneInfo( ).Name( wxT( "CategoryTree" ) ).Caption( wxT( "File List" ) ).BestSize( wxSize( 170, 500 ) ).Left( ) );
-		// Find file panel
-		m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
+#if !defined(_WIN32)
+        // Find file panel
+        m_uiManager.AddPane( findPanel, wxAuiPaneInfo( ).Name( wxT( "FindFilePanel" ) ).Caption( wxT( "Find By File Id" ) ).BestSize( wxSize( 170, 40 ) ).Top( ).Left( ).Resizable(false) );
+#endif // defined
 		// Log window
 		m_uiManager.AddPane( m_log, wxAuiPaneInfo( ).Name( wxT( "LogWindow" ) ).Caption( wxT( "Log" ) ).Bottom( ).Layer( 1 ).Position( 1 ).Hide( ) );
 
