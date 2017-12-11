@@ -87,6 +87,7 @@ namespace gw2b {
 			}
 			m_grid->AutoSize( );
 		}
+		this->Layout( );
 	}
 
 }; // namespace gw2b
