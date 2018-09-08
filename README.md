@@ -12,19 +12,15 @@ will have to be re-indexed (for now).
 Keep in mind that if you keep tree items expanded while the indexer is running,
 or while an index is being read, the process is *a lot* slower.
 
-Also,when you first use find by file id function, the browser will appear to freeze.
+Also, when you first use find by file id function, the browser will appear to freeze.
 This is normal since it will need to expand all file tree in oder to search for
 given file id.
 
-The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) and git binary build [Here](http://goo.gl/4xMRVF)
-
-For people who can't run Gw2Browser, download and Install
-[Microsoft Visual C++ 2015 Redistributable Update 3](https://www.microsoft.com/en-us/download/details.aspx?id=52982)
-choose vcredist.x64.exe for 64bit and vcredist.x86.exe for 32bit executable.
-
 The modelviewer required GPU with OpenGL 3.3 support.
 
-For instruction to compile Gw2Browser, see `COMPILE.md` for detail.
+The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) or [Here](http://goo.gl/4xMRVF)
+
+For instructions to compile Gw2Browser, see [COMPILE.md](../master/COMPILE.md) for detail.
 
 Usage
 -----
@@ -55,7 +51,7 @@ Decompressing one produces garbage blocks. Well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
 * **Some sound data in bank file(s) and text data in string file(s) are unsupported.**
-The data are encrypted, each entry/files have difference encryption keys.
+The data are encrypted, each entry/files have difference encryption keys that received from the server.
 
 Authors
 -------
@@ -267,7 +263,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 extern/freetype/*
 
-    Portions of this software are copyright (C) 2016 The FreeType
+    Portions of this software are copyright (C) 2017 The FreeType
     Project (www.freetype.org).  All rights reserved.
 
 See extern/freetype/docs/FTL.TXT for more details.
@@ -309,7 +305,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -----------------------------------------------------------------------------
 
-Copyright (c) 2002-2008 Xiph.org Foundation
+Copyright (c) 2002-2015 Xiph.org Foundation
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions

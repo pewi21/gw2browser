@@ -3,13 +3,10 @@ TODO list
 
 May change over time. :P
 
-Gw2Browser_2017-xx-xx (1.0.9.1)
+Gw2Browser_201x-xx-xx (1.0.9.1)
 -------------------------------
 
-* map file reader, renderer, exporter.
-see Tyria-3D code for this.
-
-* Scene manager (need when implement map viewer).
+* Add XML exporter for some files format.
 
 * Add a way to config model viewer graphic option.
 
@@ -18,10 +15,17 @@ see Tyria-3D code for this.
 * Since lod model use low-res texture, load only hi-res mesh?
 figure out how gw2 do it.
 
+* content reader and viewer.
+
 Further plans
 -------------
 
 * cmake build system.
+
+* map file reader, renderer, exporter.
+see Tyria-3D code for this.
+
+* Scene manager (need when implement map viewer).
 
 * COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
 
