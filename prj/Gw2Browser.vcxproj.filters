@@ -237,6 +237,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\TextureManager.h">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\wx_pch.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">

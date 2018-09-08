@@ -1,44 +1,47 @@
+# Binaries
 bin
-ipch
 obj
 objs
 tmp
-CMakeFiles
+extern/glew/lib
+*.o
+*.a
+*.exe
+
+# CodeBlocks
+*.depend
+*.layout
+
+# Visual Studio
+.vs
+ipch
+Debug
 Debug_x86
 Debug_x64
+Release
 Release_x86
 Release_x64
-doxygen
-extern/glew/lib
-extern/libogg/win32/VS2015/Win32
-extern/libogg/win32/VS2015/x64
-extern/libvorbis/win32/VS2015/Win32
-extern/libvorbis/win32/VS2015/x64
-extern/libvorbis/win32/VS2015/libvorbis/Win32
-extern/libvorbis/win32/VS2015/libvorbis/x64
-extern/libvorbis/win32/VS2015/libvorbisfile/Win32
-extern/libvorbis/win32/VS2015/libvorbisfile/x64
-extern/libvorbis/win32/VS2015/vorbisdec/Win32
-extern/libvorbis/win32/VS2015/vorbisdec/x64
-extern/libvorbis/win32/VS2015/vorbisenc/Win32
-extern/libvorbis/win32/VS2015/vorbisenc/x64
 *.aps
-*.bak
 *.sdf
 *.suo
 *.user
 *.opensdf
-*.diagsession
-*.o
-*.a
-*.exe
-*.pc
-*.depend
-*.layout
 *.db
 *.opendb
+*.diagsession
 *.psess
 *.vsps
 *.vspx
+
+# Cmake
+CMakeFiles
 CMakeCache.txt
-cmake_install.cmake
+*.cmake
+
+# File manager
+.directory
+
+# Misc
+doxygen
+*.bak
+*.pc
