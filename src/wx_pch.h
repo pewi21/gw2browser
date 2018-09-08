@@ -56,6 +56,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/compatibility.hpp>
 
+// TinyXML2
+#include <tinyxml2.h>
+
 // 16-bit floats
 #include "Imported/half.h"
 

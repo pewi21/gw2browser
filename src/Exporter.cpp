@@ -41,6 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/asndMP3Reader.h"
 #include "Readers/SoundBankReader.h"
 #include "Readers/EulaReader.h"
+#include "Readers/ContentReader.h"
 
 #include "Exporter.h"
 
@@ -157,6 +158,9 @@ namespace gw2b {
                 break;
             case ANFT_StringFile:
                 return wxT( "csv" );
+                break;
+            case ANFT_GameContent:
+                return wxT( "xml" );
                 break;
             case ANFT_PackedOgg:
             case ANFT_Ogg:
@@ -561,6 +565,9 @@ namespace gw2b {
                     break;
                 case ANFT_Model:
                     this->exportModel( reader, p_entry.name( ) );
+                    break;
+                case ANFT_GameContent:
+                    this->exportGameContent( reader, p_entry.name( ) );
                     break;
                 default:
                     //entryData = reader->rawData( );
@@ -1036,6 +1043,23 @@ namespace gw2b {
         this->exportImage( reader, wxT( "Dummy" ) );
 
         deletePointer( reader );
+    }
+
+    void Exporter::exportGameContent( FileReader* p_reader, const wxString& p_entryname ) {
+        auto content = dynamic_cast<ContentReader*>( p_reader );
+        if ( !content ) {
+            wxLogMessage( wxString::Format( wxT( "Entry %s is not GameContent file." ), p_entryname ) );
+            return;
+        }
+
+        this->writeXML( content->getContentData( ) );
+    }
+
+    void Exporter::writeXML( std::unique_ptr<tinyxml2::XMLDocument> p_xml ) {
+        tinyxml2::XMLError eResult = p_xml->SaveFile( m_filename.GetFullPath( ).c_str( ) );
+        if ( eResult != tinyxml2::XML_SUCCESS ) {
+            wxLogMessage( wxT( "XML error: %i" ), eResult );
+        }
     }
 
     bool Exporter::writeFile( const Array<byte>& p_data ) {

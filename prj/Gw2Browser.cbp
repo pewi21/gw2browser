@@ -29,11 +29,13 @@
 					<Add directory="../extern/libogg/include" />
 					<Add directory="../extern/libvorbis/include" />
 					<Add directory="../extern/libwebp/src" />
+					<Add directory="../extern/tinyxml2" />
 					<Add directory="../src" />
 				</Compiler>
 				<Linker>
-					<Add library="libfreetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libfreetype.a" />
+					<Add library="libtinyxml2.dll.a" />
 					<Add library="libOpenAL32.dll.a" />
 					<Add library="libmpg123-0.a" />
 					<Add library="libvorbisfile.a" />
@@ -69,6 +71,7 @@
 					<Add directory="../extern/libogg/build" />
 					<Add directory="../extern/libvorbis/build/lib" />
 					<Add directory="../extern/libwebp/build" />
+					<Add directory="../extern/tinyxml2/build" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -94,14 +97,16 @@
 					<Add directory="../extern/libogg/include" />
 					<Add directory="../extern/libvorbis/include" />
 					<Add directory="../extern/libwebp/src" />
+					<Add directory="../extern/tinyxml2" />
 					<Add directory="../src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libfreetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libfreetype.a" />
+					<Add library="libtinyxml2.dll.a" />
 					<Add library="libOpenAL32.dll.a" />
-					<Add library="libmpg123-0" />
+					<Add library="libmpg123-0.a" />
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
@@ -135,6 +140,7 @@
 					<Add directory="../extern/libogg/build" />
 					<Add directory="../extern/libvorbis/build/lib" />
 					<Add directory="../extern/libwebp/build" />
+					<Add directory="../extern/tinyxml2/build" />
 				</Linker>
 			</Target>
 		</Build>
@@ -222,6 +228,8 @@
 		<Unit filename="../src/PreviewPanel.h" />
 		<Unit filename="../src/ProgressStatusBar.cpp" />
 		<Unit filename="../src/ProgressStatusBar.h" />
+		<Unit filename="../src/Readers/ContentReader.cpp" />
+		<Unit filename="../src/Readers/ContentReader.h" />
 		<Unit filename="../src/Readers/EulaReader.cpp" />
 		<Unit filename="../src/Readers/EulaReader.h" />
 		<Unit filename="../src/Readers/ImageReader.cpp" />

@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/EulaReader.h"
 #include "Readers/TextReader.h"
 #include "Readers/MapReader.h"
+#include "Readers/ContentReader.h"
 
 #include "FileReader.h"
 
@@ -99,9 +100,12 @@ namespace gw2b {
         case ANFT_UTF8:
             return new TextReader( p_data, p_datFile, p_fileType );
             break;
-        //case ANFT_MapParam:
-            //return new MapReader( p_data, p_datFile, p_fileType );
-            //break;
+        case ANFT_GameContent:
+            return new ContentReader( p_data, p_datFile, p_fileType );
+            break;
+//        case ANFT_MapParam:
+//            return new MapReader( p_data, p_datFile, p_fileType );
+//            break;
         default:
             break;
         }
