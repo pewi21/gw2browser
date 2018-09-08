@@ -20,11 +20,11 @@
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/include" />
-					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib/mswud" />
+					<Add directory="../../wxWidgets-3.1.1/lib/gcc_lib/mswud" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
-					<Add directory="../extern/gw2DatTools/include" />
+					<Add directory="../extern/gw2dattools/include" />
 					<Add directory="../extern/gw2formats/include" />
 					<Add directory="../extern/libogg/include" />
 					<Add directory="../extern/libvorbis/include" />
@@ -39,7 +39,7 @@
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
-					<Add library="libgw2DatTools.a" />
+					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />
 					<Add library="libwxmsw31ud_aui.a" />
@@ -61,10 +61,10 @@
 					<Add library="libuuid.a" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
-					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib" />
+					<Add directory="../../wxWidgets-3.1.1/lib/gcc_lib" />
 					<Add directory="../extern/freetype/objs" />
 					<Add directory="../extern/glew/lib" />
-					<Add directory="../extern/gw2DatTools/lib/Debug" />
+					<Add directory="../extern/gw2dattools/lib/Debug" />
 					<Add directory="../extern/gw2formats/lib/Debug" />
 					<Add directory="../extern/libogg" />
 					<Add directory="../extern/libvorbis/lib" />
@@ -89,7 +89,7 @@
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
-					<Add directory="../extern/gw2DatTools/include" />
+					<Add directory="../extern/gw2dattools/include" />
 					<Add directory="../extern/gw2formats/include" />
 					<Add directory="../extern/libogg/include" />
 					<Add directory="../extern/libvorbis/include" />
@@ -105,7 +105,7 @@
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
-					<Add library="libgw2DatTools.a" />
+					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />
 					<Add library="libwxmsw31u_aui.a" />
@@ -127,10 +127,10 @@
 					<Add library="libuuid.a" />
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
-					<Add directory="../../wxWidgets-3.1.0/lib/gcc_lib" />
+					<Add directory="../../wxWidgets-3.1.1/lib/gcc_lib" />
 					<Add directory="../extern/freetype/objs" />
 					<Add directory="../extern/glew/lib" />
-					<Add directory="../extern/gw2DatTools/lib/Release" />
+					<Add directory="../extern/gw2dattools/lib/Release" />
 					<Add directory="../extern/gw2formats/lib/Release" />
 					<Add directory="../extern/libogg" />
 					<Add directory="../extern/libvorbis/lib" />
@@ -148,10 +148,10 @@
 			<Add option="-include wx_pch.h" />
 			<Add option="-DWX_PRECOMP" />
 			<Add option="-Wall" />
-			<Add directory="../../wxWidgets-3.1.0/include" />
+			<Add directory="../../wxWidgets-3.1.1/include" />
 		</Compiler>
 		<ResourceCompiler>
-			<Add directory="../../wxWidgets-3.1.0/include" />
+			<Add directory="../../wxWidgets-3.1.1/include" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />

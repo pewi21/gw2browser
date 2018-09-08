@@ -28,8 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <wx/mstream.h>
 
 #include <webp/decode.h> // libwebp
-#include <gw2DatTools/compression/inflateTextureFileBuffer.h>
-#include <gw2DatTools/exception/Exception.h>
+#include <gw2dattools/compression/inflateTextureFileBuffer.h>
+#include <gw2dattools/exception/Exception.h>
 
 #include "ImageReader.h"
 

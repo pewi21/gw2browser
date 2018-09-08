@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gw2Browser", "Gw2Browser.vc
 		{81D81E5A-8FEC-4F92-B661-69D6B4C9DC8D} = {81D81E5A-8FEC-4F92-B661-69D6B4C9DC8D}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gw2DatTools", "..\extern\gw2DatTools\prj\gw2DatTools.vcxproj", "{81D81E5A-8FEC-4F92-B661-69D6B4C9DC8D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gw2dattools", "..\extern\gw2dattools\prj\gw2dattools.vcxproj", "{81D81E5A-8FEC-4F92-B661-69D6B4C9DC8D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gw2formats", "..\extern\gw2formats\prj\gw2formats.vcxproj", "{C59C7548-51B5-496B-9B74-BE454AA4C8A2}"
 EndProject

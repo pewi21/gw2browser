@@ -21,7 +21,7 @@
 					<Add option="-Wno-switch" />
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../extern/glm" />
-					<Add directory="../extern/gw2DatTools/include" />
+					<Add directory="../extern/gw2dattools/include" />
 					<Add directory="../extern/gw2formats/include" />
 					<Add directory="../src" />
 				</Compiler>
@@ -34,10 +34,10 @@
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
-					<Add library="libgw2DatTools.a" />
+					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebp.a" />
-					<Add directory="../extern/gw2DatTools/lib/Debug" />
+					<Add directory="../extern/gw2dattools/lib/Debug" />
 					<Add directory="../extern/gw2formats/lib/Debug" />
 				</Linker>
 			</Target>
@@ -56,7 +56,7 @@
 					<Add option="-Wno-switch" />
 					<Add option="-DGLEW_STATIC" />
 					<Add directory="../extern/glm" />
-					<Add directory="../extern/gw2DatTools/include" />
+					<Add directory="../extern/gw2dattools/include" />
 					<Add directory="../extern/gw2formats/include" />
 					<Add directory="../src" />
 				</Compiler>
@@ -70,10 +70,10 @@
 					<Add library="libvorbisfile.a" />
 					<Add library="libvorbis.a" />
 					<Add library="libogg.a" />
-					<Add library="libgw2DatTools.a" />
+					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebp.a" />
-					<Add directory="../extern/gw2DatTools/lib/Release" />
+					<Add directory="../extern/gw2dattools/lib/Release" />
 					<Add directory="../extern/gw2formats/lib/Release" />
 				</Linker>
 			</Target>

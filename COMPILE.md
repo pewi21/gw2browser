@@ -57,7 +57,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 * [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
 * [wxWidgets 3.1.1 or higher](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) *Included*
-* [gw2DatTools](https://github.com/kytulendu/gw2DatTools) *Included*
+* [gw2dattools](https://github.com/kytulendu/gw2dattools) *Included*
 * [gw2formats](https://github.com/kytulendu/gw2formats) *Included*
 * [libogg](https://github.com/xiph/ogg) *Included*
 * [libvorbis](https://github.com/xiph/vorbis) *Included*
@@ -279,7 +279,7 @@ The ROOT is the directory you created in Getting the source code.
 ### Building with MinGW-w64
 
 Download MinGW-w64 and install it to any location, for example `C:\mingw-64`,
-choose Version to 7.2.0 rev 1, choose Architecture to x86_64 or i686, choose Threads to `POSIX` (important).
+choose Version to 7.3.0 rev 0, choose Architecture to x86_64 or i686, choose Threads to `POSIX` (important).
 
 You must also add MinGW-w64 to your path.
 

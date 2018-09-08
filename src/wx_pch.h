@@ -44,8 +44,8 @@
 
 #include <wx/glcanvas.h>
 
-// gw2DatTools
-#include <gw2DatTools/compression/inflateDatFileBuffer.h>
+// gw2dattools
+#include <gw2dattools/compression/inflateDatFileBuffer.h>
 
 // OpenGL Mathematics
 #define GLM_ENABLE_EXPERIMENTAL
