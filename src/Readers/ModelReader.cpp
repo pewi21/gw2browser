@@ -446,20 +446,7 @@ namespace gw2b {
         auto& vert = p_mesh.vertices;
 #pragma omp parallel for
         for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
-            // Check if the normals is zero to avoid divide by zero problem.
-            if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
-                if ( vert[i].normal.x ) {
-                    vert[i].normal.x = glm::normalize( vert[i].normal.x );
-                }
-                if ( vert[i].normal.y ) {
-                    vert[i].normal.y = glm::normalize( vert[i].normal.y );
-                }
-                if ( vert[i].normal.z ) {
-                    vert[i].normal.z = glm::normalize( vert[i].normal.z );
-                }
-            } else {
-                vert[i].normal = glm::normalize( vert[i].normal );
-            }
+            vert[i].normal = glm::normalize( vert[i].normal );
         }
     }
 
@@ -481,14 +468,12 @@ namespace gw2b {
 
             const glm::vec3 e1 = verts[ia].position - verts[ib].position;
             const glm::vec3 e2 = verts[ic].position - verts[ib].position;
-            const glm::vec3 no = glm::cross( e1, e2 );
+            const glm::vec3 no = glm::normalize(glm::cross( e1, e2 ));
 
             verts[ia].normal += no;
             verts[ib].normal += no;
             verts[ic].normal += no;
         }
-
-        this->normalizeNormals( p_mesh );
     }
 
     void ModelReader::rotZYinvZ( GW2Mesh& p_mesh ) const {
