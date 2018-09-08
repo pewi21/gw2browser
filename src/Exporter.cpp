@@ -773,6 +773,12 @@ namespace gw2b {
             if ( material.normalMap ) {
                 stream << "# Normal map texture : " << material.normalMap << std::endl;
             }
+            if ( material.specularMap ) {
+                stream << "# Specular map texture : " << material.specularMap << std::endl;
+            }
+            if ( material.dye ) {
+                stream << "# Dye texture : " << material.dye << std::endl;
+            }
             if ( material.lightMap ) {
                 stream << "# Light map texture : " << material.lightMap << std::endl;
             }
@@ -806,7 +812,9 @@ namespace gw2b {
                 // Diffuse texture map
                 stream << "map_Kd " << material.diffuseMap << ".png" << std::endl;
                 // Specular color texture map
-                //stream << "map_Ks " << material.diffuseMap << ".png" << std::endl;
+                if ( material.specularMap ) {
+                    stream << "map_Ks " << material.specularMap << ".png" << std::endl;
+                }
             }
             // Load normal map texture
             if ( material.normalMap ) {
@@ -970,8 +978,14 @@ namespace gw2b {
             if ( material.normalMap ) {
                 textureFileList.push_back( material.normalMap );
             }
+            if ( material.specularMap ) {
+                textureFileList.push_back( material.specularMap );
+            }
             if ( material.lightMap ) {
                 textureFileList.push_back( material.lightMap );
+            }
+            if ( material.dye ) {
+                textureFileList.push_back( material.dye );
             }
         }
 

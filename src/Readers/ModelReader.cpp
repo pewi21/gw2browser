@@ -573,26 +573,37 @@ namespace gw2b {
 
                         for ( uint t = 0; t < mat.textures.size( ); t++ ) {
                             auto& texture = mat.textures[t];
+                            auto fileId = texture.filename.fileId( ) + 1;
+
+                            // diffuse  token 0x0060b401 67531924
+                            // normal   token 0x000305a0 1816c9ee
+                            // specular token 0x0c168090 59519613
+                            // dye      token 0x0060b402 e6169724
 
                             // 0x67531924   01100111010100110001100100100100    Diffuse
                             // 0x1816c9ee   00011000000101101100100111101110    Normal
+                            // 0x59519613   01011001010100011001011000010011    Specular
                             // 0x680bbd87   01101000000010111011110110000111    Light Map
+                            // 0xe6169724   11100110000101101001011100100100    Dye
 
-                            // todo: figure out this
-                            // Diffuse?
-                            if ( ( texture.token & 0xffffffff ) == 0x67531924 ) {
-                                material.diffuseMap = texture.filename.fileId( ) + 1;
-                            }
-
-                            // Normal?
-                            else if ( ( texture.token & 0xffffffff ) == 0x1816c9ee ) {
-                                material.normalMap = texture.filename.fileId( ) + 1;
-                            }
-
-                            // Light Map?
-                            else if ( ( texture.token & 0xffffffff ) == 0x680bbd87 ) {
-                                material.lightMap = texture.filename.fileId( ) + 1;
-                                break;
+                            switch ( texture.token & 0xffffffff ) {
+                            case 0x67531924:                    // Diffuse?
+                                material.diffuseMap = fileId;
+                                continue;
+                            case 0x1816c9ee:                    // Normal?
+                                material.normalMap = fileId;
+                                continue;
+                            case 0x59519613:                    // Specular?
+                                material.specularMap = fileId;
+                                continue;
+                            case 0x680bbd87:                    // Light Map?
+                                material.lightMap = fileId;
+                                continue;
+                            case 0xe6169724:                    // Dye?
+                                material.dye = fileId;
+                                continue;
+                            default:
+                                continue;
                             }
                         }
                     }

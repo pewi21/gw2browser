@@ -101,7 +101,9 @@ namespace gw2b {
         uint32 materialFile;        // File Id for material file
         uint32 diffuseMap;
         uint32 normalMap;
+        uint32 specularMap;
         uint32 lightMap;
+        uint32 dye;
     };
 
     class GW2ModelData : public wxRefCounter {
