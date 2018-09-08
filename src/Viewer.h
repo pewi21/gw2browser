@@ -28,38 +28,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIEWER_H_INCLUDED
 
 namespace gw2b {
-	class DatFile;
-	class FileReader;
+    class DatFile;
+    class FileReader;
 
-	/** Panel used to view the contents of a file. */
-	class Viewer : public wxPanel {
-		FileReader*     m_reader;
-	public:
-		/** Constructor. Creates the viewer with the given parent.
-		*  \param[in]  p_parent Parent of the control.
-		*  \param[in]  p_pos    Optional location of the control.
-		*  \param[in]  p_size   Optional size of the control. */
-		Viewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		/** Destructor. */
-		virtual ~Viewer( );
+    /** Panel used to view the contents of a file. */
+    class Viewer : public wxPanel {
+        FileReader*     m_reader;
+    public:
+        /** Constructor. Creates the viewer with the given parent.
+        *  \param[in]  p_parent Parent of the control.
+        *  \param[in]  p_pos    Optional location of the control.
+        *  \param[in]  p_size   Optional size of the control. */
+        Viewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        /** Destructor. */
+        virtual ~Viewer( );
 
-		/** Clears all data in this viewer. */
-		virtual void clear( );
+        /** Clears all data in this viewer. */
+        virtual void clear( );
 
-		/** Sets the reader containing the data displayed by this viewer.
-		*  \param[in]  p_reader     Reader to get data from. */
-		virtual void setReader( FileReader* p_reader );
-		/** Gets the reader containing the data displayed by this viewer.
-		*  \return FileReader*     Reader containing the data. */
-		FileReader* reader( ) {
-			return m_reader;
-		}
-		/** Gets the reader containing the data displayed by this viewer.
-		*  \return FileReader*     Reader containing the data. */
-		const FileReader* reader( ) const {
-			return m_reader;
-		}
-	}; // class Viewer
+        /** Sets the reader containing the data displayed by this viewer.
+        *  \param[in]  p_reader     Reader to get data from. */
+        virtual void setReader( FileReader* p_reader );
+        /** Gets the reader containing the data displayed by this viewer.
+        *  \return FileReader*     Reader containing the data. */
+        FileReader* reader( ) {
+            return m_reader;
+        }
+        /** Gets the reader containing the data displayed by this viewer.
+        *  \return FileReader*     Reader containing the data. */
+        const FileReader* reader( ) const {
+            return m_reader;
+        }
+    }; // class Viewer
 
 }; // namespace gw2b
 

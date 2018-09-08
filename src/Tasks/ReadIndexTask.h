@@ -31,24 +31,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Task.h"
 
 namespace gw2b {
-	class DatIndex;
+    class DatIndex;
 
-	class ReadIndexTask : public Task {
-		std::shared_ptr<DatIndex>   m_index;
-		DatIndexReader              m_reader;
-		wxString                    m_filename;
-		bool                        m_errorOccured;
-		uint64                      m_datTimestamp;
-	public:
-		ReadIndexTask( const std::shared_ptr<DatIndex>& p_index, const wxString& p_filename, uint64 p_datTimestamp );
+    class ReadIndexTask : public Task {
+        std::shared_ptr<DatIndex>   m_index;
+        DatIndexReader              m_reader;
+        wxString                    m_filename;
+        bool                        m_errorOccured;
+        uint64                      m_datTimestamp;
+    public:
+        ReadIndexTask( const std::shared_ptr<DatIndex>& p_index, const wxString& p_filename, uint64 p_datTimestamp );
 
-		virtual bool init( ) override;
-		virtual void perform( ) override;
-		virtual void abort( ) override;
-		virtual void clean( ) override;
+        virtual bool init( ) override;
+        virtual void perform( ) override;
+        virtual void abort( ) override;
+        virtual void clean( ) override;
 
-		virtual bool isDone( ) const override;
-	}; // class ReadIndexTask
+        virtual bool isDone( ) const override;
+    }; // class ReadIndexTask
 
 }; // namespace gw2b
 

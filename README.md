@@ -31,7 +31,7 @@ Usage
 
 It can be started with:
 
-	Gw2Browser <input dat>
+    Gw2Browser <input dat>
 
 If `<input dat>` is given, the program will open the file as soon as it starts.
 
@@ -101,9 +101,9 @@ All other trademarks are the property of their respective owners.
 License
 -------
 
-	Copyright © 2014-2017 Khral Steelforge <https://github.com/kytulendu>
-	Copyright © 2013 Till034 <https://github.com/Till034>
-	Copyright © 2012 Rhoot <https://github.com/rhoot>
+    Copyright © 2014-2017 Khral Steelforge <https://github.com/kytulendu>
+    Copyright © 2013 Till034 <https://github.com/Till034>
+    Copyright © 2012 Rhoot <https://github.com/rhoot>
 
 Gw2Browser is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -127,7 +127,7 @@ Code License Exceptions
 
 extern/glm/*
 
-	Copyright (c) 2005 - 2016 G-Truc Creation
+    Copyright (c) 2005 - 2016 G-Truc Creation
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -151,11 +151,11 @@ THE SOFTWARE.
 
 -----------------------------------------------------------------------------
 
-	The OpenGL Extension Wrangler Library
-	Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>
-	Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>
-	Copyright (C) 2002, Lev Povalahev
-	All rights reserved.
+    The OpenGL Extension Wrangler Library
+    Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>
+    Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>
+    Copyright (C) 2002, Lev Povalahev
+    All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -184,7 +184,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 Mesa 3-D graphics library
 Version:  7.0
 
-	Copyright (C) 1999-2007  Brian Paul   All Rights Reserved.
+    Copyright (C) 1999-2007  Brian Paul   All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -204,7 +204,7 @@ AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-	Copyright (c) 2007 The Khronos Group Inc.
+    Copyright (c) 2007 The Khronos Group Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and/or associated documentation files (the
@@ -231,23 +231,23 @@ MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 
 extern/libwebp/*
 
-	Copyright (c) 2010, Google Inc. All rights reserved.
+    Copyright (c) 2010, Google Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
   * Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer.
 
   * Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in
-	the documentation and/or other materials provided with the
-	distribution.
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
 
   * Neither the name of Google nor the names of its contributors may
-	be used to endorse or promote products derived from this software
-	without specific prior written permission.
+    be used to endorse or promote products derived from this software
+    without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -267,8 +267,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 extern/freetype/*
 
-	Portions of this software are copyright (C) 2016 The FreeType
-	Project (www.freetype.org).  All rights reserved.
+    Portions of this software are copyright (C) 2016 The FreeType
+    Project (www.freetype.org).  All rights reserved.
 
 See extern/freetype/docs/FTL.TXT for more details.
 
@@ -342,15 +342,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -----------------------------------------------------------------------------
 
-	Copyright (c) 1995-2013 by Michael Hipp and others,
-	free software under the terms of the LGPL v2.1
+    Copyright (c) 1995-2013 by Michael Hipp and others,
+    free software under the terms of the LGPL v2.1
 
 ### OpenAL Soft
 
 -----------------------------------------------------------------------------
 
-	Software OpenAL implementation.
-	Copyright (C) <year>  <name of author>
+    Software OpenAL implementation.
+    Copyright (C) <year>  <name of author>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Library General Public

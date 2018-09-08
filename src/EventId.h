@@ -24,27 +24,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	namespace {
+    namespace {
 
-		enum {
-			ID_ShowFindFile = wxID_HIGHEST + 1,	// Show find file window
-			ID_ShowFileList,					// Show file list window
-			ID_ShowLog,							// Show log window
-			ID_ClearLog,						// Clear the log window
-			//ID_ResetLayout,
-			//ID_SetBackgroundColor,
-			//ID_ShowGrid,						// Show grid on PreviewGLCanvas
-			//ID_ShowMask,						// Apply white texture with black background, no shader
-			//ID_SetCanvasSize,					// Set PreviewGLCanvas size
-			ID_BtnFindFile,						// Browser's find file button
-			ID_BtnBack,							// Sound player's back button
-			ID_BtnPlay,							// Sound player's play button
-			ID_BtnStop,							// Sound player's stop button
-			ID_BtnForward,						// Sound player's forward button
-			ID_SliderVolume,					// Sound player's volume slider
-			ID_SliderPlayback,					// Sound player's playback slider
-		};
+        enum {
+            ID_ShowFindFile = wxID_HIGHEST + 1, // Show find file window
+            ID_ShowFileList,                    // Show file list window
+            ID_ShowLog,                         // Show log window
+            ID_ClearLog,                        // Clear the log window
+            //ID_ResetLayout,
+            //ID_SetBackgroundColor,
+            //ID_ShowGrid,                      // Show grid on PreviewGLCanvas
+            //ID_ShowMask,                      // Apply white texture with black background, no shader
+            //ID_SetCanvasSize,                 // Set PreviewGLCanvas size
+            ID_BtnFindFile,                     // Browser's find file button
+            ID_BtnBack,                         // Sound player's back button
+            ID_BtnPlay,                         // Sound player's play button
+            ID_BtnStop,                         // Sound player's stop button
+            ID_BtnForward,                      // Sound player's forward button
+            ID_SliderVolume,                    // Sound player's volume slider
+            ID_SliderPlayback,                  // Sound player's playback slider
+        };
 
-	};
+    };
 
 }; // namespace gw2b

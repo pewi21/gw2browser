@@ -32,62 +32,62 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	TextureManager::TextureManager( ) {
+    TextureManager::TextureManager( ) {
 
-	}
+    }
 
-	TextureManager::~TextureManager( ) {
-		this->clear( );
-	}
+    TextureManager::~TextureManager( ) {
+        this->clear( );
+    }
 
-	void TextureManager::clear( ) {
-		for ( auto it : m_texture ) {
-			delete it.second;
-		}
-		m_texture.clear( );
-	}
+    void TextureManager::clear( ) {
+        for ( auto it : m_texture ) {
+            delete it.second;
+        }
+        m_texture.clear( );
+    }
 
-	bool TextureManager::load( DatFile& p_datFile, const uint32 p_id ) {
-		auto it = m_texture.find( p_id );
-		if ( it == m_texture.end( ) ) {
-			try {
-				m_texture.insert( std::pair<uint32, Texture2D*>( p_id, new Texture2D( p_datFile, p_id ) ) );
-			} catch ( const exception::Exception& err ) {
-				wxLogMessage( wxT( "Failed to load texture %d : %s" ), p_id, wxString( err.what( ) ) );
-				return false;
-			}
-			return true;
-		} else {
-			wxLogMessage( wxT( "Texture %d is already loaded." ), p_id );
-			return false;
-		}
-	}
+    bool TextureManager::load( DatFile& p_datFile, const uint32 p_id ) {
+        auto it = m_texture.find( p_id );
+        if ( it == m_texture.end( ) ) {
+            try {
+                m_texture.insert( std::pair<uint32, Texture2D*>( p_id, new Texture2D( p_datFile, p_id ) ) );
+            } catch ( const exception::Exception& err ) {
+                wxLogMessage( wxT( "Failed to load texture %d : %s" ), p_id, wxString( err.what( ) ) );
+                return false;
+            }
+            return true;
+        } else {
+            wxLogMessage( wxT( "Texture %d is already loaded." ), p_id );
+            return false;
+        }
+    }
 
-	Texture2D* TextureManager::get( const uint32 p_id ) {
-		auto it = m_texture.find( p_id );
-		if ( it == m_texture.end( ) ) {
-			//wxLogMessage( wxT( "Cannot find texture : %d" ), p_id );
-			return nullptr;
-		}
-		return it->second;
-	}
+    Texture2D* TextureManager::get( const uint32 p_id ) {
+        auto it = m_texture.find( p_id );
+        if ( it == m_texture.end( ) ) {
+            //wxLogMessage( wxT( "Cannot find texture : %d" ), p_id );
+            return nullptr;
+        }
+        return it->second;
+    }
 
-	bool TextureManager::remove( const uint32 p_id ) {
-		auto it = m_texture.find( p_id );
-		if ( it != m_texture.end( ) ) {
-			delete it->second;
-			m_texture.erase( it );
-			return true;
-		}
-		return false;
-	}
+    bool TextureManager::remove( const uint32 p_id ) {
+        auto it = m_texture.find( p_id );
+        if ( it != m_texture.end( ) ) {
+            delete it->second;
+            m_texture.erase( it );
+            return true;
+        }
+        return false;
+    }
 
-	bool TextureManager::empty( ) {
-		if ( m_texture.empty( ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    bool TextureManager::empty( ) {
+        if ( m_texture.empty( ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }; // namespace gw2b

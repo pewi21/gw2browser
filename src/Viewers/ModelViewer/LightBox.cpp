@@ -30,118 +30,118 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	LightBox::LightBox( ) {
-		// Load shader
-		try {
-			m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
+    LightBox::LightBox( ) {
+        // Load shader
+        try {
+            m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
 
-			m_cubeShader->use( );
-			// Get the uniform location
-			m_uniformProjection = glGetUniformLocation( m_cubeShader->getProgramId( ), "projection" );
-			m_uniformView = glGetUniformLocation( m_cubeShader->getProgramId( ), "view" );
-			m_uniformModel = glGetUniformLocation( m_cubeShader->getProgramId( ), "model" );
-			m_uniformLightColor = glGetUniformLocation( m_cubeShader->getProgramId( ), "lightColor" );
+            m_cubeShader->use( );
+            // Get the uniform location
+            m_uniformProjection = glGetUniformLocation( m_cubeShader->getProgramId( ), "projection" );
+            m_uniformView = glGetUniformLocation( m_cubeShader->getProgramId( ), "view" );
+            m_uniformModel = glGetUniformLocation( m_cubeShader->getProgramId( ), "model" );
+            m_uniformLightColor = glGetUniformLocation( m_cubeShader->getProgramId( ), "lightColor" );
 
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxT( "Failed to load lightbox shader : %s" ), wxString( err.what( ) ) );
-			throw exception::Exception( "Failed to load lightbox shader." );
-		}
+        } catch ( const exception::Exception& err ) {
+            wxLogMessage( wxT( "Failed to load lightbox shader : %s" ), wxString( err.what( ) ) );
+            throw exception::Exception( "Failed to load lightbox shader." );
+        }
 
-		GLfloat vertices[] = {
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        GLfloat vertices[] = {
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
 
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-		};
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        };
 
-		glGenVertexArrays( 1, &m_cubeVAO );
-		glGenBuffers( 1, &m_cubeVBO );
-		// Fill buffer
-		glBindBuffer( GL_ARRAY_BUFFER, m_cubeVBO );
-		glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
-		// Link vertex attributes
-		glBindVertexArray( m_cubeVAO );
-		// Position attribute
-		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof( GLfloat ), ( GLvoid* ) 0 );
-		glEnableVertexAttribArray( 0 );
+        glGenVertexArrays( 1, &m_cubeVAO );
+        glGenBuffers( 1, &m_cubeVBO );
+        // Fill buffer
+        glBindBuffer( GL_ARRAY_BUFFER, m_cubeVBO );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
+        // Link vertex attributes
+        glBindVertexArray( m_cubeVAO );
+        // Position attribute
+        glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof( GLfloat ), ( GLvoid* ) 0 );
+        glEnableVertexAttribArray( 0 );
 
-		glBindBuffer( GL_ARRAY_BUFFER, 0 );
-		glBindVertexArray( 0 );
-	}
+        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindVertexArray( 0 );
+    }
 
-	LightBox::~LightBox( ) {
-		// Cleanup
-		if ( m_cubeVBO ) {
-			glDeleteBuffers( 1, &m_cubeVBO );
-		}
-		if ( m_cubeVAO ) {
-			glDeleteBuffers( 1, &m_cubeVAO );
-		}
-		if ( m_cubeShader ) {
-			delete m_cubeShader;
-		}
-	}
+    LightBox::~LightBox( ) {
+        // Cleanup
+        if ( m_cubeVBO ) {
+            glDeleteBuffers( 1, &m_cubeVBO );
+        }
+        if ( m_cubeVAO ) {
+            glDeleteBuffers( 1, &m_cubeVAO );
+        }
+        if ( m_cubeShader ) {
+            delete m_cubeShader;
+        }
+    }
 
-	void LightBox::setViewMatrix( const glm::mat4& p_view ) {
-		m_view = p_view;
-	}
+    void LightBox::setViewMatrix( const glm::mat4& p_view ) {
+        m_view = p_view;
+    }
 
-	void LightBox::setProjectionMatrix( const glm::mat4& p_projection ) {
-		m_projection = p_projection;
-	}
+    void LightBox::setProjectionMatrix( const glm::mat4& p_projection ) {
+        m_projection = p_projection;
+    }
 
-	void LightBox::renderCube( const glm::vec3& p_pos, const glm::vec3& p_color ) {
-		glDisable( GL_CULL_FACE );
+    void LightBox::renderCube( const glm::vec3& p_pos, const glm::vec3& p_color ) {
+        glDisable( GL_CULL_FACE );
 
-		m_cubeShader->use( );
-		glUniformMatrix4fv( m_uniformProjection, 1, GL_FALSE, glm::value_ptr( m_projection ) );
-		glUniformMatrix4fv( m_uniformView, 1, GL_FALSE, glm::value_ptr( m_view ) );
-		auto model = glm::translate( glm::mat4( ), p_pos );
-		model = glm::scale( model, glm::vec3( 6.0f ) );
-		glUniformMatrix4fv( m_uniformModel, 1, GL_FALSE, glm::value_ptr( model ) );
-		glUniform3fv( m_uniformLightColor, 1, glm::value_ptr( p_color ) );
+        m_cubeShader->use( );
+        glUniformMatrix4fv( m_uniformProjection, 1, GL_FALSE, glm::value_ptr( m_projection ) );
+        glUniformMatrix4fv( m_uniformView, 1, GL_FALSE, glm::value_ptr( m_view ) );
+        auto model = glm::translate( glm::mat4( ), p_pos );
+        model = glm::scale( model, glm::vec3( 6.0f ) );
+        glUniformMatrix4fv( m_uniformModel, 1, GL_FALSE, glm::value_ptr( model ) );
+        glUniform3fv( m_uniformLightColor, 1, glm::value_ptr( p_color ) );
 
-		// Render Cube
-		glBindVertexArray( m_cubeVAO );
-		glDrawArrays( GL_TRIANGLES, 0, 36 );
-		glBindVertexArray( 0 );
-	}
+        // Render Cube
+        glBindVertexArray( m_cubeVAO );
+        glDrawArrays( GL_TRIANGLES, 0, 36 );
+        glBindVertexArray( 0 );
+    }
 
 }; // namespace gw2b

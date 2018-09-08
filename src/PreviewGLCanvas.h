@@ -46,165 +46,165 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "FileReader.h"
 
 namespace gw2b {
-	class DatFile;
-	class DatIndexEntry;
+    class DatFile;
+    class DatIndexEntry;
 
-	class PreviewGLCanvas;
-	class RenderTimer : public wxTimer {
-		PreviewGLCanvas* canvas;
-	public:
-		RenderTimer( PreviewGLCanvas* canvas );
-		void Notify( );
-		void start( );
-	}; // class RenderTimer
+    class PreviewGLCanvas;
+    class RenderTimer : public wxTimer {
+        PreviewGLCanvas* canvas;
+    public:
+        RenderTimer( PreviewGLCanvas* canvas );
+        void Notify( );
+        void start( );
+    }; // class RenderTimer
 
-	/** Panel control used to preview files from the .dat. */
-	class PreviewGLCanvas : public wxGLCanvas {
-		typedef std::chrono::high_resolution_clock Time;
+    /** Panel control used to preview files from the .dat. */
+    class PreviewGLCanvas : public wxGLCanvas {
+        typedef std::chrono::high_resolution_clock Time;
 
-		FileReader*                 m_reader;
+        FileReader*                 m_reader;
 
-		wxGLContext*				m_glContext;
-		RenderTimer*				m_renderTimer;
-		wxTimer*					m_movementKeyTimer;
+        wxGLContext*                m_glContext;
+        RenderTimer*                m_renderTimer;
+        wxTimer*                    m_movementKeyTimer;
 
-		wxSize						m_clientSize;
+        wxSize                      m_clientSize;
 
-		bool                        m_isShown = true;
+        bool                        m_isShown = true;
 
-		// Internal status
-		bool						m_isViewingMap = false;				// Is we are viewing map?
-		bool						m_glInitialized = false;			// Is OpenGL is initialized?
-		bool						m_statusText = true;				// Toggle display text
-		bool						m_statusWireframe = false;			// Toggle wireframe rendering
-		bool						m_statusCullFace = false;			// Cull triangles which normal is not towards the camera
-		bool						m_statusTextured = true;			// Toggle texture
-		bool						m_statusNormalMapping = true;		// Toggle normal maping
-		bool						m_statusLighting = true;			// Toggle lighting
-		bool						m_statusAntiAlising = true;			// Toggle anti alising
-		bool						m_statusRenderLightSource = false;	// Toggle visualization of light source
-		bool						m_statusVisualizeNormal = false;	// Toggle visualization of normal
-		bool						m_statusVisualizeZbuffer = false;	// Toggle visualization of z-buffer
-		bool						m_cameraMode = false;				// Toggle camera mode
+        // Internal status
+        bool                        m_isViewingMap = false;             // Is we are viewing map?
+        bool                        m_glInitialized = false;            // Is OpenGL is initialized?
+        bool                        m_statusText = true;                // Toggle display text
+        bool                        m_statusWireframe = false;          // Toggle wireframe rendering
+        bool                        m_statusCullFace = false;           // Cull triangles which normal is not towards the camera
+        bool                        m_statusTextured = true;            // Toggle texture
+        bool                        m_statusNormalMapping = true;       // Toggle normal maping
+        bool                        m_statusLighting = true;            // Toggle lighting
+        bool                        m_statusAntiAlising = true;         // Toggle anti alising
+        bool                        m_statusRenderLightSource = false;  // Toggle visualization of light source
+        bool                        m_statusVisualizeNormal = false;    // Toggle visualization of normal
+        bool                        m_statusVisualizeZbuffer = false;   // Toggle visualization of z-buffer
+        bool                        m_cameraMode = false;               // Toggle camera mode
 
-		// Framebuffer
-		std::unique_ptr<FrameBuffer> m_framebuffer;
+        // Framebuffer
+        std::unique_ptr<FrameBuffer> m_framebuffer;
 
-		// Model
-		std::vector<std::unique_ptr<Model>>	m_model;
+        // Model
+        std::vector<std::unique_ptr<Model>> m_model;
 
-		// Textures
-		TextureManager				m_texture;
+        // Textures
+        TextureManager              m_texture;
 
-		// Light
-		Light						m_light;
-		std::unique_ptr<LightBox>	m_lightBox;			// For render cube at light position
+        // Light
+        Light                       m_light;
+        std::unique_ptr<LightBox>   m_lightBox;         // For render cube at light position
 
-		// Shader stuff
-		// List of shaders :
-		// - main
-		// - framebuffer
-		// - normal_visualizer
-		// - z_visualizer
-		ShaderManager				m_shaders;
+        // Shader stuff
+        // List of shaders :
+        // - main
+        // - framebuffer
+        // - normal_visualizer
+        // - z_visualizer
+        ShaderManager               m_shaders;
 
-		// Camera
-		Camera                      m_camera;
-		wxPoint                     m_lastMousePos;
-		float                       m_minDistance;
-		float                       m_maxDistance;
+        // Camera
+        Camera                      m_camera;
+        wxPoint                     m_lastMousePos;
+        float                       m_minDistance;
+        float                       m_maxDistance;
 
-		// Text rendering stuff
-		std::unique_ptr<Text2D>		m_text;
+        // Text rendering stuff
+        std::unique_ptr<Text2D>     m_text;
 
-		//float angle = 0.0f;
+        //float angle = 0.0f;
 
-		// Movement key related
-		float						m_deltaTime;
-		Time::time_point			m_oldstartTime;
+        // Movement key related
+        float                       m_deltaTime;
+        Time::time_point            m_oldstartTime;
 
-		// fps meter
-		//Time::time_point			m_fpsStartTime;
-		//double					m_fpsDiffTime = 0.0;
-		//int						m_frameCounter = 0;
-		//float						m_fps = 0.0f;
+        // fps meter
+        //Time::time_point          m_fpsStartTime;
+        //double                    m_fpsDiffTime = 0.0;
+        //int                       m_frameCounter = 0;
+        //float                     m_fps = 0.0f;
 
-	public:
-		/** Constructor. Creates the preview GLCanvas with the given parent.
-		*  \param[in]  p_parent     Parent of the control.
-		*  \param[in]  p_attrib     OpenGL attribute list. */
-		PreviewGLCanvas( wxWindow* p_parent, const int* p_attrib );
-		/** Destructor. */
-		~PreviewGLCanvas( );
-		/** Tells this GLCanvas to preview a file.
-		*  \param[in]  p_datFile    .dat file containing the file to preview.
-		*  \param[in]  p_entry      Entry to preview.
-		*  \return bool    true if successful, false if not. */
-		bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
-		/** Clear the viewer. */
-		void clear( );
+    public:
+        /** Constructor. Creates the preview GLCanvas with the given parent.
+        *  \param[in]  p_parent     Parent of the control.
+        *  \param[in]  p_attrib     OpenGL attribute list. */
+        PreviewGLCanvas( wxWindow* p_parent, const int* p_attrib );
+        /** Destructor. */
+        ~PreviewGLCanvas( );
+        /** Tells this GLCanvas to preview a file.
+        *  \param[in]  p_datFile    .dat file containing the file to preview.
+        *  \param[in]  p_entry      Entry to preview.
+        *  \return bool    true if successful, false if not. */
+        bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
+        /** Clear the viewer. */
+        void clear( );
         /** Initialize the GLCanvas. */
-		bool initGL( );
-		/** For setting status if GLCanvas is shown.
-		*  \param[in]  p_status      GLCanvas visible status. */
-		void shown( bool p_status );
-		/** Used just to know if we must end the program now because OpenGL 3.3 is not available. */
-		bool OglCtxAvailable( ) { return m_glContext != NULL; }
+        bool initGL( );
+        /** For setting status if GLCanvas is shown.
+        *  \param[in]  p_status      GLCanvas visible status. */
+        void shown( bool p_status );
+        /** Used just to know if we must end the program now because OpenGL 3.3 is not available. */
+        bool OglCtxAvailable( ) { return m_glContext != NULL; }
 
-	private:
-		/** Gets the reader containing the data displayed by this viewer.
-		*  \return FileReader*     Reader containing the data. */
-		FileReader* reader( ) {
-			return m_reader;
-		}
-		/** Gets the reader containing the data displayed by this viewer.
-		*  \return FileReader*     Reader containing the data. */
-		const FileReader* reader( ) const {
-			return m_reader;
-		}
+    private:
+        /** Gets the reader containing the data displayed by this viewer.
+        *  \return FileReader*     Reader containing the data. */
+        FileReader* reader( ) {
+            return m_reader;
+        }
+        /** Gets the reader containing the data displayed by this viewer.
+        *  \return FileReader*     Reader containing the data. */
+        const FileReader* reader( ) const {
+            return m_reader;
+        }
 
-		/** Gets the model reader containing the data displayed by this viewer.
-		*  \return ModelReader*    Reader containing the data. */
-		ModelReader* modelReader( ) {
-			return reinterpret_cast<ModelReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		  /** Gets the model reader containing the data displayed by this viewer.
-		  *  \return ModelReader*    Reader containing the data. */
-		const ModelReader* modelReader( ) const {
-			return reinterpret_cast<const ModelReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		  /** Gets the map reader containing the data displayed by this viewer.
-		  *  \return MapReader*    Reader containing the data. */
-		MapReader* mapReader( ) {
-			return reinterpret_cast<MapReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		  /** Gets the map reader containing the data displayed by this viewer.
-		  *  \return MapReader*    Reader containing the data. */
-		const MapReader* mapReader( ) const {
-			return reinterpret_cast<const MapReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
+        /** Gets the model reader containing the data displayed by this viewer.
+        *  \return ModelReader*    Reader containing the data. */
+        ModelReader* modelReader( ) {
+            return reinterpret_cast<ModelReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
+          /** Gets the model reader containing the data displayed by this viewer.
+          *  \return ModelReader*    Reader containing the data. */
+        const ModelReader* modelReader( ) const {
+            return reinterpret_cast<const ModelReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
+          /** Gets the map reader containing the data displayed by this viewer.
+          *  \return MapReader*    Reader containing the data. */
+        MapReader* mapReader( ) {
+            return reinterpret_cast<MapReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
+          /** Gets the map reader containing the data displayed by this viewer.
+          *  \return MapReader*    Reader containing the data. */
+        const MapReader* mapReader( ) const {
+            return reinterpret_cast<const MapReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
 
-		void clearShader( );
-		bool isLightmapExcluded( const uint32& p_id );
-		void loadModel( DatFile& p_datFile, const GW2Model& p_model );
-		bool loadShader( );
-		void initShaderValue( );
-		void reloadShader( );
-		void onPaintEvt( wxPaintEvent& p_event );
-		void render( );
-		void drawModel( Shader* p_shader, const glm::mat4& p_trans );
-		void displayStatusText( );
-		void updateMatrices( );
-		void focus( );
-		void createFrameBuffer( );
-		void onMotionEvt( wxMouseEvent& p_event );
-		void onMouseWheelEvt( wxMouseEvent& p_event );
-		void onKeyDownEvt( wxKeyEvent& p_event );
-		void onMovementKeyTimerEvt( wxTimerEvent& p_event );
-		void onClose( wxCloseEvent& evt );
-		void onResize( wxSizeEvent& evt );
+        void clearShader( );
+        bool isLightmapExcluded( const uint32& p_id );
+        void loadModel( DatFile& p_datFile, const GW2Model& p_model );
+        bool loadShader( );
+        void initShaderValue( );
+        void reloadShader( );
+        void onPaintEvt( wxPaintEvent& p_event );
+        void render( );
+        void drawModel( Shader* p_shader, const glm::mat4& p_trans );
+        void displayStatusText( );
+        void updateMatrices( );
+        void focus( );
+        void createFrameBuffer( );
+        void onMotionEvt( wxMouseEvent& p_event );
+        void onMouseWheelEvt( wxMouseEvent& p_event );
+        void onKeyDownEvt( wxKeyEvent& p_event );
+        void onMovementKeyTimerEvt( wxTimerEvent& p_event );
+        void onClose( wxCloseEvent& evt );
+        void onResize( wxSizeEvent& evt );
 
-	}; // class PreviewGLCanvas
+    }; // class PreviewGLCanvas
 
 }; // namespace gw2b
 

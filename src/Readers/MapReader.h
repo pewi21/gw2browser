@@ -31,27 +31,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class MapReader : public FileReader {
-	public:
-		/** Constructor.
-		*  \param[in]  p_data       Data to be handled by this reader.
-		*  \param[in]  p_datFile    Reference to an instance of DatFile.
-		*  \param[in]  p_fileType   File type of the given data. */
-		MapReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
-		/** Destructor. Clears all data. */
-		virtual ~MapReader( );
+    class MapReader : public FileReader {
+    public:
+        /** Constructor.
+        *  \param[in]  p_data       Data to be handled by this reader.
+        *  \param[in]  p_datFile    Reference to an instance of DatFile.
+        *  \param[in]  p_fileType   File type of the given data. */
+        MapReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
+        /** Destructor. Clears all data. */
+        virtual ~MapReader( );
 
-		/** Gets the type of data contained in this file. Not to be confused with
-		*  file type.
-		*  \return DataType    type of data. */
-		virtual DataType dataType( ) const override {
-			return DT_Map;
-		}
-		/** Gets the strings contained in the data owned by this reader.
-		*  \return Array<float> MP3 format. */
-		Array<float> getMapData( ) const;
+        /** Gets the type of data contained in this file. Not to be confused with
+        *  file type.
+        *  \return DataType    type of data. */
+        virtual DataType dataType( ) const override {
+            return DT_Map;
+        }
+        /** Gets the strings contained in the data owned by this reader.
+        *  \return Array<float> MP3 format. */
+        Array<float> getMapData( ) const;
 
-	}; // class MP3Reader
+    }; // class MP3Reader
 
 }; // namespace gw2b
 

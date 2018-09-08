@@ -38,52 +38,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "FileReader.h"
 
 namespace gw2b {
-	class DatFile;
-	class DatIndexCategory;
-	class DatIndexEntry;
+    class DatFile;
+    class DatIndexCategory;
+    class DatIndexEntry;
 
-	class Exporter : public wxFrame {
-	public:
-		enum ExtractionMode {
-			EM_Raw,
-			EM_Converted,
-		};
+    class Exporter : public wxFrame {
+    public:
+        enum ExtractionMode {
+            EM_Raw,
+            EM_Converted,
+        };
 
-	private:
-		DatFile&                    m_datFile;
-		Array<const DatIndexEntry*> m_entries;
-		wxProgressDialog*           m_progress;
-		uint                        m_currentProgress;
-		wxString                    m_path;
-		wxFileName					m_filename;
-		ExtractionMode				m_mode;
-		ANetFileType				m_fileType;
+    private:
+        DatFile&                    m_datFile;
+        Array<const DatIndexEntry*> m_entries;
+        wxProgressDialog*           m_progress;
+        uint                        m_currentProgress;
+        wxString                    m_path;
+        wxFileName                  m_filename;
+        ExtractionMode              m_mode;
+        ANetFileType                m_fileType;
 
-	public:
-		/** Constructor.
-		*  \param[in]  p_entries       Entry to extract.
-		*  \param[in]  p_datFile       .dat file containing the file.
-		*  \param[in]  p_mode          File extract mode.
-		*  \param[in]  p_filename      File name to save to.*/
-		Exporter( const Array<const DatIndexEntry*>& p_entries, DatFile& p_datFile, ExtractionMode p_mode );
+    public:
+        /** Constructor.
+        *  \param[in]  p_entries       Entry to extract.
+        *  \param[in]  p_datFile       .dat file containing the file.
+        *  \param[in]  p_mode          File extract mode.
+        *  \param[in]  p_filename      File name to save to.*/
+        Exporter( const Array<const DatIndexEntry*>& p_entries, DatFile& p_datFile, ExtractionMode p_mode );
 
-	private:
-		/** Gets an appropriate file extension for the contents.
-		*  \return wxString				File extension. */
-		const wxChar* GetExtension( ) const;
-		const wxString GetWildcard( ) const;
-		void extractFile( const DatIndexEntry& p_entry );
-		void exportImage( FileReader* p_reader, const wxString& p_entryname );
-		void exportString( FileReader* p_reader, const wxString& p_entryname );
-		void exportEula( FileReader* p_reader, const wxString& p_entryname );
-		void exportSound( FileReader* p_reader, const wxString& p_entryname );
-		void exportSoundBank( FileReader* p_reader, const wxString& p_entryname );
-		void exportModel( FileReader* p_reader, const wxString& p_entryname );
-		void exportModelTexture( uint32 p_fileid );
-		bool writeFile( const Array<byte>& p_data );
-		void appendPaths( wxFileName& p_path, const DatIndexCategory& p_category );
+    private:
+        /** Gets an appropriate file extension for the contents.
+        *  \return wxString             File extension. */
+        const wxChar* GetExtension( ) const;
+        const wxString GetWildcard( ) const;
+        void extractFile( const DatIndexEntry& p_entry );
+        void exportImage( FileReader* p_reader, const wxString& p_entryname );
+        void exportString( FileReader* p_reader, const wxString& p_entryname );
+        void exportEula( FileReader* p_reader, const wxString& p_entryname );
+        void exportSound( FileReader* p_reader, const wxString& p_entryname );
+        void exportSoundBank( FileReader* p_reader, const wxString& p_entryname );
+        void exportModel( FileReader* p_reader, const wxString& p_entryname );
+        void exportModelTexture( uint32 p_fileid );
+        bool writeFile( const Array<byte>& p_data );
+        void appendPaths( wxFileName& p_path, const DatIndexCategory& p_category );
 
-	};
+    };
 
 }; // namespace gw2b
 

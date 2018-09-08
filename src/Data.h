@@ -31,72 +31,72 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	namespace data {
+    namespace data {
 
-		/** Loads a PNG from memory and returns a new wxBitmap containing it.
-		*  \param[in]  p_data   PNG data to load.
-		*  \param[in]  p_size   Size of the PNG data.
-		*  \return wxBitmap    Bitmap containing the loaded PNG. */
-		wxBitmap loadPNG( const byte* p_data, size_t p_size );
-		/** Loads a JPG from memory and returns a new wxBitmap containing it.
-		*  \param[in]  p_data   PNG data to load.
-		*  \param[in]  p_size   Size of the PNG data.
-		*  \return wxBitmap    Bitmap containing the loaded JPG. */
-		wxBitmap loadJPG( const byte* p_data, size_t p_size );
+        /** Loads a PNG from memory and returns a new wxBitmap containing it.
+        *  \param[in]  p_data   PNG data to load.
+        *  \param[in]  p_size   Size of the PNG data.
+        *  \return wxBitmap    Bitmap containing the loaded PNG. */
+        wxBitmap loadPNG( const byte* p_data, size_t p_size );
+        /** Loads a JPG from memory and returns a new wxBitmap containing it.
+        *  \param[in]  p_data   PNG data to load.
+        *  \param[in]  p_size   Size of the PNG data.
+        *  \return wxBitmap    Bitmap containing the loaded JPG. */
+        wxBitmap loadJPG( const byte* p_data, size_t p_size );
 
-		// File: data/about_box.jpg
-		extern const uint about_box_png_size;
-		extern const byte about_box_png[];
-		// File: data/checkers.png
-		extern const uint checkers_png_size;
-		extern const byte checkers_png[];
-		// File: data/closed_folder.png
-		extern const uint closed_folder_png_size;
-		extern const byte closed_folder_png[];
-		// File: data/dll.png
-		extern const uint dll_png_size;
-		extern const byte dll_png[];
-		// File: data/exe.png
-		extern const uint exe_png_size;
-		extern const byte exe_png[];
-		// File: data/font.png
-		extern const uint font_png_size;
-		extern const byte font_png[];
-		// File: data/image.png
-		extern const uint image_png_size;
-		extern const byte image_png[];
-		// File: data/model.png
-		extern const uint model_png_size;
-		extern const byte model_png[];
-		// File: data/open_folder.png
-		extern const uint open_folder_png_size;
-		extern const byte open_folder_png[];
-		// File: data/sound.png
-		extern const uint sound_png_size;
-		extern const byte sound_png[];
-		// File: data/text.png
-		extern const uint text_png_size;
-		extern const byte text_png[];
-		// File: data/toggle_alpha.png
-		extern const uint toggle_alpha_png_size;
-		extern const byte toggle_alpha_png[];
-		// File: data/toggle_blue.png
-		extern const uint toggle_blue_png_size;
-		extern const byte toggle_blue_png[];
-		// File: data/toggle_green.png
-		extern const uint toggle_green_png_size;
-		extern const byte toggle_green_png[];
-		// File: data/toggle_red.png
-		extern const uint toggle_red_png_size;
-		extern const byte toggle_red_png[];
-		// File: data/unknown.png
-		extern const uint unknown_png_size;
-		extern const byte unknown_png[];
-		// File: data/video.png
-		extern const uint video_png_size;
-		extern const byte video_png[];
+        // File: data/about_box.jpg
+        extern const uint about_box_png_size;
+        extern const byte about_box_png[];
+        // File: data/checkers.png
+        extern const uint checkers_png_size;
+        extern const byte checkers_png[];
+        // File: data/closed_folder.png
+        extern const uint closed_folder_png_size;
+        extern const byte closed_folder_png[];
+        // File: data/dll.png
+        extern const uint dll_png_size;
+        extern const byte dll_png[];
+        // File: data/exe.png
+        extern const uint exe_png_size;
+        extern const byte exe_png[];
+        // File: data/font.png
+        extern const uint font_png_size;
+        extern const byte font_png[];
+        // File: data/image.png
+        extern const uint image_png_size;
+        extern const byte image_png[];
+        // File: data/model.png
+        extern const uint model_png_size;
+        extern const byte model_png[];
+        // File: data/open_folder.png
+        extern const uint open_folder_png_size;
+        extern const byte open_folder_png[];
+        // File: data/sound.png
+        extern const uint sound_png_size;
+        extern const byte sound_png[];
+        // File: data/text.png
+        extern const uint text_png_size;
+        extern const byte text_png[];
+        // File: data/toggle_alpha.png
+        extern const uint toggle_alpha_png_size;
+        extern const byte toggle_alpha_png[];
+        // File: data/toggle_blue.png
+        extern const uint toggle_blue_png_size;
+        extern const byte toggle_blue_png[];
+        // File: data/toggle_green.png
+        extern const uint toggle_green_png_size;
+        extern const byte toggle_green_png[];
+        // File: data/toggle_red.png
+        extern const uint toggle_red_png_size;
+        extern const byte toggle_red_png[];
+        // File: data/unknown.png
+        extern const uint unknown_png_size;
+        extern const byte unknown_png[];
+        // File: data/video.png
+        extern const uint video_png_size;
+        extern const byte video_png[];
 
-	}; // namespace data
+    }; // namespace data
 
 }; // namespace gw2b
 

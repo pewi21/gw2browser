@@ -30,64 +30,64 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	StringViewer::StringViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: Viewer( p_parent, p_pos, p_size ) {
-		auto sizer = new wxBoxSizer( wxHORIZONTAL );
+    StringViewer::StringViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
+        : Viewer( p_parent, p_pos, p_size ) {
+        auto sizer = new wxBoxSizer( wxHORIZONTAL );
 
-		// Grid control
-		m_grid = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
-		// Create grid with 0 row, 2 cols
-		m_grid->CreateGrid( 0, 2 );
-		sizer->Add( m_grid, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
+        // Grid control
+        m_grid = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
+        // Create grid with 0 row, 2 cols
+        m_grid->CreateGrid( 0, 2 );
+        sizer->Add( m_grid, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
-		// Layout
-		this->SetSizer( sizer );
-		this->Layout( );
-	}
+        // Layout
+        this->SetSizer( sizer );
+        this->Layout( );
+    }
 
-	StringViewer::~StringViewer( ) {
-	}
+    StringViewer::~StringViewer( ) {
+    }
 
-	void StringViewer::clear( ) {
-		// Clear grid content
-		m_grid->ClearGrid( );
+    void StringViewer::clear( ) {
+        // Clear grid content
+        m_grid->ClearGrid( );
 
-		if ( m_grid->GetNumberRows( ) ) {
-			m_grid->DeleteRows( 0, m_grid->GetNumberRows( ) );
-		}
+        if ( m_grid->GetNumberRows( ) ) {
+            m_grid->DeleteRows( 0, m_grid->GetNumberRows( ) );
+        }
 
-		m_string.clear( );
-		Viewer::clear( );
-	}
+        m_string.clear( );
+        Viewer::clear( );
+    }
 
-	void StringViewer::setReader( FileReader* p_reader ) {
-	    Ensure::isOfType<StringReader>( p_reader );
-		Viewer::setReader( p_reader );
+    void StringViewer::setReader( FileReader* p_reader ) {
+        Ensure::isOfType<StringReader>( p_reader );
+        Viewer::setReader( p_reader );
 
-		if ( p_reader ) {
-			auto reader = this->stringReader( );
-			m_string = reader->getString( );
+        if ( p_reader ) {
+            auto reader = this->stringReader( );
+            m_string = reader->getString( );
 
-			this->updateGrid( );
-		}
-	}
+            this->updateGrid( );
+        }
+    }
 
-	void StringViewer::updateGrid( ) {
-		auto numstring = m_string.size( );
+    void StringViewer::updateGrid( ) {
+        auto numstring = m_string.size( );
 
-		if ( numstring ) {
-			m_grid->SetColLabelValue( 0, wxT( "Entry" ) );
-			m_grid->SetColLabelValue( 1, wxT( "String" ) );
+        if ( numstring ) {
+            m_grid->SetColLabelValue( 0, wxT( "Entry" ) );
+            m_grid->SetColLabelValue( 1, wxT( "String" ) );
 
-			m_grid->AppendRows( numstring );
+            m_grid->AppendRows( numstring );
 
-			for ( uint n = 0; n < numstring; n++ ) {
-				m_grid->SetCellValue( n, 0, wxString::Format( wxT( "%i" ), m_string[n].id ) );
-				m_grid->SetCellValue( n, 1, m_string[n].string );
-			}
-			m_grid->AutoSize( );
-		}
-		this->Layout( );
-	}
+            for ( uint n = 0; n < numstring; n++ ) {
+                m_grid->SetCellValue( n, 0, wxString::Format( wxT( "%i" ), m_string[n].id ) );
+                m_grid->SetCellValue( n, 1, m_string[n].string );
+            }
+            m_grid->AutoSize( );
+        }
+        this->Layout( );
+    }
 
 }; // namespace gw2b

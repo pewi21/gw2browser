@@ -36,44 +36,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class Text2D {
-		struct Character;
+    class Text2D {
+        struct Character;
 
-		std::map<GLchar, Character> m_characterTextureMap;
-		GLuint						m_textVAO;
-		GLuint						m_textVBO;
-		Shader*						m_textShader;
-		GLuint						m_uniformProjection;
-		GLuint						m_uniformTextColor;
-		wxSize						m_ClientSize;
+        std::map<GLchar, Character> m_characterTextureMap;
+        GLuint                      m_textVAO;
+        GLuint                      m_textVBO;
+        Shader*                     m_textShader;
+        GLuint                      m_uniformProjection;
+        GLuint                      m_uniformTextColor;
+        wxSize                      m_ClientSize;
 
-	public:
-		/** Constructor. Create text renderer.
-		*  \param[in]  p_fontfile    Path to font file.
-		*  \param[in]  p_fontsize    Font size, default is 12 point. */
-		Text2D( const char* p_fontfile = "..//data//fonts//LiberationSans-Regular.ttf", const FT_UInt p_fontsize = 12 );
-		/** Destructor. Clears all data. */
-		~Text2D( );
+    public:
+        /** Constructor. Create text renderer.
+        *  \param[in]  p_fontfile    Path to font file.
+        *  \param[in]  p_fontsize    Font size, default is 12 point. */
+        Text2D( const char* p_fontfile = "..//data//fonts//LiberationSans-Regular.ttf", const FT_UInt p_fontsize = 12 );
+        /** Destructor. Clears all data. */
+        ~Text2D( );
 
-		/** Draw text at given position.
-		*  \param[in]  p_text        Text to display.
-		*  \param[in]  p_x           X position.
-		*  \param[in]  p_y           Y position.
-		*  \param[in]  p_scale       Text size.
-		*  \param[in]  p_color       Color of text. */
-		void drawText( const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color );
-		/** Set viewport size. */
-		void setClientSize( const wxSize& p_size );
+        /** Draw text at given position.
+        *  \param[in]  p_text        Text to display.
+        *  \param[in]  p_x           X position.
+        *  \param[in]  p_y           Y position.
+        *  \param[in]  p_scale       Text size.
+        *  \param[in]  p_color       Color of text. */
+        void drawText( const wxString& p_text, GLfloat p_x, GLfloat p_y, GLfloat p_scale, glm::vec3 p_color );
+        /** Set viewport size. */
+        void setClientSize( const wxSize& p_size );
 
-	private:
-		/** Load font and load font texture to character map.
-		*  \param[in]  p_characters  Character texture map to load character texture to.
-		*  \param[in]  p_fontFile    Path to font file.
-		*  \param[in]  p_height      Font size.
-		*  \return bool				 True if success, false if failed to load font. */
-		bool loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height );
+    private:
+        /** Load font and load font texture to character map.
+        *  \param[in]  p_characters  Character texture map to load character texture to.
+        *  \param[in]  p_fontFile    Path to font file.
+        *  \param[in]  p_height      Font size.
+        *  \return bool              True if success, false if failed to load font. */
+        bool loadFont( std::map<GLchar, Character>& p_characters, const char *p_fontFile, const FT_UInt p_height );
 
-	}; // class Text2D
+    }; // class Text2D
 
 }; // namespace gw2b
 

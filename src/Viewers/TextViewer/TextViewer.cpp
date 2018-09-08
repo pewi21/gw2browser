@@ -30,81 +30,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	TextViewer::TextViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: Viewer( p_parent, p_pos, p_size ) {
-		auto sizer = new wxBoxSizer( wxVERTICAL );
-		auto hsizer = new wxBoxSizer( wxHORIZONTAL );
+    TextViewer::TextViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
+        : Viewer( p_parent, p_pos, p_size ) {
+        auto sizer = new wxBoxSizer( wxVERTICAL );
+        auto hsizer = new wxBoxSizer( wxHORIZONTAL );
 
-		// "Entry:" text
-		auto text = new wxStaticText( this, wxID_ANY, wxT( "Entry:" ) );
-		// Choice box
-		m_textEntry = new wxChoice( this, wxID_ANY );
-		hsizer->Add( text, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
-		hsizer->Add( m_textEntry, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
-		sizer->Add( hsizer );
+        // "Entry:" text
+        auto text = new wxStaticText( this, wxID_ANY, wxT( "Entry:" ) );
+        // Choice box
+        m_textEntry = new wxChoice( this, wxID_ANY );
+        hsizer->Add( text, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+        hsizer->Add( m_textEntry, 0, wxLEFT | wxTOP | wxBOTTOM, 5 );
+        sizer->Add( hsizer );
 
-		// Text control
-		m_text = new wxTextCtrl( this, wxID_ANY, wxT( "" ), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY );
-		sizer->Add( m_text, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
+        // Text control
+        m_text = new wxTextCtrl( this, wxID_ANY, wxT( "" ), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY );
+        sizer->Add( m_text, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
-		// Layout
-		this->SetSizer( sizer );
-		this->Layout( );
+        // Layout
+        this->SetSizer( sizer );
+        this->Layout( );
 
-		// Choice control event
-		this->Bind( wxEVT_CHOICE, &TextViewer::onToolbarEntrySelectEvt, this );
-	}
+        // Choice control event
+        this->Bind( wxEVT_CHOICE, &TextViewer::onToolbarEntrySelectEvt, this );
+    }
 
-	TextViewer::~TextViewer( ) {
-	}
+    TextViewer::~TextViewer( ) {
+    }
 
-	void TextViewer::clear( ) {
-		// Clear text control content
-		m_text->Clear( );
-		// Clear text entry selector content
-		m_textEntry->Clear( );
+    void TextViewer::clear( ) {
+        // Clear text control content
+        m_text->Clear( );
+        // Clear text entry selector content
+        m_textEntry->Clear( );
 
-		m_string.clear( );
-		Viewer::clear( );
-	}
+        m_string.clear( );
+        Viewer::clear( );
+    }
 
-	void TextViewer::setReader( FileReader* p_reader ) {
-		Viewer::setReader( p_reader );
+    void TextViewer::setReader( FileReader* p_reader ) {
+        Viewer::setReader( p_reader );
 
-		if ( p_reader ) {
-			if ( isOfType<TextReader>( p_reader ) ) {
-				auto reader = this->textReader( );
-				auto str = reader->getString( );
+        if ( p_reader ) {
+            if ( isOfType<TextReader>( p_reader ) ) {
+                auto reader = this->textReader( );
+                auto str = reader->getString( );
 
-				m_string.push_back( str );
+                m_string.push_back( str );
 
-			} else if ( isOfType<EulaReader>( p_reader ) ) {
-				auto reader = this->eulaReader( );
-				m_string = reader->getString( );
+            } else if ( isOfType<EulaReader>( p_reader ) ) {
+                auto reader = this->eulaReader( );
+                m_string = reader->getString( );
 
-			}
+            }
 
-			if ( !m_string.empty( ) ) {
-				// Populate entry list
-				for ( uint i = 0; i < m_string.size( ); i++ ) {
-					m_textEntry->AppendString( wxString::Format( wxT( "%u" ), i ) );
-				}
-				// Select entry 0
-				m_textEntry->SetSelection( 0 );
-				this->updateText( 0 );
-			}
-		}
-	}
+            if ( !m_string.empty( ) ) {
+                // Populate entry list
+                for ( uint i = 0; i < m_string.size( ); i++ ) {
+                    m_textEntry->AppendString( wxString::Format( wxT( "%u" ), i ) );
+                }
+                // Select entry 0
+                m_textEntry->SetSelection( 0 );
+                this->updateText( 0 );
+            }
+        }
+    }
 
-	void TextViewer::updateText( size_t p_entry ) {
-		m_text->Clear( );
-		m_text->SetValue( m_string[p_entry] );
-	}
+    void TextViewer::updateText( size_t p_entry ) {
+        m_text->Clear( );
+        m_text->SetValue( m_string[p_entry] );
+    }
 
-	void TextViewer::onToolbarEntrySelectEvt( wxCommandEvent& p_event ) {
-		auto sel = p_event.GetSelection( );
+    void TextViewer::onToolbarEntrySelectEvt( wxCommandEvent& p_event ) {
+        auto sel = p_event.GetSelection( );
 
-		this->updateText( sel );
-	}
+        this->updateText( sel );
+    }
 
 }; // namespace gw2b

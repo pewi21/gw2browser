@@ -30,40 +30,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	MapReader::MapReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    MapReader::MapReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	MapReader::~MapReader( ) {
-	}
+    MapReader::~MapReader( ) {
+    }
 
-	Array<float> MapReader::getMapData( ) const {
-		gw2f::pf::MapPackFile mapFile( m_data.GetPointer( ), m_data.GetSize( ) );
+    Array<float> MapReader::getMapData( ) const {
+        gw2f::pf::MapPackFile mapFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		//auto audioChunk = mapFile.chunk<gw2f::pf::MapChunks::Audio>( );
-		//auto missionChunk = mapFile.chunk<gw2f::pf::MapChunks::Mission>( );
-		//auto paramChunk = mapFile.chunk<gw2f::pf::MapChunks::Param>( );
-		//auto shoreChunk = mapFile.chunk<gw2f::pf::MapChunks::Shore>( );
-		//auto surfaceChunk = mapFile.chunk<gw2f::pf::MapChunks::Surfaces>( );
-		//auto terniChunk = mapFile.chunk<gw2f::pf::MapChunks::TerrainImg>( );
-		//auto areaChunk = mapFile.chunk<gw2f::pf::MapChunks::Areas>( );
-		//auto collideChunk = mapFile.chunk<gw2f::pf::MapChunks::Collide>( );
-		//auto cubemapChunk = mapFile.chunk<gw2f::pf::MapChunks::CubeMap>( );
-		//auto decalsChunk = mapFile.chunk<gw2f::pf::MapChunks::Decals>( );
-		//auto environmentChunk = mapFile.chunk<gw2f::pf::MapChunks::Environment>( );
-		//auto lightChunk = mapFile.chunk<gw2f::pf::MapChunks::Lights>( );
-		//auto propertiesChunk = mapFile.chunk<gw2f::pf::MapChunks::Properties>( );
-		//auto riverChunk = mapFile.chunk<gw2f::pf::MapChunks::Rivers>( );
-		//auto shadowChunk = mapFile.chunk<gw2f::pf::MapChunks::ShadowExt>( );
-		//auto zoneChunk = mapFile.chunk<gw2f::pf::MapChunks::Zones>( );
+        //auto audioChunk = mapFile.chunk<gw2f::pf::MapChunks::Audio>( );
+        //auto missionChunk = mapFile.chunk<gw2f::pf::MapChunks::Mission>( );
+        //auto paramChunk = mapFile.chunk<gw2f::pf::MapChunks::Param>( );
+        //auto shoreChunk = mapFile.chunk<gw2f::pf::MapChunks::Shore>( );
+        //auto surfaceChunk = mapFile.chunk<gw2f::pf::MapChunks::Surfaces>( );
+        //auto terniChunk = mapFile.chunk<gw2f::pf::MapChunks::TerrainImg>( );
+        //auto areaChunk = mapFile.chunk<gw2f::pf::MapChunks::Areas>( );
+        //auto collideChunk = mapFile.chunk<gw2f::pf::MapChunks::Collide>( );
+        //auto cubemapChunk = mapFile.chunk<gw2f::pf::MapChunks::CubeMap>( );
+        //auto decalsChunk = mapFile.chunk<gw2f::pf::MapChunks::Decals>( );
+        //auto environmentChunk = mapFile.chunk<gw2f::pf::MapChunks::Environment>( );
+        //auto lightChunk = mapFile.chunk<gw2f::pf::MapChunks::Lights>( );
+        //auto propertiesChunk = mapFile.chunk<gw2f::pf::MapChunks::Properties>( );
+        //auto riverChunk = mapFile.chunk<gw2f::pf::MapChunks::Rivers>( );
+        //auto shadowChunk = mapFile.chunk<gw2f::pf::MapChunks::ShadowExt>( );
+        //auto zoneChunk = mapFile.chunk<gw2f::pf::MapChunks::Zones>( );
 
-		auto terrainChunk = mapFile.chunk<gw2f::pf::MapChunks::Terrain>( );
-		auto& heightMap = terrainChunk->heightMapArray;
-
-
+        auto terrainChunk = mapFile.chunk<gw2f::pf::MapChunks::Terrain>( );
+        auto& heightMap = terrainChunk->heightMapArray;
 
 
-		return Array<float>( );
-	}
+
+
+        return Array<float>( );
+    }
 
 }; // namespace gw2b

@@ -29,18 +29,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	void Task::addOnCompleteHandler( const OnCompleteHandler& p_handler ) {
-		m_onComplete.push_back( p_handler );
-	}
+    void Task::addOnCompleteHandler( const OnCompleteHandler& p_handler ) {
+        m_onComplete.push_back( p_handler );
+    }
 
-	void Task::addOnCompleteHandler( OnCompleteHandler&& p_handler ) {
-		m_onComplete.push_back( std::forward<OnCompleteHandler>( p_handler ) );
-	}
+    void Task::addOnCompleteHandler( OnCompleteHandler&& p_handler ) {
+        m_onComplete.push_back( std::forward<OnCompleteHandler>( p_handler ) );
+    }
 
-	void Task::invokeOnCompleteHandler( ) {
-		for ( auto& iter : m_onComplete ) {
-			iter( );
-		}
-	}
+    void Task::invokeOnCompleteHandler( ) {
+        for ( auto& iter : m_onComplete ) {
+            iter( );
+        }
+    }
 
 }; // namespace gw2b

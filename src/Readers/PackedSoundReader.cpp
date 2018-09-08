@@ -30,24 +30,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	PackedSoundReader::PackedSoundReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    PackedSoundReader::PackedSoundReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	PackedSoundReader::~PackedSoundReader( ) {
-	}
+    PackedSoundReader::~PackedSoundReader( ) {
+    }
 
-	Array<byte> PackedSoundReader::getSoundData( ) const {
-		gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
+    Array<byte> PackedSoundReader::getSoundData( ) const {
+        gw2f::pf::AudioPackFile asnd( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
+        auto audioChunk = asnd.chunk<gw2f::pf::AudioChunks::Waveform>( );
 
-		int audioDataSize = audioChunk->audioData.size( );
+        int audioDataSize = audioChunk->audioData.size( );
 
-		Array<byte> outputArray( audioDataSize );
-		::memcpy( outputArray.GetPointer( ), audioChunk->audioData.data( ), audioDataSize );
+        Array<byte> outputArray( audioDataSize );
+        ::memcpy( outputArray.GetPointer( ), audioChunk->audioData.data( ), audioDataSize );
 
-		return outputArray;
-	}
+        return outputArray;
+    }
 
 }; // namespace gw2b

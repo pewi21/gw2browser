@@ -27,15 +27,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Exception.h"
 
 namespace gw2b {
-	namespace exception {
+    namespace exception {
 
-		Exception::Exception( const char* p_reason )
-			: m_errmsg( p_reason ) {
-		}
+        Exception::Exception( const char* p_reason )
+            : m_errmsg( p_reason ) {
+        }
 
-		const char *Exception::what( ) const throw( ) {
-			return m_errmsg.c_str( );
-		}
+        const char *Exception::what( ) const throw( ) {
+            return m_errmsg.c_str( );
+        }
 
-	}
+    }
 }

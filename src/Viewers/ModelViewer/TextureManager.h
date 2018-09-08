@@ -34,32 +34,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class TextureManager {
+    class TextureManager {
 
-		std::map<uint32, Texture2D*> m_texture;
+        std::map<uint32, Texture2D*> m_texture;
 
-	public:
-		/** Constructor. */
-		TextureManager( );
-		/** Destructor. */
-		~TextureManager( );
+    public:
+        /** Constructor. */
+        TextureManager( );
+        /** Destructor. */
+        ~TextureManager( );
 
-		/** Clear all the texture. */
-		void clear( );
+        /** Clear all the texture. */
+        void clear( );
 
-		/** Load a texture.
-		*  \param[in]  p_id			   File id of the texture to load. */
-		bool load( DatFile& p_datFile, const uint32 p_id );
-		/** Find and get texture by texture file id.
-		*  \param[in]  p_id			   File id of the texture to get. */
-		Texture2D* get( const uint32 p_id );
-		/** Find and remove texture by texture file id.
-		*  \param[in]  p_id			   File id of the texture to remove. */
-		bool remove( const uint32 p_id );
-		/** Check if the object is empty */
-		bool empty( );
+        /** Load a texture.
+        *  \param[in]  p_id            File id of the texture to load. */
+        bool load( DatFile& p_datFile, const uint32 p_id );
+        /** Find and get texture by texture file id.
+        *  \param[in]  p_id            File id of the texture to get. */
+        Texture2D* get( const uint32 p_id );
+        /** Find and remove texture by texture file id.
+        *  \param[in]  p_id            File id of the texture to remove. */
+        bool remove( const uint32 p_id );
+        /** Check if the object is empty */
+        bool empty( );
 
-	}; // class TextureManager
+    }; // class TextureManager
 
 }; // namespace gw2b
 

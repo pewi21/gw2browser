@@ -32,50 +32,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class HexControl : public wxScrolledWindow {
-		const byte* m_data;
-		uint        m_dataSize;
-	private:
-		enum {
-			OUTER_SPACING = 4
-		};
-		enum {
-			LINE_SPACING = 4
-		};
-		enum {
-			HEX_COLUMN_SPACING = 4
-		};
-		enum {
-			SECTION_SPACING = 0x18
-		};
-		enum {
-			BYTES_PER_LINE = 0x10
-		};
-	private:
-		struct RedrawState {
-			wxRect  clipping;
-			wxRect  offsetArea;
-			wxRect  hexArea;
-			wxRect  textArea;
-			wxSize  charSize;
-			uint    numLines;
-			uint    lineHeight;
-			uint    firstLine;
-			uint    lastLine;
-		};
-	public:
-		HexControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		void onDraw( wxDC& p_DC, wxRect& p_region );
-		void setData( const byte* p_data, size_t p_size );
-	private:
-		void updateScrollbars( wxDC& p_DC, RedrawState& p_state );
-		void drawOffsets( wxDC& p_DC, RedrawState& p_state );
-		void drawHexArea( wxDC& p_DC, RedrawState& p_state );
-		void drawTextArea( wxDC& p_DC, RedrawState& p_state );
-		char filterTextChar( byte p_char );
+    class HexControl : public wxScrolledWindow {
+        const byte* m_data;
+        uint        m_dataSize;
+    private:
+        enum {
+            OUTER_SPACING = 4
+        };
+        enum {
+            LINE_SPACING = 4
+        };
+        enum {
+            HEX_COLUMN_SPACING = 4
+        };
+        enum {
+            SECTION_SPACING = 0x18
+        };
+        enum {
+            BYTES_PER_LINE = 0x10
+        };
+    private:
+        struct RedrawState {
+            wxRect  clipping;
+            wxRect  offsetArea;
+            wxRect  hexArea;
+            wxRect  textArea;
+            wxSize  charSize;
+            uint    numLines;
+            uint    lineHeight;
+            uint    firstLine;
+            uint    lastLine;
+        };
+    public:
+        HexControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        void onDraw( wxDC& p_DC, wxRect& p_region );
+        void setData( const byte* p_data, size_t p_size );
+    private:
+        void updateScrollbars( wxDC& p_DC, RedrawState& p_state );
+        void drawOffsets( wxDC& p_DC, RedrawState& p_state );
+        void drawHexArea( wxDC& p_DC, RedrawState& p_state );
+        void drawTextArea( wxDC& p_DC, RedrawState& p_state );
+        char filterTextChar( byte p_char );
 
-		void onPaintEvt( wxPaintEvent& p_event );
-	};
+        void onPaintEvt( wxPaintEvent& p_event );
+    };
 
 };
 

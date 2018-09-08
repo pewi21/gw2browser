@@ -33,35 +33,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Viewer.h"
 
 namespace gw2b {
-	class ImageControl;
-	class ImageReader;
+    class ImageControl;
+    class ImageReader;
 
-	class ImageViewer : public Viewer {
-		ImageControl*               m_imageControl;
-		wxImage                     m_image;
-		Array<wxWindowID>           m_toolbarButtonIds;
-		std::vector<wxBitmap>       m_toolbarButtonIcons;
-		Array<wxToggleButton*>      m_toolbarButtons;
-	public:
-		ImageViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		virtual ~ImageViewer( );
+    class ImageViewer : public Viewer {
+        ImageControl*               m_imageControl;
+        wxImage                     m_image;
+        Array<wxWindowID>           m_toolbarButtonIds;
+        std::vector<wxBitmap>       m_toolbarButtonIcons;
+        Array<wxToggleButton*>      m_toolbarButtons;
+    public:
+        ImageViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        virtual ~ImageViewer( );
 
-		virtual void clear( ) override;
-		virtual void setReader( FileReader* p_reader ) override;
-		/** Gets the image reader containing the data displayed by this viewer.
-		*  \return ImageReader*    Reader containing the data. */
-		ImageReader* imageReader( ) {
-			return reinterpret_cast<ImageReader*>( this->reader( ) );
-		}       // already asserted with a dynamic_cast
-		/** Gets the image reader containing the data displayed by this viewer.
-		*  \return ImageReader*    Reader containing the data. */
-		const ImageReader* imageReader( ) const {
-			return reinterpret_cast<const ImageReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-	private:
-		wxPanel* buildToolbar( );
-		void onToolbarClickedEvt( wxCommandEvent& p_event );
-	}; // class ImageViewer
+        virtual void clear( ) override;
+        virtual void setReader( FileReader* p_reader ) override;
+        /** Gets the image reader containing the data displayed by this viewer.
+        *  \return ImageReader*    Reader containing the data. */
+        ImageReader* imageReader( ) {
+            return reinterpret_cast<ImageReader*>( this->reader( ) );
+        }       // already asserted with a dynamic_cast
+        /** Gets the image reader containing the data displayed by this viewer.
+        *  \return ImageReader*    Reader containing the data. */
+        const ImageReader* imageReader( ) const {
+            return reinterpret_cast<const ImageReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
+    private:
+        wxPanel* buildToolbar( );
+        void onToolbarClickedEvt( wxCommandEvent& p_event );
+    }; // class ImageViewer
 
 }; // namespace gw2b
 

@@ -31,53 +31,53 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	SoundBankReader::SoundBankReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    SoundBankReader::SoundBankReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	SoundBankReader::~SoundBankReader( ) {
-	}
+    SoundBankReader::~SoundBankReader( ) {
+    }
 
-	std::vector<SoundBank> SoundBankReader::getSoundData( ) const {
-		gw2f::pf::BankPackFile bankFile( m_data.GetPointer( ), m_data.GetSize( ) );
-		auto bankChunk = bankFile.chunk<gw2f::pf::BankChunks::BankFile>( );
+    std::vector<SoundBank> SoundBankReader::getSoundData( ) const {
+        gw2f::pf::BankPackFile bankFile( m_data.GetPointer( ), m_data.GetSize( ) );
+        auto bankChunk = bankFile.chunk<gw2f::pf::BankChunks::BankFile>( );
 
-		std::vector<SoundBank> outputBuffer;
+        std::vector<SoundBank> outputBuffer;
 
-		if ( !bankChunk ) {
-			return outputBuffer;
-		}
+        if ( !bankChunk ) {
+            return outputBuffer;
+        }
 
-		int totalBank = bankChunk->asndFile.size( );
+        int totalBank = bankChunk->asndFile.size( );
 
-		for ( int i = 0; i < totalBank; i++ ) {
-			auto asnd = bankChunk->asndFile[i];
-			auto asndSize = asnd.audioData.size( );
+        for ( int i = 0; i < totalBank; i++ ) {
+            auto asnd = bankChunk->asndFile[i];
+            auto asndSize = asnd.audioData.size( );
 
-			if ( asndSize ) {
-				gw2f::pf::AudioPackFile asndFile( asnd.audioData.data( ), asndSize );
+            if ( asndSize ) {
+                gw2f::pf::AudioPackFile asndFile( asnd.audioData.data( ), asndSize );
 
-				auto asndChunk = asndFile.chunk<gw2f::pf::AudioChunks::Waveform>( );
+                auto asndChunk = asndFile.chunk<gw2f::pf::AudioChunks::Waveform>( );
 
-				uint16 format = *reinterpret_cast<const uint16*>( asndChunk->audioData.data( ) );
-				// the data is either compressed or encrypted or not mp3 format
-				if ( format != FCC_MP3 ) {
-					continue;
-				}
+                uint16 format = *reinterpret_cast<const uint16*>( asndChunk->audioData.data( ) );
+                // the data is either compressed or encrypted or not mp3 format
+                if ( format != FCC_MP3 ) {
+                    continue;
+                }
 
-				auto audioDataSize = asndChunk->audioData.size( );
-				Array<byte> soundData( audioDataSize );
-				::memcpy( soundData.GetPointer( ), asndChunk->audioData.data( ), audioDataSize );
+                auto audioDataSize = asndChunk->audioData.size( );
+                Array<byte> soundData( audioDataSize );
+                ::memcpy( soundData.GetPointer( ), asndChunk->audioData.data( ), audioDataSize );
 
-				SoundBank output;
-				output.voiceId = asnd.voiceId;
-				output.data = soundData;
+                SoundBank output;
+                output.voiceId = asnd.voiceId;
+                output.data = soundData;
 
-				outputBuffer.push_back( output );
-			}
-		}
+                outputBuffer.push_back( output );
+            }
+        }
 
-		return outputBuffer;
-	}
+        return outputBuffer;
+    }
 
 }; // namespace gw2b

@@ -33,26 +33,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	StringReader::StringReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    StringReader::StringReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	StringReader::~StringReader( ) {
-	}
+    StringReader::~StringReader( ) {
+    }
 
-	std::vector<StringStruct> StringReader::getString( ) const {
+    std::vector<StringStruct> StringReader::getString( ) const {
         std::vector<StringStruct> string;
         uint32 entryIndex = 0;
 
         gw2f::StringsFile stringFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-	    for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
+        for ( size_t i = 0; i < stringFile.entryCount( ); i++ ) {
             auto& entry = stringFile.entry( i );
 
             StringStruct str;
-			if ( entry.isEncrypted( ) ) {
-				//str.string = L"Encrypted string";
-			} else {
+            if ( entry.isEncrypted( ) ) {
+                //str.string = L"Encrypted string";
+            } else {
 #if defined(_MSC_VER)
                 str.string = wxString::Format( wxT( "%s" ), entry.get( ) );
 #elif defined(__GNUC__) || defined(__GNUG__)
@@ -60,25 +60,25 @@ namespace gw2b {
                 std::string mbs = conv.to_bytes( entry.get( ) );
                 str.string = wxString( mbs.c_str( ), wxConvUTF8 );
 #endif
-				if ( str.string.IsEmpty( ) ) {
-					//str.string = L"Empty string";
-					continue;
-				}
+                if ( str.string.IsEmpty( ) ) {
+                    //str.string = L"Empty string";
+                    continue;
+                }
                 str.id = entryIndex;
                 string.push_back( str );
                 entryIndex++;
-			}
-		}
+            }
+        }
         return string;
-	}
+    }
 
-	bool StringReader::isValidHeader( const byte* p_data ) {
-		auto fourcc = *reinterpret_cast<const uint32*>( p_data );
+    bool StringReader::isValidHeader( const byte* p_data ) {
+        auto fourcc = *reinterpret_cast<const uint32*>( p_data );
 
-		if ( fourcc == FCC_strs ) {
-			return true;
-		}
-		return false;
-	}
+        if ( fourcc == FCC_strs ) {
+            return true;
+        }
+        return false;
+    }
 
 }; // namespace gw2b

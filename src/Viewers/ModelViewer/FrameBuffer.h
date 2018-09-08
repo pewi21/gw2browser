@@ -31,62 +31,62 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class FrameBuffer {
-		GLuint						m_fbo;				// Framebuffer object
-		GLuint						m_rbo;				// Renderbuffer object
-		std::vector<GLuint>			m_fbTexture;		// Framebuffer texture
+    class FrameBuffer {
+        GLuint                      m_fbo;              // Framebuffer object
+        GLuint                      m_rbo;              // Renderbuffer object
+        std::vector<GLuint>         m_fbTexture;        // Framebuffer texture
 
-		GLuint						m_fboMultiSample;
-		GLuint						m_rboMultiSample;
-		std::vector<GLuint>			m_textureColorBufferMultiSampled;
+        GLuint                      m_fboMultiSample;
+        GLuint                      m_rboMultiSample;
+        std::vector<GLuint>         m_textureColorBufferMultiSampled;
 
-		GLuint						m_quadVAO;			// Quad vertex array object
-		GLuint						m_quadVBO;			// Quad buffer array object
-		wxSize						m_clientSize;		// Size of OpenGL control
+        GLuint                      m_quadVAO;          // Quad vertex array object
+        GLuint                      m_quadVBO;          // Quad buffer array object
+        wxSize                      m_clientSize;       // Size of OpenGL control
 
-		bool						m_isMultisample;
+        bool                        m_isMultisample;
 
-	public:
-		/** Constructor. Create framebuffer object.
-		*  \param[in]  p_size       Size of the OpenGL screen.
-		*  \param[in]  p_attachCount Number of texture attachment. */
-		FrameBuffer( const wxSize& p_size, GLuint p_attachCount );
-		/** Constructor. Create multi-sample framebuffer object.
-		*  \param[in]  p_size       Size of the OpenGL screen.
-		*  \param[in]  p_samples    Number of sample for multi-sample texture.
-		*  \param[in]  p_attachCount Number of texture attachment. */
-		FrameBuffer( const wxSize& p_size, GLuint p_samples, GLuint p_attachCount );
-		/** Destructor. Clears all data. */
-		~FrameBuffer( );
+    public:
+        /** Constructor. Create framebuffer object.
+        *  \param[in]  p_size       Size of the OpenGL screen.
+        *  \param[in]  p_attachCount Number of texture attachment. */
+        FrameBuffer( const wxSize& p_size, GLuint p_attachCount );
+        /** Constructor. Create multi-sample framebuffer object.
+        *  \param[in]  p_size       Size of the OpenGL screen.
+        *  \param[in]  p_samples    Number of sample for multi-sample texture.
+        *  \param[in]  p_attachCount Number of texture attachment. */
+        FrameBuffer( const wxSize& p_size, GLuint p_samples, GLuint p_attachCount );
+        /** Destructor. Clears all data. */
+        ~FrameBuffer( );
 
-		/** Draw framebuffer. */
-		void draw( );
-		/** Bind to framebuffer. */
-		void bind( );
-		/** Unbind to framebuffer. */
-		void unbind( );
-		/** Set framebuffer texture size. */
-		void setClientSize( const wxSize& p_size );
+        /** Draw framebuffer. */
+        void draw( );
+        /** Bind to framebuffer. */
+        void bind( );
+        /** Unbind to framebuffer. */
+        void unbind( );
+        /** Set framebuffer texture size. */
+        void setClientSize( const wxSize& p_size );
 
-	private:
-		/** Setup screen quad. */
-		void setupQuad( );
-		/** Create normal framebuffer.
-		*  \param[in]  p_numTex     Number of texture attachment. */
-		void setupFramebuffer( GLuint p_numTex );
-		/** Create multi-sample framebuffer.
-		*  \param[in]  p_samples    Number of samples.
-		*  \param[in]  p_numTex     Number of texture attachment. */
-		void setupMultiSampleFramebuffer( GLuint p_samples, GLuint p_numTex );
-		/** Generates a texture that is suited for attachments to a framebuffer. */
-		GLuint generateAttachmentTexture( );
-		/** Generates a multi-sample texture.
-		*  \param[in]  p_samples    Number of samples for multi-sample texture.*/
-		GLuint generateMultiSampleTexture( GLuint p_samples );
-		/** Check the frame buffer status. */
-		bool checkFrameBufferStatus( );
+    private:
+        /** Setup screen quad. */
+        void setupQuad( );
+        /** Create normal framebuffer.
+        *  \param[in]  p_numTex     Number of texture attachment. */
+        void setupFramebuffer( GLuint p_numTex );
+        /** Create multi-sample framebuffer.
+        *  \param[in]  p_samples    Number of samples.
+        *  \param[in]  p_numTex     Number of texture attachment. */
+        void setupMultiSampleFramebuffer( GLuint p_samples, GLuint p_numTex );
+        /** Generates a texture that is suited for attachments to a framebuffer. */
+        GLuint generateAttachmentTexture( );
+        /** Generates a multi-sample texture.
+        *  \param[in]  p_samples    Number of samples for multi-sample texture.*/
+        GLuint generateMultiSampleTexture( GLuint p_samples );
+        /** Check the frame buffer status. */
+        bool checkFrameBufferStatus( );
 
-	}; // class FrameBuffer
+    }; // class FrameBuffer
 
 }; // namespace gw2b
 

@@ -31,36 +31,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Viewer.h"
 
 namespace gw2b {
-	class DatFile;
-	class DatIndexEntry;
+    class DatFile;
+    class DatIndexEntry;
 
-	/** Panel control used to preview files from the .dat. */
-	class PreviewPanel : public wxPanel {
-		Viewer*                 m_currentView;
-		FileReader::DataType    m_currentDataType;
-	public:
-		/** Constructor. Creates the preview panel with the given parent.
-		*  \param[in]  p_parent     Parent of the control.
-		*  \param[in]  p_location   Optional location of the control.
-		*  \param[in]  p_size       Optional size of the control. */
-		PreviewPanel( wxWindow* p_parent, const wxPoint& p_location = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		/** Destructor. */
-		~PreviewPanel( );
-		/** Tells this panel to preview a file.
-		*  \param[in]  p_datFile    .dat file containing the file to preview.
-		*  \param[in]  p_entry      Entry to preview.
-		*  \return bool    true if successful, false if not. */
-		bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
-		/** Destroy the viewer in this preview panel. */
-		void destroyViewer( );
-	private:
-		/** Helper method to create a viewer control to handle the given data type.
-		*  The caller is responsible for freeing the viewer.
-		*  \param[in]  p_dataType   Type of data to create a viewer for.
-		*  \param[in]  p_datFile    Reference to an instance of DatFile.
-		*  \return Viewer* Newly created viewer. */
-		Viewer* createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile );
-	}; // class PreviewPanel
+    /** Panel control used to preview files from the .dat. */
+    class PreviewPanel : public wxPanel {
+        Viewer*                 m_currentView;
+        FileReader::DataType    m_currentDataType;
+    public:
+        /** Constructor. Creates the preview panel with the given parent.
+        *  \param[in]  p_parent     Parent of the control.
+        *  \param[in]  p_location   Optional location of the control.
+        *  \param[in]  p_size       Optional size of the control. */
+        PreviewPanel( wxWindow* p_parent, const wxPoint& p_location = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        /** Destructor. */
+        ~PreviewPanel( );
+        /** Tells this panel to preview a file.
+        *  \param[in]  p_datFile    .dat file containing the file to preview.
+        *  \param[in]  p_entry      Entry to preview.
+        *  \return bool    true if successful, false if not. */
+        bool previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry );
+        /** Destroy the viewer in this preview panel. */
+        void destroyViewer( );
+    private:
+        /** Helper method to create a viewer control to handle the given data type.
+        *  The caller is responsible for freeing the viewer.
+        *  \param[in]  p_dataType   Type of data to create a viewer for.
+        *  \param[in]  p_datFile    Reference to an instance of DatFile.
+        *  \return Viewer* Newly created viewer. */
+        Viewer* createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile );
+    }; // class PreviewPanel
 
 }; // namespace gw2b
 

@@ -37,699 +37,699 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	//----------------------------------------------------------------------------
-	//      GW2ModelData
-	//----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
+    //      GW2ModelData
+    //----------------------------------------------------------------------------
 
-	GW2ModelData::GW2ModelData( ) {
-	}
+    GW2ModelData::GW2ModelData( ) {
+    }
 
-	GW2ModelData::GW2ModelData( const GW2ModelData& p_other ) {
-		meshes.assign( p_other.meshes.begin( ), p_other.meshes.end( ) );
-		material.assign( p_other.material.begin( ), p_other.material.end( ) );
-	}
+    GW2ModelData::GW2ModelData( const GW2ModelData& p_other ) {
+        meshes.assign( p_other.meshes.begin( ), p_other.meshes.end( ) );
+        material.assign( p_other.material.begin( ), p_other.material.end( ) );
+    }
 
-	GW2ModelData::~GW2ModelData( ) {
-	}
+    GW2ModelData::~GW2ModelData( ) {
+    }
 
-	//----------------------------------------------------------------------------
-	//      GW2Model
-	//----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
+    //      GW2Model
+    //----------------------------------------------------------------------------
 
-	GW2Model::GW2Model( )
-		: m_data( new GW2ModelData( ) ) {
-	}
+    GW2Model::GW2Model( )
+        : m_data( new GW2ModelData( ) ) {
+    }
 
-	GW2Model::GW2Model( const GW2Model& p_other )
-		: m_data( p_other.m_data ) {
-	}
+    GW2Model::GW2Model( const GW2Model& p_other )
+        : m_data( p_other.m_data ) {
+    }
 
-	GW2Model::~GW2Model( ) {
-	}
+    GW2Model::~GW2Model( ) {
+    }
 
-	GW2Model& GW2Model::operator=( const GW2Model& p_other ) {
-		m_data = p_other.m_data;
-		return *this;
-	}
+    GW2Model& GW2Model::operator=( const GW2Model& p_other ) {
+        m_data = p_other.m_data;
+        return *this;
+    }
 
-	uint GW2Model::numMeshes( ) const {
-		return m_data->meshes.size( );
-	}
+    uint GW2Model::numMeshes( ) const {
+        return m_data->meshes.size( );
+    }
 
-	const GW2Mesh& GW2Model::mesh( uint p_index ) const {
-		Assert( p_index < this->numMeshes( ) );
-		return m_data->meshes[p_index];
-	}
+    const GW2Mesh& GW2Model::mesh( uint p_index ) const {
+        Assert( p_index < this->numMeshes( ) );
+        return m_data->meshes[p_index];
+    }
 
-	const std::vector<GW2Mesh>& GW2Model::mesh( ) const {
-		return m_data->meshes;
-	}
+    const std::vector<GW2Mesh>& GW2Model::mesh( ) const {
+        return m_data->meshes;
+    }
 
-	GW2Mesh* GW2Model::addMeshes( uint p_amount ) {
-		this->unShare( );
+    GW2Mesh* GW2Model::addMeshes( uint p_amount ) {
+        this->unShare( );
 
-		uint oldSize = m_data->meshes.size( );
-		m_data->meshes.resize( oldSize + p_amount );
+        uint oldSize = m_data->meshes.size( );
+        m_data->meshes.resize( oldSize + p_amount );
 
-		return &( m_data->meshes[oldSize] );
-	}
+        return &( m_data->meshes[oldSize] );
+    }
 
-	uint GW2Model::numMaterial( ) const {
-		return m_data->material.size( );
-	}
+    uint GW2Model::numMaterial( ) const {
+        return m_data->material.size( );
+    }
 
-	const GW2Material& GW2Model::material( uint p_index ) const {
-		Assert( p_index < this->numMaterial( ) );
-		return m_data->material[p_index];
-	}
+    const GW2Material& GW2Model::material( uint p_index ) const {
+        Assert( p_index < this->numMaterial( ) );
+        return m_data->material[p_index];
+    }
 
-	const std::vector<GW2Material>& GW2Model::material( ) const {
-		return m_data->material;
-	}
+    const std::vector<GW2Material>& GW2Model::material( ) const {
+        return m_data->material;
+    }
 
-	GW2Material* GW2Model::addMaterial( uint p_amount ) {
-		this->unShare( );
+    GW2Material* GW2Model::addMaterial( uint p_amount ) {
+        this->unShare( );
 
-		GW2Material emptyData;
-		::memset( &emptyData, 0, sizeof( emptyData ) );
+        GW2Material emptyData;
+        ::memset( &emptyData, 0, sizeof( emptyData ) );
 
-		uint oldSize = m_data->material.size( );
-		m_data->material.resize( oldSize + p_amount, emptyData );
+        uint oldSize = m_data->material.size( );
+        m_data->material.resize( oldSize + p_amount, emptyData );
 
-		return &( m_data->material[oldSize] );
-	}
+        return &( m_data->material[oldSize] );
+    }
 
-	void GW2Model::unShare( ) {
-		if ( m_data->GetRefCount( ) == 1 ) {
-			return;
-		}
-		m_data = new GW2ModelData( *m_data );
-	}
+    void GW2Model::unShare( ) {
+        if ( m_data->GetRefCount( ) == 1 ) {
+            return;
+        }
+        m_data = new GW2ModelData( *m_data );
+    }
 
-	Bounds GW2Model::bounds( ) const {
-		// If this model contains meshes, return proper bounds
-		if ( m_data->meshes.size( ) ) {
-			Bounds retval;
-			for ( uint i = 0; i < m_data->meshes.size( ); i++ ) {
-				if ( i == 0 ) {
-					retval = m_data->meshes[i].bounds;
-				} else {
-					retval += m_data->meshes[i].bounds;
-				}
-			}
-			return retval;
-		}
+    Bounds GW2Model::bounds( ) const {
+        // If this model contains meshes, return proper bounds
+        if ( m_data->meshes.size( ) ) {
+            Bounds retval;
+            for ( uint i = 0; i < m_data->meshes.size( ); i++ ) {
+                if ( i == 0 ) {
+                    retval = m_data->meshes[i].bounds;
+                } else {
+                    retval += m_data->meshes[i].bounds;
+                }
+            }
+            return retval;
+        }
 
-		// If not, return empty bounds
-		Bounds retval;
-		::memset( &retval, 0, sizeof( retval ) );
-		return retval;
-	}
+        // If not, return empty bounds
+        Bounds retval;
+        ::memset( &retval, 0, sizeof( retval ) );
+        return retval;
+    }
 
 
-	//----------------------------------------------------------------------------
-	//      ModelReader
-	//----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
+    //      ModelReader
+    //----------------------------------------------------------------------------
 
-	ModelReader::ModelReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    ModelReader::ModelReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	ModelReader::~ModelReader( ) {
-	}
+    ModelReader::~ModelReader( ) {
+    }
 
-	GW2Model ModelReader::getModel( ) const {
-		GW2Model newModel;
+    GW2Model ModelReader::getModel( ) const {
+        GW2Model newModel;
 
-		// Bail if there is no data to read
-		if ( m_data.GetSize( ) == 0 ) {
-			wxLogMessage( wxT( "No data." ) );
-			return newModel;
-		}
+        // Bail if there is no data to read
+        if ( m_data.GetSize( ) == 0 ) {
+            wxLogMessage( wxT( "No data." ) );
+            return newModel;
+        }
 
-		wxLogMessage( wxT( "Reading model file..." ) );
+        wxLogMessage( wxT( "Reading model file..." ) );
 
-		gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
+        gw2f::pf::ModelPackFile modelPackFile( m_data.GetPointer( ), m_data.GetSize( ) );
 
-		this->readGeometry( newModel, modelPackFile );
-		this->readMaterial( newModel, modelPackFile );
+        this->readGeometry( newModel, modelPackFile );
+        this->readMaterial( newModel, modelPackFile );
 
-		wxLogMessage( wxT( "Finished reading model file." ) );
+        wxLogMessage( wxT( "Finished reading model file." ) );
 
-		return newModel;
-	}
+        return newModel;
+    }
 
-	void ModelReader::readGeometry( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
-		wxLogMessage( wxT( "Reading GOEM chunk..." ) );
+    void ModelReader::readGeometry( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+        wxLogMessage( wxT( "Reading GOEM chunk..." ) );
 
-		std::shared_ptr<gw2f::pf::chunks::ModelFileGeometryV1> geometryChunk;
-		try {
-			geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
-		} catch ( const gw2f::exception::Exception& exception ) {
-			wxLogMessage( wxT( "Failed to read GEOM chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
-			return;
-		} catch ( ... ) {
-			wxLogMessage( wxT( "An unknown error has occurred." ) );
-			return;
-		}
+        std::shared_ptr<gw2f::pf::chunks::ModelFileGeometryV1> geometryChunk;
+        try {
+            geometryChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Geometry>( );
+        } catch ( const gw2f::exception::Exception& exception ) {
+            wxLogMessage( wxT( "Failed to read GEOM chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
+            return;
+        } catch ( ... ) {
+            wxLogMessage( wxT( "An unknown error has occurred." ) );
+            return;
+        }
 
-		// Bail if no geometry data
-		if ( !geometryChunk ) {
-			wxLogMessage( wxT( "No data." ) );
-			return;
-		}
+        // Bail if no geometry data
+        if ( !geometryChunk ) {
+            wxLogMessage( wxT( "No data." ) );
+            return;
+        }
 
-		uint32 meshCount = geometryChunk->meshes.size( );
+        uint32 meshCount = geometryChunk->meshes.size( );
 
-		// Bail if no meshes to read
-		if ( !meshCount ) {
-			wxLogMessage( wxT( "No mesh." ) );
-			return;
-		}
+        // Bail if no meshes to read
+        if ( !meshCount ) {
+            wxLogMessage( wxT( "No mesh." ) );
+            return;
+        }
 
-		wxLogMessage( wxT( "%d mesh(es)." ), meshCount );
+        wxLogMessage( wxT( "%d mesh(es)." ), meshCount );
 
-		// Create storage for submeshes now, so we can parallelize the loop
-		GW2Mesh* meshes = p_model.addMeshes( meshCount );
+        // Create storage for submeshes now, so we can parallelize the loop
+        GW2Mesh* meshes = p_model.addMeshes( meshCount );
 
-		auto& meshInfoArray = geometryChunk->meshes;
+        auto& meshInfoArray = geometryChunk->meshes;
 
-		uint verticesCount = 0;
-		uint trianglesCount = 0;
+        uint verticesCount = 0;
+        uint trianglesCount = 0;
 
 #pragma omp parallel for shared( meshes )
-		for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
-			// Fetch mesh info
-			auto& meshInfo = meshInfoArray[i];
+        for ( int i = 0; i < static_cast<int>( meshCount ); i++ ) {
+            // Fetch mesh info
+            auto& meshInfo = meshInfoArray[i];
 
-			// Fetch buffer info
-			auto& vertexInfo = meshInfo.geometry->verts;
-			auto& indicesInfo = meshInfo.geometry->indices;
-			auto vertexCount = vertexInfo.vertexCount;
-			auto indiceCount = indicesInfo.indices.size( );
+            // Fetch buffer info
+            auto& vertexInfo = meshInfo.geometry->verts;
+            auto& indicesInfo = meshInfo.geometry->indices;
+            auto vertexCount = vertexInfo.vertexCount;
+            auto indiceCount = indicesInfo.indices.size( );
 
-			// Add new mesh
-			GW2Mesh& mesh = meshes[i];
+            // Add new mesh
+            GW2Mesh& mesh = meshes[i];
 
-			// Material data
-			mesh.materialIndex = meshInfo.materialIndex;
-			mesh.materialName = wxString::FromUTF8( meshInfo.materialName.data( ) );
+            // Material data
+            mesh.materialIndex = meshInfo.materialIndex;
+            mesh.materialName = wxString::FromUTF8( meshInfo.materialName.data( ) );
 
-			// Vertex data
-			if ( vertexCount ) {
-				this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
-			}
+            // Vertex data
+            if ( vertexCount ) {
+                this->readVertexBuffer( mesh, vertexInfo.mesh.vertices.data( ), vertexCount, static_cast<ANetFlexibleVertexFormat>( vertexInfo.mesh.fvf ) );
+            }
 
-			// DirectX coordinate to OpenGL coordinate by rotate ZY and invert Z
-			this->rotZYinvZ( mesh );
+            // DirectX coordinate to OpenGL coordinate by rotate ZY and invert Z
+            this->rotZYinvZ( mesh );
 
-			// Index data
-			if ( indiceCount ) {
-				this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
-				this->computeBond( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
-			}
+            // Index data
+            if ( indiceCount ) {
+                this->readIndexBuffer( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
+                this->computeBond( mesh, reinterpret_cast<const byte*>( indicesInfo.indices.data( ) ), indiceCount );
+            }
 
-			if ( mesh.hasNormal ) {
-				// Normalize normal
-				this->normalizeNormals( mesh );
-			} else {
-				// Calculate the vertex normal if it not exist
-				this->computeVertexNormals( mesh );
-				mesh.hasNormal = true;
-			}
+            if ( mesh.hasNormal ) {
+                // Normalize normal
+                this->normalizeNormals( mesh );
+            } else {
+                // Calculate the vertex normal if it not exist
+                this->computeVertexNormals( mesh );
+                mesh.hasNormal = true;
+            }
 
-			// Count the vertices and triangles
-			verticesCount += vertexCount;
-			trianglesCount += indiceCount;
-		}
+            // Count the vertices and triangles
+            verticesCount += vertexCount;
+            trianglesCount += indiceCount;
+        }
 
-		wxLogMessage( wxT( "%d vertices." ), verticesCount );
-		wxLogMessage( wxT( "%d triangles." ), trianglesCount );
-	}
+        wxLogMessage( wxT( "%d vertices." ), verticesCount );
+        wxLogMessage( wxT( "%d triangles." ), trianglesCount );
+    }
 
-	void ModelReader::readVertexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
-		p_mesh.vertices.resize( p_vertexCount );
-		uint vertexSize = this->vertexSize( p_vertexFormat );
+    void ModelReader::readVertexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_vertexCount, ANetFlexibleVertexFormat p_vertexFormat ) const {
+        p_mesh.vertices.resize( p_vertexCount );
+        uint vertexSize = this->vertexSize( p_vertexFormat );
 
-		p_mesh.hasNormal = ( ( p_vertexFormat & ANFVF_Normal ) ? 1 : 0 );
-		p_mesh.hasUV = ( ( p_vertexFormat & ( ANFVF_UV32Mask | ANFVF_UV16Mask ) ) ? 1 : 0 );
-
-#pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( p_vertexCount ); i++ ) {
-			auto pos = &p_data[i * vertexSize];
-			Vertex& vertex = p_mesh.vertices[i];
-			uint uvIndex = 0;
-
-			// Bit 0: Position
-			if ( p_vertexFormat & ANFVF_Position ) {
-				::memcpy( &vertex.position, pos, sizeof( vertex.position ) );
-				pos += sizeof( vertex.position );
-			}
-			// Bit 1: Weights
-			if ( p_vertexFormat & ANFVF_Weights ) {
-				pos += 4;
-			}
-			// Bit 2: Group
-			if ( p_vertexFormat & ANFVF_Group ) {
-				pos += 4;
-			}
-			// Bit 3: Normal
-			if ( p_vertexFormat & ANFVF_Normal ) {
-				::memcpy( &vertex.normal, pos, sizeof( vertex.normal ) );
-				pos += sizeof( vertex.normal );
-			}
-			// Bit 4: Color
-			if ( p_vertexFormat & ANFVF_Color ) {
-				pos += sizeof( uint32 );
-			}
-			// Bit 5: Tangent
-			if ( p_vertexFormat & ANFVF_Tangent ) {
-				pos += sizeof( glm::vec3 );
-			}
-			// Bit 6: Bitangent
-			if ( p_vertexFormat & ANFVF_Bitangent ) {
-				pos += sizeof( glm::vec3 );
-			}
-			// Bit 7: Tangent frame
-			if ( p_vertexFormat & ANFVF_TangentFrame ) {
-				pos += sizeof( glm::vec3 );
-			}
-			// Bit 8-15: 32-bit UV
-			uint uvFlag = ( p_vertexFormat & ANFVF_UV32Mask ) >> 8;
-			if ( uvFlag ) {
-				for ( uint j = 0; j < 7; j++ ) {
-					if ( ( ( uvFlag >> j ) & 1 ) == 0 ) {
-						continue;
-					}
-					if ( uvIndex < 1 ) {
-						::memcpy( &vertex.uv, pos, sizeof( vertex.uv ) );
-					}
-					pos += sizeof( vertex.uv );
-				}
-			}
-			// Bit 16-23: 16-bit UV
-			uvFlag = ( p_vertexFormat & ANFVF_UV16Mask ) >> 16;
-			if ( uvFlag ) {
-				for ( uint j = 0; j < 7; j++ ) {
-					if ( ( ( uvFlag >> j ) & 1 ) == 0 ) {
-						continue;
-					}
-					if ( uvIndex < 1 ) {
-						auto uv = reinterpret_cast<const half*>( pos );
-						vertex.uv.x = uv[0];
-						vertex.uv.y = uv[1];
-						uvIndex++;
-					}
-					pos += sizeof( half ) * 2;
-				}
-			}
-			// Bit 24: Unknown 48-byte value
-			if ( p_vertexFormat & ANFVF_Unknown1 ) {
-				pos += 48;
-			}
-			// Bit 25: Unknown 4-byte value
-			if ( p_vertexFormat & ANFVF_Unknown2 ) {
-				pos += 4;
-			}
-			// Bit 26: Unknown 4-byte value
-			if ( p_vertexFormat & ANFVF_Unknown3 ) {
-				pos += 4;
-			}
-			// Bit 27: Unknown 16-byte value
-			if ( p_vertexFormat & ANFVF_Unknown4 ) {
-				pos += 16;
-			}
-			// Bit 28: Compressed position
-			if ( p_vertexFormat & ANFVF_PositionCompressed ) {
-				vertex.position.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
-				vertex.position.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
-				vertex.position.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
-				pos += 3 * sizeof( half );
-			}
-			// Bit 29: Unknown 12-byte value
-			if ( p_vertexFormat & ANFVF_Unknown5 ) {
-				pos += 12;
-			}
-		}
-	}
-
-	uint ModelReader::vertexSize( ANetFlexibleVertexFormat p_vertexFormat ) const {
-		uint uvCount = 0;
-		uint uvField = ( p_vertexFormat & ANFVF_UV32Mask ) >> 0x08;
-		for ( uint i = 0; i < 7; i++ ) {
-			if ( ( ( uvField >> i ) & 1 ) != 0 )
-				uvCount++;
-		}
-
-		uvField = ( p_vertexFormat & ANFVF_UV16Mask ) >> 0x10;
-		uint uv16Count = 0;
-		for ( uint i = 0; i < 7; i++ ) {
-			if ( ( ( uvField >> i ) & 1 ) != 0 )
-				uv16Count++;
-		}
-
-		return ( ( p_vertexFormat & ANFVF_Position ) * 12 )
-			+ ( ( p_vertexFormat & ANFVF_Weights ) * 2 )
-			+ ( ( p_vertexFormat & ANFVF_Group ) )
-			+ ( ( ( p_vertexFormat & ANFVF_Normal ) >> 3 ) * 12 )
-			+ ( ( p_vertexFormat & ANFVF_Color ) >> 2 )
-			+ ( ( ( p_vertexFormat & ANFVF_Tangent ) >> 5 ) * 12 )
-			+ ( ( ( p_vertexFormat & ANFVF_Bitangent ) >> 6 ) * 12 )
-			+ ( ( ( p_vertexFormat & ANFVF_TangentFrame ) >> 7 ) * 12 )
-			+ ( uvCount * 8 )
-			+ ( uv16Count * 4 )
-			+ ( ( ( p_vertexFormat & ANFVF_Unknown1 ) >> 24 ) * 48 )
-			+ ( ( ( p_vertexFormat & ANFVF_Unknown2 ) >> 25 ) * 4 )
-			+ ( ( ( p_vertexFormat & ANFVF_Unknown3 ) >> 26 ) * 4 )
-			+ ( ( ( p_vertexFormat & ANFVF_Unknown4 ) >> 27 ) * 16 )
-			+ ( ( ( p_vertexFormat & ANFVF_PositionCompressed ) >> 28 ) * 6 )
-			+ ( ( ( p_vertexFormat & ANFVF_Unknown5 ) >> 29 ) * 12 );
-
-	}
-
-	void ModelReader::computeBond( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
-		// Calculate bounds
-		float floatMin = std::numeric_limits<float>::min( );
-		float floatMax = std::numeric_limits<float>::max( );
-		p_mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
-		p_mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
-
-		glm::vec3 min = p_mesh.bounds.min;
-		glm::vec3 max = p_mesh.bounds.max;
-
-		auto indices = reinterpret_cast<const uint16*>( p_data );
-#pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( p_indiceCount ); i++ ) {
-			auto& vertex = p_mesh.vertices[indices[i]];
-			glm::vec3 position = vertex.position;
-			min = glm::min( min, position );
-			max = glm::max( max, position );
-		}
-		p_mesh.bounds.min = min;
-		p_mesh.bounds.max = max;
-	}
-
-	void ModelReader::readIndexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
-		p_mesh.triangles.resize( p_indiceCount / 3 );
-#pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( p_mesh.triangles.size( ) ); i++ ) {
-			auto pos = &p_data[i * sizeof( Triangle )];
-			Triangle& triangle = p_mesh.triangles[i];
-			// Flip the order of the faces of the triangle
-			triangle.index1 = *reinterpret_cast<const uint16*>( pos + 0 * sizeof( uint16 ) );
-			triangle.index2 = *reinterpret_cast<const uint16*>( pos + 2 * sizeof( uint16 ) );
-			triangle.index3 = *reinterpret_cast<const uint16*>( pos + 1 * sizeof( uint16 ) );
-		}
-	}
-
-	void ModelReader::normalizeNormals( GW2Mesh& p_mesh ) const {
-		auto& vert = p_mesh.vertices;
-#pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
-			// Check if the normals is zero to avoid divide by zero problem.
-			if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
-				if ( vert[i].normal.x ) {
-					vert[i].normal.x = glm::normalize( vert[i].normal.x );
-				}
-				if ( vert[i].normal.y ) {
-					vert[i].normal.y = glm::normalize( vert[i].normal.y );
-				}
-				if ( vert[i].normal.z ) {
-					vert[i].normal.z = glm::normalize( vert[i].normal.z );
-				}
-			} else {
-				vert[i].normal = glm::normalize( vert[i].normal );
-			}
-		}
-	}
-
-	void ModelReader::computeVertexNormals( GW2Mesh& p_mesh ) const {
-		// Calculate vertex normals
-		// http://www.iquilezles.org/www/articles/normals/normals.htm
-
-		auto& verts = p_mesh.vertices;
-		auto& faces = p_mesh.triangles;
-
-		// verts[i].normal is already initialized with zero
+        p_mesh.hasNormal = ( ( p_vertexFormat & ANFVF_Normal ) ? 1 : 0 );
+        p_mesh.hasUV = ( ( p_vertexFormat & ( ANFVF_UV32Mask | ANFVF_UV16Mask ) ) ? 1 : 0 );
 
 #pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( faces.size( ) ); i++ ) {
-			// Re-flip the order of the faces of the triangle to original order
-			const int ia = faces[i].index1;
-			const int ib = faces[i].index3;
-			const int ic = faces[i].index2;
+        for ( int i = 0; i < static_cast<int>( p_vertexCount ); i++ ) {
+            auto pos = &p_data[i * vertexSize];
+            Vertex& vertex = p_mesh.vertices[i];
+            uint uvIndex = 0;
 
-			const glm::vec3 e1 = verts[ia].position - verts[ib].position;
-			const glm::vec3 e2 = verts[ic].position - verts[ib].position;
-			const glm::vec3 no = glm::cross( e1, e2 );
+            // Bit 0: Position
+            if ( p_vertexFormat & ANFVF_Position ) {
+                ::memcpy( &vertex.position, pos, sizeof( vertex.position ) );
+                pos += sizeof( vertex.position );
+            }
+            // Bit 1: Weights
+            if ( p_vertexFormat & ANFVF_Weights ) {
+                pos += 4;
+            }
+            // Bit 2: Group
+            if ( p_vertexFormat & ANFVF_Group ) {
+                pos += 4;
+            }
+            // Bit 3: Normal
+            if ( p_vertexFormat & ANFVF_Normal ) {
+                ::memcpy( &vertex.normal, pos, sizeof( vertex.normal ) );
+                pos += sizeof( vertex.normal );
+            }
+            // Bit 4: Color
+            if ( p_vertexFormat & ANFVF_Color ) {
+                pos += sizeof( uint32 );
+            }
+            // Bit 5: Tangent
+            if ( p_vertexFormat & ANFVF_Tangent ) {
+                pos += sizeof( glm::vec3 );
+            }
+            // Bit 6: Bitangent
+            if ( p_vertexFormat & ANFVF_Bitangent ) {
+                pos += sizeof( glm::vec3 );
+            }
+            // Bit 7: Tangent frame
+            if ( p_vertexFormat & ANFVF_TangentFrame ) {
+                pos += sizeof( glm::vec3 );
+            }
+            // Bit 8-15: 32-bit UV
+            uint uvFlag = ( p_vertexFormat & ANFVF_UV32Mask ) >> 8;
+            if ( uvFlag ) {
+                for ( uint j = 0; j < 7; j++ ) {
+                    if ( ( ( uvFlag >> j ) & 1 ) == 0 ) {
+                        continue;
+                    }
+                    if ( uvIndex < 1 ) {
+                        ::memcpy( &vertex.uv, pos, sizeof( vertex.uv ) );
+                    }
+                    pos += sizeof( vertex.uv );
+                }
+            }
+            // Bit 16-23: 16-bit UV
+            uvFlag = ( p_vertexFormat & ANFVF_UV16Mask ) >> 16;
+            if ( uvFlag ) {
+                for ( uint j = 0; j < 7; j++ ) {
+                    if ( ( ( uvFlag >> j ) & 1 ) == 0 ) {
+                        continue;
+                    }
+                    if ( uvIndex < 1 ) {
+                        auto uv = reinterpret_cast<const half*>( pos );
+                        vertex.uv.x = uv[0];
+                        vertex.uv.y = uv[1];
+                        uvIndex++;
+                    }
+                    pos += sizeof( half ) * 2;
+                }
+            }
+            // Bit 24: Unknown 48-byte value
+            if ( p_vertexFormat & ANFVF_Unknown1 ) {
+                pos += 48;
+            }
+            // Bit 25: Unknown 4-byte value
+            if ( p_vertexFormat & ANFVF_Unknown2 ) {
+                pos += 4;
+            }
+            // Bit 26: Unknown 4-byte value
+            if ( p_vertexFormat & ANFVF_Unknown3 ) {
+                pos += 4;
+            }
+            // Bit 27: Unknown 16-byte value
+            if ( p_vertexFormat & ANFVF_Unknown4 ) {
+                pos += 16;
+            }
+            // Bit 28: Compressed position
+            if ( p_vertexFormat & ANFVF_PositionCompressed ) {
+                vertex.position.x = *reinterpret_cast<const half*>( pos + 0 * sizeof( half ) );
+                vertex.position.y = *reinterpret_cast<const half*>( pos + 1 * sizeof( half ) );
+                vertex.position.z = *reinterpret_cast<const half*>( pos + 2 * sizeof( half ) );
+                pos += 3 * sizeof( half );
+            }
+            // Bit 29: Unknown 12-byte value
+            if ( p_vertexFormat & ANFVF_Unknown5 ) {
+                pos += 12;
+            }
+        }
+    }
 
-			verts[ia].normal += no;
-			verts[ib].normal += no;
-			verts[ic].normal += no;
-		}
+    uint ModelReader::vertexSize( ANetFlexibleVertexFormat p_vertexFormat ) const {
+        uint uvCount = 0;
+        uint uvField = ( p_vertexFormat & ANFVF_UV32Mask ) >> 0x08;
+        for ( uint i = 0; i < 7; i++ ) {
+            if ( ( ( uvField >> i ) & 1 ) != 0 )
+                uvCount++;
+        }
 
-		this->normalizeNormals( p_mesh );
-	}
+        uvField = ( p_vertexFormat & ANFVF_UV16Mask ) >> 0x10;
+        uint uv16Count = 0;
+        for ( uint i = 0; i < 7; i++ ) {
+            if ( ( ( uvField >> i ) & 1 ) != 0 )
+                uv16Count++;
+        }
 
-	void ModelReader::rotZYinvZ( GW2Mesh& p_mesh ) const {
-		// Rotate ZY and invert Z
-		const glm::mat3 transform = glm::mat3(
-			glm::vec3( 1.0f, 0.0f, 0.0f ),
-			glm::vec3( 0.0f, 0.0f, -1.0f ),
-			glm::vec3( 0.0f, -1.0f, 0.0f )
-			);
+        return ( ( p_vertexFormat & ANFVF_Position ) * 12 )
+            + ( ( p_vertexFormat & ANFVF_Weights ) * 2 )
+            + ( ( p_vertexFormat & ANFVF_Group ) )
+            + ( ( ( p_vertexFormat & ANFVF_Normal ) >> 3 ) * 12 )
+            + ( ( p_vertexFormat & ANFVF_Color ) >> 2 )
+            + ( ( ( p_vertexFormat & ANFVF_Tangent ) >> 5 ) * 12 )
+            + ( ( ( p_vertexFormat & ANFVF_Bitangent ) >> 6 ) * 12 )
+            + ( ( ( p_vertexFormat & ANFVF_TangentFrame ) >> 7 ) * 12 )
+            + ( uvCount * 8 )
+            + ( uv16Count * 4 )
+            + ( ( ( p_vertexFormat & ANFVF_Unknown1 ) >> 24 ) * 48 )
+            + ( ( ( p_vertexFormat & ANFVF_Unknown2 ) >> 25 ) * 4 )
+            + ( ( ( p_vertexFormat & ANFVF_Unknown3 ) >> 26 ) * 4 )
+            + ( ( ( p_vertexFormat & ANFVF_Unknown4 ) >> 27 ) * 16 )
+            + ( ( ( p_vertexFormat & ANFVF_PositionCompressed ) >> 28 ) * 6 )
+            + ( ( ( p_vertexFormat & ANFVF_Unknown5 ) >> 29 ) * 12 );
+
+    }
+
+    void ModelReader::computeBond( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+        // Calculate bounds
+        float floatMin = std::numeric_limits<float>::min( );
+        float floatMax = std::numeric_limits<float>::max( );
+        p_mesh.bounds.min = glm::vec3( floatMax, floatMax, floatMax );
+        p_mesh.bounds.max = glm::vec3( floatMin, floatMin, floatMin );
+
+        glm::vec3 min = p_mesh.bounds.min;
+        glm::vec3 max = p_mesh.bounds.max;
+
+        auto indices = reinterpret_cast<const uint16*>( p_data );
+#pragma omp parallel for
+        for ( int i = 0; i < static_cast<int>( p_indiceCount ); i++ ) {
+            auto& vertex = p_mesh.vertices[indices[i]];
+            glm::vec3 position = vertex.position;
+            min = glm::min( min, position );
+            max = glm::max( max, position );
+        }
+        p_mesh.bounds.min = min;
+        p_mesh.bounds.max = max;
+    }
+
+    void ModelReader::readIndexBuffer( GW2Mesh& p_mesh, const byte* p_data, uint p_indiceCount ) const {
+        p_mesh.triangles.resize( p_indiceCount / 3 );
+#pragma omp parallel for
+        for ( int i = 0; i < static_cast<int>( p_mesh.triangles.size( ) ); i++ ) {
+            auto pos = &p_data[i * sizeof( Triangle )];
+            Triangle& triangle = p_mesh.triangles[i];
+            // Flip the order of the faces of the triangle
+            triangle.index1 = *reinterpret_cast<const uint16*>( pos + 0 * sizeof( uint16 ) );
+            triangle.index2 = *reinterpret_cast<const uint16*>( pos + 2 * sizeof( uint16 ) );
+            triangle.index3 = *reinterpret_cast<const uint16*>( pos + 1 * sizeof( uint16 ) );
+        }
+    }
+
+    void ModelReader::normalizeNormals( GW2Mesh& p_mesh ) const {
+        auto& vert = p_mesh.vertices;
+#pragma omp parallel for
+        for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
+            // Check if the normals is zero to avoid divide by zero problem.
+            if ( ( vert[i].normal.x == 0.0f ) || ( vert[i].normal.y == 0.0f ) || ( vert[i].normal.z == 0.0f ) ) {
+                if ( vert[i].normal.x ) {
+                    vert[i].normal.x = glm::normalize( vert[i].normal.x );
+                }
+                if ( vert[i].normal.y ) {
+                    vert[i].normal.y = glm::normalize( vert[i].normal.y );
+                }
+                if ( vert[i].normal.z ) {
+                    vert[i].normal.z = glm::normalize( vert[i].normal.z );
+                }
+            } else {
+                vert[i].normal = glm::normalize( vert[i].normal );
+            }
+        }
+    }
+
+    void ModelReader::computeVertexNormals( GW2Mesh& p_mesh ) const {
+        // Calculate vertex normals
+        // http://www.iquilezles.org/www/articles/normals/normals.htm
+
+        auto& verts = p_mesh.vertices;
+        auto& faces = p_mesh.triangles;
+
+        // verts[i].normal is already initialized with zero
 
 #pragma omp parallel for
-		for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
-			auto& vertex = p_mesh.vertices[i];
-			vertex.position = transform * vertex.position;
-			// Todo: Untested!
-			if ( p_mesh.hasNormal ) {
-				vertex.normal = transform * vertex.normal;
-			}
-		}
-	}
+        for ( int i = 0; i < static_cast<int>( faces.size( ) ); i++ ) {
+            // Re-flip the order of the faces of the triangle to original order
+            const int ia = faces[i].index1;
+            const int ib = faces[i].index3;
+            const int ic = faces[i].index2;
 
-	void ModelReader::readMaterial( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
-		wxLogMessage( wxT( "Reading MODL chunk..." ) );
+            const glm::vec3 e1 = verts[ia].position - verts[ib].position;
+            const glm::vec3 e2 = verts[ic].position - verts[ib].position;
+            const glm::vec3 no = glm::cross( e1, e2 );
 
-		std::shared_ptr<gw2f::pf::chunks::ModelFileDataV65> modelChunk;
-		try {
-			modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
-		} catch ( const gw2f::exception::Exception& exception ) {
-			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
+            verts[ia].normal += no;
+            verts[ib].normal += no;
+            verts[ic].normal += no;
+        }
 
-			wxLogMessage( wxT( "Try another method..." ) );
-			this->readMaterialPF( p_model, p_modelPackFile );
-		} catch ( const std::out_of_range& outofrange ) {
-			wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( outofrange.what( ) ) );
+        this->normalizeNormals( p_mesh );
+    }
 
-			wxLogMessage( wxT( "Try another method..." ) );
-			this->readMaterialPF( p_model, p_modelPackFile );
-		} catch ( ... ) {
-			wxLogMessage( wxT( "An unknown error has occurred." ) );
-			return;
-		}
+    void ModelReader::rotZYinvZ( GW2Mesh& p_mesh ) const {
+        // Rotate ZY and invert Z
+        const glm::mat3 transform = glm::mat3(
+            glm::vec3( 1.0f, 0.0f, 0.0f ),
+            glm::vec3( 0.0f, 0.0f, -1.0f ),
+            glm::vec3( 0.0f, -1.0f, 0.0f )
+            );
 
-		// Successfully read MODL chunk using gw2formats
-		if ( modelChunk ) {
-			// Bail if no permutations data
-			if ( !modelChunk->permutations.data( ) ) {
-				wxLogMessage( wxT( "No permutations data." ) );
-				return;
-			}
+#pragma omp parallel for
+        for ( int i = 0; i < static_cast<int>( p_mesh.vertices.size( ) ); i++ ) {
+            auto& vertex = p_mesh.vertices[i];
+            vertex.position = transform * vertex.position;
+            // Todo: Untested!
+            if ( p_mesh.hasNormal ) {
+                vertex.normal = transform * vertex.normal;
+            }
+        }
+    }
 
-			// Read some necessary data
-			auto& permutationsInfoArray = modelChunk->permutations;
-			uint32 numMaterialInfo = modelChunk->permutations.size( );
+    void ModelReader::readMaterial( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+        wxLogMessage( wxT( "Reading MODL chunk..." ) );
 
-			// Count materials
-			uint materialCount = 0;
-			for ( uint i = 0; i < numMaterialInfo; i++ ) {
-				materialCount = wxMax( materialCount, permutationsInfoArray[i].materials.size( ) );
-			}
+        std::shared_ptr<gw2f::pf::chunks::ModelFileDataV65> modelChunk;
+        try {
+            modelChunk = p_modelPackFile.chunk<gw2f::pf::ModelChunks::Model>( );
+        } catch ( const gw2f::exception::Exception& exception ) {
+            wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( exception.what( ) ) );
 
-			// Bail if no materials data
-			if ( !materialCount ) {
-				wxLogMessage( wxT( "No material data." ) );
-				return;
-			}
-			wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
+            wxLogMessage( wxT( "Try another method..." ) );
+            this->readMaterialPF( p_model, p_modelPackFile );
+        } catch ( const std::out_of_range& outofrange ) {
+            wxLogMessage( wxT( "Failed to read MODL chunk using gw2formats: %s" ), wxString( outofrange.what( ) ) );
 
-			GW2Material* materials = p_model.addMaterial( materialCount );
-			// Loop through each material
-			for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
-					// Bail if no material data
-					if ( !permutationsInfoArray[i].materials.data( ) ) {
-						wxLogMessage( wxT( "No material data in material array %d." ), i );
-						continue;
-					}
+            wxLogMessage( wxT( "Try another method..." ) );
+            this->readMaterialPF( p_model, p_modelPackFile );
+        } catch ( ... ) {
+            wxLogMessage( wxT( "An unknown error has occurred." ) );
+            return;
+        }
 
-				#pragma omp parallel
-				{
-					auto& materialsArray = permutationsInfoArray[i].materials;
+        // Successfully read MODL chunk using gw2formats
+        if ( modelChunk ) {
+            // Bail if no permutations data
+            if ( !modelChunk->permutations.data( ) ) {
+                wxLogMessage( wxT( "No permutations data." ) );
+                return;
+            }
 
-					// Loop through each material in these permutations infos
-					#pragma omp for
-					for ( int j = 0; j < static_cast<int>( materialsArray.size( ) ); j++ ) {
-						auto& mat = materialsArray[j];
-						auto& material = materials[j];
+            // Read some necessary data
+            auto& permutationsInfoArray = modelChunk->permutations;
+            uint32 numMaterialInfo = modelChunk->permutations.size( );
 
-						// Copy the data
-						material.materialId = mat.materialId;
-						material.materialFlags = mat.materialFlags;
+            // Count materials
+            uint materialCount = 0;
+            for ( uint i = 0; i < numMaterialInfo; i++ ) {
+                materialCount = wxMax( materialCount, permutationsInfoArray[i].materials.size( ) );
+            }
 
-						// Get material filename from each materials
-						material.materialFile = mat.filename.fileId( );
+            // Bail if no materials data
+            if ( !materialCount ) {
+                wxLogMessage( wxT( "No material data." ) );
+                return;
+            }
+            wxLogMessage( wxT( "Have %d material(s)." ), materialCount );
 
-						if ( !mat.textures.size( ) ) {
-							continue;
-						}
+            GW2Material* materials = p_model.addMaterial( materialCount );
+            // Loop through each material
+            for ( int i = 0; i < static_cast<int>( numMaterialInfo ); i++ ) {
+                    // Bail if no material data
+                    if ( !permutationsInfoArray[i].materials.data( ) ) {
+                        wxLogMessage( wxT( "No material data in material array %d." ), i );
+                        continue;
+                    }
 
-						for ( uint t = 0; t < mat.textures.size( ); t++ ) {
-							auto& texture = mat.textures[t];
+                #pragma omp parallel
+                {
+                    auto& materialsArray = permutationsInfoArray[i].materials;
 
-							// 0x67531924	01100111010100110001100100100100	Diffuse
-							// 0x1816c9ee	00011000000101101100100111101110	Normal
-							// 0x680bbd87	01101000000010111011110110000111	Light Map
+                    // Loop through each material in these permutations infos
+                    #pragma omp for
+                    for ( int j = 0; j < static_cast<int>( materialsArray.size( ) ); j++ ) {
+                        auto& mat = materialsArray[j];
+                        auto& material = materials[j];
 
-							// todo: figure out this
-							// Diffuse?
-							if ( ( texture.token & 0xffffffff ) == 0x67531924 ) {
-								material.diffuseMap = texture.filename.fileId( ) + 1;
-							}
+                        // Copy the data
+                        material.materialId = mat.materialId;
+                        material.materialFlags = mat.materialFlags;
 
-							// Normal?
-							else if ( ( texture.token & 0xffffffff ) == 0x1816c9ee ) {
-								material.normalMap = texture.filename.fileId( ) + 1;
-							}
+                        // Get material filename from each materials
+                        material.materialFile = mat.filename.fileId( );
 
-							// Light Map?
-							else if ( ( texture.token & 0xffffffff ) == 0x680bbd87 ) {
-								material.lightMap = texture.filename.fileId( ) + 1;
-								break;
-							}
-						}
-					}
-				}	//#pragma omp parallel
-			}
-		}
+                        if ( !mat.textures.size( ) ) {
+                            continue;
+                        }
 
-		wxLogMessage( wxT( "Finished reading MODL chunk." ) );
-	}
+                        for ( uint t = 0; t < mat.textures.size( ); t++ ) {
+                            auto& texture = mat.textures[t];
 
-	void ModelReader::readMaterialPF( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
-		size_t size;
-		auto data = p_modelPackFile.chunk( gw2f::pf::ModelChunks::Model, size );
+                            // 0x67531924   01100111010100110001100100100100    Diffuse
+                            // 0x1816c9ee   00011000000101101100100111101110    Normal
+                            // 0x680bbd87   01101000000010111011110110000111    Light Map
 
-		// Read some necessary data
-		uint32 numPermutations = *reinterpret_cast<const uint32*>( data );
-		uint32 permutationsOffset = *reinterpret_cast<const uint32*>( &data[4] );
-		auto permutationInfoArray = reinterpret_cast<const ANetModelMaterialPermutations*>( &data[4 + permutationsOffset] );
+                            // todo: figure out this
+                            // Diffuse?
+                            if ( ( texture.token & 0xffffffff ) == 0x67531924 ) {
+                                material.diffuseMap = texture.filename.fileId( ) + 1;
+                            }
 
-		// Count permutations
-		uint materialCount = 0;
-		for ( uint i = 0; i < numPermutations; i++ ) {
-			materialCount = wxMax( materialCount, permutationInfoArray[i].materialCount );
-		}
+                            // Normal?
+                            else if ( ( texture.token & 0xffffffff ) == 0x1816c9ee ) {
+                                material.normalMap = texture.filename.fileId( ) + 1;
+                            }
 
-		// Bail if no permutations
-		if ( !materialCount ) {
-			wxLogMessage( wxT( "No permutations data." ) );
-			return;
-		}
+                            // Light Map?
+                            else if ( ( texture.token & 0xffffffff ) == 0x680bbd87 ) {
+                                material.lightMap = texture.filename.fileId( ) + 1;
+                                break;
+                            }
+                        }
+                    }
+                }   //#pragma omp parallel
+            }
+        }
 
-		// Prepare parallel loop
-		std::vector<omp_lock_t> locks( materialCount );
-		for ( auto& it : locks ) {
-			omp_init_lock( &( it ) );
-		}
+        wxLogMessage( wxT( "Finished reading MODL chunk." ) );
+    }
 
-		GW2Material* materials = p_model.addMaterial( materialCount );
+    void ModelReader::readMaterialPF( GW2Model& p_model, gw2f::pf::ModelPackFile& p_modelPackFile ) const {
+        size_t size;
+        auto data = p_modelPackFile.chunk( gw2f::pf::ModelChunks::Model, size );
 
-		// Loop through each permutations
+        // Read some necessary data
+        uint32 numPermutations = *reinterpret_cast<const uint32*>( data );
+        uint32 permutationsOffset = *reinterpret_cast<const uint32*>( &data[4] );
+        auto permutationInfoArray = reinterpret_cast<const ANetModelMaterialPermutations*>( &data[4 + permutationsOffset] );
+
+        // Count permutations
+        uint materialCount = 0;
+        for ( uint i = 0; i < numPermutations; i++ ) {
+            materialCount = wxMax( materialCount, permutationInfoArray[i].materialCount );
+        }
+
+        // Bail if no permutations
+        if ( !materialCount ) {
+            wxLogMessage( wxT( "No permutations data." ) );
+            return;
+        }
+
+        // Prepare parallel loop
+        std::vector<omp_lock_t> locks( materialCount );
+        for ( auto& it : locks ) {
+            omp_init_lock( &( it ) );
+        }
+
+        GW2Material* materials = p_model.addMaterial( materialCount );
+
+        // Loop through each permutations
 #pragma omp parallel for shared(locks, permutationInfoArray)
-		for ( int i = 0; i < static_cast<int>( numPermutations ); i++ ) {
-			// Bail if no offset or count
-			if ( !permutationInfoArray[i].materialCount || !permutationInfoArray[i].materialsOffset ) {
-				continue;
-			}
+        for ( int i = 0; i < static_cast<int>( numPermutations ); i++ ) {
+            // Bail if no offset or count
+            if ( !permutationInfoArray[i].materialCount || !permutationInfoArray[i].materialsOffset ) {
+                continue;
+            }
 
-			// Read the offset table for this set of materials
-			auto pos = permutationInfoArray[i].materialsOffset + reinterpret_cast<const byte*>( &permutationInfoArray[i].materialsOffset );
-			auto offsetTable = reinterpret_cast<const int32*>( pos );
+            // Read the offset table for this set of materials
+            auto pos = permutationInfoArray[i].materialsOffset + reinterpret_cast<const byte*>( &permutationInfoArray[i].materialsOffset );
+            auto offsetTable = reinterpret_cast<const int32*>( pos );
 
-			// Loop through each material in these material infos
-			for ( uint j = 0; j < permutationInfoArray[i].materialCount; j++ ) {
-				auto& material = materials[j];
+            // Loop through each material in these material infos
+            for ( uint j = 0; j < permutationInfoArray[i].materialCount; j++ ) {
+                auto& material = materials[j];
 
-				// Bail if offset is NULL
-				if ( !offsetTable[j] ) {
-					continue;
-				}
+                // Bail if offset is NULL
+                if ( !offsetTable[j] ) {
+                    continue;
+                }
 
-				// Only one thread must access this material at a time
-				omp_set_lock( &locks[j] );
+                // Only one thread must access this material at a time
+                omp_set_lock( &locks[j] );
 
-				// Bail if this material index already has data
-				if ( material.diffuseMap && material.normalMap && material.lightMap && material.materialFlags ) {
-					omp_unset_lock( &locks[j] );
-					continue;
-				}
+                // Bail if this material index already has data
+                if ( material.diffuseMap && material.normalMap && material.lightMap && material.materialFlags ) {
+                    omp_unset_lock( &locks[j] );
+                    continue;
+                }
 
-				// Read material info
-				pos = offsetTable[j] + reinterpret_cast<const byte*>( &offsetTable[j] );
-				auto materialInfo = reinterpret_cast<const ANetModelMaterialData*>( pos );
+                // Read material info
+                pos = offsetTable[j] + reinterpret_cast<const byte*>( &offsetTable[j] );
+                auto materialInfo = reinterpret_cast<const ANetModelMaterialData*>( pos );
 
-				// Copy the data
-				material.materialId = materialInfo->materialId;
-				material.materialFlags = materialInfo->materialFlags;
+                // Copy the data
+                material.materialId = materialInfo->materialId;
+                material.materialFlags = materialInfo->materialFlags;
 
-				// Get material filename from each materials
-				auto ref = reinterpret_cast<const ANetFileReference*>( materialInfo->materialFileOffset + reinterpret_cast<const byte*>( &materialInfo->materialFileOffset ) );
-				material.materialFile = DatFile::fileIdFromFileReference( *ref );
+                // Get material filename from each materials
+                auto ref = reinterpret_cast<const ANetFileReference*>( materialInfo->materialFileOffset + reinterpret_cast<const byte*>( &materialInfo->materialFileOffset ) );
+                material.materialFile = DatFile::fileIdFromFileReference( *ref );
 
-				if ( !materialInfo->textureCount ) {
-					omp_unset_lock( &locks[j] );
-					continue;
-				}
+                if ( !materialInfo->textureCount ) {
+                    omp_unset_lock( &locks[j] );
+                    continue;
+                }
 
-				pos = materialInfo->texturesOffset + reinterpret_cast<const byte*>( &materialInfo->texturesOffset );
-				auto textures = reinterpret_cast<const ANetModelTextureReference*>( pos );
+                pos = materialInfo->texturesOffset + reinterpret_cast<const byte*>( &materialInfo->texturesOffset );
+                auto textures = reinterpret_cast<const ANetModelTextureReference*>( pos );
 
-				for ( uint t = 0; t < materialInfo->textureCount; t++ ) {
-					// Get file reference
-					pos = textures[t].offsetToFileReference + reinterpret_cast<const byte*>( &textures[t].offsetToFileReference );
-					auto fileReference = reinterpret_cast<const ANetFileReference*>( pos );
+                for ( uint t = 0; t < materialInfo->textureCount; t++ ) {
+                    // Get file reference
+                    pos = textures[t].offsetToFileReference + reinterpret_cast<const byte*>( &textures[t].offsetToFileReference );
+                    auto fileReference = reinterpret_cast<const ANetFileReference*>( pos );
 
-					// Diffuse?
-					if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
-						material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-					}
+                    // Diffuse?
+                    if ( ( textures[t].token & 0xffffffff ) == 0x67531924 ) {
+                        material.diffuseMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+                    }
 
-					// Normal?
-					else if ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee ) {
-						material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-					}
+                    // Normal?
+                    else if ( ( textures[t].token & 0xffffffff ) == 0x1816c9ee ) {
+                        material.normalMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+                    }
 
-					// Light Map?
-					else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
-						material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
-						break;
-					}
-				}
+                    // Light Map?
+                    else if ( ( textures[t].token & 0xffffffff ) == 0x680bbd87 ) {
+                        material.lightMap = ( DatFile::fileIdFromFileReference( *fileReference ) + 1 );
+                        break;
+                    }
+                }
 
-				// Let other threads access this material now that we're done
-				omp_unset_lock( &locks[j] );
-			}
+                // Let other threads access this material now that we're done
+                omp_unset_lock( &locks[j] );
+            }
 
-		}
+        }
 
-		// Destroy locks
-		for ( auto& it : locks ) {
-			omp_destroy_lock( &( it ) );
-		}
+        // Destroy locks
+        for ( auto& it : locks ) {
+            omp_destroy_lock( &( it ) );
+        }
 
-	}
+    }
 
 }; // namespace gw2b

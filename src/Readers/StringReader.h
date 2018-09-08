@@ -33,35 +33,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	struct StringStruct {
-		uint32					id;
-		wxString				string;
-	};
+    struct StringStruct {
+        uint32                  id;
+        wxString                string;
+    };
 
-	class StringReader : public FileReader {
-		struct entryHeader;
-	public:
-		/** Constructor.
-		*  \param[in]  p_data       Data to be handled by this reader.
-		*  \param[in]  p_datFile    Reference to an instance of DatFile.
-		*  \param[in]  p_fileType   File type of the given data. */
-		StringReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
-		/** Destructor. Clears all data. */
-		virtual ~StringReader( );
+    class StringReader : public FileReader {
+        struct entryHeader;
+    public:
+        /** Constructor.
+        *  \param[in]  p_data       Data to be handled by this reader.
+        *  \param[in]  p_datFile    Reference to an instance of DatFile.
+        *  \param[in]  p_fileType   File type of the given data. */
+        StringReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
+        /** Destructor. Clears all data. */
+        virtual ~StringReader( );
 
-		/** Gets the type of data contained in this file. Not to be confused with
-		*  file type.
-		*  \return DataType    type of data. */
-		virtual DataType dataType( ) const override {
-			return DT_String;
-		}
-		/** Gets the strings contained in the data owned by this reader.
-		*  \return std::vector<StringStruct>	Strings. */
-		std::vector<StringStruct> getString( ) const;
-		/** Determines whether the header is valid.
-		*  \return bool    true if valid, false if not. */
-		static bool isValidHeader( const byte* p_data );
-	}; // class StringReader
+        /** Gets the type of data contained in this file. Not to be confused with
+        *  file type.
+        *  \return DataType    type of data. */
+        virtual DataType dataType( ) const override {
+            return DT_String;
+        }
+        /** Gets the strings contained in the data owned by this reader.
+        *  \return std::vector<StringStruct>    Strings. */
+        std::vector<StringStruct> getString( ) const;
+        /** Determines whether the header is valid.
+        *  \return bool    true if valid, false if not. */
+        static bool isValidHeader( const byte* p_data );
+    }; // class StringReader
 
 }; // namespace gw2b
 

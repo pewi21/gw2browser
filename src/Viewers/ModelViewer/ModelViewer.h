@@ -29,15 +29,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class ModelViewer {
+    class ModelViewer {
 
-	public:
-		/** Constructor. */
-		ModelViewer( );
-		/** Destructor. */
-		virtual ~ModelViewer( );
+    public:
+        /** Constructor. */
+        ModelViewer( );
+        /** Destructor. */
+        virtual ~ModelViewer( );
 
-	}; // class ModelViewer
+    }; // class ModelViewer
 
 }; // namespace gw2b
 

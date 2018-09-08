@@ -31,36 +31,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	BinaryViewer::BinaryViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: Viewer( p_parent, p_pos, p_size )
-		, m_hexControl( nullptr ) {
-		auto sizer = new wxBoxSizer( wxHORIZONTAL );
+    BinaryViewer::BinaryViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
+        : Viewer( p_parent, p_pos, p_size )
+        , m_hexControl( nullptr ) {
+        auto sizer = new wxBoxSizer( wxHORIZONTAL );
 
-		// Hex control
-		m_hexControl = new HexControl( this );
-		sizer->Add( m_hexControl, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
+        // Hex control
+        m_hexControl = new HexControl( this );
+        sizer->Add( m_hexControl, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
-		// Layout
-		this->SetSizer( sizer );
-		this->Layout( );
-	}
+        // Layout
+        this->SetSizer( sizer );
+        this->Layout( );
+    }
 
-	BinaryViewer::~BinaryViewer( ) {
-	}
+    BinaryViewer::~BinaryViewer( ) {
+    }
 
-	void BinaryViewer::clear( ) {
-		m_hexControl->setData( nullptr, 0 );
-		m_binaryData.Clear( );
-		Viewer::clear( );
-	}
+    void BinaryViewer::clear( ) {
+        m_hexControl->setData( nullptr, 0 );
+        m_binaryData.Clear( );
+        Viewer::clear( );
+    }
 
-	void BinaryViewer::setReader( FileReader* p_reader ) {
-		Viewer::setReader( p_reader );
+    void BinaryViewer::setReader( FileReader* p_reader ) {
+        Viewer::setReader( p_reader );
 
-		if ( p_reader ) {
-			m_binaryData = p_reader->rawData( );
-			m_hexControl->setData( m_binaryData.GetPointer( ), m_binaryData.GetSize( ) );
-		}
-	}
+        if ( p_reader ) {
+            m_binaryData = p_reader->rawData( );
+            m_hexControl->setData( m_binaryData.GetPointer( ), m_binaryData.GetSize( ) );
+        }
+    }
 
 }; // namespace gw2b

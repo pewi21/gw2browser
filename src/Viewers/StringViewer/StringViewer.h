@@ -35,36 +35,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class StringViewer : public Viewer {
-		std::vector<StringStruct>	m_string;
-		wxGrid*						m_grid;
-	public:
-		/** Constructor. Creates the model viewer with the given parent.
-		*  \param[in]  p_parent     Parent of the control.
-		*  \param[in]  p_pos        Optional position of the control.
-		*  \param[in]  p_size       Optional size of the control. */
-		StringViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		/** Destructor. */
-		virtual ~StringViewer( );
+    class StringViewer : public Viewer {
+        std::vector<StringStruct>   m_string;
+        wxGrid*                     m_grid;
+    public:
+        /** Constructor. Creates the model viewer with the given parent.
+        *  \param[in]  p_parent     Parent of the control.
+        *  \param[in]  p_pos        Optional position of the control.
+        *  \param[in]  p_size       Optional size of the control. */
+        StringViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        /** Destructor. */
+        virtual ~StringViewer( );
 
-		/** Clear the viewer. */
-		virtual void clear( ) override;
-		virtual void setReader( FileReader* p_reader ) override;
-		/** Gets the string reader containing the data displayed by this viewer.
-		*  \return StringReader*    Reader containing the data. */
-		StringReader* stringReader( ) {
-			return reinterpret_cast<StringReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
-		/** Gets the string reader containing the data displayed by this viewer.
-		*  \return StringReader*    Reader containing the data. */
-		const StringReader* stringReader( ) const {
-			return reinterpret_cast<const StringReader*>( this->reader( ) );
-		} // already asserted with a dynamic_cast
+        /** Clear the viewer. */
+        virtual void clear( ) override;
+        virtual void setReader( FileReader* p_reader ) override;
+        /** Gets the string reader containing the data displayed by this viewer.
+        *  \return StringReader*    Reader containing the data. */
+        StringReader* stringReader( ) {
+            return reinterpret_cast<StringReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
+        /** Gets the string reader containing the data displayed by this viewer.
+        *  \return StringReader*    Reader containing the data. */
+        const StringReader* stringReader( ) const {
+            return reinterpret_cast<const StringReader*>( this->reader( ) );
+        } // already asserted with a dynamic_cast
 
-	private:
-		void updateGrid( );
+    private:
+        void updateGrid( );
 
-	}; // class StringViewer
+    }; // class StringViewer
 
 }; // namespace gw2b
 

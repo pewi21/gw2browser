@@ -31,25 +31,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	TextReader::TextReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    TextReader::TextReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	TextReader::~TextReader( ) {
-	}
+    TextReader::~TextReader( ) {
+    }
 
-	wxString TextReader::getString( ) const {
-		auto data = m_data.GetPointer( );
-		auto size = m_data.GetSize( );
+    wxString TextReader::getString( ) const {
+        auto data = m_data.GetPointer( );
+        auto size = m_data.GetSize( );
 
-		wxString str;
-		for ( uint i = 0; i < size; i++ ) {
+        wxString str;
+        for ( uint i = 0; i < size; i++ ) {
             if ( isprint( data[i] ) || iscntrl( data[i] ) ) {
                 str << data[i];
             }
-		}
+        }
 
-		return str;
-	}
+        return str;
+    }
 
 }; // namespace gw2b

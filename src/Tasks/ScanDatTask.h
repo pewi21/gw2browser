@@ -32,25 +32,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Task.h"
 
 namespace gw2b {
-	class DatFile;
-	class DatIndex;
-	class DatIndexCategory;
+    class DatFile;
+    class DatIndex;
+    class DatIndexCategory;
 
-	class ScanDatTask : public Task {
-		std::shared_ptr<DatIndex>   m_index;
-		Array<byte>                 m_outputBuffer;
-		DatFile&                    m_datFile;
-	public:
-		ScanDatTask( const std::shared_ptr<DatIndex>& p_index, DatFile& p_datFile );
-		virtual ~ScanDatTask( );
+    class ScanDatTask : public Task {
+        std::shared_ptr<DatIndex>   m_index;
+        Array<byte>                 m_outputBuffer;
+        DatFile&                    m_datFile;
+    public:
+        ScanDatTask( const std::shared_ptr<DatIndex>& p_index, DatFile& p_datFile );
+        virtual ~ScanDatTask( );
 
-		virtual bool init( ) override;
-		virtual void perform( ) override;
-	private:
-		uint requiredIdentificationSize( const byte* p_data, size_t p_size, ANetFileType p_fileType );
-		DatIndexCategory* categorize( ANetFileType p_fileType, const byte* p_data, size_t p_size );
-		void ensureBufferSize( size_t p_size );
-	}; // class ScanDatTask
+        virtual bool init( ) override;
+        virtual void perform( ) override;
+    private:
+        uint requiredIdentificationSize( const byte* p_data, size_t p_size, ANetFileType p_fileType );
+        DatIndexCategory* categorize( ANetFileType p_fileType, const byte* p_data, size_t p_size );
+        void ensureBufferSize( size_t p_size );
+    }; // class ScanDatTask
 
 }; // namespace gw2b
 

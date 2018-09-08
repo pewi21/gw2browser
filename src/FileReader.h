@@ -34,56 +34,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DatFile.h"
 
 namespace gw2b {
-	class DatFile;
+    class DatFile;
 
-	/** Base class for all supported file readers. Also handles everything
-	*  unsupported by other file readers. */
-	class FileReader {
-	protected:
-		Array<byte>     m_data;
-		DatFile&        m_datFile;
-		ANetFileType    m_fileType;
-	public:
-		/** Type of data contained in this file. Determines how it is exported. */
-		enum DataType {
-			DT_None,            /**< Invalid data. */
-			DT_Binary,          /**< Binary data. Usually for unsupported types. */
-			DT_Image,           /**< Image data. */
-			DT_Sound,           /**< Sound data. */
-			DT_Model,           /**< Model data. */
-			DT_String,          /**< String data. */
-			DT_EULA,            /**< EULA data. */
-			DT_Text,            /**< Text data. */
-			DT_Map,             /**< Map data. */
-		};
-	public:
-		/** Constructor.
-		*  \param[in]  p_data       Data to be handled by this reader.
-		*  \param[in]  p_fileType   File type of the given data. */
-		FileReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
-		/** Destructor. Clears all data. */
-		virtual ~FileReader( );
+    /** Base class for all supported file readers. Also handles everything
+    *  unsupported by other file readers. */
+    class FileReader {
+    protected:
+        Array<byte>     m_data;
+        DatFile&        m_datFile;
+        ANetFileType    m_fileType;
+    public:
+        /** Type of data contained in this file. Determines how it is exported. */
+        enum DataType {
+            DT_None,            /**< Invalid data. */
+            DT_Binary,          /**< Binary data. Usually for unsupported types. */
+            DT_Image,           /**< Image data. */
+            DT_Sound,           /**< Sound data. */
+            DT_Model,           /**< Model data. */
+            DT_String,          /**< String data. */
+            DT_EULA,            /**< EULA data. */
+            DT_Text,            /**< Text data. */
+            DT_Map,             /**< Map data. */
+        };
+    public:
+        /** Constructor.
+        *  \param[in]  p_data       Data to be handled by this reader.
+        *  \param[in]  p_fileType   File type of the given data. */
+        FileReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType );
+        /** Destructor. Clears all data. */
+        virtual ~FileReader( );
 
-		/** Clears all data contained in this reader. */
-		virtual void clean( );
-		/** Gets the type of data contained in this file. Not to be confused with
-		*  file type.
-		*  \return DataType    type of data. */
-		virtual DataType dataType( ) const {
-			return DT_Binary;
-		}
+        /** Clears all data contained in this reader. */
+        virtual void clean( );
+        /** Gets the type of data contained in this file. Not to be confused with
+        *  file type.
+        *  \return DataType    type of data. */
+        virtual DataType dataType( ) const {
+            return DT_Binary;
+        }
 
-		/** Gets unconverted data for the contents of this reader.
-		*  \return Array<byte> unconverted file data. */
-		Array<byte> rawData( ) const;
+        /** Gets unconverted data for the contents of this reader.
+        *  \return Array<byte> unconverted file data. */
+        Array<byte> rawData( ) const;
 
-		/** Analyzes the given data and creates an appropriate subclass of
-		*  FileReader to handle it. Caller is responsible for freeing the reader.
-		*  \param[in]  p_data      Data to read.
-		*  \param[in]  p_fileType   File type of the given data.
-		*  \return FileReader* Newly created FileReader for the data. */
-		static FileReader* readerForData( const Array<byte>& p_data, DatFile& p_datfile, ANetFileType p_fileType );
-	};
+        /** Analyzes the given data and creates an appropriate subclass of
+        *  FileReader to handle it. Caller is responsible for freeing the reader.
+        *  \param[in]  p_data      Data to read.
+        *  \param[in]  p_fileType   File type of the given data.
+        *  \return FileReader* Newly created FileReader for the data. */
+        static FileReader* readerForData( const Array<byte>& p_data, DatFile& p_datfile, ANetFileType p_fileType );
+    };
 
 }; // namespace gw2b
 

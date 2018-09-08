@@ -31,36 +31,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class LightBox {
-		GLuint						m_cubeVAO;
-		GLuint						m_cubeVBO;
-		Shader*						m_cubeShader;
-		GLuint						m_uniformProjection;
-		GLuint						m_uniformView;
-		GLuint						m_uniformModel;
-		GLuint						m_uniformLightColor;
-		glm::mat4					m_projection;
-		glm::mat4					m_view;
+    class LightBox {
+        GLuint                      m_cubeVAO;
+        GLuint                      m_cubeVBO;
+        Shader*                     m_cubeShader;
+        GLuint                      m_uniformProjection;
+        GLuint                      m_uniformView;
+        GLuint                      m_uniformModel;
+        GLuint                      m_uniformLightColor;
+        glm::mat4                   m_projection;
+        glm::mat4                   m_view;
 
-	public:
-		/** Constructor. Create lightbox renderer. */
-		LightBox( );
-		/** Destructor. Clears all data. */
-		~LightBox( );
+    public:
+        /** Constructor. Create lightbox renderer. */
+        LightBox( );
+        /** Destructor. Clears all data. */
+        ~LightBox( );
 
-		/** Set view matrix of lightbox renderer.
-		*  \param[in]  p_view        View matrix. */
-		void setViewMatrix( const glm::mat4& p_view );
-		/** Set projection matrix of lightbox renderer.
-		*  \param[in]  p_projection  Projection natrix. */
-		void setProjectionMatrix( const glm::mat4& p_projection );
+        /** Set view matrix of lightbox renderer.
+        *  \param[in]  p_view        View matrix. */
+        void setViewMatrix( const glm::mat4& p_view );
+        /** Set projection matrix of lightbox renderer.
+        *  \param[in]  p_projection  Projection natrix. */
+        void setProjectionMatrix( const glm::mat4& p_projection );
 
-		/** Render colored box for light visualization at given position.
-		*  \param[in]  p_pos         Light position.
-		*  \param[in]  p_color       Box color. */
-		void renderCube( const glm::vec3& p_pos, const glm::vec3& p_color );
+        /** Render colored box for light visualization at given position.
+        *  \param[in]  p_pos         Light position.
+        *  \param[in]  p_color       Box color. */
+        void renderCube( const glm::vec3& p_pos, const glm::vec3& p_color );
 
-	}; // class Light
+    }; // class Light
 
 }; // namespace gw2b
 

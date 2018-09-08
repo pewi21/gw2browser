@@ -29,20 +29,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class PackFile {
-		Array<byte> m_data;
-	public:
-		PackFile( const Array<byte>& p_data );
-		~PackFile( );
+    class PackFile {
+        Array<byte> m_data;
+    public:
+        PackFile( const Array<byte>& p_data );
+        ~PackFile( );
 
-		/** Finds a given chunk and returns a pointer to it. Note that this does
-		*  \e not allocate a new array, but rather returns a pointer to within
-		*  the array that already exists.
-		*  \param[in]  p_chunkType  Type of chunk to look for.
-		*  \param[out] po_size      Size of the returned chunk.
-		*  \return byte*   Pointer to the start of the chunk (post-header). */
-		const byte* findChunk( uint p_chunkType, size_t& po_size ) const;
-	};
+        /** Finds a given chunk and returns a pointer to it. Note that this does
+        *  \e not allocate a new array, but rather returns a pointer to within
+        *  the array that already exists.
+        *  \param[in]  p_chunkType  Type of chunk to look for.
+        *  \param[out] po_size      Size of the returned chunk.
+        *  \return byte*   Pointer to the start of the chunk (post-header). */
+        const byte* findChunk( uint p_chunkType, size_t& po_size ) const;
+    };
 
 }; // namespace gw2b
 

@@ -31,46 +31,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class Shader {
-		GLuint						m_program;
+    class Shader {
+        GLuint                      m_program;
 
-	public:
-		/** Constructor. Create shader.
-		*  \param[in]  p_vertexPath    Path to vertex shader file.
-		*  \param[in]  p_fragmentPath  Path to fragment shader file.
-		*  \param[in]  p_geometryPath  Path to geometry shader file. */
-		Shader( const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
-		/** Destructor. Clears all data. */
-		~Shader( );
+    public:
+        /** Constructor. Create shader.
+        *  \param[in]  p_vertexPath    Path to vertex shader file.
+        *  \param[in]  p_fragmentPath  Path to fragment shader file.
+        *  \param[in]  p_geometryPath  Path to geometry shader file. */
+        Shader( const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
+        /** Destructor. Clears all data. */
+        ~Shader( );
 
-		/** Uses the shader. */
-		void use( );
-		/** Get shader program ID represented by this data.
-		*  \return GLuint			programId. */
-		GLuint getProgramId( ) const;
-		/** Delete the shader. */
-		void clear( );
+        /** Uses the shader. */
+        void use( );
+        /** Get shader program ID represented by this data.
+        *  \return GLuint           programId. */
+        GLuint getProgramId( ) const;
+        /** Delete the shader. */
+        void clear( );
 
-		/** Utility uniform functions. */
-		void setBool( const std::string& p_name, const bool p_value ) const;
-		void setInt( const std::string& p_name, const int p_value ) const;
-		void setFloat( const std::string& p_name, const float p_value ) const;
-		void setVec2( const std::string& p_name, const glm::vec2& p_value ) const;
-		void setVec2( const std::string& p_name, const float p_x, const float p_y ) const;
-		void setVec3( const std::string& p_name, const glm::vec3& p_value ) const;
-		void setVec3( const std::string& p_name, const float p_x, const float p_y, const float p_z ) const;
-		void setVec4( const std::string& p_name, const glm::vec4& p_value ) const;
-		void setVec4( const std::string& p_name, const float p_x, const float p_y, const float p_z, const float p_w ) const;
-		void setMat2( const std::string& p_name, const glm::mat2& p_mat ) const;
-		void setMat3( const std::string& p_name, const glm::mat3& p_mat ) const;
-		void setMat4( const std::string& p_name, const glm::mat4& p_mat ) const;
-		void setTexture( const std::string& p_name, const int p_tmu ) const;
+        /** Utility uniform functions. */
+        void setBool( const std::string& p_name, const bool p_value ) const;
+        void setInt( const std::string& p_name, const int p_value ) const;
+        void setFloat( const std::string& p_name, const float p_value ) const;
+        void setVec2( const std::string& p_name, const glm::vec2& p_value ) const;
+        void setVec2( const std::string& p_name, const float p_x, const float p_y ) const;
+        void setVec3( const std::string& p_name, const glm::vec3& p_value ) const;
+        void setVec3( const std::string& p_name, const float p_x, const float p_y, const float p_z ) const;
+        void setVec4( const std::string& p_name, const glm::vec4& p_value ) const;
+        void setVec4( const std::string& p_name, const float p_x, const float p_y, const float p_z, const float p_w ) const;
+        void setMat2( const std::string& p_name, const glm::mat2& p_mat ) const;
+        void setMat3( const std::string& p_name, const glm::mat3& p_mat ) const;
+        void setMat4( const std::string& p_name, const glm::mat4& p_mat ) const;
+        void setTexture( const std::string& p_name, const int p_tmu ) const;
 
-	private:
-		/** Check for shader compilation error. */
-		bool checkCompileErrors( GLuint shader, std::string type );
+    private:
+        /** Check for shader compilation error. */
+        bool checkCompileErrors( GLuint shader, std::string type );
 
-	}; // class Shader
+    }; // class Shader
 
 }; // namespace gw2b
 

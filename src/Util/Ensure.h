@@ -29,31 +29,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	namespace Ensure {
+    namespace Ensure {
 
-		/** Asserts that the given object is castable to the given type.
-		*  \param[in]  p_object     Object to verify type of.
-		*  \tparam     T           Type the object should be castable to. */
-		template <typename T, typename TPtr>
-		void isOfType( TPtr* p_object ) {
-			Assert( dynamic_cast<T*>( p_object ) != nullptr );
-		}
+        /** Asserts that the given object is castable to the given type.
+        *  \param[in]  p_object     Object to verify type of.
+        *  \tparam     T           Type the object should be castable to. */
+        template <typename T, typename TPtr>
+        void isOfType( TPtr* p_object ) {
+            Assert( dynamic_cast<T*>( p_object ) != nullptr );
+        }
 
-		/** Asserts that the given pointer is not nullptr.
-		*  \param[in]  p_pointer    Pointer to check. */
-		template <typename T>
-		void notNull( T* p_pointer ) {
-			Assert( p_pointer != nullptr );
-		}
+        /** Asserts that the given pointer is not nullptr.
+        *  \param[in]  p_pointer    Pointer to check. */
+        template <typename T>
+        void notNull( T* p_pointer ) {
+            Assert( p_pointer != nullptr );
+        }
 
-		/** Asserts that the given pointer is nullptr.
-		*  \param[in]  p_pointer    Pointer to check. */
-		template <typename T>
-		void isNull( T* p_pointer ) {
-			Assert( p_pointer == nullptr );
-		}
+        /** Asserts that the given pointer is nullptr.
+        *  \param[in]  p_pointer    Pointer to check. */
+        template <typename T>
+        void isNull( T* p_pointer ) {
+            Assert( p_pointer == nullptr );
+        }
 
-	}; // namespace Ensure
+    }; // namespace Ensure
 
 }; // namespace gw2b
 

@@ -34,35 +34,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class ShaderManager {
+    class ShaderManager {
 
-		std::map<std::string, Shader*>	m_shaders;
+        std::map<std::string, Shader*>  m_shaders;
 
-	public:
-		/** Constructor. */
-		ShaderManager( );
-		/** Destructor. */
-		~ShaderManager( );
+    public:
+        /** Constructor. */
+        ShaderManager( );
+        /** Destructor. */
+        ~ShaderManager( );
 
-		/** Clear all the shader. */
-		void clear( );
+        /** Clear all the shader. */
+        void clear( );
 
-		/** Add a shader.
-		*  \param[in]  p_name			Name of the shader to create.
-		*  \param[in]  p_vertexPath		Path to vertex shader file.
-		*  \param[in]  p_fragmentPath	Path to fragment shader file.
-		*  \param[in]  p_geometryPath	Path to geometry shader file. */
-		bool add( const std::string& p_name, const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
-		/** Find and get shader by shader name.
-		*  \param[in]  p_name			Name of the shader to create.
-		*  \param[in]  p_vertexPath		Path to vertex shader file.
-		*  \param[in]  p_fragmentPath	Path to fragment shader file.
-		*  \param[in]  p_geometryPath	Path to geometry shader file. */
-		Shader* get( const std::string& p_name );
-		/** Check if the object shader is empty */
-		bool empty( );
+        /** Add a shader.
+        *  \param[in]  p_name           Name of the shader to create.
+        *  \param[in]  p_vertexPath     Path to vertex shader file.
+        *  \param[in]  p_fragmentPath   Path to fragment shader file.
+        *  \param[in]  p_geometryPath   Path to geometry shader file. */
+        bool add( const std::string& p_name, const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath = nullptr );
+        /** Find and get shader by shader name.
+        *  \param[in]  p_name           Name of the shader to create.
+        *  \param[in]  p_vertexPath     Path to vertex shader file.
+        *  \param[in]  p_fragmentPath   Path to fragment shader file.
+        *  \param[in]  p_geometryPath   Path to geometry shader file. */
+        Shader* get( const std::string& p_name );
+        /** Check if the object shader is empty */
+        bool empty( );
 
-	}; // class ShaderManager
+    }; // class ShaderManager
 
 }; // namespace gw2b
 

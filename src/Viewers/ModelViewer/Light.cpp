@@ -27,47 +27,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	Light::Light( )
-		: m_position( 0.0f, 0.0f, 0.0f )
-		, m_ambient( 0.5f, 0.5f, 0.5f )
-		, m_diffuse( 0.5f, 0.5f, 0.5f )
-		, m_specular( 0.5f, 0.5f, 0.5f ) {
-	}
+    Light::Light( )
+        : m_position( 0.0f, 0.0f, 0.0f )
+        , m_ambient( 0.5f, 0.5f, 0.5f )
+        , m_diffuse( 0.5f, 0.5f, 0.5f )
+        , m_specular( 0.5f, 0.5f, 0.5f ) {
+    }
 
-	Light::~Light( ) {
+    Light::~Light( ) {
 
-	}
+    }
 
-	const glm::vec3& Light::position( ) const {
-		return m_position;
-	}
+    const glm::vec3& Light::position( ) const {
+        return m_position;
+    }
 
-	void Light::setPosition( const glm::vec3& p_pos ) {
-		m_position = p_pos;
-	}
+    void Light::setPosition( const glm::vec3& p_pos ) {
+        m_position = p_pos;
+    }
 
-	const glm::vec3& Light::ambient( ) const {
-		return m_ambient;
-	}
+    const glm::vec3& Light::ambient( ) const {
+        return m_ambient;
+    }
 
-	void Light::setAmbient( const glm::vec3& p_ambient ) {
-		m_ambient = p_ambient;
-	}
+    void Light::setAmbient( const glm::vec3& p_ambient ) {
+        m_ambient = p_ambient;
+    }
 
-	const glm::vec3& Light::diffuse( ) const {
-		return m_diffuse;
-	}
+    const glm::vec3& Light::diffuse( ) const {
+        return m_diffuse;
+    }
 
-	void Light::setDiffuse( const glm::vec3& p_diffuse ) {
-		m_diffuse = p_diffuse;
-	}
+    void Light::setDiffuse( const glm::vec3& p_diffuse ) {
+        m_diffuse = p_diffuse;
+    }
 
-	const glm::vec3& Light::specular( ) const {
-		return m_specular;
-	}
+    const glm::vec3& Light::specular( ) const {
+        return m_specular;
+    }
 
-	void Light::setSpecular( const glm::vec3& p_specular ) {
-		m_specular = p_specular;
-	}
+    void Light::setSpecular( const glm::vec3& p_specular ) {
+        m_specular = p_specular;
+    }
 
 }; // namespace gw2b

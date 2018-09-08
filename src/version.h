@@ -10,7 +10,7 @@
 #define APP_RELEASE_NUMBER     9
 #define APP_SUBRELEASE_NUMBER  0
 
-#define APP_TITLE					"Gw2Browser\0"
+#define APP_TITLE                   "Gw2Browser\0"
 #define APP_FILEVERSION_STR         "1.0.9.0\0"
 #define APP_PRODUCTVERSION_STR      "1.0.9.0\0"
 

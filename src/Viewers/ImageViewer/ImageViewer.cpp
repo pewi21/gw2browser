@@ -32,91 +32,91 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	ImageViewer::ImageViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: Viewer( p_parent, p_pos, p_size )
-		, m_imageControl( nullptr ) {
-		auto sizer = new wxBoxSizer( wxVERTICAL );
+    ImageViewer::ImageViewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
+        : Viewer( p_parent, p_pos, p_size )
+        , m_imageControl( nullptr ) {
+        auto sizer = new wxBoxSizer( wxVERTICAL );
 
-		// Toolbar
-		auto toolbar = this->buildToolbar( );
-		sizer->Add( toolbar, wxSizerFlags( ).Expand( ).FixedMinSize( ) );
+        // Toolbar
+        auto toolbar = this->buildToolbar( );
+        sizer->Add( toolbar, wxSizerFlags( ).Expand( ).FixedMinSize( ) );
 
-		// Image control
-		m_imageControl = new ImageControl( this );
-		sizer->Add( m_imageControl, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
+        // Image control
+        m_imageControl = new ImageControl( this );
+        sizer->Add( m_imageControl, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
 
-		// Layout
-		this->SetSizer( sizer );
-		this->Layout( );
-	}
+        // Layout
+        this->SetSizer( sizer );
+        this->Layout( );
+    }
 
-	ImageViewer::~ImageViewer( ) {
-	}
+    ImageViewer::~ImageViewer( ) {
+    }
 
-	void ImageViewer::clear( ) {
-		m_imageControl->SetImage( wxImage( ) );
-		Viewer::clear( );
-	}
+    void ImageViewer::clear( ) {
+        m_imageControl->SetImage( wxImage( ) );
+        Viewer::clear( );
+    }
 
-	void ImageViewer::setReader( FileReader* p_reader ) {
-		Ensure::isOfType<ImageReader>( p_reader );
-		Viewer::setReader( p_reader );
+    void ImageViewer::setReader( FileReader* p_reader ) {
+        Ensure::isOfType<ImageReader>( p_reader );
+        Viewer::setReader( p_reader );
 
-		if ( p_reader ) {
-			m_image = imageReader( )->getImage( );
-			m_imageControl->SetImage( m_image );
-		}
-	}
+        if ( p_reader ) {
+            m_image = imageReader( )->getImage( );
+            m_imageControl->SetImage( m_image );
+        }
+    }
 
-	wxPanel* ImageViewer::buildToolbar( ) {
+    wxPanel* ImageViewer::buildToolbar( ) {
         auto toolbar = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 170, 40 ), wxBORDER_SIMPLE );
-		auto flex = new wxFlexGridSizer( 1, 4, 0, 0 );
-		auto id = this->NewControlId( 4 );
+        auto flex = new wxFlexGridSizer( 1, 4, 0, 0 );
+        auto id = this->NewControlId( 4 );
 
-		// Add the newly generated IDs
-		for ( uint i = 0; i < 4; i++ ) {
-			m_toolbarButtonIds.Add( id++ );
-		}
+        // Add the newly generated IDs
+        for ( uint i = 0; i < 4; i++ ) {
+            m_toolbarButtonIds.Add( id++ );
+        }
 
         // Load all toolbar button icons
-		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_red_png, data::toggle_red_png_size ) );
-		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_green_png, data::toggle_green_png_size ) );
-		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_blue_png, data::toggle_blue_png_size ) );
-		m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_alpha_png, data::toggle_alpha_png_size ) );
+        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_red_png, data::toggle_red_png_size ) );
+        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_green_png, data::toggle_green_png_size ) );
+        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_blue_png, data::toggle_blue_png_size ) );
+        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_alpha_png, data::toggle_alpha_png_size ) );
 
-		// Toggle channel buttons
-		for ( uint i = 0; i < 4; i++ ) {
-			wxToggleButton* button = new wxToggleButton( toolbar, m_toolbarButtonIds[i], wxEmptyString, wxDefaultPosition, wxSize( 25, 25 ) );
+        // Toggle channel buttons
+        for ( uint i = 0; i < 4; i++ ) {
+            wxToggleButton* button = new wxToggleButton( toolbar, m_toolbarButtonIds[i], wxEmptyString, wxDefaultPosition, wxSize( 25, 25 ) );
             button->SetBitmap( m_toolbarButtonIcons[i] );
             button->SetValue( true );
             flex->Add( button, 1, wxALL | wxALIGN_CENTRE, 5 );
             m_toolbarButtons.Add( button );
             this->Bind( wxEVT_TOGGLEBUTTON, &ImageViewer::onToolbarClickedEvt, this, m_toolbarButtonIds[i] );
-		}
+        }
 
-		toolbar->SetSizer( flex );
+        toolbar->SetSizer( flex );
 
-		return toolbar;
-	}
+        return toolbar;
+    }
 
-	void ImageViewer::onToolbarClickedEvt( wxCommandEvent& p_event ) {
-		auto id = p_event.GetId( );
+    void ImageViewer::onToolbarClickedEvt( wxCommandEvent& p_event ) {
+        auto id = p_event.GetId( );
 
-		// Toggle red
-		if ( id == m_toolbarButtonIds[0] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Red, m_toolbarButtons[0]->GetValue( ) );
-			// Toggle green
-		} else if ( id == m_toolbarButtonIds[1] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Green, m_toolbarButtons[1]->GetValue( ) );
-			// Toggle blue
-		} else if ( id == m_toolbarButtonIds[2] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Blue, m_toolbarButtons[2]->GetValue( ) );
-			// Toggle alpha
-		} else if ( id == m_toolbarButtonIds[3] ) {
-			m_imageControl->ToggleChannel( ImageControl::IC_Alpha, m_toolbarButtons[3]->GetValue( ) );
-		} else {
-			p_event.Skip( );
-		}
-	}
+        // Toggle red
+        if ( id == m_toolbarButtonIds[0] ) {
+            m_imageControl->ToggleChannel( ImageControl::IC_Red, m_toolbarButtons[0]->GetValue( ) );
+            // Toggle green
+        } else if ( id == m_toolbarButtonIds[1] ) {
+            m_imageControl->ToggleChannel( ImageControl::IC_Green, m_toolbarButtons[1]->GetValue( ) );
+            // Toggle blue
+        } else if ( id == m_toolbarButtonIds[2] ) {
+            m_imageControl->ToggleChannel( ImageControl::IC_Blue, m_toolbarButtons[2]->GetValue( ) );
+            // Toggle alpha
+        } else if ( id == m_toolbarButtonIds[3] ) {
+            m_imageControl->ToggleChannel( ImageControl::IC_Alpha, m_toolbarButtons[3]->GetValue( ) );
+        } else {
+            p_event.Skip( );
+        }
+    }
 
 }; // namespace gw2b

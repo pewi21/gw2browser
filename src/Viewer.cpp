@@ -30,22 +30,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	Viewer::Viewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
-		: wxPanel( p_parent, wxID_ANY, p_pos, p_size )
-		, m_reader( nullptr ) {
-	}
+    Viewer::Viewer( wxWindow* p_parent, const wxPoint& p_pos, const wxSize& p_size )
+        : wxPanel( p_parent, wxID_ANY, p_pos, p_size )
+        , m_reader( nullptr ) {
+    }
 
-	Viewer::~Viewer( ) {
-		deletePointer( m_reader );
-	}
+    Viewer::~Viewer( ) {
+        deletePointer( m_reader );
+    }
 
-	void Viewer::clear( ) {
-		deletePointer( m_reader );
-	}
+    void Viewer::clear( ) {
+        deletePointer( m_reader );
+    }
 
-	void Viewer::setReader( FileReader* p_reader ) {
-		this->clear( );
-		m_reader = p_reader;
-	}
+    void Viewer::setReader( FileReader* p_reader ) {
+        this->clear( );
+        m_reader = p_reader;
+    }
 
 }; // namespace gw2b

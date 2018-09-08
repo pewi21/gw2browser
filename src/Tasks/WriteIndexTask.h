@@ -33,26 +33,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Task.h"
 
 namespace gw2b {
-	class DatIndex;
+    class DatIndex;
 
-	class WriteIndexTask : public Task {
-		std::shared_ptr<DatIndex>   m_index;
-		DatIndexWriter              m_writer;
-		wxFileName                  m_filename;
-		bool                        m_errorOccured;
-	public:
-		WriteIndexTask( const std::shared_ptr<DatIndex>& p_index, const wxFileName& p_filename );
+    class WriteIndexTask : public Task {
+        std::shared_ptr<DatIndex>   m_index;
+        DatIndexWriter              m_writer;
+        wxFileName                  m_filename;
+        bool                        m_errorOccured;
+    public:
+        WriteIndexTask( const std::shared_ptr<DatIndex>& p_index, const wxFileName& p_filename );
 
-		virtual bool init( );
-		virtual void perform( );
-		virtual void abort( );
-		virtual void clean( );
+        virtual bool init( );
+        virtual void perform( );
+        virtual void abort( );
+        virtual void clean( );
 
-		virtual bool canAbort( ) const {
-			return false;
-		}
-		virtual bool isDone( ) const;
-	}; // class WriteIndexTask
+        virtual bool canAbort( ) const {
+            return false;
+        }
+        virtual bool isDone( ) const;
+    }; // class WriteIndexTask
 
 }; // namespace gw2b
 

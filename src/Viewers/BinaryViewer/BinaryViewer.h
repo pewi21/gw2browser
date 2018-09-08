@@ -30,18 +30,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Viewer.h"
 
 namespace gw2b {
-	class HexControl;
+    class HexControl;
 
-	class BinaryViewer : public Viewer {
-		HexControl*     m_hexControl;
-		Array<byte>     m_binaryData;
-	public:
-		BinaryViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		virtual ~BinaryViewer( );
+    class BinaryViewer : public Viewer {
+        HexControl*     m_hexControl;
+        Array<byte>     m_binaryData;
+    public:
+        BinaryViewer( wxWindow* p_parent, const wxPoint& p_pos = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        virtual ~BinaryViewer( );
 
-		virtual void clear( ) override;
-		virtual void setReader( FileReader* p_reader ) override;
-	}; // class BinaryViewer
+        virtual void clear( ) override;
+        virtual void setReader( FileReader* p_reader ) override;
+    }; // class BinaryViewer
 
 }; // namespace gw2b
 

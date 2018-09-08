@@ -29,42 +29,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	/** Status bar with a progress bar built in. */
-	class ProgressStatusBar : public wxStatusBar {
-		wxGauge     m_progress;
-	public:
-		/** Constructor. Creates the status bar with the given parent.
-		*  \param[in]  p_parent     Parent of the control. */
-		ProgressStatusBar( wxWindow* p_parent );
+    /** Status bar with a progress bar built in. */
+    class ProgressStatusBar : public wxStatusBar {
+        wxGauge     m_progress;
+    public:
+        /** Constructor. Creates the status bar with the given parent.
+        *  \param[in]  p_parent     Parent of the control. */
+        ProgressStatusBar( wxWindow* p_parent );
 
-		/** Shows the progress bar. */
-		void showProgressBar( );
-		/** Hides the progress bar. */
-		void hideProgressBar( );
+        /** Shows the progress bar. */
+        void showProgressBar( );
+        /** Hides the progress bar. */
+        void hideProgressBar( );
 
-		/** Gets the current max value for the progress bar.
-		*  \return uint    current max value. */
-		uint maxValue( ) const;
-		/** Sets the current max value for the progress bar.
-		*  \param[in]  p_value  current max value. */
-		void setMaxValue( uint p_value );
-		/** Gets the current value for the progress bar.
-		*  \return uint    current value. */
-		uint currentValue( ) const;
-		/** Sets the current value for the progress bar.
-		*  \param[in]  p_value  current value. */
-		void setCurrentValue( uint p_value );
+        /** Gets the current max value for the progress bar.
+        *  \return uint    current max value. */
+        uint maxValue( ) const;
+        /** Sets the current max value for the progress bar.
+        *  \param[in]  p_value  current max value. */
+        void setMaxValue( uint p_value );
+        /** Gets the current value for the progress bar.
+        *  \return uint    current value. */
+        uint currentValue( ) const;
+        /** Sets the current value for the progress bar.
+        *  \param[in]  p_value  current value. */
+        void setCurrentValue( uint p_value );
 
-		/** Updates the progress bar with the given value and sets the status text
-		*  to the given label.
-		*  \param[in]  p_value  Value to update to.
-		*  \param[in]  p_label  Text to use as status text. */
-		void update( uint p_value, const wxString& p_label );
-	private:
-		/** Resizes and repositions the progress bar to stay within the second pane.
-		*  \param[in]  p_event  Event object handed to us by wxWidgets. */
-		void onSize( wxSizeEvent& p_event );
-	};
+        /** Updates the progress bar with the given value and sets the status text
+        *  to the given label.
+        *  \param[in]  p_value  Value to update to.
+        *  \param[in]  p_label  Text to use as status text. */
+        void update( uint p_value, const wxString& p_label );
+    private:
+        /** Resizes and repositions the progress bar to stay within the second pane.
+        *  \param[in]  p_event  Event object handed to us by wxWidgets. */
+        void onSize( wxSizeEvent& p_event );
+    };
 
 }; // namespace gw2b
 

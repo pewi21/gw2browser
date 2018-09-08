@@ -28,26 +28,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	asndMP3Reader::asndMP3Reader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: FileReader( p_data, p_datFile, p_fileType ) {
-	}
+    asndMP3Reader::asndMP3Reader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : FileReader( p_data, p_datFile, p_fileType ) {
+    }
 
-	asndMP3Reader::~asndMP3Reader( ) {
-	}
+    asndMP3Reader::~asndMP3Reader( ) {
+    }
 
-	Array<byte> asndMP3Reader::getMP3Data( ) const {
-		auto asnd = m_data;
-		int size = m_data.GetSize( );
+    Array<byte> asndMP3Reader::getMP3Data( ) const {
+        auto asnd = m_data;
+        int size = m_data.GetSize( );
 
-		Array<byte> outputArray( size - 36 );
+        Array<byte> outputArray( size - 36 );
 
 #pragma omp parallel for
-		// skip first 36 byte
-		for ( int i = 36; i < size; i++ ) {
-			::memcpy( &outputArray[i - 36], &asnd[i], sizeof( asnd[i] ) );
-		}
+        // skip first 36 byte
+        for ( int i = 36; i < size; i++ ) {
+            ::memcpy( &outputArray[i - 36], &asnd[i], sizeof( asnd[i] ) );
+        }
 
-		return outputArray;
-	}
+        return outputArray;
+    }
 
 }; // namespace gw2b

@@ -32,52 +32,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	ShaderManager::ShaderManager( ) {
+    ShaderManager::ShaderManager( ) {
 
-	}
+    }
 
-	ShaderManager::~ShaderManager( ) {
-		this->clear( );
-	}
+    ShaderManager::~ShaderManager( ) {
+        this->clear( );
+    }
 
-	void ShaderManager::clear( ) {
-		for ( auto it : m_shaders ) {
-			delete it.second;
-		}
-		m_shaders.clear( );
-	}
+    void ShaderManager::clear( ) {
+        for ( auto it : m_shaders ) {
+            delete it.second;
+        }
+        m_shaders.clear( );
+    }
 
-	bool ShaderManager::add( const std::string& p_name, const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath ) {
-		auto it = m_shaders.find( p_name );
-		if ( it == m_shaders.end( ) ) {
-			try {
-				m_shaders.insert( std::pair<std::string, Shader*>( p_name, new Shader( p_vertexPath, p_fragmentPath, p_geometryPath ) ) );
-			} catch ( const exception::Exception& err ) {
-				wxLogMessage( wxT( "Shader %s error : %s" ), wxString( p_name ), wxString( err.what( ) ) );
-				return false;
-			}
-			return true;
-		} else {
-			wxLogMessage( wxT( "Shader name %s is already exist." ), wxString( p_name ) );
-			return false;
-		}
-	}
+    bool ShaderManager::add( const std::string& p_name, const char* p_vertexPath, const char* p_fragmentPath, const char* p_geometryPath ) {
+        auto it = m_shaders.find( p_name );
+        if ( it == m_shaders.end( ) ) {
+            try {
+                m_shaders.insert( std::pair<std::string, Shader*>( p_name, new Shader( p_vertexPath, p_fragmentPath, p_geometryPath ) ) );
+            } catch ( const exception::Exception& err ) {
+                wxLogMessage( wxT( "Shader %s error : %s" ), wxString( p_name ), wxString( err.what( ) ) );
+                return false;
+            }
+            return true;
+        } else {
+            wxLogMessage( wxT( "Shader name %s is already exist." ), wxString( p_name ) );
+            return false;
+        }
+    }
 
-	Shader* ShaderManager::get( const std::string& p_name ) {
-		auto it = m_shaders.find( p_name );
-		if ( it == m_shaders.end( ) ) {
-			wxLogMessage( wxT( "Cannot find shader : %s" ), wxString( p_name ) );
-			return nullptr;
-		}
-		return it->second;
-	}
+    Shader* ShaderManager::get( const std::string& p_name ) {
+        auto it = m_shaders.find( p_name );
+        if ( it == m_shaders.end( ) ) {
+            wxLogMessage( wxT( "Cannot find shader : %s" ), wxString( p_name ) );
+            return nullptr;
+        }
+        return it->second;
+    }
 
-	bool ShaderManager::empty( ) {
-		if ( m_shaders.empty( ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    bool ShaderManager::empty( ) {
+        if ( m_shaders.empty( ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }; // namespace gw2b

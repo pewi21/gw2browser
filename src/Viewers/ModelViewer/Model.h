@@ -35,91 +35,91 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class Model {
+    class Model {
 
-		struct MeshCache {
-			std::vector<glm::vec3>	vertices;
-			std::vector<glm::vec3>	normals;
-			std::vector<glm::vec2>	uvs;
-			std::vector<uint>		indices;
-			std::vector<glm::vec3>	tangents;
-			int						materialIndex;
-		};
+        struct MeshCache {
+            std::vector<glm::vec3>  vertices;
+            std::vector<glm::vec3>  normals;
+            std::vector<glm::vec2>  uvs;
+            std::vector<uint>       indices;
+            std::vector<glm::vec3>  tangents;
+            int                     materialIndex;
+        };
 
-		struct VAO {
-			GLuint					vertexArray;
-		};
+        struct VAO {
+            GLuint                  vertexArray;
+        };
 
-		struct VBO {
-			GLuint					vertexBuffer;
-			GLuint					normalBuffer;
-			GLuint					uvBuffer;
-			GLuint					tangentbuffer;
-		};
+        struct VBO {
+            GLuint                  vertexBuffer;
+            GLuint                  normalBuffer;
+            GLuint                  uvBuffer;
+            GLuint                  tangentbuffer;
+        };
 
-		struct IBO {
-			GLuint					elementBuffer;
-		};
+        struct IBO {
+            GLuint                  elementBuffer;
+        };
 
-		struct TextureList {
-			uint					diffuseMap;
-			uint					normalMap;
-			uint					lightMap;
-		};
+        struct TextureList {
+            uint                    diffuseMap;
+            uint                    normalMap;
+            uint                    lightMap;
+        };
 
-		struct PackedVertex {
-			glm::vec3 position;
-			glm::vec3 normal;
-			glm::vec2 uv;
+        struct PackedVertex {
+            glm::vec3 position;
+            glm::vec3 normal;
+            glm::vec2 uv;
 
-			bool operator < ( const PackedVertex& that ) const {
-				return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
-			};
-		};
+            bool operator < ( const PackedVertex& that ) const {
+                return memcmp( ( void* )this, ( void* ) &that, sizeof( PackedVertex ) ) > 0;
+            };
+        };
 
-		// Mesh
-		std::vector<MeshCache>		m_meshCache;
-		std::vector<VAO>			m_vertexArray;		// Vertex Array Object
-		std::vector<VBO>			m_vertexBuffer;		// Vertex Buffer Object
-		std::vector<IBO>			m_indexBuffer;		// Index Buffer Object
+        // Mesh
+        std::vector<MeshCache>      m_meshCache;
+        std::vector<VAO>            m_vertexArray;      // Vertex Array Object
+        std::vector<VBO>            m_vertexBuffer;     // Vertex Buffer Object
+        std::vector<IBO>            m_indexBuffer;      // Index Buffer Object
 
-		// Textures
-		std::vector<TextureList>	m_textureList;		// Texture List, store texture list from material of GW2Model
+        // Textures
+        std::vector<TextureList>    m_textureList;      // Texture List, store texture list from material of GW2Model
 
-		size_t						m_numMeshes;
-		size_t						m_numVertices;
-		size_t						m_numTriangles;
-		Bounds						m_bounds;			// Model's bounds
+        size_t                      m_numMeshes;
+        size_t                      m_numVertices;
+        size_t                      m_numTriangles;
+        Bounds                      m_bounds;           // Model's bounds
 
-	public:
-		/** Constructor. Create model. */
-		Model( const GW2Model& p_model );
-		/** Destructor. Clears all data. */
-		~Model( );
+    public:
+        /** Constructor. Create model. */
+        Model( const GW2Model& p_model );
+        /** Destructor. Clears all data. */
+        ~Model( );
 
-		/** Draw the model. */
-		void draw( TextureManager& p_textureManager );
-		/** Get number of mesh. */
-		size_t getNumMeshes( ) const;
-		/** Get number of vertices. */
-		size_t getVertSize( ) const;
-		/** Get number of trangles. */
-		size_t getTriSize( ) const;
-		/** Get model bounds. */
-		Bounds getBounds( ) const;
+        /** Draw the model. */
+        void draw( TextureManager& p_textureManager );
+        /** Get number of mesh. */
+        size_t getNumMeshes( ) const;
+        /** Get number of vertices. */
+        size_t getVertSize( ) const;
+        /** Get number of trangles. */
+        size_t getTriSize( ) const;
+        /** Get model bounds. */
+        Bounds getBounds( ) const;
 
-	private:
-		void clearBuffer( );
-		void drawMesh( const uint p_meshIndex );
-		void loadModel( const GW2Model& p_model );
-		void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
-		void computeTangent( MeshCache& p_mesh );
-		bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
-		void indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh );
-		void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
-		void loadMaterial( const GW2Model& p_model );
+    private:
+        void clearBuffer( );
+        void drawMesh( const uint p_meshIndex );
+        void loadModel( const GW2Model& p_model );
+        void loadMesh( MeshCache& p_cache, const GW2Mesh& p_mesh );
+        void computeTangent( MeshCache& p_mesh );
+        bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
+        void indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh );
+        void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
+        void loadMaterial( const GW2Model& p_model );
 
-	}; // class Model
+    }; // class Model
 
 }; // namespace gw2b
 

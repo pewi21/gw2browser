@@ -29,19 +29,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 
 namespace gw2b {
-	namespace exception {
+    namespace exception {
 
-		class Exception : public std::exception {
-		private:
-			std::string m_errmsg;
-		public:
-			/** Constructor. */
-			explicit Exception( const char* p_reason );
-			/** Overriden what() method from exception class. */
-			virtual const char *what( ) const throw( );
-		};
+        class Exception : public std::exception {
+        private:
+            std::string m_errmsg;
+        public:
+            /** Constructor. */
+            explicit Exception( const char* p_reason );
+            /** Overriden what() method from exception class. */
+            virtual const char *what( ) const throw( );
+        };
 
-	}
+    }
 }
 
 #endif // EXCEPTION_H_INCLUDED

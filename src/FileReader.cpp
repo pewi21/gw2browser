@@ -40,73 +40,73 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	FileReader::FileReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
-		: m_data( p_data )
-		, m_datFile( p_datFile )
-		, m_fileType( p_fileType ) {
-	}
+    FileReader::FileReader( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType )
+        : m_data( p_data )
+        , m_datFile( p_datFile )
+        , m_fileType( p_fileType ) {
+    }
 
-	FileReader::~FileReader() {
-	}
+    FileReader::~FileReader() {
+    }
 
-	void FileReader::clean() {
-		m_data.Clear();
-		m_fileType = ANFT_Unknown;
-	}
+    void FileReader::clean() {
+        m_data.Clear();
+        m_fileType = ANFT_Unknown;
+    }
 
-	Array<byte> FileReader::rawData( ) const {
-		return m_data;
-	}
+    Array<byte> FileReader::rawData( ) const {
+        return m_data;
+    }
 
-	FileReader* FileReader::readerForData( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType ) {
-		switch ( p_fileType ) {
-		case ANFT_ATEX:
-		case ANFT_ATTX:
-		case ANFT_ATEC:
-		case ANFT_ATEP:
-		case ANFT_ATEU:
-		case ANFT_ATET:
-		case ANFT_DDS:
-		case ANFT_JPEG:
-		case ANFT_WEBP:
-		case ANFT_PNG:
-			if ( ImageReader::isValidHeader( p_data.GetPointer(), p_data.GetSize() ) ) {
-				return new ImageReader( p_data, p_datFile, p_fileType );
-			}
-			break;
-		case ANFT_Model:
-			return new ModelReader( p_data, p_datFile, p_fileType );
-			break;
-		case ANFT_StringFile:
-			if ( StringReader::isValidHeader( p_data.GetPointer( ) ) ) {
-				return new StringReader( p_data, p_datFile, p_fileType );
-			}
-			break;
-		case ANFT_PackedMP3:
-		case ANFT_PackedOgg:
-			return new PackedSoundReader( p_data, p_datFile, p_fileType );
-			break;
-		case ANFT_asndMP3:
-			return new asndMP3Reader( p_data, p_datFile, p_fileType );
-			break;
-		case ANFT_Bank:
-			return new SoundBankReader( p_data, p_datFile, p_fileType );
-			break;
-		case ANFT_EULA:
-			return new EulaReader( p_data, p_datFile, p_fileType );
-			break;
-		case ANFT_TEXT:
-		case ANFT_UTF8:
-			return new TextReader( p_data, p_datFile, p_fileType );
-			break;
-		//case ANFT_MapParam:
-			//return new MapReader( p_data, p_datFile, p_fileType );
-			//break;
-		default:
-			break;
-		}
+    FileReader* FileReader::readerForData( const Array<byte>& p_data, DatFile& p_datFile, ANetFileType p_fileType ) {
+        switch ( p_fileType ) {
+        case ANFT_ATEX:
+        case ANFT_ATTX:
+        case ANFT_ATEC:
+        case ANFT_ATEP:
+        case ANFT_ATEU:
+        case ANFT_ATET:
+        case ANFT_DDS:
+        case ANFT_JPEG:
+        case ANFT_WEBP:
+        case ANFT_PNG:
+            if ( ImageReader::isValidHeader( p_data.GetPointer(), p_data.GetSize() ) ) {
+                return new ImageReader( p_data, p_datFile, p_fileType );
+            }
+            break;
+        case ANFT_Model:
+            return new ModelReader( p_data, p_datFile, p_fileType );
+            break;
+        case ANFT_StringFile:
+            if ( StringReader::isValidHeader( p_data.GetPointer( ) ) ) {
+                return new StringReader( p_data, p_datFile, p_fileType );
+            }
+            break;
+        case ANFT_PackedMP3:
+        case ANFT_PackedOgg:
+            return new PackedSoundReader( p_data, p_datFile, p_fileType );
+            break;
+        case ANFT_asndMP3:
+            return new asndMP3Reader( p_data, p_datFile, p_fileType );
+            break;
+        case ANFT_Bank:
+            return new SoundBankReader( p_data, p_datFile, p_fileType );
+            break;
+        case ANFT_EULA:
+            return new EulaReader( p_data, p_datFile, p_fileType );
+            break;
+        case ANFT_TEXT:
+        case ANFT_UTF8:
+            return new TextReader( p_data, p_datFile, p_fileType );
+            break;
+        //case ANFT_MapParam:
+            //return new MapReader( p_data, p_datFile, p_fileType );
+            //break;
+        default:
+            break;
+        }
 
-		return new FileReader( p_data, p_datFile, p_fileType );
-	}
+        return new FileReader( p_data, p_datFile, p_fileType );
+    }
 
 }; // namespace gw2b

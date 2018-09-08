@@ -31,32 +31,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	class ImageControl : public wxScrolledWindow {
-	public:
-		enum ImageChannels {
-			IC_None = 0,
-			IC_Red = 1,
-			IC_Green = 2,
-			IC_Blue = 4,
-			IC_Alpha = 8,
-			IC_All = 15,
-		};
-	private:
-		wxImage         m_image;
-		wxBitmap        m_bitmap;
-		wxBitmap        m_backdrop;
-		ImageChannels   m_channels;
-	public:
-		ImageControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
-		virtual ~ImageControl( );
-		void SetImage( wxImage p_image );
-		void OnDraw( wxDC& p_DC, wxRect& p_region );
-		void ToggleChannel( ImageChannels p_channel, bool p_toggled );
-	private:
-		void UpdateBitmap( );
-		void UpdateScrollbars( wxDC& p_DC );
-		void OnPaintEvt( wxPaintEvent& p_event );
-	};
+    class ImageControl : public wxScrolledWindow {
+    public:
+        enum ImageChannels {
+            IC_None = 0,
+            IC_Red = 1,
+            IC_Green = 2,
+            IC_Blue = 4,
+            IC_Alpha = 8,
+            IC_All = 15,
+        };
+    private:
+        wxImage         m_image;
+        wxBitmap        m_bitmap;
+        wxBitmap        m_backdrop;
+        ImageChannels   m_channels;
+    public:
+        ImageControl( wxWindow* p_parent, const wxPoint& p_position = wxDefaultPosition, const wxSize& p_size = wxDefaultSize );
+        virtual ~ImageControl( );
+        void SetImage( wxImage p_image );
+        void OnDraw( wxDC& p_DC, wxRect& p_region );
+        void ToggleChannel( ImageChannels p_channel, bool p_toggled );
+    private:
+        void UpdateBitmap( );
+        void UpdateScrollbars( wxDC& p_DC );
+        void OnPaintEvt( wxPaintEvent& p_event );
+    };
 
 }; // namespace gw2b
 

@@ -38,94 +38,94 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace gw2b {
 
-	PreviewPanel::PreviewPanel( wxWindow* p_parent, const wxPoint& p_location, const wxSize& p_size )
-		: wxPanel( p_parent, wxID_ANY, p_location, p_size )
-		, m_currentView( nullptr )
-		, m_currentDataType( FileReader::DT_None ) {
-		// FINE I'LL USE A GOD DAMN SIZER STUPID WXWIDGETS
-		auto sizer = new wxBoxSizer( wxHORIZONTAL );
-		this->SetSizer( sizer );
-	}
+    PreviewPanel::PreviewPanel( wxWindow* p_parent, const wxPoint& p_location, const wxSize& p_size )
+        : wxPanel( p_parent, wxID_ANY, p_location, p_size )
+        , m_currentView( nullptr )
+        , m_currentDataType( FileReader::DT_None ) {
+        // FINE I'LL USE A GOD DAMN SIZER STUPID WXWIDGETS
+        auto sizer = new wxBoxSizer( wxHORIZONTAL );
+        this->SetSizer( sizer );
+    }
 
-	PreviewPanel::~PreviewPanel( ) {
-	}
+    PreviewPanel::~PreviewPanel( ) {
+    }
 
-	bool PreviewPanel::previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry ) {
-		auto entryData = p_datFile.readFile( p_entry.mftEntry( ) );
-		if ( !entryData.GetSize( ) ) {
-			return false;
-		}
+    bool PreviewPanel::previewFile( DatFile& p_datFile, const DatIndexEntry& p_entry ) {
+        auto entryData = p_datFile.readFile( p_entry.mftEntry( ) );
+        if ( !entryData.GetSize( ) ) {
+            return false;
+        }
 
-		// Create file reader
-		auto reader = FileReader::readerForData( entryData, p_datFile, p_entry.fileType( ) );
+        // Create file reader
+        auto reader = FileReader::readerForData( entryData, p_datFile, p_entry.fileType( ) );
 
-		if ( reader ) {
-			if ( m_currentView ) {
-				// Check if we can re-use the current viewer
-				if ( m_currentDataType == reader->dataType( ) ) {
-					m_currentView->setReader( reader );
-					return true;
-				}
+        if ( reader ) {
+            if ( m_currentView ) {
+                // Check if we can re-use the current viewer
+                if ( m_currentDataType == reader->dataType( ) ) {
+                    m_currentView->setReader( reader );
+                    return true;
+                }
 
-				// Destroy the old viewer
-				if ( m_currentView ) {
-					this->GetSizer( )->Remove( 0 );
-					m_currentView->Destroy( );
-				}
-			}
+                // Destroy the old viewer
+                if ( m_currentView ) {
+                    this->GetSizer( )->Remove( 0 );
+                    m_currentView->Destroy( );
+                }
+            }
 
-			m_currentView = this->createViewerForDataType( reader->dataType( ), p_datFile );
-			if ( m_currentView ) {
-				// Workaround for wxWidgets fuckups
-				this->GetSizer( )->Add( m_currentView, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
-				this->GetSizer( )->Layout( );
-				this->GetSizer( )->Fit( this );
-				// Set the reader
-				m_currentView->setReader( reader );
-				m_currentDataType = reader->dataType( );
-				return true;
-			}
-		}
+            m_currentView = this->createViewerForDataType( reader->dataType( ), p_datFile );
+            if ( m_currentView ) {
+                // Workaround for wxWidgets fuckups
+                this->GetSizer( )->Add( m_currentView, wxSizerFlags( ).Expand( ).Proportion( 1 ) );
+                this->GetSizer( )->Layout( );
+                this->GetSizer( )->Fit( this );
+                // Set the reader
+                m_currentView->setReader( reader );
+                m_currentDataType = reader->dataType( );
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	void PreviewPanel::destroyViewer( ) {
-		// Destroy the viewer
-		if ( m_currentView ) {
-			this->GetSizer( )->Remove( 0 );
-			m_currentView->Destroy( );
-			m_currentView = nullptr;
-		}
-	}
+    void PreviewPanel::destroyViewer( ) {
+        // Destroy the viewer
+        if ( m_currentView ) {
+            this->GetSizer( )->Remove( 0 );
+            m_currentView->Destroy( );
+            m_currentView = nullptr;
+        }
+    }
 
-	Viewer* PreviewPanel::createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile ) {
-		Viewer* newViewer = nullptr;
-		try {
-			switch ( p_dataType ) {
-			case FileReader::DT_Sound:
-				newViewer = new SoundPlayer( this );
-				break;
-			case FileReader::DT_Image:
-				newViewer = new ImageViewer( this );
-				break;
-			case FileReader::DT_String:
-				newViewer = new StringViewer( this );
-				break;
-			case FileReader::DT_EULA:
-			case FileReader::DT_Text:
-				newViewer = new TextViewer( this );
-				break;
-			case FileReader::DT_Binary:
-			default:
-				newViewer = new BinaryViewer( this );
-				break;
-			}
-		} catch ( const exception::Exception& err ) {
-			wxLogMessage( wxString( err.what( ) ) );
-		}
+    Viewer* PreviewPanel::createViewerForDataType( FileReader::DataType p_dataType, DatFile& p_datFile ) {
+        Viewer* newViewer = nullptr;
+        try {
+            switch ( p_dataType ) {
+            case FileReader::DT_Sound:
+                newViewer = new SoundPlayer( this );
+                break;
+            case FileReader::DT_Image:
+                newViewer = new ImageViewer( this );
+                break;
+            case FileReader::DT_String:
+                newViewer = new StringViewer( this );
+                break;
+            case FileReader::DT_EULA:
+            case FileReader::DT_Text:
+                newViewer = new TextViewer( this );
+                break;
+            case FileReader::DT_Binary:
+            default:
+                newViewer = new BinaryViewer( this );
+                break;
+            }
+        } catch ( const exception::Exception& err ) {
+            wxLogMessage( wxString( err.what( ) ) );
+        }
 
-		return newViewer;
-	}
+        return newViewer;
+    }
 
 }; // namespace gw2b
