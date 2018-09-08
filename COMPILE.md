@@ -547,6 +547,22 @@ This will download Gw2Browser and all included library source code, although we 
 
       sudo ldconfig
 
+#### Compile tinyxml2:
+
+* Use CMake-gui to generate UNIX makefile.
+
+      * In "Where is the source code:" box, enter Gw2Browser/extern/tinyxml2
+        for example C:/DEV/Gw2Browser/extern/tinyxml2
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/tinyxml2/build
+        for example C:/DEV/Gw2Browser/extern/tinyxml2/build
+      * Click "Configure", click "Yes" if it ask to create new directory.
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * Click "Generate".
+
+* Open a terminal window and change directory to `Gw2Browser/extern/tinyxml2/build` and use these command
+
+      make && sudo make install
+
 #### Compiling Gw2Browser:
 
 * Open workspace file Gw2Browser-linux.workspace in Gw2Browser/prj/ with CodeBlocks.
