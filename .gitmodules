@@ -1,6 +1,6 @@
-[submodule "gw2DatTools"]
-    path = extern/gw2DatTools
-    url = https://github.com/kytulendu/gw2DatTools.git
+[submodule "gw2dattools"]
+    path = extern/gw2dattools
+    url = https://github.com/kytulendu/gw2dattools.git
 [submodule "gw2formats"]
     path = extern/gw2formats
     url = https://github.com/kytulendu/gw2formats.git
