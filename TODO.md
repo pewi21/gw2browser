@@ -21,6 +21,8 @@ figure out how gw2 do it.
 Further plans
 -------------
 
+* cmake build system.
+
 * COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
 
 * Deferred shading (need for map viewer with many light)
