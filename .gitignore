@@ -3,7 +3,12 @@ bin
 obj
 objs
 tmp
+extern/freetype/build
 extern/glew/lib
+extern/libogg/build
+extern/libvorbis/build
+extern/libwebp/build
+extern/tinyxml2/build
 *.o
 *.a
 *.exe
