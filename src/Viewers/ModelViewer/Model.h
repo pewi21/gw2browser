@@ -30,12 +30,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <vector>
 
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 #include "TextureManager.h"
 #include "Readers/ModelReader.h"
 
 namespace gw2b {
 
     class Model {
+        typedef std::unique_ptr<IndexBuffer> IBO;
+        typedef std::unique_ptr<VertexBuffer> VBO;
 
         struct MeshCache {
             std::vector<glm::vec3>  vertices;
@@ -44,21 +48,6 @@ namespace gw2b {
             std::vector<uint>       indices;
             std::vector<glm::vec3>  tangents;
             int                     materialIndex;
-        };
-
-        struct VAO {
-            GLuint                  vertexArray;
-        };
-
-        struct VBO {
-            GLuint                  vertexBuffer;
-            GLuint                  normalBuffer;
-            GLuint                  uvBuffer;
-            GLuint                  tangentbuffer;
-        };
-
-        struct IBO {
-            GLuint                  elementBuffer;
         };
 
         struct TextureList {
@@ -79,7 +68,6 @@ namespace gw2b {
 
         // Mesh
         std::vector<MeshCache>      m_meshCache;
-        std::vector<VAO>            m_vertexArray;      // Vertex Array Object
         std::vector<VBO>            m_vertexBuffer;     // Vertex Buffer Object
         std::vector<IBO>            m_indexBuffer;      // Index Buffer Object
 
@@ -116,7 +104,6 @@ namespace gw2b {
         void computeTangent( MeshCache& p_mesh );
         bool getSimilarVertexIndex( PackedVertex& p_packed, std::map<PackedVertex, uint>& p_vertexToOutIndex, uint& p_result );
         void indexVBO( const MeshCache& p_inMesh, MeshCache& p_outMesh );
-        void populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache );
         void loadMaterial( const GW2Model& p_model );
 
     }; // class Model

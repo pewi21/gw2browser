@@ -42,8 +42,6 @@ namespace gw2b {
     Model::~Model( ) {
         this->clearBuffer( );
 
-        m_vertexBuffer.clear( );
-        m_indexBuffer.clear( );
         m_textureList.clear( );
         m_meshCache.clear( );
     }
@@ -109,47 +107,28 @@ namespace gw2b {
     }
 
     void Model::clearBuffer( ) {
-        // Clean VBO
-        for ( auto& it : m_vertexBuffer ) {
-            if ( it.vertexBuffer ) {
-                glDeleteBuffers( 1, &it.vertexBuffer );
-            }
-            if ( it.normalBuffer ) {
-                glDeleteBuffers( 1, &it.normalBuffer );
-            }
-            if ( it.uvBuffer ) {
-                glDeleteBuffers( 1, &it.uvBuffer );
-            }
-            if ( it.tangentbuffer ) {
-                glDeleteBuffers( 1, &it.tangentbuffer );
-            }
-        }
-
-        // Clean IBO
-        for ( auto& it : m_indexBuffer ) {
-            if ( it.elementBuffer ) {
-                glDeleteBuffers( 1, &it.elementBuffer );
-            }
-        }
-
-        // Clean VAO
-        for ( auto& it : m_vertexArray ) {
-            if ( it.vertexArray ) {
-                glDeleteVertexArrays( 1, &it.vertexArray );
-            }
-        }
+        m_vertexBuffer.clear( );
+        m_indexBuffer.clear( );
     }
 
     void Model::drawMesh( const uint p_meshIndex ) {
-        auto& vao = m_vertexArray[p_meshIndex];
+        auto& vbo = m_vertexBuffer[p_meshIndex];
         auto& cache = m_meshCache[p_meshIndex];
+        auto& index = m_indexBuffer[p_meshIndex];
 
         // Bind Vertex Array Object
-        glBindVertexArray( vao.vertexArray );
+        vbo->bind( );
+        vbo->setVertexAttribPointer( );
+        // Bind Index Buffer Object
+        index->bind( );
+
         // Draw the triangles!
         glDrawElements( GL_TRIANGLES, cache.indices.size( ), GL_UNSIGNED_INT, ( GLvoid* ) 0 );
+
+        // Unbind Index Buffer Object
+        index->unbind( );
         // Unbind Vertex Array Object
-        glBindVertexArray( 0 );
+        vbo->unbind( );
     }
 
     void Model::loadModel( const GW2Model& p_model ) {
@@ -172,19 +151,12 @@ namespace gw2b {
             this->loadMesh( cache, mesh );
         }
 
-        // Create Vertex Array Object, Vertex Buffer Object and Index Buffer Object
-        m_vertexArray.resize( m_numMeshes );
-        m_vertexBuffer.resize( m_numMeshes );
-        m_indexBuffer.resize( m_numMeshes );
-
         // Populate Buffer Object
         for ( uint i = 0; i < m_meshCache.size( ); i++ ) {
             auto& cache = m_meshCache[i];
-            auto& vao = m_vertexArray[i];
-            auto& vbo = m_vertexBuffer[i];
-            auto& ibo = m_indexBuffer[i];
 
-            this->populateBuffers( vao, vbo, ibo, cache );
+            m_vertexBuffer.push_back( VBO( new VertexBuffer( cache.vertices, cache.normals, cache.uvs, cache.tangents ) ) );
+            m_indexBuffer.push_back( IBO( new IndexBuffer( cache.indices ) ) );
         }
 
     }
@@ -302,59 +274,6 @@ namespace gw2b {
                 VertexToOutIndex[packed] = newindex;
             }
         }
-    }
-
-    void Model::populateBuffers( VAO& p_vao, VBO& p_vbo, IBO& p_ibo, const MeshCache& p_cache ) {
-        // Generate Vertex Array Object
-        glGenVertexArrays( 1, &p_vao.vertexArray );
-        // Bind Vertex Array Object
-        glBindVertexArray( p_vao.vertexArray );
-
-        // Generate buffers
-        glGenBuffers( 1, &p_vbo.vertexBuffer );
-        glGenBuffers( 1, &p_vbo.normalBuffer );
-        glGenBuffers( 1, &p_vbo.uvBuffer );
-        glGenBuffers( 1, &p_vbo.tangentbuffer );
-        glGenBuffers( 1, &p_ibo.elementBuffer );
-
-        // Load data into vertex buffers
-        // Vertex Positions
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.vertexBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_cache.vertices.size( ) * sizeof( glm::vec3 ), &p_cache.vertices[0], GL_STATIC_DRAW );
-        // Vertex Normals
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.normalBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_cache.normals.size( ) * sizeof( glm::vec3 ), &p_cache.normals[0], GL_STATIC_DRAW );
-        // Vertex Texture Coords
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_cache.uvs.size( ) * sizeof( glm::vec2 ), &p_cache.uvs[0], GL_STATIC_DRAW );
-        // Vertex Tangent
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_cache.tangents.size( ) * sizeof( glm::vec3 ), &p_cache.tangents[0], GL_STATIC_DRAW );
-
-        // Element Buffer for the indices
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, p_ibo.elementBuffer );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, p_cache.indices.size( ) * sizeof( uint ), &p_cache.indices[0], GL_STATIC_DRAW );
-
-        // Set the vertex attribute pointers
-        // positions
-        glEnableVertexAttribArray( 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.vertexBuffer );
-        glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-        // normals
-        glEnableVertexAttribArray( 1 );
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.normalBuffer );
-        glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-        // texCoords
-        glEnableVertexAttribArray( 2 );
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.uvBuffer );
-        glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-        // tangents
-        glEnableVertexAttribArray( 3 );
-        glBindBuffer( GL_ARRAY_BUFFER, p_vbo.tangentbuffer );
-        glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, ( GLvoid* ) 0 );
-
-        // Unbind Vertex Array Object
-        glBindVertexArray( 0 );
     }
 
     void Model::loadMaterial( const GW2Model& p_model ) {

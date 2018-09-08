@@ -32,7 +32,7 @@
 					<Add directory="../src" />
 				</Compiler>
 				<Linker>
-					<Add library="../extern/freetype/objs/freetype.a" />
+					<Add library="libfreetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
 					<Add library="libOpenAL32.dll.a" />
 					<Add library="libmpg123-0.a" />
@@ -62,13 +62,13 @@
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.1.1/lib/gcc_dll" />
-					<Add directory="../extern/freetype/objs" />
+					<Add directory="../extern/freetype/build" />
 					<Add directory="../extern/glew/lib" />
 					<Add directory="../extern/gw2dattools/lib/Debug" />
 					<Add directory="../extern/gw2formats/lib/Debug" />
-					<Add directory="../extern/libogg" />
-					<Add directory="../extern/libvorbis/lib" />
-					<Add directory="../extern/libwebp/src" />
+					<Add directory="../extern/libogg/build" />
+					<Add directory="../extern/libvorbis/build/lib" />
+					<Add directory="../extern/libwebp/build" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -85,7 +85,7 @@
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/include" />
 					<Add directory="../../wxWidgets-3.1.1/include" />
-					<Add directory="../../wxWidgets-3.1.0/lib/gcc_dll/mswu" />
+					<Add directory="../../wxWidgets-3.1.1/lib/gcc_dll/mswu" />
 					<Add directory="../extern/freetype/include" />
 					<Add directory="../extern/glew/include" />
 					<Add directory="../extern/glm" />
@@ -98,7 +98,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../extern/freetype/objs/freetype.a" />
+					<Add library="libfreetype.a" />
 					<Add library="../extern/glew/lib/libglew32.a" />
 					<Add library="libOpenAL32.dll.a" />
 					<Add library="libmpg123-0" />
@@ -128,26 +128,26 @@
 					<Add directory="../../mpg123" />
 					<Add directory="../../openal-soft/libs/Win64" />
 					<Add directory="../../wxWidgets-3.1.1/lib/gcc_dll" />
-					<Add directory="../extern/freetype/objs" />
+					<Add directory="../extern/freetype/build" />
 					<Add directory="../extern/glew/lib" />
 					<Add directory="../extern/gw2dattools/lib/Release" />
 					<Add directory="../extern/gw2formats/lib/Release" />
-					<Add directory="../extern/libogg" />
-					<Add directory="../extern/libvorbis/lib" />
-					<Add directory="../extern/libwebp/src" />
+					<Add directory="../extern/libogg/build" />
+					<Add directory="../extern/libvorbis/build/lib" />
+					<Add directory="../extern/libwebp/build" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wall" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-include wx_pch.h" />
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-Winvalid-pch" />
-			<Add option="-include wx_pch.h" />
 			<Add option="-DWX_PRECOMP" />
-			<Add option="-Wall" />
 			<Add directory="../../wxWidgets-3.1.1/include" />
 		</Compiler>
 		<ResourceCompiler>
@@ -266,6 +266,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Camera.h" />
 		<Unit filename="../src/Viewers/ModelViewer/FrameBuffer.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/FrameBuffer.h" />
+		<Unit filename="../src/Viewers/ModelViewer/IndexBuffer.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/IndexBuffer.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Light.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Light.h" />
 		<Unit filename="../src/Viewers/ModelViewer/LightBox.cpp" />
@@ -284,6 +286,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
 		<Unit filename="../src/Viewers/ModelViewer/TextureManager.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/TextureManager.h" />
+		<Unit filename="../src/Viewers/ModelViewer/VertexBuffer.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/VertexBuffer.h" />
 		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.cpp" />
 		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.h" />
 		<Unit filename="../src/Viewers/SoundPlayer/SoundDecoder.cpp" />
