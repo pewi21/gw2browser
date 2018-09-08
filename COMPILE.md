@@ -1,25 +1,49 @@
 Building Gw2Browser
 -------------------
 
+* [Building on Windows](#building-on-windows)
+
+    * [Required software](#required-software)
+
+    * [Optional software](#optional-software)
+
+    * [Required libraries](#required-libraries)
+
+    * [Optional libraries](#optional-libraries)
+
+    * [Getting the source code](#getting-the-source-code)
+
+    * [Getting the required library](#getting-the-required-library)
+
+    * Building instructions
+
+        * [Building with Visual Studio](#building-with-visual-studio)
+
+        * [Building with MinGW-w64](#building-with-mingw-w64)
+
+* [Building on Linux](#building-on-linux)
+
+    * [Building instructions](#building-instructions-1)
+
+* [Cross compile from Linux](#cross-compile-from-linux)
+
+
 ## Building on Windows
 
 ### Required software
 
-* [Git](https://git-scm.com/downloads) for download source code. It also come with Git Bash
-for use as command prompt to compile some required libraries if using GCC to compile.
-
-* Microsoft Visual Studio 2012 or better. Express version will work too.
-or use [Visual Studio Community 2015](https://www.visualstudio.com/products/visual-studio-community-vs).
-
-        or
-
 * [Git](https://git-scm.com/downloads)
-
-* [TDM-GCC 5.1.0](http://tdm-gcc.tdragon.net/)
 
 * [CMake](https://cmake.org/)
 
-* [CodeBlocks](http://www.codeblocks.org/) for use to open Gw2Browser's CodeBlocks solution file.
+* Microsoft Visual Studio 2017 or [Visual Studio Community 2017](https://www.visualstudio.com/products/visual-studio-community-vs)
+Choose ... also install Windows SDK Version 8.1
+
+  or
+
+* [MinGW-w64](https://sourceforge.net/projects/mingw-w64/)
+
+* [CodeBlocks](http://www.codeblocks.org/)
 
 ### Optional software
 
@@ -31,7 +55,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 * [mpg123](https://www.mpg123.de)
 * [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
-* [wxWidgets 3.1.0 or higher](http://wxwidgets.org/)
+* [wxWidgets 3.1.1 or higher](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) *Included*
 * [gw2DatTools](https://github.com/kytulendu/gw2DatTools) *Included*
 * [gw2formats](https://github.com/kytulendu/gw2formats) *Included*
@@ -40,6 +64,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 * [libwebp](https://developers.google.com/speed/webp/download) *Included*
 * [OpenGL Mathematics](http://glm.g-truc.net/) *Included*
 * [The OpenGL Extension Wrangler Library](http://glew.sourceforge.net/) *Included*
+* [TinyXML2](https://github.com/leethomason/tinyxml2) *Included*
 
 ### Optional libraries
 
@@ -48,19 +73,17 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 If you want to use Visual Leak Detector, remove the "//" at #include <vld.h>
 in Gw2Browser.cpp.
 
-### Building instructions
-
-#### Getting the source code:
+### Getting the source code
 
 * Crate a directory for source code some where, for example, C:\DEV.
 * Open Git Bash window and change directory to the one you create above.
 * Use this command to download the source code.
 
-        git clone --recursive https://github.com/kytulendu/Gw2Browser.git
+      git clone --recursive https://github.com/kytulendu/Gw2Browser.git
 
 This will download Gw2Browser and all included library source code.
 
-#### Getting the required library:
+### Getting the required library
 
 * Download mpg123 binaries from [here](https://www.mpg123.de/), choose the lastest
 Win32 or Win64 file and extract it to the same directory that Gw2Browser directory is in.
@@ -71,7 +94,7 @@ extract it to the same directory that Gw2Browser directory is in. Or download th
 and build it your self.
 
 * Download wxWidgets source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose wxWidgets-3.1.0.zip or wxWidgets-3.1.0.7z and extract it to the same directory
+choose wxWidgets-3.1.1.zip or wxWidgets-3.1.1.7z and extract it to the same directory
 that Gw2Browser directory is in. Or download and use the binaries.
 
 **Note:** The library and source code directory must be in directory like this.
@@ -93,250 +116,414 @@ The ROOT is the directory you created in Getting the source code.
          |    +--lib
          |    +--...
          |
-         +--wxWidgets-3.1.0
+         +--wxWidgets-3.1.1
               +--include
               +--src
               +--...
 
-#### Windows, building with Visual Studio:
+### Building instructions
 
-* Compile wxWidgets using solution file corresponding with your VS version in directory
-wxWidgets-3.1.0/build/msw. For example, VS2012 is wx_vc11.sln, VS2013 is wx_vc12.sln
-and VS2015 is wx_vc14.sln, if there is no corresponding solution file for your newer VS,
-just open the higest version of solution file available.
+### Building with Visual Studio
 
-* Compile libwebp using Visual Studio Native Tools Command Prompt, both 32 and 64 bit
-by use these command at Gw2Browser/extern/libweb directory.
+#### Compile wxWidgets:
 
-        nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj
-        nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
+* Use solution file corresponding with your VS version in directory wxWidgets-3.1.1/build/msw.
+  For example, VS2017 is wx_vc15.sln, if there is no corresponding solution file for your newer VS,
+  just open the higest version of solution file available.
 
-If you use Visual Studio 2015, use "Developer Command Prompt for VS2015",
-the default command line will compile 64 bit library (if you use 64 bit OS).
-If you want to compile 32 bit library, use this command.
+#### Compile libmpg123:
 
-        cd vc
+* Open a "x64 Native Tools Command Prompt for VS 2017" or "x86 Native Tools Command Prompt for VS 2017"
+  and change it's directory to mpg123's directory.
 
-The directory will change to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
-then use this command before compile library by above command.
+* Rename export definition file by using this command.
 
-        vcvarsall amd64_x86
+      ren libmpg123-0.dll.def libmpg123-0.def
 
-For 32 bit library.
+* Build the library.
 
-        vcvarsall amd64
+  for 64 bit binary, use this command.
 
-For 64 bit library.
+      lib /MACHINE:X64 /DEF:libmpg123-0.def /OUT:libmpg123-0.lib
 
-* Build mpg123 library.
+  for 32 bit binary, use this command.
 
-1. "Visual Studio Native Tools Command Prompt" or "Developer Command Prompt for VS2015"
-and change it's directory to mpg123's directory.
+      lib /DEF:libmpg123-0.def /OUT:libmpg123-0.lib
 
-2. Rename export definition file by using this command.
+#### Compile libwebp:
 
-        ren libmpg123-0.dll.def libmpg123-0.def
+* Open "x64 Native Tools Command Prompt for VS 2017"
+  If you want to compile 32 bit library, use "x86 Native Tools Command Prompt for VS 2017" instread.
 
-3. Build the library.
+* Change directory to Gw2Browser/extern/libweb
 
-for 32 bit binary, use this command.
+* Use this command to compile libwebp
 
-        lib /DEF:libmpg123-0.def /OUT:libmpg123-0.lib
+      nmake /f Makefile.vc CFG=debug-static RTLIBCFG=dynamic OBJDIR=obj
+      nmake /f Makefile.vc CFG=release-static RTLIBCFG=dynamic OBJDIR=obj
 
-for 64 bit binary, use this command.
+#### Compile freetype:
 
-        lib /MACHINE:X64 /DEF:libmpg123-0.def /OUT:libmpg123-0.lib
+* Create vc2017 directory in Gw2Browser/extern/freetype/builds/windows
 
-* Compile libogg using libogg_static.sln solution file in Gw2Browser/extern/libogg/win32/VS2015.
+* Copy all content from vc2010 directory to vc2017 directory
 
-* Compile libvorbis using vorbis_static.sln solution file in Gw2Browser/extern/libvorbis/win32/VS2015.
+* Open freetype.sln solution file in Gw2Browser/extern/freetype/builds/windows/vc2017
+  If it ask for upgrade project file, choose Windows SDK Version to `8.1`,
+  then click "Ok" to upgrade it.
 
-* Compile Gw2Browser using Gw2Browser.sln solution file in Gw2Browser/prj.
+* Choose `Debug Static` or `Release Static` configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
+  from two dropdown box in Visual Studio toolbar.
 
-#### Windows, building with TDM-GCC
+* Press F7 or in MenuBar -> Build -> Build Solution to compile freetype.
 
-* You must add TDM-GCC to your path.
+* Copy `freetype.lib` in Gw2Browser\extern\freetype\objs\[x64 or Win32]\[Debug or Release] Static to
+  Gw2Browser\extern\freetype\objs\[x64 or Win32] and rename it to `freetype_s.lib` for release build and `freetype_sd.lib` for debug build.
 
-* Open Git Bash command line window.
+#### Compile glew:
 
-* Build mpg123 library.
+* Create vc14 directory in Gw2Browser/extern/glew/build
 
-1. Open libmpg123-0.dll.def with any text editor, like Notepad++ and insert this to the first line.
+* Copy all content from vc12 directory to vc15 directory
 
-        LIBRARY libmpg123-0.dll
+* Open glew.sln solution file in Gw2Browser/extern/glew/build/vc15
+  If it ask for upgrade project file, choose Windows SDK Version to `8.1`,
+  then click "Ok" to upgrade it.
 
-It will look some thing like this.
+* Right click "glew_static" project in "Solution Explorer" at the left and choose "Properties".
 
-        LIBRARY libmpg123-0.dll
-        EXPORTS
-        mpg123_add_string
-        ...
+* In "Configuration:" dropdown box, choose "Debug"
+  and in "Platform:" dropdown box, choose "All Platforms"
 
-2. Change directory of Git Bash window to mpg123 directory and use these command.
+* In "Configuration Properties" -> "C/C++" -> "Code Generation"
+  In "Runtime Library" box, Choose "Multi-threaded Debug DLL (/MDd)"
 
-        dlltool -d libmpg123-0.dll.def -l libmpg123-0.a
+* Click "Apply" button.
 
-* Build wxWidgets.
+* In "Configuration:" dropdown box, choose "Release"
+  and in "Platform:" dropdown box, choose "All Platforms"
 
-1. Change directory of Git Bash window to wxWidgets-3.1.0/build/msw and use these command.
+* In "Configuration Properties" -> "C/C++" -> "Code Generation"
+  In "Runtime Library" box, Choose "Multi-threaded DLL (/MD)"
 
-        mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug
+* Click "Apply" button then click "OK".
 
-   If it give error, re-type it again.
-   Wait for it to finish, then use these command
+* Choose Debug or Release configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
+  from two dropdown box in Visual Studio toolbar.
 
-        mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release
+* Press F7 or in MenuBar -> Build -> Build Solution to compile libogg.
 
-   This will build wxWidgets in debug and release configuration as a static
-   library, or add "SHARED=1" for building dynamiclink library.
+#### Compile libogg:
 
-        mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug SHARED=1
-        mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release SHARED=1
+* Create VS2017 directory in Gw2Browser/extern/libogg/win32
 
-2. If you need to rebuild, use "clean" target first.
+* Copy all content from VS2015 directory to VS2017 directory
 
-        mingw32-make -j 4 -f makefile.gcc BUILD=debug clean
-        mingw32-make -j 4 -f makefile.gcc BUILD=release clean
+* Open libogg_static.sln solution file in Gw2Browser/extern/libogg/win32/VS2017
+  If it ask for upgrade project file, choose Windows SDK Version to `8.1`,
+  then click "Ok" to upgrade it.
 
-* Build libwebp.
+* Right click "libogg_static" project in "Solution Explorer" at the left and choose "Properties".
 
-1. Change directory of Git Bash window to Gw2Browser/extern/libwebp and use these command
+* In "Configuration:" dropdown box, choose "Debug"
+  and in "Platform:" dropdown box, choose "All Platforms"
 
-		mingw32-make -f makefile.unix "EXTRA_FLAGS=" "DWEBP_LIBS=" "CWEBP_LIBS=" "GIF_LIBS="
+* In "Configuration Properties" -> "C/C++" -> "Code Generation"
+  In "Runtime Library" box, Choose "Multi-threaded Debug DLL (/MDd)"
 
-* Build glew.
+* Click "Apply" button.
 
-1. Use CMake-gui to generate glew's MinGW makefile.
+* In "Configuration:" dropdown box, choose "Release"
+  and in "Platform:" dropdown box, choose "All Platforms"
 
-        In "Where is the source code:" box, enter Gw2Browser/extern/glew
-        In "Where to build the binaries:" box, enter Gw2Browser/extern/glew
-        Click "Configure", then click "Generate".
+* In "Configuration Properties" -> "C/C++" -> "Code Generation"
+  In "Runtime Library" box, Choose "Multi-threaded DLL (/MD)"
 
-2. Open CMakeCache.txt in Gw2Browser/extern/glew directory and change these line
+* Click "Apply" button then click "OK".
 
-        CMAKE_C_FLAGS:STRING=
-        to
-        CMAKE_C_FLAGS:STRING=-DGLEW_STATIC
+* Choose Debug or Release configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
+  from two dropdown box in Visual Studio toolbar.
 
-        CMAKE_CXX_FLAGS:STRING=
-        to
-        CMAKE_CXX_FLAGS:STRING=-DGLEW_STATIC
+* Press F7 or in MenuBar -> Build -> Build Solution to compile libogg.
 
-3. Change directory of Git Bash window to Gw2Browser/extern/glew and use these command
+#### Compile libvorbis:
 
-        mingw32-make
+* Create VS2017 directory in Gw2Browser/extern/libvorbis/win32
 
-* Build libogg
+* Copy all content from VS2010 directory to VS2017 directory
 
-1. Use CMake-gui to generate libogg's MinGW makefile.
+* Open vorbis_static.sln solution file in Gw2Browser/extern/libvorbis/win32/VS2015
+  If it ask for upgrade project file, choose Windows SDK Version to `8.1`,
+  then click "Ok" to upgrade it.
 
-        In "Where is the source code:" box, enter Gw2Browser/extern/libogg
-        In "Where to build the binaries:" box, enter Gw2Browser/extern/libogg
-        Click "Configure", then click "Generate".
+* Choose Debug or Release configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
+  from two dropdown box in Visual Studio toolbar.
 
-2. Change directory of Git Bash window to Gw2Browser/extern/libogg and use these command
+* Press F7 or in MenuBar -> Build -> Build Solution to compile libogg.
 
-        mingw32-make
+#### Compile Gw2Browser:
 
-* Build libvorbis
+* Use Gw2Browser.sln solution file in Gw2Browser/prj.
 
-1. Use CMake-gui to generate libvorbis's MinGW makefile.
+* Choose Debug or Release configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
+  from two dropdown box in Visual Studio toolbar.
 
-        In "Where is the source code:" box, enter Gw2Browser/extern/libvorbis
-        In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis
-        Click "Configure",
-        Set "OGG_INCLUDE_DIRS" to "Gw2Browser/extern/libogg/include"
-        Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg.a"
-        Then, click "Generate".
+* Press F7 or in MenuBar -> Build -> Build Solution to compile Gw2Browser.
 
-2. Change directory of Git Bash window to Gw2Browser/extern/libvorbis and use these command
+#### Copy required binaries:
 
-        mingw32-make
+* Copy `soft_oal.dll` from openal-soft/bin/Win32 or openal-soft/bin/Win64 directory to Gw2Browser/bin and rename it to `OpenAL32.dll`
 
-* Build freetype
+* Copy `libmpg123-0.dll` from mpg123 directory to Gw2Browser/bin
 
-1. Open Command Prompt window (cmd.exe).
+### Building with MinGW-w64
 
-2. Change directory to Gw2Browser/extern/freetype and use these command.
+Download MinGW-w64 and install it to any location, for example `C:\mingw-64`,
+choose Version to 7.2.0 rev 1, choose Architecture to x86_64 or i686, choose Threads to `POSIX` (important).
 
-        mkdir objs
-        mingw32-make
+You must also add MinGW-w64 to your path.
 
-* Build Gw2Browser
+for example set your path to `stuff;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin`
 
-   Open solution file Gw2Browser.workspace in Gw2Browser/prj/. Then, compile gw2DatTools and gw2formats
-   by right click and select as active project and build it, both debug and release build. Then proceed
-   to compile Gw2Browser.
+#### Compile libmpg123:
 
-* Copy libgomp-1.dll or libgomp_64-1.dll from TDM-GCC install directory to Gw2Browser/bin
+* Open `libmpg123-0.dll.def` with any text editor, like Notepad++ and insert this to the first line.
 
-* Copy soft_oal.dll from openal-soft/bin/Win32 or openal-soft/bin/Win64 directory to Gw2Browser/bin and rename it to OpenAL32.dll
+      LIBRARY libmpg123-0.dll
 
-* Copy libmpg123-0.dll from mpg123 directory to Gw2Browser/bin
+  It will look some thing like this.
+
+      LIBRARY libmpg123-0.dll
+      EXPORTS
+      mpg123_add_string
+      ...
+
+* Open Git Bash command line window and change directory to mpg123 directory and use these command.
+
+      dlltool -d libmpg123-0.dll.def -l libmpg123-0.a
+
+#### Compile wxWidgets:
+
+* Open Git Bash command line window and change directory to wxWidgets-3.1.1/build/msw and use these command.
+
+      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug SHARED=1
+
+  If it give error, re-type it again.
+  Wait for it to finish, then use these command.
+
+      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release SHARED=1
+
+  This will build wxWidgets in debug and release configuration as a dynamiclink library.
+  If you want static library, remove `SHARED=1` from the commandline. But you have to change
+  library search path in CodeBlocks project file from `gcc_dll` to `gcc_lib`.
+
+      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug
+      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release
+
+* If you need to rebuild, use "clean" target first.
+
+      mingw32-make -j 4 -f makefile.gcc BUILD=debug SHARED=1 clean
+      mingw32-make -j 4 -f makefile.gcc BUILD=release SHARED=1 clean
+      mingw32-make -j 4 -f makefile.gcc BUILD=debug clean
+      mingw32-make -j 4 -f makefile.gcc BUILD=release clean
+
+#### Compile libwebp:
+
+* Open Git Bash command line window and change directory to Gw2Browser/extern/libwebp and use these command
+
+      mingw32-make -f makefile.unix "EXTRA_FLAGS=" "DWEBP_LIBS=" "CWEBP_LIBS=" "GIF_LIBS="
+
+#### Compile glew:
+
+* Use CMake-gui to generate glew's MinGW makefile.
+
+      * In "Where is the source code:" box, enter path to Gw2Browser/extern/glew/build/cmake
+        for example C:/DEV/Gw2Browser/extern/glew/build/cmake
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/glew
+        for example C:/DEV/Gw2Browser/extern/glew
+      * Click "Configure".
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * Click "Generate".
+
+* Open CMakeCache.txt in Gw2Browser/extern/glew directory and change these line
+
+      `CMAKE_C_FLAGS:STRING=`
+      to
+      `CMAKE_C_FLAGS:STRING=-DGLEW_STATIC`
+
+      `CMAKE_CXX_FLAGS:STRING=`
+      to
+      `CMAKE_CXX_FLAGS:STRING=-DGLEW_STATIC`
+
+* Open Git Bash command line window and change directory to Gw2Browser/extern/glew and use these command
+
+      mingw32-make
+
+#### Compile libogg:
+
+* Use CMake-gui to generate libogg's MinGW makefile.
+
+      * In "Where is the source code:" box, enter Gw2Browser/extern/libogg
+        for example C:/DEV/Gw2Browser/extern/libogg
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libogg
+        for example C:/DEV/Gw2Browser/extern/libogg
+      * Click "Configure".
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * Click "Generate".
+
+* Open Git Bash command line window and change directory to Gw2Browser/extern/libogg and use these command
+
+      mingw32-make
+
+#### Compile libvorbis:
+
+* Use CMake-gui to generate libvorbis's MinGW makefile.
+
+      * In "Where is the source code:" box, enter Gw2Browser/extern/libvorbis
+        for example C:/DEV/Gw2Browser/extern/libvorbis
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis
+        for example C:/DEV/Gw2Browser/extern/libvorbis
+      * Click "Configure".
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * Set "OGG_INCLUDE_DIRS" to "Gw2Browser/extern/libogg/include"
+        for example C:/DEV/Gw2Browser/extern/libogg/include
+      * Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg/libogg.a"
+        for example C:/DEV/Gw2Browser/extern/libogg/libogg.a
+      * Click "Generate".
+
+* Open Git Bash command line window and change directory to Gw2Browser/extern/libvorbis and use these command
+
+      mingw32-make
+
+#### Compile freetype:
+
+* Use CMake-gui to generate freetype's MinGW makefile.
+
+      * In "Where is the source code:" box, enter Gw2Browser/extern/freetype
+        for example C:/DEV/Gw2Browser/extern/freetype
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/freetype/build
+        for example C:/DEV/Gw2Browser/extern/freetype/build
+      * Click "Configure", click "Yes" if it ask to create new directory.
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * Click "Generate".
+
+* Open Git Bash command line window and change directory to Gw2Browser/extern/freetype/build and use these command
+
+      mingw32-make
+
+#### Compile Gw2Browser:
+
+* Open workspace file Gw2Browser.workspace in Gw2Browser/prj/ with CodeBlocks.
+
+* Compile Gw2Browser by right click and select Gw2Browser as active project,
+  choose debug or release build, then click the gear button in toolbar
+  or press CTRL+F9 key or in MenuBar -> Build -> Build.
+
+#### Copy required binaries:
+
+* Copy these dll files from MinGW-w64 install directory to Gw2Browser/bin
+
+      libgcc_s_seh-1.dll
+      libgomp-1.dll
+      libstdc++-6.dll
+      libwinpthread-1.dll
+
+* Copy `soft_oal.dll` from openal-soft/bin/Win32 or openal-soft/bin/Win64 directory to Gw2Browser/bin and rename it to OpenAL32.dll
+
+* Copy `libmpg123-0.dll` from mpg123 directory to Gw2Browser/bin
+
+* Copy following dll files from wxWidgets/lib/gcc_dll directory to Gw2Browser/bin
+
+      wxbase311u_gcc_custom.dll
+      wxmsw311u_adv_gcc_custom.dll
+      wxmsw311u_aui_gcc_custom.dll
+      wxmsw311u_core_gcc_custom.dll
+      wxmsw311u_gl_gcc_custom.dll
+
+  If debug build, also copy these dll files.
+
+      wxbase311ud_gcc_custom.dll
+      wxmsw311ud_adv_gcc_custom.dll
+      wxmsw311ud_aui_gcc_custom.dll
+      wxmsw311ud_core_gcc_custom.dll
+      wxmsw311ud_gl_gcc_custom.dll
 
 ## Building on Linux
 
-For this guide, I was using Kubuntu, but this guide will work with any Linux distribution that was Debian based too.
+For this guide, I was using Kubuntu 18.04, but this guide also work with any Linux distribution that was Debian based.
 
 ### Building instructions
 
 #### Getting the required library and tools:
 
 * Download wxWidgets 3.1 source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose wxWidgets-3.1.0.zip or wxWidgets-3.1.0.7z and extract it to somewhere, for example, your home directory. If your system have wxWidgets 3.1 package, you can skip this and use a command like below command to install wxWidgets 3.1.
+choose wxWidgets-3.1.1.tar.bz2 and extract it to somewhere, for example, your home directory.
+If your Linux distribution have wxWidgets 3.1 package, you can skip this and use a command like below command to install wxWidgets 3.1.
 
-        sudo apt install libwxbase3.1-dev libwxgtk3.1-dev
+      sudo apt install libwxbase3.1-dev libwxgtk3.1-dev
+
+  Or download the repository using this command.
+
+      git clone https://github.com/wxWidgets/wxWidgets.git
 
 * Open a terminal window, the directory would be in your home directory.
-* Use these command to install the required package.
+* Install git by using this command.
+  You can skip this step if you have already install git.
 
-Incase you haven't have git installed use this command.
+      sudo apt install git git-gui
 
-        sudo apt install git git-gui
+* Use this command to install required library and tools.
 
-Use this command to install required library and tools.
-
-        sudo apt install build-essential codeblocks libwebp-dev libglew-dev libglew2.0 libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev
+      sudo apt install build-essential codeblocks libwebp-dev libglew-dev libglew2.0 libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev
 
 #### Getting the source code:
 
 * Use this command to download the source code.
 
-        git clone --recursive https://github.com/kytulendu/Gw2Browser.git
+      git clone --recursive https://github.com/kytulendu/Gw2Browser.git
 
 This will download Gw2Browser and all included library source code, although we won't use most of the library that was included in the repo.
 
 #### Compiling wxWidgets:
 
+* If your system have wxWidgets 3.1 package, you can skip this step.
 * Open a terminal window and change directory to wxWidgets source code directory you have extracted.
 * Make a directory using this command
 
-        mkdir gtk-build
+      mkdir gtk-build
 
 * Change directory to the directory you make previously, in this case, gtk-build directory.
 
-        cd gtk-build
+      cd gtk-build
 
 * Use this command to config the build script and wait for it to finish.
 
-        ../configure --enable-unicode --enable-debug --with-opengl
+      ../configure --enable-unicode --enable-debug --with-opengl
 
 * Use this command to compile wxWidgets source code.
 
-        make
+      make
 
-or
+  or
 
-        make -j 4
+      make -j 4
 
 * When finished, use this command to install wxWidgets
 
-        sudo make install
+      sudo make install
 
-after that use this command
+* After that use this command
 
-        sudo ldconfig
+      sudo ldconfig
 
-#### Compiling the source:
+#### Compiling Gw2Browser:
 
-* Open solution file Gw2Browser-linux.workspace in Gw2Browser/prj/ with CodeBlocks. Then, compile it.
+* Open workspace file Gw2Browser-linux.workspace in Gw2Browser/prj/ with CodeBlocks.
+
+* Compile Gw2Browser by right click and select Gw2Browser as active project,
+  choose debug or release build, then click the gear button in toolbar
+  or press CTRL+F9 key or in MenuBar -> Build -> Build.
+
+## Cross compile from Linux
+
+Todo
