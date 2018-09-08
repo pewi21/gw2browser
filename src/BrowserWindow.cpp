@@ -159,6 +159,11 @@ namespace gw2b {
         // Set default settings
         this->SetDefaults( );
 
+        wxAuiDockArt* art = m_uiManager.GetArtProvider();
+        art->SetColour( wxAUI_DOCKART_INACTIVE_CAPTION_COLOUR,          *wxLIGHT_GREY );
+        art->SetColour( wxAUI_DOCKART_INACTIVE_CAPTION_GRADIENT_COLOUR, *wxLIGHT_GREY );
+        art->SetColour( wxAUI_DOCKART_INACTIVE_CAPTION_TEXT_COLOUR,     *wxBLACK );
+
         // Tell the manager to "commit" all the changes just made
         m_uiManager.Update( );
 
