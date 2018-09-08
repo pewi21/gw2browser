@@ -36,6 +36,7 @@
 					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebp.a" />
+					<Add library="libtinyxml2.a" />
 					<Add directory="../extern/gw2dattools/lib/Debug" />
 					<Add directory="../extern/gw2formats/lib/Debug" />
 				</Linker>
@@ -71,6 +72,7 @@
 					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebp.a" />
+					<Add library="libtinyxml2.a" />
 					<Add directory="../extern/gw2dattools/lib/Release" />
 					<Add directory="../extern/gw2formats/lib/Release" />
 				</Linker>
@@ -140,6 +142,8 @@
 		<Unit filename="../src/PreviewPanel.h" />
 		<Unit filename="../src/ProgressStatusBar.cpp" />
 		<Unit filename="../src/ProgressStatusBar.h" />
+		<Unit filename="../src/Readers/ContentReader.cpp" />
+		<Unit filename="../src/Readers/ContentReader.h" />
 		<Unit filename="../src/Readers/EulaReader.cpp" />
 		<Unit filename="../src/Readers/EulaReader.h" />
 		<Unit filename="../src/Readers/ImageReader.cpp" />
@@ -184,6 +188,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Camera.h" />
 		<Unit filename="../src/Viewers/ModelViewer/FrameBuffer.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/FrameBuffer.h" />
+		<Unit filename="../src/Viewers/ModelViewer/IndexBuffer.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/IndexBuffer.h" />
 		<Unit filename="../src/Viewers/ModelViewer/Light.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/Light.h" />
 		<Unit filename="../src/Viewers/ModelViewer/LightBox.cpp" />
@@ -202,6 +208,8 @@
 		<Unit filename="../src/Viewers/ModelViewer/Texture2D.h" />
 		<Unit filename="../src/Viewers/ModelViewer/TextureManager.cpp" />
 		<Unit filename="../src/Viewers/ModelViewer/TextureManager.h" />
+		<Unit filename="../src/Viewers/ModelViewer/VertexBuffer.cpp" />
+		<Unit filename="../src/Viewers/ModelViewer/VertexBuffer.h" />
 		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.cpp" />
 		<Unit filename="../src/Viewers/SoundPlayer/OggCallback.h" />
 		<Unit filename="../src/Viewers/SoundPlayer/SoundDecoder.cpp" />
