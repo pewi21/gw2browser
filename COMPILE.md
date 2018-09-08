@@ -307,19 +307,19 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
 * Open Git Bash command line window and change directory to `wxWidgets-3.1.1/build/msw` and use these command.
 
-      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug SHARED=1
+      mingw32-make -j 4 -f makefile.gcc BUILD=debug SHARED=1
 
   If it give error, re-type it again.
   Wait for it to finish, then use these command.
 
-      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release SHARED=1
+      mingw32-make -j 4 -f makefile.gcc BUILD=release SHARED=1
 
   This will build wxWidgets in debug and release configuration as a dynamiclink library.
   If you want static library, remove `SHARED=1` from the commandline. But you have to change
   library search path in CodeBlocks project file from `gcc_dll` to `gcc_lib`.
 
-      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=debug
-      mingw32-make -j 4 -f makefile.gcc CXXFLAGS="-std=c++11" BUILD=release
+      mingw32-make -j 4 -f makefile.gcc BUILD=debug
+      mingw32-make -j 4 -f makefile.gcc BUILD=release
 
 * If you need to rebuild, use "clean" target first.
 
@@ -327,12 +327,6 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
       mingw32-make -j 4 -f makefile.gcc BUILD=release SHARED=1 clean
       mingw32-make -j 4 -f makefile.gcc BUILD=debug clean
       mingw32-make -j 4 -f makefile.gcc BUILD=release clean
-
-#### Compile libwebp:
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libwebp` and use these command
-
-      mingw32-make -f makefile.unix "EXTRA_FLAGS=" "DWEBP_LIBS=" "CWEBP_LIBS=" "GIF_LIBS="
 
 #### Compile glew:
 
@@ -366,13 +360,13 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
       * In "Where is the source code:" box, enter Gw2Browser/extern/libogg
         for example C:/DEV/Gw2Browser/extern/libogg
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libogg
-        for example C:/DEV/Gw2Browser/extern/libogg
-      * Click "Configure".
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libogg/build
+        for example C:/DEV/Gw2Browser/extern/libogg/build
+      * Click "Configure", click "Yes" if it ask to create new directory.
       * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
       * Click "Generate".
 
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libogg` and use these command
+* Open Git Bash command line window and change directory to `Gw2Browser/extern/libogg/build` and use these command
 
       mingw32-make
 
@@ -384,12 +378,28 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
         for example C:/DEV/Gw2Browser/extern/libvorbis
       * In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis
         for example C:/DEV/Gw2Browser/extern/libvorbis
-      * Click "Configure".
+      * Click "Configure", click "Yes" if it ask to create new directory.
       * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
       * Set "OGG_INCLUDE_DIRS" to "Gw2Browser/extern/libogg/include"
         for example C:/DEV/Gw2Browser/extern/libogg/include
-      * Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg/libogg.a"
-        for example C:/DEV/Gw2Browser/extern/libogg/libogg.a
+      * Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg/build/libogg.a"
+        for example C:/DEV/Gw2Browser/extern/libogg/build/libogg.a
+      * Click "Generate".
+
+* Open Git Bash command line window and change directory to `Gw2Browser/extern/libvorbis` and use these command
+
+      mingw32-make
+
+#### Compile libwebp:
+
+* Use CMake-gui to generate libwebp's MinGW makefile.
+
+      * In "Where is the source code:" box, enter Gw2Browser/extern/libwebp
+        for example C:/DEV/Gw2Browser/extern/libwebp
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libwebp/build
+        for example C:/DEV/Gw2Browser/extern/libvorbis/build
+      * Click "Configure", click "Yes" if it ask to create new directory.
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
       * Click "Generate".
 
 * Open Git Bash command line window and change directory to `Gw2Browser/extern/libvorbis` and use these command
@@ -409,6 +419,22 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
       * Click "Generate".
 
 * Open Git Bash command line window and change directory to `Gw2Browser/extern/freetype/build` and use these command
+
+      mingw32-make
+
+#### Compile tinyxml2:
+
+* Use CMake-gui to generate freetype's MinGW makefile.
+
+      * In "Where is the source code:" box, enter Gw2Browser/extern/tinyxml2
+        for example C:/DEV/Gw2Browser/extern/tinyxml2
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/tinyxml2/build
+        for example C:/DEV/Gw2Browser/extern/tinyxml2/build
+      * Click "Configure", click "Yes" if it ask to create new directory.
+      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * Click "Generate".
+
+* Open Git Bash command line window and change directory to `Gw2Browser/extern/tinyxml2/build` and use these command
 
       mingw32-make
 
@@ -432,6 +458,8 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 * Copy `soft_oal.dll` from `openal-soft/bin/Win32` or `openal-soft/bin/Win64` directory to `Gw2Browser/bin` and rename it to `OpenAL32.dll`
 
 * Copy `libmpg123-0.dll` from mpg123 directory to `Gw2Browser/bin`
+
+* Copy `libtinyxml2.dll` from `Gw2Browser/extern/tinyxml2/build` directory to `Gw2Browser/bin`
 
 * Copy following dll files from `wxWidgets/lib/gcc_dll` directory to `Gw2Browser/bin`
 
