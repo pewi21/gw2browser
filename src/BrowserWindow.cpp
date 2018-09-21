@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2014-2017 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2014-2018 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -35,7 +35,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "EventId.h"
 #include "CategoryTree.h"
 #include "Exporter.h"
-#include "Exception.h"
 #include "FileReader.h"
 #include "ProgressStatusBar.h"
 #include "PreviewPanel.h"
@@ -139,17 +138,39 @@ namespace gw2b {
         // Preview panel
         m_previewPanel = new PreviewPanel( this );
 
-        // Model Viewer
-        const int attrib[] = {
-            WX_GL_RGBA,
-            WX_GL_DOUBLEBUFFER,
-            WX_GL_DEPTH_SIZE, 16,
-            0
-        };
-        try {
-            m_previewGLCanvas = new PreviewGLCanvas( this, attrib );
-        } catch ( const exception::Exception& err ) {
-            wxLogMessage( wxString( err.what( ) ) );
+        // OpenGL canvas
+        m_previewGLCanvas = nullptr;
+        wxGLAttributes vAttrs;
+        // Defaults should be accepted
+        vAttrs.PlatformDefaults().Defaults().EndList();
+        bool accepted = wxGLCanvas::IsDisplaySupported(vAttrs) ;
+
+        if (accepted)
+        {
+            wxLogMessage("The display supports required visual attributes.");
+        }
+        else
+        {
+            wxLogMessage("First try with OpenGL default visual attributes failed.");
+            // Try again without sample buffers
+            vAttrs.Reset();
+            vAttrs.PlatformDefaults().RGBA().DoubleBuffer().Depth(16).EndList();
+            accepted = wxGLCanvas::IsDisplaySupported(vAttrs) ;
+
+            if (!accepted)
+            {
+                wxMessageBox("Visual attributes for OpenGL are not accepted.\nGw2Browser will exit now.",
+                             "Error with OpenGL", wxOK | wxICON_ERROR);
+            }
+            else
+            {
+                wxLogMessage("Second try with other visual attributes worked.");
+            }
+        }
+
+        if (accepted)
+        {
+            m_previewGLCanvas = new PreviewGLCanvas( this, vAttrs );
         }
 
         // Main content window
@@ -167,6 +188,10 @@ namespace gw2b {
         // Tell the manager to "commit" all the changes just made
         m_uiManager.Update( );
 
+        // Have to set the window size here after initialize OpenGL canvas,
+        // or else the OpenGL canvas doesn't display if not resize the window
+        this->SetClientSize(820, 512);
+
         // Hook up events
         this->Bind( wxEVT_MENU, &BrowserWindow::onOpenEvt, this, wxID_OPEN );
         this->Bind( wxEVT_MENU, &BrowserWindow::onExitEvt, this, wxID_EXIT );
@@ -179,11 +204,6 @@ namespace gw2b {
         this->Bind( wxEVT_TEXT_ENTER, &BrowserWindow::onEnterPressedInSrchBoxEvt, this );
         this->Bind( wxEVT_AUI_PANE_CLOSE, &BrowserWindow::onPaneCloseEvt, this );
         this->Bind( wxEVT_CLOSE_WINDOW, &BrowserWindow::onCloseEvt, this );
-
-        Show( true );
-        Raise( );
-
-        m_previewGLCanvas->initGL( );
     }
 
     //============================================================================/
@@ -263,12 +283,10 @@ namespace gw2b {
                 m_previewPanel->destroyViewer( );
                 m_uiManager.GetPane( wxT( "panel_content" ) ).Hide( );
                 m_uiManager.GetPane( wxT( "gl_content" ) ).Show( );
-                m_previewGLCanvas->shown( true );
             }
             break;
         default:
             if ( m_previewPanel->previewFile( m_datFile, p_entry ) ) {
-                m_previewGLCanvas->shown( false );
                 // Clear the OpenGL canvas to reduce memory usage
                 m_previewGLCanvas->clear( );
                 m_uiManager.GetPane( wxT( "gl_content" ) ).Hide( );
@@ -287,7 +305,7 @@ namespace gw2b {
         }
 
         //Test if OGL context could be created.
-        return m_previewGLCanvas->OglCtxAvailable( );
+        return m_previewGLCanvas->glCtxAvailable( );
     }
 
     //============================================================================/

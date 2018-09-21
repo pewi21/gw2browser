@@ -4,7 +4,7 @@
 */
 
 /*
-Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+Copyright (C) 2016-2018 Khral Steelforge <https://github.com/kytulendu>
 Copyright (C) 2012 Rhoot <https://github.com/rhoot>
 
 This file is part of Gw2Browser.
@@ -59,7 +59,7 @@ namespace {
 
 bool Gw2Browser::OnInit( ) {
     // Create the main application window
-    auto window = new gw2b::BrowserWindow( wxT( "Gw2Browser" ), wxSize( 820, 512 ) );
+    auto window = new gw2b::BrowserWindow( wxT( "Gw2Browser" ) );
     // As of October 2015 GTK+ needs the frame to be shown before we call SetCurrent()
     window->Show( true );
     SetTopWindow( window );

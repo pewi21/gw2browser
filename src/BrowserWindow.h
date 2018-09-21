@@ -65,7 +65,7 @@ namespace gw2b {
         /** Constructs the frame with the given title and size.
         *  \param[in]  p_title  Title of window.
         *  \param[in]  p_size   Size of window. */
-        BrowserWindow( const wxString& p_title, const wxSize p_size );
+        BrowserWindow( const wxString& p_title, const wxSize p_size = wxDefaultSize );
         /** Destructor. */
         ~BrowserWindow( );
         /** Opens the given .dat file for browsing.
