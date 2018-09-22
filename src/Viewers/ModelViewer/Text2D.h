@@ -45,7 +45,7 @@ namespace gw2b {
         Shader*                     m_textShader;
         GLuint                      m_uniformProjection;
         GLuint                      m_uniformTextColor;
-        wxSize                      m_ClientSize;
+        wxSize                      m_clientSize;
 
     public:
         /** Constructor. Create text renderer.
