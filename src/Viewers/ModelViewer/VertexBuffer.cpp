@@ -61,10 +61,10 @@ namespace gw2b {
         // Load data into vertex buffers
         // Vertex Positions
         glBindBuffer( GL_ARRAY_BUFFER, m_vertexBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), &p_vertices.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), p_vertices.data( ), GL_STATIC_DRAW );
         // Vertex Texture Coords
         glBindBuffer( GL_ARRAY_BUFFER, m_uvBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_uvs.size( ) * sizeof( glm::vec2 ), &p_uvs.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_uvs.size( ) * sizeof( glm::vec2 ), p_uvs.data( ), GL_STATIC_DRAW );
 
         // Unbind Buffer Object
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -85,10 +85,10 @@ namespace gw2b {
         // Load data into vertex buffers
         // Vertex Positions
         glBindBuffer( GL_ARRAY_BUFFER, m_vertexBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), &p_vertices.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), p_vertices.data( ), GL_STATIC_DRAW );
         // Vertex Normals
         glBindBuffer( GL_ARRAY_BUFFER, m_normalBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_normals.size( ) * sizeof( glm::vec3 ), &p_normals.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_normals.size( ) * sizeof( glm::vec3 ), p_normals.data( ), GL_STATIC_DRAW );
 
         // Unbind Buffer Object
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -110,13 +110,13 @@ namespace gw2b {
         // Load data into vertex buffers
         // Vertex Positions
         glBindBuffer( GL_ARRAY_BUFFER, m_vertexBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), &p_vertices.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), p_vertices.data( ), GL_STATIC_DRAW );
         // Vertex Normals
         glBindBuffer( GL_ARRAY_BUFFER, m_normalBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_normals.size( ) * sizeof( glm::vec3 ), &p_normals.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_normals.size( ) * sizeof( glm::vec3 ), p_normals.data( ), GL_STATIC_DRAW );
         // Vertex Texture Coords
         glBindBuffer( GL_ARRAY_BUFFER, m_uvBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_uvs.size( ) * sizeof( glm::vec2 ), &p_uvs.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_uvs.size( ) * sizeof( glm::vec2 ), p_uvs.data( ), GL_STATIC_DRAW );
 
         // Unbind Buffer Object
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -139,16 +139,16 @@ namespace gw2b {
         // Load data into vertex buffers
         // Vertex Positions
         glBindBuffer( GL_ARRAY_BUFFER, m_vertexBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), &p_vertices.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), p_vertices.data( ), GL_STATIC_DRAW );
         // Vertex Normals
         glBindBuffer( GL_ARRAY_BUFFER, m_normalBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_normals.size( ) * sizeof( glm::vec3 ), &p_normals.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_normals.size( ) * sizeof( glm::vec3 ), p_normals.data( ), GL_STATIC_DRAW );
         // Vertex Texture Coords
         glBindBuffer( GL_ARRAY_BUFFER, m_uvBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_uvs.size( ) * sizeof( glm::vec2 ), &p_uvs.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_uvs.size( ) * sizeof( glm::vec2 ), p_uvs.data( ), GL_STATIC_DRAW );
         // Vertex Tangents
         glBindBuffer( GL_ARRAY_BUFFER, m_tangentBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_tangents.size( ) * sizeof( glm::vec3 ), &p_tangents.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_tangents.size( ) * sizeof( glm::vec3 ), p_tangents.data( ), GL_STATIC_DRAW );
 
         // Unbind Buffer Object
         glBindBuffer(GL_ARRAY_BUFFER, 0);
