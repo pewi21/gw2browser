@@ -146,7 +146,7 @@ void main( ) {
             } else {
                 viewDir = normalize( viewPos - fs_in.FragPos );
             }
-            // Blinn–Phong shading
+            // Blinn Phong shading
             vec3 halfwayDir = normalize( lightDir + viewDir );
             float spec = pow( max( dot( normal, halfwayDir ), 0.0f ), material.shininess );
             // Extract specular map from diffuse texture's alpha channel

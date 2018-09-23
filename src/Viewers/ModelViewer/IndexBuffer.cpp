@@ -32,7 +32,7 @@ namespace gw2b {
         glGenBuffers( 1, &m_ibo );
         this->bind( );
         // Element Buffer for the indices
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, p_indices.size( ) * sizeof( uint ), &p_indices.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, p_indices.size( ) * sizeof( uint ), p_indices.data( ), GL_STATIC_DRAW );
         this->unbind( );
     }
 
