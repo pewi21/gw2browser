@@ -99,7 +99,7 @@ namespace gw2b {
         glm::mat4 projection = glm::ortho( 0.0f, static_cast<GLfloat>( m_clientSize.x ), 0.0f, static_cast<GLfloat>( m_clientSize.y ) );
         glUniformMatrix4fv( m_uniformProjection, 1, GL_FALSE, glm::value_ptr( projection ) );
 
-        glUniform3f( m_uniformTextColor, p_color.x, p_color.y, p_color.z );
+        glUniform3fv( m_uniformTextColor, 1, glm::value_ptr( p_color ) );
 
         glActiveTexture( GL_TEXTURE0 );
         glBindVertexArray( m_textVAO );
