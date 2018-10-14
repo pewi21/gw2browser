@@ -264,7 +264,7 @@ namespace gw2b {
         //m_light.setSpecular( glm::vec3( 0.5f, 0.5f, 0.5f ) );
 
         // Transformation matrix
-        glm::mat4 trans;
+        glm::mat4 trans(1.0f);
         // Model position
         trans = glm::translate( trans, glm::vec3( 0.0f, 0.0f, 0.0f ) );
         // Model rotation
@@ -304,6 +304,8 @@ namespace gw2b {
 
         // Draw the frame buffer
         m_framebuffer->draw( );
+
+        // ------------------------------------------------
 
         // Draw status text
         if ( m_statusText ) {
@@ -460,7 +462,7 @@ namespace gw2b {
         auto fov = 45.0f;
 
         // Projection matrix
-        auto projection = glm::perspective( fov, aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
+        auto projection = glm::perspective( glm::radians( fov ), aspectRatio, static_cast<float>( minZ ), static_cast<float>( maxZ ) );
 
         m_shaders.get( "main" )->use( );
         // Send projection matrix to main shader
