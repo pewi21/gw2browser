@@ -133,7 +133,7 @@ namespace gw2b {
         m_cubeShader->use( );
         glUniformMatrix4fv( m_uniformProjection, 1, GL_FALSE, glm::value_ptr( m_projection ) );
         glUniformMatrix4fv( m_uniformView, 1, GL_FALSE, glm::value_ptr( m_view ) );
-        auto model = glm::translate( glm::mat4( ), p_pos );
+        auto model = glm::translate( glm::mat4( 1.0f ), p_pos );
         model = glm::scale( model, glm::vec3( 6.0f ) );
         glUniformMatrix4fv( m_uniformModel, 1, GL_FALSE, glm::value_ptr( model ) );
         glUniform3fv( m_uniformLightColor, 1, glm::value_ptr( p_color ) );
