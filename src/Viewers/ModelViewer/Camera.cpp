@@ -174,8 +174,8 @@ namespace gw2b {
 
     void Camera::updateCameraVectors( ) {
         if ( m_mode == ORBITALCAM ) {
-            glm::mat4 pitchMatrix;
-            glm::mat4 yawMatrix;
+            glm::mat4 pitchMatrix(1.0f);
+            glm::mat4 yawMatrix(1.0f);
             pitchMatrix = glm::rotate( pitchMatrix, m_pitch, glm::vec3( -1.0f, 0.0f, 0.0f ) );
             yawMatrix = glm::rotate( yawMatrix, m_yaw, glm::vec3( 0.0f, 1.0f, 0.0f ) );
             auto rotationMatrix = pitchMatrix * yawMatrix;
