@@ -40,7 +40,7 @@ namespace gw2b {
         // Load data into vertex buffers
         // Vertex Positions
         glBindBuffer( GL_ARRAY_BUFFER, m_vertexBuffer );
-        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), &p_vertices.front( ), GL_STATIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, p_vertices.size( ) * sizeof( glm::vec3 ), p_vertices.data( ), GL_STATIC_DRAW );
 
         // Unbind Buffer Object
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
