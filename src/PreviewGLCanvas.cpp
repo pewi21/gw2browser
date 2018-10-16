@@ -112,8 +112,7 @@ namespace gw2b {
     }
 
     PreviewGLCanvas::~PreviewGLCanvas( ) {
-        if ( m_glContext )
-            SetCurrent(*m_glContext);
+        m_renderTimer->Stop( );
 
         if ( m_glRenderer )
         {
@@ -128,8 +127,6 @@ namespace gw2b {
         }
 
         this->clear( );
-
-        m_renderTimer->Stop( );
 
         delete m_renderTimer;
         delete m_movementKeyTimer;
