@@ -255,7 +255,7 @@ namespace gw2b {
                         break;
                     }
                     wxLogMessage( wxT( "Bitrate: %s mode, %d kb/s" ), modeString, info.bitrate );
-                    wxLogMessage( wxT( "Decoded length: %ld samples" ), mpg123_length( p_handle ) );
+                    wxLogMessage( wxT( "Duration: %ld seconds" ), ( mpg123_length( p_handle ) / info.rate ) );
 
                     return true;
                 }
