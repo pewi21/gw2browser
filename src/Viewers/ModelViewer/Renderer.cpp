@@ -513,20 +513,22 @@ namespace gw2b {
         if ( !m_model.empty( ) ) {
             // Calculate complete bounds
             bounds = m_model[0]->getBounds( );
-        }
-        float height = bounds.max.y - bounds.min.y;
-        if ( height <= 0 ) {
-            return;
+
+            float height = bounds.max.y - bounds.min.y;
+            if ( height <= 0 ) {
+                return;
+            }
+
+            float distance = bounds.min.z - ( ( height * 0.5f ) / ::tanf( fov * 0.5f ) );
+            if ( distance < 0 ) {
+                distance *= -1;
+            }
+
+            // Update camera and render
+            m_camera.setPivot( bounds.center( ) );
+            m_camera.setDistance( distance );
         }
 
-        float distance = bounds.min.z - ( ( height * 0.5f ) / ::tanf( fov * 0.5f ) );
-        if ( distance < 0 ) {
-            distance *= -1;
-        }
-
-        // Update camera and render
-        m_camera.setPivot( bounds.center( ) );
-        m_camera.setDistance( distance );
         this->render( );
     }
 
