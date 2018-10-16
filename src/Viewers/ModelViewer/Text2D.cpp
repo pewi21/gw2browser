@@ -45,7 +45,7 @@ namespace gw2b {
 
         // Load text shader
         try {
-            m_textShader = new Shader( "..//data//shaders//text.vert", "..//data//shaders//text.frag" );
+            m_textShader = new Shader( "../data/shaders/text.vert", "../data/shaders/text.frag" );
 
             m_textShader->use( );
             // Get the uniform location

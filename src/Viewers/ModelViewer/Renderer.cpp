@@ -134,16 +134,16 @@ namespace gw2b {
     }
 
     bool Renderer::loadShader() {
-        if ( !m_shaders.add( "main", "..//data//shaders//shader.vert", "..//data//shaders//shader.frag" ) ) {
+        if ( !m_shaders.add( "main", "../data/shaders/shader.vert", "../data/shaders/shader.frag" ) ) {
             return false;
         }
-        if ( !m_shaders.add( "framebuffer", "..//data//shaders//framebuffer.vert", "..//data//shaders//framebuffer.frag" ) ) {
+        if ( !m_shaders.add( "framebuffer", "../data/shaders/framebuffer.vert", "../data/shaders/framebuffer.frag" ) ) {
             return false;
         }
-        if ( !m_shaders.add( "normal_visualizer", "..//data//shaders//normal_visualizer.vert", "..//data//shaders//normal_visualizer.frag", "..//data//shaders//normal_visualizer.geom" ) ) {
+        if ( !m_shaders.add( "normal_visualizer", "../data/shaders/normal_visualizer.vert", "../data/shaders/normal_visualizer.frag", "../data/shaders/normal_visualizer.geom" ) ) {
             return false;
         }
-        if ( !m_shaders.add( "z_visualizer", "..//data//shaders//z_visualizer.vert", "..//data//shaders//z_visualizer.frag" ) ) {
+        if ( !m_shaders.add( "z_visualizer", "../data/shaders/z_visualizer.vert", "../data/shaders/z_visualizer.frag" ) ) {
             return false;
         }
         this->initShaderValue( );

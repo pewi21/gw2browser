@@ -79,10 +79,10 @@ namespace gw2b {
         }
 
         // Load all toolbar button icons
-        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_red_png, data::toggle_red_png_size ) );
-        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_green_png, data::toggle_green_png_size ) );
-        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_blue_png, data::toggle_blue_png_size ) );
-        m_toolbarButtonIcons.push_back( data::loadPNG( data::toggle_alpha_png, data::toggle_alpha_png_size ) );
+        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_red.png"));
+        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_green.png"));
+        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_blue.png"));
+        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_alpha.png"));
 
         // Toggle channel buttons
         for ( uint i = 0; i < 4; i++ ) {

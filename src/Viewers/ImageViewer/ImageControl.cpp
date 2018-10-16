@@ -33,7 +33,7 @@ namespace gw2b {
     ImageControl::ImageControl( wxWindow* p_parent, const wxPoint& p_position, const wxSize& p_size )
         : wxScrolledWindow( p_parent, wxID_ANY, p_position, p_size )
         , m_channels( IC_All ) {
-        m_backdrop = data::loadPNG( data::checkers_png, data::checkers_png_size );
+        m_backdrop = data::loadImage("../data/interface/checkers.png");
         this->SetBackgroundStyle( wxBG_STYLE_CUSTOM );
         this->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
         this->Bind( wxEVT_PAINT, &ImageControl::OnPaintEvt, this );

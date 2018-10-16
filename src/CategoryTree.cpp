@@ -39,17 +39,17 @@ namespace gw2b {
 
     CategoryTreeImageList::CategoryTreeImageList( )
         : wxImageList( 16, 16, true, 2 ) {
-        this->Add( data::loadPNG( data::open_folder_png, data::open_folder_png_size ) );
-        this->Add( data::loadPNG( data::unknown_png, data::unknown_png_size ) );
-        this->Add( data::loadPNG( data::closed_folder_png, data::closed_folder_png_size ) );
-        this->Add( data::loadPNG( data::exe_png, data::exe_png_size ) );
-        this->Add( data::loadPNG( data::dll_png, data::dll_png_size ) );
-        this->Add( data::loadPNG( data::image_png, data::image_png_size ) );
-        this->Add( data::loadPNG( data::text_png, data::text_png_size ) );
-        this->Add( data::loadPNG( data::sound_png, data::sound_png_size ) );
-        this->Add( data::loadPNG( data::font_png, data::font_png_size ) );
-        this->Add( data::loadPNG( data::video_png, data::video_png_size ) );
-        this->Add( data::loadPNG( data::model_png, data::model_png_size ) );
+        this->Add( data::loadImage( "../data/interface/icons/open_folder.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/unknown.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/closed_folder.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/exe.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/dll.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/image.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/text.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/sound.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/font.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/video.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/model.png" ) );
     }
 
     //============================================================================/

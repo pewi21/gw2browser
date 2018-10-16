@@ -51,7 +51,7 @@ namespace gw2b {
         /** Constructor. Create text renderer.
         *  \param[in]  p_fontfile    Path to font file.
         *  \param[in]  p_fontsize    Font size, default is 12 point. */
-        Text2D( const char* p_fontfile = "..//data//fonts//LiberationSans-Regular.ttf", const FT_UInt p_fontsize = 12 );
+        Text2D( const char* p_fontfile = "../data/fonts/LiberationSans-Regular.ttf", const FT_UInt p_fontsize = 12 );
         /** Destructor. Clears all data. */
         ~Text2D( );
 

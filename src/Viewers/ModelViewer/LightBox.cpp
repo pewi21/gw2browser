@@ -33,7 +33,7 @@ namespace gw2b {
     LightBox::LightBox( ) {
         // Load shader
         try {
-            m_cubeShader = new Shader( "..//data//shaders//light_box.vert", "..//data//shaders//light_box.frag" );
+            m_cubeShader = new Shader( "../data/shaders/light_box.vert", "../data/shaders/light_box.frag" );
 
             m_cubeShader->use( );
             // Get the uniform location
