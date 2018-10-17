@@ -1,20 +1,22 @@
 Change log
 ----------
 
-Gw2Browser_2017-xx-xx (1.0.9.1)
+Gw2Browser_2018-xx-xx (1.0.9.1)
 -------------------------------
 Change:
 - Linux port
-- Add Find by file id function.
+- Add find by file id function.
+- Add model's lightmap, specular and dye map export.
+- Model viewer lightmap support.
 - Model viewer now load DXT5 texture directly from ATEX file.
 - Properly implement specular maping for Guild Wars 2 texture.
-- Model viewer lightmap support.
 - Set Model viewer light position at camera position.
 - Update category name.
 - Minor model viewer purrformance improvement.
 
 Fix:
 - Fix some crash.
+- Fix some bugs.
 
 Gw2Browser_2017-01-07 (1.0.8.1)
 -------------------------------
