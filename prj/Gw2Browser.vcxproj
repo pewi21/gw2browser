@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -65,15 +65,17 @@
     <ClInclude Include="..\src\Viewers\ImageViewer\ImageViewer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Camera.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\FrameBuffer.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\IndexBuffer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Light.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\LightBox.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Model.h" />
-    <ClInclude Include="..\src\Viewers\ModelViewer\ModelViewer.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\Renderer.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Shader.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\ShaderManager.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Text2D.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\Texture2D.h" />
     <ClInclude Include="..\src\Viewers\ModelViewer\TextureManager.h" />
+    <ClInclude Include="..\src\Viewers\ModelViewer\VertexBuffer.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundDecoder.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\OggCallback.h" />
     <ClInclude Include="..\src\Viewers\SoundPlayer\SoundPlayer.h" />
@@ -125,15 +127,17 @@
     <ClCompile Include="..\src\Viewers\ImageViewer\ImageViewer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Camera.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\FrameBuffer.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\IndexBuffer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Light.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\LightBox.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Model.cpp" />
-    <ClCompile Include="..\src\Viewers\ModelViewer\ModelViewer.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\Renderer.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Shader.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\ShaderManager.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Text2D.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\Texture2D.cpp" />
     <ClCompile Include="..\src\Viewers\ModelViewer\TextureManager.cpp" />
+    <ClCompile Include="..\src\Viewers\ModelViewer\VertexBuffer.cpp" />
     <ClCompile Include="..\src\Viewers\SoundPlayer\SoundDecoder.cpp" />
     <ClCompile Include="..\src\Viewers\SoundPlayer\OggCallback.cpp" />
     <ClCompile Include="..\src\Viewers\SoundPlayer\SoundPlayer.cpp" />
@@ -173,7 +177,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -186,14 +190,14 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -220,7 +224,7 @@
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.1\include\;..\..\wxWidgets-3.1.1\lib\vc_x64_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.1\include;..\..\wxWidgets-3.1.1\lib\vc_x64_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
     <LibraryPath>..\extern\freetype\objs\x64\Debug Static;..\extern\glew\lib\Debug\x64;..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Debug;..\extern\libvorbis\win32\VS2017\x64\Debug;..\..\wxWidgets-3.1.1\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
@@ -235,7 +239,7 @@
     <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\Win32;..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Release;..\extern\libvorbis\win32\VS2017\Win32\Release;..\..\wxWidgets-3.1.1\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.1\include\;..\..\wxWidgets-3.1.1\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.1\include;..\..\wxWidgets-3.1.1\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
     <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Release;..\extern\libvorbis\win32\VS2017\x64\Release;..\..\wxWidgets-3.1.1\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
