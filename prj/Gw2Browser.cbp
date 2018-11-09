@@ -33,7 +33,7 @@
 					<Add directory="../src" />
 				</Compiler>
 				<Linker>
-					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libglew32.dll.a" />
 					<Add library="libfreetype.a" />
 					<Add library="libtinyxml2.dll.a" />
 					<Add library="libOpenAL32.dll.a" />
@@ -102,14 +102,14 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../extern/glew/lib/libglew32.a" />
+					<Add library="libglew32.dll.a" />
 					<Add library="libfreetype.a" />
 					<Add library="libtinyxml2.dll.a" />
 					<Add library="libOpenAL32.dll.a" />
 					<Add library="libmpg123-0.a" />
-					<Add library="libvorbisfile.a" />
-					<Add library="libvorbis.a" />
-					<Add library="libogg.a" />
+					<Add library="libvorbisfile.dll.a" />
+					<Add library="libvorbis.dll.a" />
+					<Add library="libogg.dll.a" />
 					<Add library="libgw2dattools.a" />
 					<Add library="libgw2formats.a" />
 					<Add library="libwebpdecoder.a" />

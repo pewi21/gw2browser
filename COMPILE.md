@@ -340,16 +340,6 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
       * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
       * Click "Generate".
 
-* Open CMakeCache.txt in `Gw2Browser/extern/glew` directory and change these line
-
-      CMAKE_C_FLAGS:STRING=
-      to
-      CMAKE_C_FLAGS:STRING=-DGLEW_STATIC
-
-      CMAKE_CXX_FLAGS:STRING=
-      to
-      CMAKE_CXX_FLAGS:STRING=-DGLEW_STATIC
-
 * Open Git Bash command line window and change directory to `Gw2Browser/extern/glew` and use these command
 
       mingw32-make
@@ -364,6 +354,7 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
         for example C:/DEV/Gw2Browser/extern/libogg/build
       * Click "Configure", click "Yes" if it ask to create new directory.
       * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * In "BUILD_SHARED_LIBS", make sure it was selected.
       * Click "Generate".
 
 * Open Git Bash command line window and change directory to `Gw2Browser/extern/libogg/build` and use these command
@@ -376,17 +367,18 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
       * In "Where is the source code:" box, enter Gw2Browser/extern/libvorbis
         for example C:/DEV/Gw2Browser/extern/libvorbis
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis
-        for example C:/DEV/Gw2Browser/extern/libvorbis
+      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis/build
+        for example C:/DEV/Gw2Browser/extern/libvorbis/build
       * Click "Configure", click "Yes" if it ask to create new directory.
       * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
+      * In "BUILD_SHARED_LIBS", make sure it was selected.
       * Set "OGG_INCLUDE_DIRS" to "Gw2Browser/extern/libogg/include"
         for example C:/DEV/Gw2Browser/extern/libogg/include
-      * Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg/build/libogg.a"
-        for example C:/DEV/Gw2Browser/extern/libogg/build/libogg.a
+      * Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg/build/libogg.dll.a"
+        for example C:/DEV/Gw2Browser/extern/libogg/build/libogg.dll.a
       * Click "Generate".
 
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libvorbis` and use these command
+* Open Git Bash command line window and change directory to `Gw2Browser/extern/libvorbis/build` and use these command
 
       mingw32-make
 
@@ -397,12 +389,12 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
       * In "Where is the source code:" box, enter Gw2Browser/extern/libwebp
         for example C:/DEV/Gw2Browser/extern/libwebp
       * In "Where to build the binaries:" box, enter Gw2Browser/extern/libwebp/build
-        for example C:/DEV/Gw2Browser/extern/libvorbis/build
+        for example C:/DEV/Gw2Browser/extern/libwebp/build
       * Click "Configure", click "Yes" if it ask to create new directory.
       * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
       * Click "Generate".
 
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libvorbis` and use these command
+* Open Git Bash command line window and change directory to `Gw2Browser/extern/libwebp` and use these command
 
       mingw32-make
 
@@ -459,7 +451,13 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
 * Copy `libmpg123-0.dll` from mpg123 directory to `Gw2Browser/bin`
 
+* Copy `glew32.dll1 from `Gw2Browser/extern/glew/bin` directory to `Gw2Browser/bin`
+
 * Copy `libtinyxml2.dll` from `Gw2Browser/extern/tinyxml2/build` directory to `Gw2Browser/bin`
+
+* Copy `libogg.dll` from `Gw2Browser/extern/libogg/build` directory to `Gw2Browser/bin`
+
+* Copy `libvorbis.dll` and `libvorbisfile.dll` from `Gw2Browser/extern/libvorbis/build/lib` directory to `Gw2Browser/bin`
 
 * Copy following dll files from `wxWidgets/lib/gcc_dll` directory to `Gw2Browser/bin`
 
