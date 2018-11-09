@@ -118,7 +118,7 @@ namespace gw2b {
         }
 
         // If geometry shader is given, compile geometry shader
-        GLuint geometry;
+        GLuint geometry = 0;
         if ( p_geometryPath != nullptr ) {
             wxLogMessage( wxT( "Compiling geometry shader : %s" ), p_geometryPath );
             const GLchar * gShaderCode = geometryCode.c_str( );
