@@ -178,7 +178,9 @@ namespace gw2b {
     }
 
     void PreviewGLCanvas::clear( ) {
-        m_glRenderer->clear();
+        if ( m_glRenderer ) {
+            m_glRenderer->clear();
+        }
 
         if ( m_reader ) {
             deletePointer( m_reader );
