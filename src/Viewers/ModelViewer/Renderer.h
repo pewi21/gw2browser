@@ -46,6 +46,7 @@ namespace gw2b {
         typedef std::chrono::high_resolution_clock Time;
 
         // Internal status
+        bool                        m_IsModelLoaded = false;            // Flag to check if model is loaded
         bool                        m_statusText = true;                // Toggle display text
         bool                        m_statusWireframe = false;          // Toggle wireframe rendering
         bool                        m_statusCullFace = false;           // Cull triangles which normal is not towards the camera

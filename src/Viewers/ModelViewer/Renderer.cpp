@@ -44,8 +44,11 @@ namespace gw2b {
     }
 
     void Renderer::clear() {
-        m_model.clear();
-        m_texture.clear();
+        if( m_IsModelLoaded ) {
+            m_model.clear();
+            m_texture.clear();
+            m_IsModelLoaded = false;
+        }
     }
 
     /* Static */
@@ -219,6 +222,7 @@ namespace gw2b {
                 }
             }
         }
+        m_IsModelLoaded = true;
     }
 
     void Renderer::render() {
