@@ -20,6 +20,12 @@ The modelviewer required GPU with OpenGL 3.3 support.
 
 The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases)
 
+For Linux binary (Ubuntu 18.04), use this command to get required library.
+
+    sudo apt install libwebp libglew2.0 libopenal libmpg123 libvorbis libogg libfreetype6
+
+For other Linux distribution, you have to compile it your self.
+
 For instructions to compile Gw2Browser, see [COMPILE.md](../master/COMPILE.md) for detail.
 
 Usage
