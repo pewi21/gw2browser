@@ -18,7 +18,7 @@ given file id.
 
 The modelviewer required GPU with OpenGL 3.3 support.
 
-The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases) or [Here](http://goo.gl/4xMRVF)
+The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases)
 
 For instructions to compile Gw2Browser, see [COMPILE.md](../master/COMPILE.md) for detail.
 
