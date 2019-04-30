@@ -4,3 +4,6 @@
 [submodule "gw2formats"]
     path = extern/gw2formats
     url = https://github.com/kytulendu/gw2formats.git
+[submodule "tinyxml2"]
+    path = extern/tinyxml2
+    url = https://github.com/leethomason/tinyxml2.git
