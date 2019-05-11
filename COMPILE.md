@@ -56,7 +56,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 * [mpg123](https://www.mpg123.de)
 * [OpenAL-Soft](http://kcat.strangesoft.net/openal.html)
-* [wxWidgets 3.1.1 or higher](http://wxwidgets.org/)
+* [wxWidgets 3.1.2 or higher](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) Included
 * [gw2dattools](https://github.com/kytulendu/gw2dattools) Included
 * [gw2formats](https://github.com/kytulendu/gw2formats) Included
@@ -94,7 +94,7 @@ extract it to the same directory that Gw2Browser directory is in. Or download th
 and build it your self.
 
 * Download wxWidgets source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose `wxWidgets-3.1.1.zip` or `wxWidgets-3.1.1.7z` and extract it to the same directory
+choose `wxWidgets-3.1.2.zip` or `wxWidgets-3.1.2.7z` and extract it to the same directory
 that Gw2Browser directory is in. Or download and use the binaries.
 
 **Note:** The library and source code directory must be in directory like this.
@@ -116,7 +116,7 @@ The ROOT is the directory you created in Getting the source code.
          |    +--lib
          |    +--...
          |
-         +--wxWidgets-3.1.1
+         +--wxWidgets-3.1.2
               +--include
               +--src
               +--...
@@ -129,7 +129,7 @@ The ROOT is the directory you created in Getting the source code.
 
 #### Compile wxWidgets:
 
-* Use solution file corresponding with your VS version in directory `wxWidgets-3.1.1/build/msw`.
+* Use solution file corresponding with your VS version in directory `wxWidgets-3.1.2/build/msw`.
   For example, VS2017 is `wx_vc15.sln`, if there is no corresponding solution file for your newer VS,
   just open the higest version of solution file available.
 
@@ -280,11 +280,11 @@ The ROOT is the directory you created in Getting the source code.
 ### Building with MinGW-w64
 
 Download MinGW-w64 and install it to any location, for example `C:\mingw-64`,
-choose Version to `7.3.0 rev 0`, choose Architecture to `x86_64 or i686`, choose Threads to `POSIX` (important).
+choose Version to `8.1.0 rev 0`, choose Architecture to `x86_64 or i686`, choose Threads to `POSIX` (important).
 
 You must also add MinGW-w64 to your path.
 
-for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin`
+for example set your path to `%path%;C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin`
 
 #### Compile libmpg123:
 
@@ -305,7 +305,7 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
 #### Compile wxWidgets:
 
-* Open Git Bash command line window and change directory to `wxWidgets-3.1.1/build/msw` and use these command.
+* Open Git Bash command line window and change directory to `wxWidgets-3.1.2/build/msw` and use these command.
 
       mingw32-make -j 4 -f makefile.gcc BUILD=debug SHARED=1
 
@@ -330,104 +330,54 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
 #### Compile glew:
 
-* Use CMake-gui to generate glew's MinGW makefile.
+* Open Command Prompt and change directory to `Gw2Browser/extern/glew` and use these command
 
-      * In "Where is the source code:" box, enter path to Gw2Browser/extern/glew/build/cmake
-        for example C:/DEV/Gw2Browser/extern/glew/build/cmake
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/glew
-        for example C:/DEV/Gw2Browser/extern/glew
-      * Click "Configure".
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * Click "Generate".
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/glew` and use these command
-
+      cmake -G "MinGW Makefiles" ./build/cmake
       mingw32-make
 
 #### Compile libogg:
 
-* Use CMake-gui to generate libogg's MinGW makefile.
+* Open Command Prompt and change directory to `Gw2Browser/extern/libogg` and use these command
 
-      * In "Where is the source code:" box, enter Gw2Browser/extern/libogg
-        for example C:/DEV/Gw2Browser/extern/libogg
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libogg/build
-        for example C:/DEV/Gw2Browser/extern/libogg/build
-      * Click "Configure", click "Yes" if it ask to create new directory.
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * In "BUILD_SHARED_LIBS", make sure it was selected.
-      * Click "Generate".
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libogg/build` and use these command
-
+      mkdir build
+      cd build
+      cmake -G "MinGW Makefiles" .. -DBUILD_SHARED_LIBS=ON
       mingw32-make
 
 #### Compile libvorbis:
 
-* Use CMake-gui to generate libvorbis's MinGW makefile.
+* Open Command Prompt and change directory to `Gw2Browser/extern/libvorbis` and use these command
 
-      * In "Where is the source code:" box, enter Gw2Browser/extern/libvorbis
-        for example C:/DEV/Gw2Browser/extern/libvorbis
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libvorbis/build
-        for example C:/DEV/Gw2Browser/extern/libvorbis/build
-      * Click "Configure", click "Yes" if it ask to create new directory.
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * In "BUILD_SHARED_LIBS", make sure it was selected.
-      * Set "OGG_INCLUDE_DIRS" to "Gw2Browser/extern/libogg/include"
-        for example C:/DEV/Gw2Browser/extern/libogg/include
-      * Set "OGG_LIBRARIES" to "Gw2Browser/extern/libogg/build/libogg.dll.a"
-        for example C:/DEV/Gw2Browser/extern/libogg/build/libogg.dll.a
-      * Click "Generate".
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libvorbis/build` and use these command
-
+      mkdir build
+      cd build
+      cmake -G "MinGW Makefiles" .. -DBUILD_SHARED_LIBS=ON -DOGG_INCLUDE_DIRS="E:/DEV/Gw2Browser/extern/libogg/include" -DOGG_LIBRARIES="E:/DEV/Gw2Browser/extern/libogg/build/libogg.dll.a"
       mingw32-make
 
 #### Compile libwebp:
 
-* Use CMake-gui to generate libwebp's MinGW makefile.
+* Open Command Prompt and change directory to `Gw2Browser/extern/libwebp` and use these command
 
-      * In "Where is the source code:" box, enter Gw2Browser/extern/libwebp
-        for example C:/DEV/Gw2Browser/extern/libwebp
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/libwebp/build
-        for example C:/DEV/Gw2Browser/extern/libwebp/build
-      * Click "Configure", click "Yes" if it ask to create new directory.
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * Click "Generate".
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/libwebp` and use these command
-
+      mkdir build
+      cd build
+      cmake -G "MinGW Makefiles" .. -DBUILD_SHARED_LIBS=ON
       mingw32-make
 
 #### Compile freetype:
 
-* Use CMake-gui to generate freetype's MinGW makefile.
+* Open Command Prompt and change directory to `Gw2Browser/extern/freetype` and use these command
 
-      * In "Where is the source code:" box, enter Gw2Browser/extern/freetype
-        for example C:/DEV/Gw2Browser/extern/freetype
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/freetype/build
-        for example C:/DEV/Gw2Browser/extern/freetype/build
-      * Click "Configure", click "Yes" if it ask to create new directory.
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * Click "Generate".
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/freetype/build` and use these command
-
+      mkdir build
+      cd build
+      cmake -G "MinGW Makefiles" ..
       mingw32-make
 
 #### Compile tinyxml2:
 
-* Use CMake-gui to generate freetype's MinGW makefile.
+* Open Command Prompt and change directory to `Gw2Browser/extern/tinyxml2` and use these command
 
-      * In "Where is the source code:" box, enter Gw2Browser/extern/tinyxml2
-        for example C:/DEV/Gw2Browser/extern/tinyxml2
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/tinyxml2/build
-        for example C:/DEV/Gw2Browser/extern/tinyxml2/build
-      * Click "Configure", click "Yes" if it ask to create new directory.
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * Click "Generate".
-
-* Open Git Bash command line window and change directory to `Gw2Browser/extern/tinyxml2/build` and use these command
-
+      mkdir build
+      cd build
+      cmake -G "MinGW Makefiles" ..
       mingw32-make
 
 #### Compile Gw2Browser:
@@ -459,21 +409,23 @@ for example set your path to `%path%;C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-r
 
 * Copy `libvorbis.dll` and `libvorbisfile.dll` from `Gw2Browser/extern/libvorbis/build/lib` directory to `Gw2Browser/bin`
 
+* Copy `libwebpdecoder.dll` from `Gw2Browser/extern/libwebp/build` directory to `Gw2Browser/bin`
+
 * Copy following dll files from `wxWidgets/lib/gcc_dll` directory to `Gw2Browser/bin`
 
-      wxbase311u_gcc_custom.dll
-      wxmsw311u_adv_gcc_custom.dll
-      wxmsw311u_aui_gcc_custom.dll
-      wxmsw311u_core_gcc_custom.dll
-      wxmsw311u_gl_gcc_custom.dll
+      wxbase312u_gcc_custom.dll
+      wxmsw312u_adv_gcc_custom.dll
+      wxmsw312u_aui_gcc_custom.dll
+      wxmsw312u_core_gcc_custom.dll
+      wxmsw312u_gl_gcc_custom.dll
 
   If debug build, also copy these dll files.
 
-      wxbase311ud_gcc_custom.dll
-      wxmsw311ud_adv_gcc_custom.dll
-      wxmsw311ud_aui_gcc_custom.dll
-      wxmsw311ud_core_gcc_custom.dll
-      wxmsw311ud_gl_gcc_custom.dll
+      wxbase312ud_gcc_custom.dll
+      wxmsw312ud_adv_gcc_custom.dll
+      wxmsw312ud_aui_gcc_custom.dll
+      wxmsw312ud_core_gcc_custom.dll
+      wxmsw312ud_gl_gcc_custom.dll
 
 ---
 
@@ -486,7 +438,7 @@ For this guide, I was using Kubuntu 18.04, but this guide also work with any Lin
 #### Getting the required library and tools:
 
 * Download wxWidgets 3.1 source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose wxWidgets-3.1.1.tar.bz2 and extract it to somewhere, for example, your home directory.
+choose wxWidgets-3.1.2.tar.bz2 and extract it to somewhere, for example, your home directory.
 If your Linux distribution have wxWidgets 3.1 package, you can skip this and use a command like below command to install wxWidgets 3.1.
 
       sudo apt install libwxbase3.1-dev libwxgtk3.1-dev
@@ -503,7 +455,7 @@ If your Linux distribution have wxWidgets 3.1 package, you can skip this and use
 
 * Use this command to install required library and tools.
 
-      sudo apt install build-essential codeblocks libwebp-dev libglew-dev libglew2.0 libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev
+      sudo apt install build-essential codeblocks cmake cmake-gui libwebp-dev libglew-dev libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev libtinyxml2-dev
 
 #### Getting the source code:
 
@@ -545,21 +497,59 @@ This will download Gw2Browser and all included library source code, although we 
 
       sudo ldconfig
 
-#### Compile tinyxml2:
+#### Compiling gw2dattools:
 
-* Use CMake-gui to generate UNIX makefile.
+* Open a terminal window and change directory to extern/gw2dattools source code directory you have extracted.
+* Make a directory using this command
 
-      * In "Where is the source code:" box, enter Gw2Browser/extern/tinyxml2
-        for example C:/DEV/Gw2Browser/extern/tinyxml2
-      * In "Where to build the binaries:" box, enter Gw2Browser/extern/tinyxml2/build
-        for example C:/DEV/Gw2Browser/extern/tinyxml2/build
-      * Click "Configure", click "Yes" if it ask to create new directory.
-      * In "Specify the generator for this project", choose "MinGW Makefiles" then click "Finish".
-      * Click "Generate".
+      mkdir build
 
-* Open a terminal window and change directory to `Gw2Browser/extern/tinyxml2/build` and use these command
+* Change directory to the directory you make previously, in this case, build directory.
 
-      make && sudo make install
+      cd build
+
+* Use this command to and wait for it to finish.
+
+      cmake ..
+
+* Use this command to compile gw2dattools source code.
+
+      make
+
+  or
+
+      make -j 4
+
+* When finished, use this command to install gw2dattools
+
+      sudo make install
+
+#### Compiling gw2formats:
+
+* Open a terminal window and change directory to extern/gw2formats source code directory you have extracted.
+* Make a directory using this command
+
+      mkdir build
+
+* Change directory to the directory you make previously, in this case, build directory.
+
+      cd build
+
+* Use this command to and wait for it to finish.
+
+      cmake ..
+
+* Use this command to compile gw2formats source code.
+
+      make
+
+  or
+
+      make -j 4
+
+* When finished, use this command to install gw2formats
+
+      sudo make install
 
 #### Compiling Gw2Browser:
 
