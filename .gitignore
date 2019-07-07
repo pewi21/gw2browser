@@ -1,6 +1,7 @@
 # Binaries
 bin
 bind
+build
 obj
 objs
 tmp
