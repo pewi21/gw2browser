@@ -553,11 +553,30 @@ This will download Gw2Browser and all included library source code, although we 
 
 #### Compiling Gw2Browser:
 
-* Open workspace file Gw2Browser-linux.workspace in Gw2Browser/prj/ with CodeBlocks.
+* Open a terminal window and change directory to Gw2Browser directory.
+* Make a directory using this command
 
-* Compile Gw2Browser by right click and select Gw2Browser as active project,
-  choose debug or release build, then click the gear button in toolbar
-  or press CTRL+F9 key or in MenuBar -> Build -> Build.
+      mkdir build
+
+* Change directory to the directory you make previously, in this case, build directory.
+
+      cd build
+
+* Use this command to and wait for it to finish.
+
+      cmake ..
+
+* Use this command to compile Gw2Browser source code.
+
+      make
+
+  or
+
+      make -j 4
+
+* When finished, use this command to install Gw2Browser
+
+      sudo make install
 
 ---
 
