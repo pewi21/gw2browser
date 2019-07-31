@@ -246,6 +246,9 @@
     <ClInclude Include="..\src\Viewers\ModelViewer\VertexBuffer.h">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Readers\ContentReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -409,6 +412,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Viewers\ModelViewer\VertexBuffer.cpp">
       <Filter>Source Files\Viewers\ModelViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\ContentReader.cpp">
+      <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
