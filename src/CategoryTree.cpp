@@ -48,6 +48,7 @@ namespace gw2b {
         this->Add( data::loadImage( "../data/interface/icons/text.png" ) );
         this->Add( data::loadImage( "../data/interface/icons/sound.png" ) );
         this->Add( data::loadImage( "../data/interface/icons/font.png" ) );
+        this->Add( data::loadImage( "../data/interface/icons/font_bitmap.png" ) );
         this->Add( data::loadImage( "../data/interface/icons/video.png" ) );
         this->Add( data::loadImage( "../data/interface/icons/model.png" ) );
     }
@@ -457,6 +458,8 @@ namespace gw2b {
             return CategoryTreeImageList::IT_Sound;
         case ANFT_FontFile:
             return CategoryTreeImageList::IT_Font;
+        case ANFT_BitmapFontFile:
+            return CategoryTreeImageList::IT_BitmapFont;
         case ANFT_Bink2Video:
             return CategoryTreeImageList::IT_Video;
         case ANFT_Model:

@@ -533,6 +533,9 @@ namespace gw2b {
             case FCC_locl:
                 po_fileType = ANFT_Config;
                 break;
+            case FCC_AFNT:
+                po_fileType = ANFT_BitmapFontFile;
+                break;
             }
 
         } else if ( ( fourcc & 0xffff ) == FCC_MZ ) {   // Identify binary files

@@ -349,6 +349,9 @@ namespace gw2b {
         case ANFT_FontFile:
             MakeCategory( wxT( "Font" ) );
             break;
+        case ANFT_BitmapFontFile:
+            MakeCategory( wxT( "Bitmap Font" ) );
+            break;
         case ANFT_Bink2Video:
             MakeCategory( wxT( "Bink Videos" ) );
             break;

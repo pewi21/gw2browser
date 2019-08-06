@@ -96,6 +96,7 @@ namespace gw2b {
             IT_Text,            /**< Text file icon. */
             IT_Sound,           /**< Sound file icon. */
             IT_Font,            /**< Font file icon. */
+            IT_BitmapFont,      /**< Bitmap font file icon. */
             IT_Video,           /**< Video file icon. */
             IT_Model,           /**< Model file icon. */
         };
