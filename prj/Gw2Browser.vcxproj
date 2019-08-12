@@ -39,6 +39,7 @@
     <ClInclude Include="..\src\PreviewGLCanvas.h" />
     <ClInclude Include="..\src\PreviewPanel.h" />
     <ClInclude Include="..\src\ProgressStatusBar.h" />
+    <ClInclude Include="..\src\Readers\AFNTReader.h" />
     <ClInclude Include="..\src\Readers\asndMP3Reader.h" />
     <ClInclude Include="..\src\Readers\ContentReader.h" />
     <ClInclude Include="..\src\Readers\MapReader.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="..\src\PreviewGLCanvas.cpp" />
     <ClCompile Include="..\src\PreviewPanel.cpp" />
     <ClCompile Include="..\src\ProgressStatusBar.cpp" />
+    <ClCompile Include="..\src\Readers\AFNTReader.cpp" />
     <ClCompile Include="..\src\Readers\asndMP3Reader.cpp" />
     <ClCompile Include="..\src\Readers\ContentReader.cpp" />
     <ClCompile Include="..\src\Readers\MapReader.cpp" />
@@ -231,7 +233,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <TargetName>$(ProjectName)d_$(PlatformShortName)</TargetName>
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -246,7 +248,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <TargetName>$(ProjectName)_$(PlatformShortName)</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

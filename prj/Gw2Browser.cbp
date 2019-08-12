@@ -234,6 +234,8 @@
 		<Unit filename="../src/PreviewPanel.h" />
 		<Unit filename="../src/ProgressStatusBar.cpp" />
 		<Unit filename="../src/ProgressStatusBar.h" />
+		<Unit filename="../src/Readers/AFNTReader.cpp" />
+		<Unit filename="../src/Readers/AFNTReader.h" />
 		<Unit filename="../src/Readers/ContentReader.cpp" />
 		<Unit filename="../src/Readers/ContentReader.h" />
 		<Unit filename="../src/Readers/EulaReader.cpp" />

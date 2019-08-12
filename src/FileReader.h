@@ -56,6 +56,7 @@ namespace gw2b {
             DT_Text,            /**< Text data. */
             DT_Map,             /**< Map data. */
             DT_Content,         /**< Content manifest data. */
+            DT_BitmapFont,      /**< Bitmap font data. */
         };
     public:
         /** Constructor.

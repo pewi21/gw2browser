@@ -37,6 +37,7 @@ set(GW2BROWSER_SOURCE_FILES
     ${GW2BROWSER_SOURCE_DIR}/Viewer.cpp
     ${GW2BROWSER_SOURCE_DIR}/Imported/crc.cpp
     ${GW2BROWSER_SOURCE_DIR}/Imported/half.cpp
+    ${GW2BROWSER_SOURCE_DIR}/Readers/AFNTReader.cpp
     ${GW2BROWSER_SOURCE_DIR}/Readers/asndMP3Reader.cpp
     ${GW2BROWSER_SOURCE_DIR}/Readers/ContentReader.cpp
     ${GW2BROWSER_SOURCE_DIR}/Readers/EulaReader.cpp
@@ -99,6 +100,7 @@ set(GW2BROWSER_HEADER_FILES
     ${GW2BROWSER_SOURCE_DIR}/Imported/crc.h
     ${GW2BROWSER_SOURCE_DIR}/Imported/half.h
     ${GW2BROWSER_SOURCE_DIR}/Imported/half.inl
+    ${GW2BROWSER_SOURCE_DIR}/Readers/AFNTReader.h
     ${GW2BROWSER_SOURCE_DIR}/Readers/asndMP3Reader.h
     ${GW2BROWSER_SOURCE_DIR}/Readers/ContentReader.h
     ${GW2BROWSER_SOURCE_DIR}/Readers/EulaReader.h

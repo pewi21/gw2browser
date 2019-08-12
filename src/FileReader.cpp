@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/TextReader.h"
 #include "Readers/MapReader.h"
 #include "Readers/ContentReader.h"
+#include "Readers/AFNTReader.h"
 
 #include "FileReader.h"
 
@@ -106,6 +107,9 @@ namespace gw2b {
 //        case ANFT_MapParam:
 //            return new MapReader( p_data, p_datFile, p_fileType );
 //            break;
+        case ANFT_BitmapFontFile:
+            return new AFNTReader( p_data, p_datFile, p_fileType );
+            break;
         default:
             break;
         }

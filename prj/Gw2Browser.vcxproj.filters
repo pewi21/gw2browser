@@ -249,6 +249,9 @@
     <ClInclude Include="..\src\Readers\ContentReader.h">
       <Filter>Source Files\Readers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Readers\AFNTReader.h">
+      <Filter>Source Files\Readers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\stdafx.cpp">
@@ -414,6 +417,9 @@
       <Filter>Source Files\Viewers\ModelViewer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Readers\ContentReader.cpp">
+      <Filter>Source Files\Readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Readers\AFNTReader.cpp">
       <Filter>Source Files\Readers</Filter>
     </ClCompile>
   </ItemGroup>
