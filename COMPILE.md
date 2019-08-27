@@ -260,6 +260,18 @@ The ROOT is the directory you created in Getting the source code.
 
 * Press F7 or in MenuBar -> Build -> Build Solution to compile libogg.
 
+#### Compile tinyxml2:
+
+* Open `tinyxml2.sln` solution file in `Gw2Browser/extern/tinyxml2/tinyxml2`
+  It will ask for upgrade project file, if not, right click  `tinyxml2` entry
+  in `Solution Explorer`, then click `Retarget Projects`, choose Windows SDK Version to `8.1`,
+  then click "Ok" to upgrade it.
+
+* Choose Debug-Lib or Release-Lib configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
+  from two dropdown box in Visual Studio toolbar.
+
+* Press F7 or in MenuBar -> Build -> Build Solution to compile tinyxml2.
+
 #### Compile Gw2Browser:
 
 * Open `Gw2Browser.sln` solution file in `Gw2Browser/prj`.
