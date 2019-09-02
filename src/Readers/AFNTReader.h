@@ -36,7 +36,7 @@ namespace gw2b {
         uint32 character;
         uint32 width;
         uint32 height;
-        Array<byte> data;
+        wxImage data;
     };
 
     struct Font {
@@ -44,6 +44,12 @@ namespace gw2b {
         uint8 extents_x;
         uint8 extents_y;
         std::vector<Glyph> glyphs;
+    };
+
+    struct BGR {
+        uint8   b;
+        uint8   g;
+        uint8   r;
     };
 
     //----------------------------------------------------------------------------

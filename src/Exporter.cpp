@@ -42,6 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Readers/SoundBankReader.h"
 #include "Readers/EulaReader.h"
 #include "Readers/ContentReader.h"
+#include "Readers/AFNTReader.h"
 
 #include "Exporter.h"
 
@@ -151,6 +152,7 @@ namespace gw2b {
             case ANFT_JPEG:
             case ANFT_WEBP:
             case ANFT_PNG:
+            case ANFT_BitmapFontFile:
                 return wxT( "png" );
                 break;
             case ANFT_Model:
@@ -309,6 +311,9 @@ namespace gw2b {
                 // Font file
             case ANFT_FontFile:
                 return wxT( "eot" );    // Embedded OpenType
+                break;
+            case ANFT_BitmapFontFile:
+                return wxT( "afnt" );
                 break;
 
                 // Bink2 Video file
@@ -473,6 +478,9 @@ namespace gw2b {
             case ANFT_FontFile:
                 return wxT( "Embedded OpenType Font file (*.eot)|*.eot" );
                 break;
+            case ANFT_BitmapFontFile:
+                return wxT( "Guild Wars 2 Bitmap Font file (*.afnt)|*.afnt" );
+                break;
 
                 // Bink2 Video file
             case ANFT_Bink2Video:
@@ -569,6 +577,9 @@ namespace gw2b {
                 case ANFT_GameContent:
                     this->exportGameContent( reader, p_entry.name( ) );
                     break;
+                case ANFT_BitmapFontFile:
+                    this->exportBitmapFont( reader, p_entry.name( ) );
+                    break;
                 default:
                     //entryData = reader->rawData( );
                     this->writeFile( entryData );
@@ -602,23 +613,7 @@ namespace gw2b {
             return;
         }
 
-        // Write the png to memory
-        wxMemoryOutputStream stream;
-        if ( !imageData.SaveFile( stream, wxBITMAP_TYPE_PNG ) ) {
-            wxMessageBox( wxT( "Failed to write png to memory." ), wxT( "Error" ), wxOK | wxICON_ERROR );
-            return;
-        }
-
-        // Reset the position of the stream
-        auto buffer = stream.GetOutputStreamBuffer( );
-        buffer->Seek( 0, wxFromStart );
-
-        // Read the data from the stream and into a buffer
-        Array<byte> data( buffer->GetBytesLeft( ) );
-        buffer->Read( data.GetPointer( ), data.GetSize( ) );
-
-        // Write to file
-        this->writeFile( data );
+        this->writeImage( imageData );
     }
 
     void Exporter::exportString( FileReader* p_reader, const wxString& p_entryname ) {
@@ -1053,6 +1048,53 @@ namespace gw2b {
         }
 
         this->writeXML( content->getContentData( ) );
+    }
+
+    void Exporter::exportBitmapFont( FileReader* p_reader, const wxString& p_entryname ) {
+        auto fontreader = dynamic_cast<AFNTReader*>(p_reader);
+        if ( !fontreader ) {
+            wxLogMessage( wxString::Format( wxT( "Entry %s is not bitmap font file." ), p_entryname ) );
+            return;
+        }
+
+        m_filename.SetExt( wxT( "png" ) );
+
+        auto fonts = fontreader->getFont( );
+        for ( auto const& it : fonts ) {
+            // export each glyphs
+            for ( auto const& it2 : it.glyphs ) {
+                auto glyph = it2.data;
+
+                m_filename.SetName( wxString::Format( wxT( "%s_%d_%d" ), p_entryname, it.id, it2.character ) );
+
+                if ( m_filename.FileExists( ) ) {
+                    wxLogMessage( wxString::Format( wxT( "File %s is already exists, skiping." ), m_filename.GetFullPath( ) ) );
+                    return;
+                }
+
+                this->writeImage( glyph );
+            }
+        }
+    }
+
+    void Exporter::writeImage( wxImage p_image ) {
+        // Write the png to memory
+        wxMemoryOutputStream stream;
+        if ( !p_image.SaveFile( stream, wxBITMAP_TYPE_PNG ) ) {
+            wxMessageBox( wxT( "Failed to write png to memory." ), wxT( "Error" ), wxOK | wxICON_ERROR );
+            return;
+        }
+
+        // Reset the position of the stream
+        auto buffer = stream.GetOutputStreamBuffer( );
+        buffer->Seek( 0, wxFromStart );
+
+        // Read the data from the stream and into a buffer
+        Array<byte> data( buffer->GetBytesLeft( ) );
+        buffer->Read( data.GetPointer( ), data.GetSize( ) );
+
+        // Write to file
+        this->writeFile( data );
     }
 
     void Exporter::writeXML( std::unique_ptr<tinyxml2::XMLDocument> p_xml ) {

@@ -179,10 +179,24 @@ namespace gw2b {
                         glyph.character = ch;
                         glyph.width = rleDecoder.m_width;
                         glyph.height = rleDecoder.m_height;
-                        size_t glyphsize = glyph.width * glyph.height;
-                        glyph.data.SetSize( glyphsize );
 
-                        ::memcpy( glyph.data.GetPointer( ), rleDecoder.m_image, glyphsize );
+                        size_t numPixels = glyph.width * glyph.height;
+                        auto colors = allocate<BGR>( numPixels );
+
+#pragma omp parallel for
+                        for ( int y = 0; y < static_cast<int>( glyph.height ); y++ ) {
+                            size_t curBlock = y * glyph.width;
+                            for ( size_t x = 0; x < glyph.width; x++ ) {
+                                auto curPixel = x + curBlock;
+                                ::memcpy( &colors[curPixel].b, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].b ) );
+                                ::memcpy( &colors[curPixel].g, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].g ) );
+                                ::memcpy( &colors[curPixel].r, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].r ) );
+                            }
+                        }
+
+                        // Create image and fill it with color data
+                        glyph.data = wxImage( glyph.width, glyph.height );
+                        glyph.data.SetData( reinterpret_cast<unsigned char*>( colors ) );
 
                         glyphs.push_back( glyph );
                     }

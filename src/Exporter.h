@@ -81,6 +81,8 @@ namespace gw2b {
         void exportModel( FileReader* p_reader, const wxString& p_entryname );
         void exportModelTexture( uint32 p_fileid );
         void exportGameContent( FileReader* p_reader, const wxString& p_entryname );
+        void exportBitmapFont( FileReader* p_reader, const wxString& p_entryname );
+        void writeImage( wxImage p_image );
         void writeXML( std::unique_ptr<tinyxml2::XMLDocument> p_xml );
         bool writeFile( const Array<byte>& p_data );
         void appendPaths( wxFileName& p_path, const DatIndexCategory& p_category );
