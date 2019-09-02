@@ -48,7 +48,7 @@ namespace gw2b {
 
         m_stream = p_data + 4;
 
-        memset( m_image, 0, 65536 );
+        ::memset( m_image, 0, 65536 );
         size_t imagePos = 0;
 
         while ( unpackedSize ) {
@@ -75,7 +75,7 @@ namespace gw2b {
             Assert( advance );
             Assert( advance <= unpackedSize );
 
-            memset( m_image + imagePos, repeatedByte, advance );
+            ::memset( m_image + imagePos, repeatedByte, advance );
             imagePos += advance;
             unpackedSize -= advance;
         }
