@@ -3,7 +3,7 @@ Gw2Browser
 
 Opens a Guild Wars 2 .dat file and allows the user to browse and extract its
 files. Currently it supports power-of-two textures, JPEG and WebP images, models,
-126x64 ATEX textures, sound, sound bank, eula, strings, text and binary files.
+126x64 ATEX textures, sound, sound bank, bitmap font, eula, strings, text and binary files.
 
 When a .dat file is opened, it will first index the file. This makes it *a lot*
 faster to re-open the same .dat. Unfortunately, every time the .dat changes it
@@ -56,8 +56,8 @@ first. Loading any model is also *far* from optimized!
 Decompressing one produces garbage blocks. Well, except 126x64 ATEX files.
 Probably they use custom format for NPOT texture.
 
-* **Some sound data in bank file(s) and text data in string file(s) are unsupported.**
-The data are encrypted, each entry/files have difference encryption keys that received from the server.
+* **Most sound data in bank files and text data in string files are unsupported.**
+As the data are encrypted, each entry/files have difference encryption keys that received from the game server.
 
 Authors
 -------
@@ -94,7 +94,7 @@ For contributions, please go to [this project's page on GitHub](https://github.c
 Legal Disclaimer
 ----------------
 
-Guild Wars 2 © 2010-2017 ArenaNet, LLC. All rights reserved.
+Guild Wars 2 © 2010-2019 ArenaNet, LLC. All rights reserved.
 Guild Wars, Guild Wars 2, Heart of Thorns, Guild Wars 2: Path of Fire,
 ArenaNet, NCSOFT, the Interlocking NC Logo, and all associated logos
 and designs are trademarks or registered trademarks of NCSOFT Corporation.
@@ -103,7 +103,8 @@ All other trademarks are the property of their respective owners.
 License
 -------
 
-    Copyright © 2014-2017 Khral Steelforge <https://github.com/kytulendu>
+    Copyright © 2014-2019 Khral Steelforge <https://github.com/kytulendu>
+    Copyright © 2019 BoyC <https://twitter.com/BoyCcns>
     Copyright © 2013 Till034 <https://github.com/Till034>
     Copyright © 2012 Rhoot <https://github.com/rhoot>
 
