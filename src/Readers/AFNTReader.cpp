@@ -150,56 +150,57 @@ namespace gw2b {
             // each glyph range is stored in a separate file
             for ( int y = 0; y < 13; y++ ) {
                 // process this character range? - this is only a toggle to allow easy removal of certain glyph ranges
-                if ( charRanges[y * 3 + 2] ) {
-                    // not all fonts reference files for all glyph ranges
-                    if ( !fnt.fileNames[y] ) {
-                        continue;
-                    }
+                if ( !charRanges[y * 3 + 2] ) {
+                    continue;
+                }
+                // not all fonts reference files for all glyph ranges
+                if ( !fnt.fileNames[y] ) {
+                    continue;
+                }
 
-                    auto ref = reinterpret_cast<const ANetFileReference*>( ( (unsigned char*)&fnt.fileNames[y] ) + fnt.fileNames[y] );
-                    auto fileId = DatFile::fileIdFromFileReference( *ref );
-                    auto entryNumber = m_datFile.entryNumFromFileId( fileId );
-                    auto fileData = m_datFile.readEntry( entryNumber );
-                    if ( !fileData.GetSize( ) ) {
-                        wxLogMessage( wxT( "File id %d is empty or not exist." ), fileId );
-                        continue;
-                    }
+                auto ref = reinterpret_cast<const ANetFileReference*>( ( (unsigned char*)&fnt.fileNames[y] ) + fnt.fileNames[y] );
+                auto fileId = DatFile::fileIdFromFileReference( *ref );
+                auto entryNumber = m_datFile.entryNumFromFileId( fileId );
+                auto fileData = m_datFile.readEntry( entryNumber );
+                if ( !fileData.GetSize( ) ) {
+                    wxLogMessage( wxT( "File id %d is empty or not exist." ), fileId );
+                    continue;
+                }
 
-                    // the referenced font file will contain exactly as many glyphs as are defined in the hardcoded range
-                    auto rangeStart = charRanges[y * 3];
-                    auto rangeEnd = charRanges[y * 3 + 1];
+                // the referenced font file will contain exactly as many glyphs as are defined in the hardcoded range
+                auto rangeStart = charRanges[y * 3];
+                auto rangeEnd = charRanges[y * 3 + 1];
 
-                    auto charStream = fileData.GetPointer( );
+                auto charStream = fileData.GetPointer( );
 
-                    for ( auto ch = rangeStart; ch < rangeEnd; ch++ ) {
-                        AFNT_RLEDecoder rleDecoder;
-                        charStream = rleDecoder.DecompressNextCharacter( charStream ); // this decodes a single glyph
+                for ( auto ch = rangeStart; ch < rangeEnd; ch++ ) {
+                    AFNT_RLEDecoder rleDecoder;
+                    charStream = rleDecoder.DecompressNextCharacter( charStream ); // this decodes a single glyph
 
-                        Glyph glyph;
-                        glyph.character = ch;
-                        glyph.width = rleDecoder.m_width;
-                        glyph.height = rleDecoder.m_height;
+                    Glyph glyph;
+                    glyph.character = ch;
+                    glyph.width = rleDecoder.m_width;
+                    glyph.height = rleDecoder.m_height;
 
-                        size_t numPixels = glyph.width * glyph.height;
-                        auto colors = allocate<BGR>( numPixels );
+                    size_t numPixels = glyph.width * glyph.height;
+                    auto colors = allocate<BGR>( numPixels );
 
 #pragma omp parallel for
-                        for ( int y = 0; y < static_cast<int>( glyph.height ); y++ ) {
-                            size_t curBlock = y * glyph.width;
-                            for ( size_t x = 0; x < glyph.width; x++ ) {
-                                auto curPixel = x + curBlock;
-                                ::memcpy( &colors[curPixel].b, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].b ) );
-                                ::memcpy( &colors[curPixel].g, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].g ) );
-                                ::memcpy( &colors[curPixel].r, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].r ) );
-                            }
+                    for ( int y = 0; y < static_cast<int>( glyph.height ); y++ ) {
+                        size_t curBlock = y * glyph.width;
+                        for ( size_t x = 0; x < glyph.width; x++ ) {
+                            auto curPixel = x + curBlock;
+                            ::memcpy( &colors[curPixel].b, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].b ) );
+                            ::memcpy( &colors[curPixel].g, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].g ) );
+                            ::memcpy( &colors[curPixel].r, &rleDecoder.m_image[curPixel], sizeof( colors[curPixel].r ) );
                         }
-
-                        // Create image and fill it with color data
-                        glyph.data = wxImage( glyph.width, glyph.height );
-                        glyph.data.SetData( reinterpret_cast<unsigned char*>( colors ) );
-
-                        glyphs.push_back( glyph );
                     }
+
+                    // Create image and fill it with color data
+                    glyph.data = wxImage( glyph.width, glyph.height );
+                    glyph.data.SetData( reinterpret_cast<unsigned char*>( colors ) );
+
+                    glyphs.push_back( glyph );
                 }
             }
 
