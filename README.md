@@ -68,6 +68,7 @@ Authors
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser and gw2formats
 * [Antoine Hom](https://github.com/ahom) : gw2DatTools
+* BoyC : For AFNT reader code.
 * David Dantowitz : Simple CRC
 * Demonsangel : Noesis script fmt_GW2_pf.py
 * [DubyaDubyaDubyaDot](https://stackoverflow.com/questions/13437422/libvorbis-audio-decode-from-memory-in-c) : How to read Oggs from memory using custom ogg callbacks.
