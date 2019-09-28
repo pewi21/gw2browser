@@ -586,6 +586,9 @@ namespace gw2b {
                     break;
                 }
             } else {
+                // Set file extension
+                m_filename.SetExt( wxString( this->GetExtension( ) ) );
+
                 //entryData = reader->rawData( );
                 this->writeFile( entryData );
             }
