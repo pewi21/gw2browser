@@ -105,7 +105,8 @@ namespace gw2b {
         this->Bind( wxEVT_KEY_DOWN, &PreviewGLCanvas::onKeyDownEvt, this );
         this->Bind( wxEVT_CLOSE_WINDOW, &PreviewGLCanvas::onClose, this );
         this->Bind( wxEVT_SIZE, &PreviewGLCanvas::onResize, this );
-        // EVT_MOUSE_EVENTS(MyGLCanvas::OnMouse)
+        this->Bind( wxEVT_ERASE_BACKGROUND, &PreviewGLCanvas::onEraseBackground, this );
+        this->Bind( wxEVT_IDLE, &PreviewGLCanvas::onIdle, this );
 
         // Start render timer
         m_renderTimer->start( );
@@ -412,6 +413,18 @@ namespace gw2b {
 
         // Generate paint event without erasing the background.
         this->Refresh(false);
+    }
+
+    void PreviewGLCanvas::onEraseBackground(wxEraseEvent & p_event)
+    {
+        // Empty function
+    }
+
+    void PreviewGLCanvas::onIdle(wxIdleEvent& p_event)
+    {
+        this->Refresh(false);
+        p_event.RequestMore();
+        wxMilliSleep(1);
     }
 
 }; // namespace gw2b

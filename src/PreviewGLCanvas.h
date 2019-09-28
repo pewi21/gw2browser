@@ -124,6 +124,8 @@ namespace gw2b {
         void onMovementKeyTimerEvt( wxTimerEvent& p_event );
         void onClose( wxCloseEvent& p_event );
         void onResize( wxSizeEvent& p_event );
+        void onEraseBackground(wxEraseEvent & p_event);
+        void onIdle(wxIdleEvent& p_event);
 
     }; // class PreviewGLCanvas
 
