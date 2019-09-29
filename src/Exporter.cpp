@@ -115,6 +115,8 @@ namespace gw2b {
                     m_filename.SetPath( m_path );
                     // Set file name
                     m_filename.SetName( entry->name( ) );
+                    // Set file extension
+                    m_filename.SetExt( wxString( this->GetExtension( ) ) );
 
                     // Appen category name as path
                     this->appendPaths( m_filename, *entry->category( ) );
@@ -586,9 +588,6 @@ namespace gw2b {
                     break;
                 }
             } else {
-                // Set file extension
-                m_filename.SetExt( wxString( this->GetExtension( ) ) );
-
                 //entryData = reader->rawData( );
                 this->writeFile( entryData );
             }
