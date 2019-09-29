@@ -1,28 +1,33 @@
-/*
-Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
+/** \file       Gw2Browser.rc
+ *  \brief      Contains Gw2Browser resource.
+ *  \author     Khral Steelforge
+ */
 
-This file is part of Gw2Browser.
-
-Gw2Browser is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
+ *
+ * This file is part of Gw2Browser.
+ *
+ * Gw2Browser is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <wx/msw/wx.rc>
 
 #include "resource.h"
 #include "version.h"
 
-aaaaGW2BROWSER_ICON		ICON	"Gw2Browser.ico"
+aaaaGW2BROWSER_ICON                 ICON        "Gw2Browser.ico"
 
 #define VER_FILEVERSION             APP_MAJOR_VERSION,APP_MINOR_VERSION,APP_RELEASE_NUMBER,APP_SUBRELEASE_NUMBER
 #define VER_FILEVERSION_STR         APP_FILEVERSION_STR
@@ -30,42 +35,42 @@ aaaaGW2BROWSER_ICON		ICON	"Gw2Browser.ico"
 #define VER_PRODUCTVERSION          APP_MAJOR_VERSION,APP_MINOR_VERSION,APP_RELEASE_NUMBER,APP_SUBRELEASE_NUMBER
 #define VER_PRODUCTVERSION_STR      APP_PRODUCTVERSION_STR
 
-#define LANG				0x0409
-#define CHARSET				0x4b0
-#define LANG_WITH_CHARSET	"040904b0"
+#define LANG                        0x0409
+#define CHARSET                     0x4b0
+#define LANG_WITH_CHARSET           "040904b0"
 
-VS_VERSION_INFO VERSIONINFO
-FILEVERSION			VER_FILEVERSION
-PRODUCTVERSION		VER_PRODUCTVERSION
-FILEFLAGSMASK		VS_FFI_FILEFLAGSMASK
+VS_VERSION_INFO                     VERSIONINFO
+FILEVERSION                         VER_FILEVERSION
+PRODUCTVERSION                      VER_PRODUCTVERSION
+FILEFLAGSMASK                       VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
-FILEFLAGS			0x1L // debug build
+FILEFLAGS                           0x1L // debug build
 #else
-FILEFLAGS			0x0L // final version
+FILEFLAGS                           0x0L // final version
 #endif
-FILEOS				VOS_NT_WINDOWS32
-FILETYPE			VFT_APP
-FILESUBTYPE			VFT2_UNKNOWN
+FILEOS                              VOS_NT_WINDOWS32
+FILETYPE                            VFT_APP
+FILESUBTYPE                         VFT2_UNKNOWN
 BEGIN
-	BLOCK "StringFileInfo"
-	BEGIN
-		BLOCK LANG_WITH_CHARSET
-		BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK LANG_WITH_CHARSET
+        BEGIN
 
-		VALUE "CompanyName", "Forge Warband\0"
-		VALUE "Developer", "Khral Steelforge\0"
-		VALUE "FileDescription", "Gw2Browser\0"
-		VALUE "FileVersion", VER_FILEVERSION_STR
-		VALUE "InternalName", "*purr*\0"
-		VALUE "LegalCopyright", "Copyright (c) 2012-2017\0"
-		VALUE "OriginalFilename", "Gw2Browser.exe\0"
-		VALUE "ProductName", APP_TITLE
-		VALUE "ProductVersion", VER_PRODUCTVERSION_STR
+        VALUE "CompanyName", "Iron Legion\0"
+        VALUE "Developer", "Khral Steelforge\0"
+        VALUE "FileDescription", "Gw2Browser\0"
+        VALUE "FileVersion", VER_FILEVERSION_STR
+        VALUE "InternalName", "*purr*\0"
+        VALUE "LegalCopyright", "Copyright (c) 2012-2019\0"
+        VALUE "OriginalFilename", "Gw2Browser.exe\0"
+        VALUE "ProductName", APP_TITLE
+        VALUE "ProductVersion", VER_PRODUCTVERSION_STR
 
-		END
-	END
-	BLOCK "VarFileInfo"
-	BEGIN
-		VALUE "Translation", LANG, CHARSET
-	END
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", LANG, CHARSET
+    END
 END
