@@ -2,8 +2,8 @@
 *   by DubyaDubyaDubyaDot <https://stackoverflow.com/users/1134276/dubyadubyadubyadot>
 *   https://stackoverflow.com/questions/13437422/libvorbis-audio-decode-from-memory-in-c
 *
-*   Usuage
-*   ======
+*   Usage
+*   =====
 *   ov_callbacks callbacks;
 *   ogg_file t;
 *   t.curPtr = t.filePtr = compressedData;
