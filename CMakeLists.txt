@@ -176,9 +176,9 @@ pkg_check_modules(PC_MPG123 libmpg123)
 find_path(MPG123_INCLUDE_DIRS NAMES mpg123.h HINTS ${PC_MPG123_INCLUDE_DIRS} PATH_SUFFIXES mpg123)
 find_library(MPG123_LIBRARIES NAMES mpg123 HINTS ${PC_MPG123_LIBRARY_DIRS})
 
-pkg_check_modules(PC_WEBP libwebpdecoder)
+pkg_check_modules(PC_WEBP libwebp)
 find_path(LIBWEBP_INCLUDE_DIRS NAMES webp/decode.h HINTS ${PC_LIBWEBP_INCLUDE_DIRS} PATH_SUFFIXES webp)
-find_library(LIBWEBP_LIBRARIES NAMES webpdecoder HINTS ${PC_LIBWEBP_LIBRARY_DIRS})
+find_library(LIBWEBP_LIBRARIES NAMES webp HINTS ${PC_LIBWEBP_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(GLM DEFAULT_MSG GLM_INCLUDE_DIRS)
@@ -234,7 +234,7 @@ target_link_libraries(${NAME} ${LIBS}
     vorbis
     vorbisfile
     mpg123
-    webpdecoder
+    webp
     tinyxml2
     freetype
     gw2dattools
