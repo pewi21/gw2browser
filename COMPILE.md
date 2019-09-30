@@ -467,7 +467,7 @@ If your Linux distribution have wxWidgets 3.1 package, you can skip this and use
 
 * Use this command to install required library and tools.
 
-      sudo apt install build-essential codeblocks cmake cmake-gui libwebp-dev libglew-dev libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev libtinyxml2-dev
+      sudo apt install build-essential codeblocks cmake cmake-gui libwebp-dev libglew-dev libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev libtinyxml2-dev libglm-dev
 
 #### Getting the source code:
 
