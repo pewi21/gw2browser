@@ -1,8 +1,8 @@
-project(Gw2Browser)
+project(gw2browser)
 
 cmake_minimum_required(VERSION 3.0)
 
-set(NAME Gw2Browser)
+set(NAME gw2browser)
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
