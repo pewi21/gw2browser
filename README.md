@@ -18,7 +18,7 @@ given file id.
 
 The modelviewer required GPU with OpenGL 3.3 support.
 
-The latest binary can always be found [Here](https://github.com/kytulendu/Gw2Browser/releases)
+The latest binary can always be found [Here](https://github.com/kytulendu/gw2browser/releases)
 
 For Linux binary (Ubuntu 18.04), use this command to get required library.
 
@@ -33,7 +33,7 @@ Usage
 
 It can be started with:
 
-    Gw2Browser <input dat>
+    gw2browser <input dat>
 
 If `<input dat>` is given, the program will open the file as soon as it starts.
 
@@ -90,7 +90,7 @@ Authors
 Contributing
 ------------
 
-For contributions, please go to [this project's page on GitHub](https://github.com/kytulendu/Gw2Browser).
+For contributions, please go to [this project's page on GitHub](https://github.com/kytulendu/gw2browser).
 
 Legal Disclaimer
 ----------------
