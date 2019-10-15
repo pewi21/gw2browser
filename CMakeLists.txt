@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.0)
 
 set(NAME gw2browser)
 
+include(GNUInstallDirs)
+
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message("Setting build type to 'RelWithDebInfo' as none was specified.")
@@ -15,6 +17,7 @@ endif()
 
 set(GW2BROWSER_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(GW2BROWSER_INCLUDE_DIRECTORY ${PROJECT_SOURCE_DIR}/src)
+set(GW2BROWSER_DATA_DIR ${PROJECT_SOURCE_DIR}/data)
 
 set(GW2BROWSER_SOURCE_FILES
     ${GW2BROWSER_SOURCE_DIR}/BrowserWindow.cpp
@@ -239,4 +242,21 @@ target_link_libraries(${NAME} ${LIBS}
     freetype
     gw2dattools
     gw2formats
+)
+
+# Installation
+
+# Disable RPATH stripping
+set_target_properties(${NAME} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+install(TARGETS ${NAME}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(DIRECTORY
+    ${GW2BROWSER_DATA_DIR}/fonts
+    ${GW2BROWSER_DATA_DIR}/interface
+    ${GW2BROWSER_DATA_DIR}/shaders
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${NAME}
+    FILES_MATCHING PATTERN "*.*"
 )
