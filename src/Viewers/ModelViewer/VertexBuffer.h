@@ -1,10 +1,10 @@
 /** \file       Viewers/ModelViewer/VertexBuffer.h
  *  \brief      Contains the declaration of the vertex buffer class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2018 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2018 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *

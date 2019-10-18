@@ -62,7 +62,7 @@ As the data are encrypted, each entry/files have difference encryption keys that
 Authors
 -------
 
-* [Khral Steelforge](https://github.com/kytulendu)
+* [Khralkatorrix](https://github.com/kytulendu)
 
 ### Thanks to:
 
@@ -104,7 +104,7 @@ All other trademarks are the property of their respective owners.
 License
 -------
 
-    Copyright © 2014-2019 Khral Steelforge <https://github.com/kytulendu>
+    Copyright © 2014-2019 Khralkatorrix <https://github.com/kytulendu>
     Copyright © 2019 BoyC <https://twitter.com/BoyCcns>
     Copyright © 2013 Till034 <https://github.com/Till034>
     Copyright © 2012 Rhoot <https://github.com/rhoot>

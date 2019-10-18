@@ -1,6 +1,6 @@
 ﻿/** \file       Viewers/Renderer.cpp
  *  \brief      Contains the definition of the model renderer class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**

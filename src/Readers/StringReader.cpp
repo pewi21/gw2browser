@@ -1,10 +1,10 @@
 /** \file       Readers/StringReader.cpp
  *  \brief      Contains the definition of the String reader class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2014-2016 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2014-2016 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *

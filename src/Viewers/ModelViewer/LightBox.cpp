@@ -1,6 +1,6 @@
 /** \file       Viewers/ModelViewer/LightBox.cpp
  *  \brief      Contains the declaration of the LightBox class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**

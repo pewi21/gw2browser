@@ -4,7 +4,7 @@
  */
 
 /**
- * Copyright (C) 2014-2018 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2014-2018 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
  *
  * This file is part of Gw2Browser.
@@ -574,7 +574,7 @@ namespace gw2b {
             ) );
 
         info.SetCopyright( wxString::FromAscii(
-            "Copyright (C) 2014-2019 Khral Steelforge - https://github.com/kytulendu\n"
+            "Copyright (C) 2014-2019 Khralkatorrix - https://github.com/kytulendu\n"
             "Copyright (C) 2019 BoyC - https://twitter.com/BoyCcns\n"
             "Copyright (C) 2013 Till034 - https://github.com/Till034\n"
             "Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
@@ -592,7 +592,7 @@ namespace gw2b {
             "its content.\n"
             ) );
 
-        info.SetWebSite( wxT( "https://github.com/kytulendu/Gw2Browser" ) );
+        info.SetWebSite( wxT( "https://github.com/kytulendu/gw2browser" ) );
 
         info.SetLicence( wxString::FromAscii(
             "Gw2Browser is free software: you can redistribute it and/or modify\n"
@@ -611,7 +611,7 @@ namespace gw2b {
             "See README.md for code license exceptions."
             ) );
 
-        info.AddDeveloper( wxT( "Khral Steelforge" ) );
+        info.AddDeveloper( wxT( "Khralkatorrix" ) );
         info.AddDeveloper( wxT( "Rhoot" ) );
     }
 

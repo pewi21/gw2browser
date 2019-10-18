@@ -1,10 +1,10 @@
 /** \file       Readers/AFNTReader.cpp
  *  \brief      Contains definition of the AFNT reader class.
- *  \author     BoyC, Khral Steelforge
+ *  \author     BoyC, Khralkatorrix
  */
 
 /**
- * Copyright (C) 2019 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2019 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2019 BoyC <https://twitter.com/BoyCcns>
  *
  * This file is part of Gw2Browser.

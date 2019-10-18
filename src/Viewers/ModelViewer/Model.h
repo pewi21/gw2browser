@@ -1,10 +1,10 @@
 /** \file       Viewers/ModelViewer/Model.h
  *  \brief      Contains the declaration of the model class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2017 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2017 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *

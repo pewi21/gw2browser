@@ -1,10 +1,10 @@
 /** \file       PreviewGLCanvas.cpp
  *  \brief      Contains declaration of the preview GLCanvas control.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2015-2018 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2015-2018 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
  *
  * This file is part of Gw2Browser.

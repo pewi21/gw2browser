@@ -1,11 +1,11 @@
 /** \file       Exporter.h
  *  \brief      Contains the declaration of the base class of exporters for the
  *              various file types.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2016-2019 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2016-2019 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
  *
  * This file is part of Gw2Browser.

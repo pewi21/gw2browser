@@ -1,10 +1,10 @@
 /** \file       resource.h
  *  \brief      Contains declaration of resource id.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2014 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2014 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *

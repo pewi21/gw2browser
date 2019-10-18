@@ -1,6 +1,6 @@
 /** \file       Viewers/ModelViewer/Text2D.h
  *  \brief      Contains the declaration of the Text2D class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**

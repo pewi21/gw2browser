@@ -1,10 +1,10 @@
 /** \file       Readers/SoundBankReader.cpp
  *  \brief      Contains the definition of the sound bank reader class.
- *  \author     Khral Steelforge
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2016-2017 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2016-2017 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *
