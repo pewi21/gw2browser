@@ -48,6 +48,7 @@ namespace gw2b {
         virtual void perform( ) override;
     private:
         uint requiredIdentificationSize( const byte* p_data, size_t p_size, ANetFileType p_fileType );
+        bool isBitmapFontChunk(uint p_baseId);
         DatIndexCategory* categorize( ANetFileType p_fileType, const byte* p_data, size_t p_size );
         void ensureBufferSize( size_t p_size );
     }; // class ScanDatTask
