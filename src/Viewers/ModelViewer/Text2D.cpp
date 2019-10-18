@@ -4,7 +4,7 @@
  */
 
 /**
- * Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2016-2019 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *
@@ -24,6 +24,7 @@
 
 #include "stdafx.h"
 
+#include "Data.h"
 #include "Exception.h"
 
 #include "Text2D.h"
@@ -39,13 +40,14 @@ namespace gw2b {
 
     Text2D::Text2D( const char* p_fontfile, const FT_UInt p_fontsize ) {
         // Load font
-        if ( !loadFont( m_characterTextureMap, p_fontfile, p_fontsize ) ) {
+        if (!loadFont(m_characterTextureMap, getPath(p_fontfile).mb_str(), p_fontsize))
+        {
             throw exception::Exception( "Failed to load font." );
         }
 
         // Load text shader
         try {
-            m_textShader = new Shader( "../data/shaders/text.vert", "../data/shaders/text.frag" );
+            m_textShader = new Shader(getPath("shaders/text.vert").mb_str(), getPath("shaders/text.frag").mb_str());
 
             m_textShader->use( );
             // Get the uniform location

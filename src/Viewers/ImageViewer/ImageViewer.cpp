@@ -4,6 +4,7 @@
  */
 
 /**
+ * Copyright (C) 2019 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
  *
  * This file is part of Gw2Browser.
@@ -79,10 +80,10 @@ namespace gw2b {
         }
 
         // Load all toolbar button icons
-        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_red.png"));
-        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_green.png"));
-        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_blue.png"));
-        m_toolbarButtonIcons.push_back(data::loadImage("../data/interface/toggle_alpha.png"));
+        m_toolbarButtonIcons.push_back(loadImage(getPath("interface/ui/toggle_red.png")));
+        m_toolbarButtonIcons.push_back(loadImage(getPath("interface/ui/toggle_green.png")));
+        m_toolbarButtonIcons.push_back(loadImage(getPath("interface/ui/toggle_blue.png")));
+        m_toolbarButtonIcons.push_back(loadImage(getPath("interface/ui/toggle_alpha.png")));
 
         // Toggle channel buttons
         for ( uint i = 0; i < 4; i++ ) {

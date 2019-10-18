@@ -1,12 +1,10 @@
 /** \file       Data.cpp
- *  \brief      Embeds for the various files in the data folder. This is to
- *              make the exe self-sufficient, without platform dependency.
- *  \author     Rhoot
+ *  \brief      Data related functions.
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2014-2018 Khral Steelforge <https://github.com/kytulendu>
- * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
+ * Copyright (C) 2014-2019 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *
@@ -27,22 +25,33 @@
 #include "stdafx.h"
 
 #include <wx/mstream.h>
+#include <wx/stdpaths.h>
 
 #include "Data.h"
 
 namespace gw2b {
 
-    namespace data {
+    wxBitmap loadPNG(const byte* p_data, size_t p_size)
+    {
+        wxMemoryInputStream stream(p_data, p_size);
+        return wxBitmap(wxImage(stream, wxBITMAP_TYPE_PNG, -1), wxBITMAP_SCREEN_DEPTH);
+    }
 
-        wxBitmap loadPNG(const byte* p_data, size_t p_size) {
-            wxMemoryInputStream stream(p_data, p_size);
-            return wxBitmap(wxImage(stream, wxBITMAP_TYPE_PNG, -1), wxBITMAP_SCREEN_DEPTH);
-        }
+    wxBitmap loadImage(wxString p_path)
+    {
+        return wxBitmap(wxImage(p_path), wxBITMAP_SCREEN_DEPTH);
+    }
 
-        wxBitmap loadImage(const char* p_path) {
-            return wxBitmap(wxImage(wxString::FromUTF8(p_path)), wxBITMAP_SCREEN_DEPTH);
-        }
-
-    }; // namespace data
+    wxString getPath(const char* p_filePath)
+    {
+#ifdef _WIN32
+        wxString dataPath(wxT("../data"));
+#else
+        wxStandardPathsBase& stdp = wxStandardPaths::Get( );
+        auto dataPath = stdp.GetDataDir( );
+#endif
+        dataPath << wxT("/") << wxString::FromUTF8(p_filePath);
+        return dataPath;
+    }
 
 }; // namespace gw2b

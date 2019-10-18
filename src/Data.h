@@ -1,12 +1,10 @@
 /** \file       Data.h
- *  \brief      Embeds for the various files in the data folder. This is to
- *              make the exe self-sufficient, without platform dependency.
- *  \author     Rhoot
+ *  \brief      Data related functions.
+ *  \author     Khralkatorrix
  */
 
 /**
- * Copyright (C) 2014-2018 Khral Steelforge <https://github.com/kytulendu>
- * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
+ * Copyright (C) 2014-2019 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *
@@ -31,17 +29,21 @@
 
 namespace gw2b {
 
-    namespace data {
+    /** Loads a PNG from memory and returns a new wxBitmap containing it.
+    *  \param[in]  p_data   PNG data to load.
+    *  \param[in]  p_size   Size of the PNG data.
+    *  \return wxBitmap    Bitmap containing the loaded PNG. */
+    wxBitmap loadPNG(const byte* p_data, size_t p_size);
 
-        /** Loads a PNG from memory and returns a new wxBitmap containing it.
-        *  \param[in]  p_data   PNG data to load.
-        *  \param[in]  p_size   Size of the PNG data.
-        *  \return wxBitmap    Bitmap containing the loaded PNG. */
-        wxBitmap loadPNG(const byte* p_data, size_t p_size);
+    /** Loads an image from an image file and returns a new wxBitmap containing it.
+    *  \param[in]  p_path   Path of image file to load.
+    *  \return wxBitmap    Bitmap containing the loaded PNG. */
+    wxBitmap loadImage(wxString p_path);
 
-        wxBitmap loadImage(const char* p_path);
-
-    }; // namespace data
+    /** Get full path of a file that was in gw2browser's data directory.
+    *  \param[in]  p_path   File path in relation to gw2browser's data directory.
+    *  \return wxString    Full file path. */
+    wxString getPath(const char* p_filePath);
 
 }; // namespace gw2b
 

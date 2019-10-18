@@ -4,7 +4,7 @@
  */
 
 /**
- * Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2016-2019 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *
@@ -51,7 +51,7 @@ namespace gw2b {
         /** Constructor. Create text renderer.
         *  \param[in]  p_fontfile    Path to font file.
         *  \param[in]  p_fontsize    Font size, default is 12 point. */
-        Text2D( const char* p_fontfile = "../data/fonts/LiberationSans-Regular.ttf", const FT_UInt p_fontsize = 12 );
+        Text2D( const char* p_fontfile = "fonts/LiberationSans-Regular.ttf", const FT_UInt p_fontsize = 12 );
         /** Destructor. Clears all data. */
         ~Text2D( );
 

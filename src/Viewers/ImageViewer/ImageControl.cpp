@@ -4,6 +4,7 @@
  */
 
 /**
+ * Copyright (C) 2019 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
  *
  * This file is part of Gw2Browser.
@@ -33,7 +34,7 @@ namespace gw2b {
     ImageControl::ImageControl( wxWindow* p_parent, const wxPoint& p_position, const wxSize& p_size )
         : wxScrolledWindow( p_parent, wxID_ANY, p_position, p_size )
         , m_channels( IC_All ) {
-        m_backdrop = data::loadImage("../data/interface/checkers.png");
+        m_backdrop = loadImage(getPath("interface/ui/checkers.png"));
         this->SetBackgroundStyle( wxBG_STYLE_CUSTOM );
         this->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
         this->Bind( wxEVT_PAINT, &ImageControl::OnPaintEvt, this );

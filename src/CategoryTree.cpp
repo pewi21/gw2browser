@@ -4,7 +4,7 @@
  */
 
 /**
- * Copyright (C) 2014-2019 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2014-2019 Khralkatorrix <https://github.com/kytulendu>
  * Copyright (C) 2013 Till034 <https://github.com/Till034>
  * Copyright (C) 2012 Rhoot <https://github.com/rhoot>
  *
@@ -37,20 +37,21 @@ namespace gw2b {
     //      CategoryTreeImageList
     //----------------------------------------------------------------------------
 
-    CategoryTreeImageList::CategoryTreeImageList( )
-        : wxImageList( 16, 16, true, 2 ) {
-        this->Add( data::loadImage( "../data/interface/icons/open_folder.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/unknown.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/closed_folder.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/exe.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/dll.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/image.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/text.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/sound.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/font.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/font_bitmap.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/video.png" ) );
-        this->Add( data::loadImage( "../data/interface/icons/model.png" ) );
+    CategoryTreeImageList::CategoryTreeImageList()
+        : wxImageList(16, 16, true, 2)
+    {
+        this->Add(loadImage(getPath("interface/icons/open_folder.png")));
+        this->Add(loadImage(getPath("interface/icons/unknown.png")));
+        this->Add(loadImage(getPath("interface/icons/closed_folder.png")));
+        this->Add(loadImage(getPath("interface/icons/exe.png")));
+        this->Add(loadImage(getPath("interface/icons/dll.png")));
+        this->Add(loadImage(getPath("interface/icons/image.png")));
+        this->Add(loadImage(getPath("interface/icons/text.png")));
+        this->Add(loadImage(getPath("interface/icons/sound.png")));
+        this->Add(loadImage(getPath("interface/icons/font.png")));
+        this->Add(loadImage(getPath("interface/icons/font_bitmap.png")));
+        this->Add(loadImage(getPath("interface/icons/video.png")));
+        this->Add(loadImage(getPath("interface/icons/model.png")));
     }
 
     //============================================================================/

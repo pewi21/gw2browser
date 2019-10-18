@@ -4,7 +4,7 @@
  */
 
 /**
- * Copyright (C) 2016 Khral Steelforge <https://github.com/kytulendu>
+ * Copyright (C) 2016-2019 Khralkatorrix <https://github.com/kytulendu>
  *
  * This file is part of Gw2Browser.
  *
@@ -24,6 +24,7 @@
 
 #include "stdafx.h"
 
+#include "Data.h"
 #include "Exception.h"
 
 #include "LightBox.h"
@@ -33,7 +34,7 @@ namespace gw2b {
     LightBox::LightBox( ) {
         // Load shader
         try {
-            m_cubeShader = new Shader( "../data/shaders/light_box.vert", "../data/shaders/light_box.frag" );
+            m_cubeShader = new Shader(getPath("shaders/light_box.vert").mb_str(), getPath("shaders/light_box.frag").mb_str());
 
             m_cubeShader->use( );
             // Get the uniform location
