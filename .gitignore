@@ -4,6 +4,7 @@ bind
 build
 obj
 objs
+share
 tmp
 extern/freetype/build
 extern/glew/lib
