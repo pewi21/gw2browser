@@ -266,6 +266,13 @@ namespace gw2b {
             this->reIndexDat( );
         }
 
+        // Hide GLCanvas while loading index file or scanning dat file
+        // As this will improve performance
+        m_previewGLCanvas->clear();
+        m_uiManager.GetPane(wxT("gl_content")).Hide();
+        m_uiManager.GetPane(wxT("panel_content")).Show();
+        m_uiManager.Update();
+
         // Fix bug when open other dat file and find by file id not working.
         m_findFirstTime = true;
     }
