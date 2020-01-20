@@ -79,6 +79,7 @@ Authors
 * [Liberation Sans Regular](https://fedorahosted.org/liberation-fonts/) : Font used by the model viewer
 * [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
+* Rengyr : Hide GLCanvas while loading index file or scanning dat file patch.
 * [Romain Dura](https://mouaif.wordpress.com/2009/01/28/levels-control-shader/) : Levels control shader
 * [Till034](https://github.com/Till034) : OnCompareItems function overload
 * [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
