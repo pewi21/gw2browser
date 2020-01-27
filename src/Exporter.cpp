@@ -750,6 +750,8 @@ namespace gw2b {
         for ( uint i = 0; i < model.numMeshes( ); i++ ) {
             const GW2Mesh& mesh = model.mesh( i );
 
+			if (mesh.materialIndex == -1) continue;
+
             materialName[mesh.materialIndex] = mesh.materialName.c_str( );
         }
 
@@ -1013,7 +1015,7 @@ namespace gw2b {
     }
 
     void Exporter::exportModelTexture( uint32 p_fileid ) {
-        auto entryNumber = m_datFile.entryNumFromFileId( p_fileid );
+        auto entryNumber = m_datFile.entryNumFromFileOrBaseId( p_fileid );
         auto fileData = m_datFile.readEntry( entryNumber );
 
         // Bail if read failed
