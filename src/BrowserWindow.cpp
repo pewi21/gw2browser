@@ -188,6 +188,7 @@ namespace gw2b {
         // Have to set the window size here after initialize OpenGL canvas,
         // or else the OpenGL canvas doesn't display if not resize the window
         this->SetClientSize(820, 512);
+        this->SetMinSize(wxSize(820, 512));
 
         // Hook up events
         this->Bind( wxEVT_MENU, &BrowserWindow::onOpenEvt, this, wxID_OPEN );
