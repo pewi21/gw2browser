@@ -217,7 +217,7 @@ inline HalfFloat::HalfFloat( float f ) {
 
 		x.f = f;
 
-		register int32_t e = ( x.i >> 23 ) & 0x000001ff;
+		int32_t e = ( x.i >> 23 ) & 0x000001ff;
 
 		e = _eLut[e];
 

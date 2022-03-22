@@ -202,9 +202,9 @@ namespace neo {
             // Adjust e, accounting for the different exponent bias
             // of float and HalfFloat (127 versus 15).
             //
-            register int32_t s = ( i >> 16 ) & 0x00008000;
-            register int32_t e = ( ( i >> 23 ) & 0x000000ff ) - ( 127 - 15 );
-            register int32_t m = i & 0x007fffff;
+            int32_t s = ( i >> 16 ) & 0x00008000;
+            int32_t e = ( ( i >> 23 ) & 0x000000ff ) - ( 127 - 15 );
+            int32_t m = i & 0x007fffff;
 
             //
             // Now reassemble s, e and m into a HalfFloat:
