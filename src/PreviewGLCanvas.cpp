@@ -190,7 +190,7 @@ namespace gw2b {
         if ( GLEW_OK != glewerr )
         {
             wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( glewerr ) ) );
-            return false;
+            //return false;     // FIXME: Comment this out due to glewInit() give error 0x4 on some Linux system
         }
 
         wxLogMessage( wxT( "GLEW version %s" ), wxString( glewGetString( GLEW_VERSION ) ) );
