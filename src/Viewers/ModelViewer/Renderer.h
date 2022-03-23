@@ -94,8 +94,6 @@ namespace gw2b {
 
         /** Clear the viewer. */
         void clear();
-        /** Initialize the renderer. */
-        static bool init();
         /** Setup the renderer. */
         void setup();
         /** Strings describing the current GL connection. */

@@ -52,21 +52,6 @@ namespace gw2b {
         }
     }
 
-    /* Static */
-    bool Renderer::init() {
-        // Initialize GLEW to setup the OpenGL Function pointers
-        glewExperimental = true;
-        GLenum glewerr = glewInit( );
-        if ( GLEW_OK != glewerr )
-        {
-            wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( glewerr ) ) );
-            return false;
-        }
-
-        wxLogMessage( wxT( "GLEW version %s" ), wxString( glewGetString( GLEW_VERSION ) ) );
-        return true;
-    }
-
     void Renderer::setup() {
         // Set background color
         glClearColor( 0.21f, 0.21f, 0.21f, 1.0f );

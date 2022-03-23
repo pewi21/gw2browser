@@ -194,16 +194,18 @@ namespace gw2b {
 
         wxLogMessage( wxT( "Initializing OpenGL..." ) );
 
-        // The current context must be set before we get OGL pointers
-        this->SetCurrent( *m_glContext );
+        m_glContext->SetCurrent(*this);
 
-        // Initialize our OGL pointers
-        if ( !Renderer::init() ) {
-            wxMessageBox("Error: OpenGL initialization failed.",
-                "OpenGL initialization error", wxOK | wxICON_INFORMATION, this);
-            delete m_glContext;
+        // Initialize GLEW to setup the OpenGL Function pointers
+        glewExperimental = true;
+        GLenum glewerr = glewInit( );
+        if ( GLEW_OK != glewerr )
+        {
+            wxLogMessage( wxT( "GLEW: Could not initialize GLEW library.\nError : %s" ), wxString( glewGetErrorString( glewerr ) ) );
             return false;
         }
+
+        wxLogMessage( wxT( "GLEW version %s" ), wxString( glewGetString( GLEW_VERSION ) ) );
 
         // Create OpenGL renderer, pass our OpenGL error handler
         //m_glRenderer = new Renderer(&fOGLErrHandler);
@@ -244,7 +246,7 @@ namespace gw2b {
             return;
 
         // This should not be needed, while we have only one canvas
-        this->SetCurrent(*m_glContext);
+        m_glContext->SetCurrent(*this);
 
         // Do the magic
         m_glRenderer->render();
@@ -404,7 +406,7 @@ namespace gw2b {
 
         // This is normally only necessary if there is more than one wxGLCanvas
         // or more than one wxGLContext in the application.
-        this->SetCurrent(*m_glContext);
+        m_glContext->SetCurrent(*this);
 
         // It's up to the application code to update the OpenGL viewport settings.
         auto clientSize = p_event.GetSize();
