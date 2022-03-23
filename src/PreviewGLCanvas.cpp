@@ -69,20 +69,8 @@ namespace gw2b {
         // Create OpenGL context
 
         wxGLContextAttrs ctxAttrs;
-        // An impossible context, just to test IsOk()
-        ctxAttrs.PlatformDefaults().OGLVersion(99, 2).EndList();
+        ctxAttrs.PlatformDefaults().CoreProfile().OGLVersion(3, 3).EndList();
         m_glContext = new wxGLContext(this, nullptr, &ctxAttrs);
-
-        if ( !m_glContext->IsOK() )
-        {
-            wxLogMessage("Trying to set OpenGL 99.2 failed, as expected.");
-            delete m_glContext;
-            ctxAttrs.Reset();
-
-            ctxAttrs.PlatformDefaults().CoreProfile().OGLVersion(3, 3).EndList();
-            m_glContext = new wxGLContext(this, nullptr, &ctxAttrs);
-        }
-
         if ( !m_glContext->IsOK() )
         {
             wxMessageBox("Gw2Browser needs OpenGL 3.3 support.",
