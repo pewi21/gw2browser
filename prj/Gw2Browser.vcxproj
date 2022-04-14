@@ -223,13 +223,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.5\include\;..\..\wxWidgets-3.1.5\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Debug\Win32;..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Debug;..\extern\libvorbis\win32\VS2017\Win32\Debug;..\..\wxWidgets-3.1.5\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include\;..\..\wxWidgets-3.1.5\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Debug\Win32;..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Debug;..\extern\libvorbis\win32\VS2017\Win32\Debug;..\extern\tinyxml2\vs\Debug;..\..\wxWidgets-3.1.5\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include;..\..\wxWidgets-3.1.5\lib\vc_x64_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs\x64\Debug Static;..\extern\glew\lib\Debug\x64;..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Debug;..\extern\libvorbis\win32\VS2017\x64\Debug;..\extern\tinyxml2\tinyxml2\bin\tinyxml2\x64-Debug-Lib;..\..\wxWidgets-3.1.5\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\extern\freetype\objs\x64\Debug Static;..\extern\glew\lib\Debug\x64;..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Debug;..\extern\libvorbis\win32\VS2017\x64\Debug;..\extern\tinyxml2\vs\x64\Debug;..\..\wxWidgets-3.1.5\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
@@ -239,12 +239,12 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\..\wxWidgets-3.1.5\include\;..\..\wxWidgets-3.1.5\lib\vc_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\Win32;..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Release;..\extern\libvorbis\win32\VS2017\Win32\Release;..\..\wxWidgets-3.1.1\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include\;..\..\wxWidgets-3.1.5\lib\vc_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\Win32;..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Release;..\extern\libvorbis\win32\VS2017\Win32\Release;..\extern\tinyxml2\vs\Debug;..\..\wxWidgets-3.1.1\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include;..\..\wxWidgets-3.1.5\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Release;..\extern\libvorbis\win32\VS2017\x64\Release;..\extern\tinyxml2\tinyxml2\bin\tinyxml2\x64-Release-Lib;..\..\wxWidgets-3.1.5\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Release;..\extern\libvorbis\win32\VS2017\x64\Release;..\extern\tinyxml2\vs\x64\Release;..\..\wxWidgets-3.1.5\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
