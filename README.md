@@ -64,7 +64,7 @@ Authors
 
 * [Khralkatorrix](https://github.com/kytulendu)
 
-### Thanks to:
+### Credits:
 
 * [Rhoot](https://github.com/rhoot) : Original Gw2Browser and gw2formats
 * [Antoine Hom](https://github.com/ahom) : gw2DatTools
@@ -76,10 +76,10 @@ Authors
 * [Inigo Quilez](http://www.iquilezles.org/www/articles/normals/normals.htm) : clever normalization of mesh
 * [Joey de Vries](http://learnopengl.com) and [opengl-tutorial.org](http://www.opengl-tutorial.org) : Great OpenGL 3.3 tutorial
 * [John Hable](http://filmicworlds.com/blog/filmic-tonemapping-operators/) : Uncharted 2 tone maping function
+* [KDE Breeze icons](https://martok.github.io/breeze-icons-png/) : Icons used in this software
 * [Liberation Sans Regular](https://fedorahosted.org/liberation-fonts/) : Font used by the model viewer
-* [Open Icon Library](http://openiconlibrary.sourceforge.net/) : Icons used in this software
 * [ral](https://sites.google.com/site/jumptovictory/) : Information of files in Gw2.dat
-* Rengyr : Hide GLCanvas while loading index file or scanning dat file patch.
+* [Rengyr](https://github.com/Rengyr) : Various patches.
 * [Romain Dura](https://mouaif.wordpress.com/2009/01/28/levels-control-shader/) : Levels control shader
 * [Till034](https://github.com/Till034) : OnCompareItems function overload
 * [Xtridence](http://forum.xentax.com/viewtopic.php?p=72880#p72880) : modified GWUnpacker to work with Gw2.dat
@@ -96,16 +96,18 @@ For contributions, please go to [this project's page on GitHub](https://github.c
 Legal Disclaimer
 ----------------
 
-Guild Wars 2 © 2010-2019 ArenaNet, LLC. All rights reserved.
-Guild Wars, Guild Wars 2, Heart of Thorns, Guild Wars 2: Path of Fire,
-ArenaNet, NCSOFT, the Interlocking NC Logo, and all associated logos
-and designs are trademarks or registered trademarks of NCSOFT Corporation.
+Guild Wars 2 © 2010-2022 ArenaNet, LLC. All rights reserved.
+Guild Wars, Guild Wars 2: Heart of Thorns, Guild Wars 2: Path of Fire,
+Guild Wars 2: End of Dragons, ArenaNet, NCSOFT, the Interlocking NC Logo,
+and all associated logos and designs are trademarks or registered trademarks
+of NCSOFT Corporation.
 All other trademarks are the property of their respective owners.
 
 License
 -------
 
-    Copyright © 2014-2019 Khralkatorrix <https://github.com/kytulendu>
+    Copyright © 2014-2022 Khralkatorrix <https://github.com/kytulendu>
+    Copyright © 2020 Rengyr <https://github.com/Rengyr>
     Copyright © 2019 BoyC <https://twitter.com/BoyCcns>
     Copyright © 2013 Till034 <https://github.com/Till034>
     Copyright © 2012 Rhoot <https://github.com/rhoot>
