@@ -582,16 +582,17 @@ namespace gw2b {
             ) );
 
         info.SetCopyright( wxString::FromAscii(
-            "Copyright (C) 2014-2019 Khralkatorrix - https://github.com/kytulendu\n"
+            "Copyright (C) 2014-2022 Khralkatorrix - https://github.com/kytulendu\n"
+            "Copyright (C) 2020 Rengyr <https://github.com/Rengyr>"
             "Copyright (C) 2019 BoyC - https://twitter.com/BoyCcns\n"
             "Copyright (C) 2013 Till034 - https://github.com/Till034\n"
             "Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
             "\n"
             "Guild Wars 2 (C)2010-2019 ArenaNet, LLC. All rights reserved.\n"
             "Guild Wars, Guild Wars 2, Guild Wars 2: Heart of Thorns,\n"
-            "Guild Wars 2: Path of Fire, ArenaNet, NCSOFT, the Interlocking NC Logo,\n"
-            "and all associated logos and designs are trademarks or registered\n"
-            "trademarks of NCSOFT Corporation.\n"
+            "Guild Wars 2: Path of Fire, Guild Wars 2: End of Dragons,\n"
+            "ArenaNet, NCSOFT, the Interlocking NC Logo, and all associated logos\n"
+            "and designs are trademarks or registered trademarks of NCSOFT Corporation.\n"
             "All other trademarks are the property of their respective owners.\n"
             ) );
 
