@@ -83,7 +83,7 @@ set(OGG_SOURCES
 )
 
 if(WIN32 AND BUILD_SHARED_LIBS)
-    list(APPEND OGG_SOURCES win32/ogg.def)
+    list(APPEND OGG_SOURCES win32/libogg.def)
 endif()
 
 if(BUILD_FRAMEWORK)
