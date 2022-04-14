@@ -28,7 +28,7 @@ PLATFORM_LDFLAGS = /SAFESEH
 
 NOLOGO     = /nologo
 CCNODBG    = cl.exe $(NOLOGO) /O2 /DNDEBUG
-CCDEBUG    = cl.exe $(NOLOGO) /Od /Gm /Zi /D_DEBUG /RTC1
+CCDEBUG    = cl.exe $(NOLOGO) /Od /Zi /D_DEBUG /RTC1
 CFLAGS     = /I. /Isrc $(NOLOGO) /W3 /EHsc /c
 CFLAGS     = $(CFLAGS) /DWIN32 /D_CRT_SECURE_NO_WARNINGS /DWIN32_LEAN_AND_MEAN
 LDFLAGS    = /LARGEADDRESSAWARE /MANIFEST /NXCOMPAT /DYNAMICBASE
@@ -51,11 +51,6 @@ CFGSET     = FALSE
 OUTDIR = ..\obj\
 !ELSE
 OUTDIR = $(OBJDIR)
-!ENDIF
-
-!IF "$(HAVE_AVX2)" == "1"
-CFLAGS = $(CFLAGS) /DWEBP_HAVE_AVX2
-AVX2_FLAGS = /arch:AVX2
 !ENDIF
 
 ##############################################################
@@ -134,12 +129,16 @@ LIBWEBP_PDBNAME = $(DIROBJ)\$(LIBWEBP_BASENAME)_dll.pdb
 CFGSET = TRUE
 !ENDIF
 
+!IF "$(UNICODE)" == "1"
+CFLAGS = $(CFLAGS) /D_UNICODE /DUNICODE
+!ENDIF
+
 #######################
 # Usage
 #
 !IF "$(CFGSET)" == "FALSE"
 !MESSAGE Usage: nmake /f Makefile.vc [CFG=<config>]
-!MESSAGE .          [OBJDIR=<path>] [RTLIBCFG=<rtlib>] [<target>]
+!MESSAGE .          [OBJDIR=<path>] [RTLIBCFG=<rtlib>] [UNICODE=1] [<target>]
 !MESSAGE
 !MESSAGE where <config> is one of:
 !MESSAGE -  release-static                - release static library
@@ -216,6 +215,7 @@ DSP_DEC_OBJS = \
     $(DIROBJ)\dsp\lossless_msa.obj \
     $(DIROBJ)\dsp\lossless_neon.obj \
     $(DIROBJ)\dsp\lossless_sse2.obj \
+    $(DIROBJ)\dsp\lossless_sse41.obj \
     $(DIROBJ)\dsp\rescaler.obj \
     $(DIROBJ)\dsp\rescaler_mips32.obj \
     $(DIROBJ)\dsp\rescaler_mips_dsp_r2.obj \
@@ -239,9 +239,9 @@ DSP_ENC_OBJS = \
     $(DIROBJ)\dsp\cost.obj \
     $(DIROBJ)\dsp\cost_mips32.obj \
     $(DIROBJ)\dsp\cost_mips_dsp_r2.obj \
+    $(DIROBJ)\dsp\cost_neon.obj \
     $(DIROBJ)\dsp\cost_sse2.obj \
     $(DIROBJ)\dsp\enc.obj \
-    $(DIROBJ)\dsp\enc_avx2.obj \
     $(DIROBJ)\dsp\enc_mips32.obj \
     $(DIROBJ)\dsp\enc_mips_dsp_r2.obj \
     $(DIROBJ)\dsp\enc_msa.obj \
@@ -392,7 +392,13 @@ $(DIRBIN)\get_disto.exe: $(IMAGEIO_DEC_OBJS) $(IMAGEIO_UTIL_OBJS)
 $(DIRBIN)\get_disto.exe: $(LIBWEBPDEMUX) $(LIBWEBP)
 $(DIRBIN)\webp_quality.exe: $(DIROBJ)\extras\webp_quality.obj
 $(DIRBIN)\webp_quality.exe: $(IMAGEIO_UTIL_OBJS)
-$(DIRBIN)\webp_quality.exe: $(EXTRAS_OBJS) $(LIBWEBP)
+$(DIRBIN)\webp_quality.exe: $(EXTRAS_OBJS)
+# EXTRA_OBJS requires private symbols from dsp. Explicitly add those when
+# building libwebp as a dll.
+!IF "$(DLLBUILD)" == "TRUE"
+$(DIRBIN)\webp_quality.exe: $(DSP_DEC_OBJS)
+!ENDIF
+$(DIRBIN)\webp_quality.exe: $(LIBWEBP)
 $(DIRBIN)\webpinfo.exe: $(DIROBJ)\examples\webpinfo.obj
 $(DIRBIN)\webpinfo.exe: $(IMAGEIO_DEC_OBJS)
 $(DIRBIN)\webpinfo.exe: $(EX_UTIL_OBJS) $(IMAGEIO_UTIL_OBJS)
@@ -454,9 +460,6 @@ $(DIROBJ)\$(DLLINC):
 .SUFFIXES: .c .obj .res .exe
 # File-specific flag builds. Note batch rules take precedence over wildcards,
 # so for now name each file individually.
-$(DIROBJ)\dsp\enc_avx2.obj: src\dsp\enc_avx2.c
-	$(CC) $(CFLAGS) $(AVX2_FLAGS) /Fd$(LIBWEBP_PDBNAME) /Fo$(DIROBJ)\dsp\ \
-	  src\dsp\$(@B).c
 $(DIROBJ)\examples\anim_diff.obj: examples\anim_diff.c
 	$(CC) $(CFLAGS) /DWEBP_HAVE_GIF /Fd$(LIBWEBP_PDBNAME) \
 	  /Fo$(DIROBJ)\examples\ examples\$(@B).c
@@ -492,15 +495,18 @@ $(DIROBJ)\examples\gifdec.obj: examples\gifdec.c
 {src\utils}.c{$(DIROBJ)\utils}.obj::
 	$(CC) $(CFLAGS) /Fd$(LIBWEBP_PDBNAME) /Fo$(DIROBJ)\utils\ $<
 
+LNKLIBS     = ole32.lib windowscodecs.lib shlwapi.lib
+!IF "$(UNICODE)" == "1"
+LNKLIBS     = $(LNKLIBS) Shell32.lib
+!ENDIF
+
 {$(DIROBJ)\examples}.obj{$(DIRBIN)}.exe:
-	$(LNKEXE) $(LDFLAGS) /OUT:$@ $** \
-	    ole32.lib windowscodecs.lib shlwapi.lib
+	$(LNKEXE) $(LDFLAGS) /OUT:$@ $** $(LNKLIBS)
 	$(MT) -manifest $@.manifest -outputresource:$@;1
 	del $@.manifest
 
 {$(DIROBJ)\extras}.obj{$(DIRBIN)}.exe:
-	$(LNKEXE) $(LDFLAGS) /OUT:$@ $** \
-	    ole32.lib windowscodecs.lib shlwapi.lib
+	$(LNKEXE) $(LDFLAGS) /OUT:$@ $** $(LNKLIBS)
 	$(MT) -manifest $@.manifest -outputresource:$@;1
 	del $@.manifest
 
