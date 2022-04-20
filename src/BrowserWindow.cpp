@@ -583,7 +583,7 @@ namespace gw2b {
 
         info.SetCopyright( wxString::FromAscii(
             "Copyright (C) 2014-2022 Khralkatorrix - https://github.com/kytulendu\n"
-            "Copyright (C) 2020 Rengyr <https://github.com/Rengyr>"
+            "Copyright (C) 2020 Rengyr - https://github.com/Rengyr\n"
             "Copyright (C) 2019 BoyC - https://twitter.com/BoyCcns\n"
             "Copyright (C) 2013 Till034 - https://github.com/Till034\n"
             "Copyright (C) 2012 Rhoot - https://github.com/rhoot\n"
