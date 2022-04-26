@@ -899,7 +899,7 @@ File Id     Format      Note
 1859723     model       Charr Awaken helm
 1861588     model       Sieran
 1861595     model       Trahearne
-1862481     model       Griffon mount
+1862481     model       Spooky Griffon mount
 1862498     model       Spooky springer mount default color
 1862505     model       Spooky springer mount
 1862546     model       Spooky raptor mount default color
@@ -936,7 +936,7 @@ File Id     Format      Note
 1893395     model       Aurene
 1893433     model       PoF Rox
 1893434     model       PoF Rytlock
-1893457     model       Awaken Alien
+1893457     model       Awaken Alien, Awakened Abomination
 1893890     model       Dhuum
 1895018     model       PoF Sythe
 1895591     model       Aurene
@@ -949,15 +949,15 @@ File Id     Format      Note
 1915363     model       Wintersday skimmer mount
 1915367     model       Wintersday skimmer mount default color
 1915380     model       Wintersday jackal mount
-1925217     model       Goat mount
+1925217     model       Goat springer mount
 1925291     model       M.O.X
 1933021     model       A cool gun
-1933075     model       Lion mount
+1933075     model       Grand Lion mount
 1938192     model       Skritt + Horse
 1938238     model       Lion mount default color
 1938257     model       Goat mount default color
-1938284     model       Stringray from DOOM
-1938296     model       German Shepherd
+1938284     model       Stringray mount from DOOM
+1938296     model       German Shepherd dog
 1938756     model       Horse
 1945028     model       Sand Charr
 1945092     model       Throne
@@ -991,6 +991,26 @@ File Id     Format      Note
 1955462     model       Azura nuclear reactor
 1956735     model       Charr statue
 1958059     model       Claw of the Khan-Ur display case
+
+1983587     model       jackal mount skin (Shrine Guardian)
+1991572     model       griffon mount skin (mummy)
+1991622     model       springer mount skin (mummy)
+1991662     model       raptor mount skin (mummy)
+1991699     model       skimmer mount skin (mummy)
+1991742     model       jackal mount skin (mummy)
+1996517     model       roller beatle mount
+1996521     model       roller beatle mount
+1997706     model       griffon mount skin (mummy)
+1997737     model       springer mount skin (mummy)
+1997793     model       skimmer mount skin (mummy)
+1997837     model       dog
+1997840     model       dog
+1997840     model       Leopard
+1997913     model       raptor mount skin (mummy)
+1997951     model       jackal mount skin (mummy)
+1999433     model       Aurene with Joko (possibly end of LS4 cut scene)
+2010246     model       roller beatle mount skin (gotta go fast)
+
 2117586     model       charr jetpack
 2117587     model       charr jetpack
 2117588     model       charr jetpack
@@ -1068,7 +1088,10 @@ File Id     Format      Note
 2198695     model       Charr Crecia Stoneglow
 2198706     model       Charr Imperator Efram Greetsglory
 2198717     model       Charr Imperator Ruinbanger (Bangar Ruinbringer)
-2198806     model       a dragon!
+2198806     model       Elder Dragon Aurene
+2198915     mp3         Metal Legion - Metal Legion
+2198917     mp3         Metal Legion - Bound By Blood
+2198919     mp3         Metal Legion - Ballad of Soulkeeper
 2199266     model       Charr bow
 2199272     model       Charr guitar
 2199279     model       Charr microphone
@@ -1139,9 +1162,6 @@ File Id     Format      Note
 2202361     model       Charr building
 2202363     model       Charr grill
 2202381     model       Charr fireplace
-2198915     mp3         Metal Legion - Metal Legion
-2198917     mp3         Metal Legion - Bound By Blood
-2198919     mp3         Metal Legion - Ballad of Soulkeeper
 2202392     model       Charr Flame Legion bed
 2202401     model       Charr building
 2202409     model       Charr poster pole
@@ -1157,4 +1177,135 @@ File Id     Format      Note
 2203302     model       Charr metal fence
 2203303     model       Blood Legion bed
 2203320     model       Blood Legion bed
-2204305     model       Metal Legion Logo Poster ***28/09/2019
+2204305     model       Metal Legion Logo Poster
+2219954     model       Boneskinner
+2220040     model       Boneskinner
+2220650     model       norn sheild
+2237191     model       griffon mount skin
+2247473     model       boneskinner amulet
+2247865     model       gate
+2247827     model       Drakkar
+2270231     model       charrzooka
+2270336     model       flaming sword thingy
+2278459     model       gold sink
+2286337     model       dragon wings backpack
+2286428     model       warclaw mount skin (saber kitty)
+2281211     model       raptor mount skin (SAB)
+2292335     model       Ryland Steelcatcher
+2292385     model       charr car
+2292651     model       Ash Legion bag
+2292671     model       charr radio
+2293433     model       charr machinegun
+2329212     model       skyscale mount skin (furry dragon)
+2352289     model       raptor mount skin (chocobo)
+2408475     model       skyscale mount skin (furry dragon)
+2419030     model       skyscale mount skin (tooth less)
+2433206     model       Jormag
+2454014     model       jackal mount skin (anubis)
+2485647     model       warclaw mount skin
+2485660     model       warclaw mount skin
+2485673     model       warclaw mount skin
+...
+2486036     model       doge mount skin
+2498563     model       Joko
+2575554     model       raptor mount skin (dragon)
+2575555     model       raptor mount skin (dragon)
+2586566     model       Aurene
+2586609     model       Soo-Won noodle
+2586612     model       Aurene
+2586615     model       Soo-Won noodle
+2588713     model       anthro turtle
+2588768     model       anthro turtle
+2588783     model       anthro turtle
+2589078     model       bird
+2589124     model       bird
+2590243     model       shiba dog
+2590253     model       kirin
+2590301     model       kirin
+2590314     model       sabertooth deer
+2590324     model       kirin
+2590333     model       white tiger
+2590579     model       deep sea krait
+2590586     model       deep sea krait
+2590593     model       deep sea krait
+2590602     model       deep sea krait
+2590605     model       deep sea krait
+2590614     model       deep sea krait
+2590623     model       deep sea krait
+2590626     model       deep sea krait
+2590629     model       deep sea krait
+2590643     model       deep sea krait
+2590648     model       deep sea krait
+2590653     model       deep sea krait
+2590656     model       deep sea krait
+2590663     model       deep sea krait
+2590666     model       deep sea krait
+2590669     model       deep sea krait
+2590672     model       deep sea krait
+2590675     model       deep sea krait
+2590676     model       deep sea krait
+2590677     model       deep sea krait
+2590680     model       deep sea krait
+2590683     model       deep sea krait
+2590686     model       deep sea krait
+2590689     model       deep sea krait
+2590682     model       deep sea krait
+2590695     model       deep sea krait
+2590874     model       deep sea krait
+2590888     model       Tengu
+...
+2591190     model       Tengu
+2592689     model       Aurene sleeping
+2593016     model       Dragon
+2593025     model       pheonix?
+2593037     model       Kirin
+2593344     model       bone stick
+2593553     model       Guild Wars 2 End of Dragons logo
+2597417     model       statue
+2598040     model       statue
+2598055     model       wanted poster
+2600816     model       statue
+2600849     model       statue
+2601045     model       statue
+2601111     model       statue
+2601166     model       weird looking "fish"
+2601575     model       statue
+2602202     model       raptor mount skin (dragon)
+2602788     model       Jormag
+2602831     model       Kralkatorrik head
+2602835     model       Kralkatorrik head
+2602879     model       Mordremoth
+2602882     model       Mordremoth
+2602915     model       Primordus head
+2603023     model       Soo-Won noodle
+2603027     model       Soo-Won noodle
+2603030     model       Soo-Won noodle
+2603077     model       Soo-Won noodle
+2603081     model       Zhaitan
+2603218     model       boat
+2603964     model       screen with top view of Aurene
+2659863     model       cute flying cat
+2659931     model       turtle
+2660212     model       Turtle mount
+2660225     model       Turtle mount
+2660253     model       Turtle mount
+2660353     model       Turtle mount
+2660453     model       Turtle mount
+2660500     model       boat
+2665498     model       bird mount
+2665503     model       bird mount
+2665527     model       bird mount
+2665532     model       bird mount
+2665575     model       corgi dog
+2665582     model       huskey dog
+2665585     model       dog
+2665588     model       dog
+2665591     model       dog
+2665596     model       dog
+2666642     model       a cube
+2667020     model       lowpoly kitten
+2667195     model       boat
+2671654     model       Turtle mount
+2671672     model       jackal mount skin (fox)
+2672576     model       jackal mount skin (fox)
+2672674     model       "Refuge" sign *** 21/04/2022
