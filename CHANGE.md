@@ -1,10 +1,11 @@
 Change log
 ----------
 
-Gw2Browser_2018-xx-xx (1.0.9.1)
+Gw2Browser_2022-xx-xx (1.0.9.1)
 -------------------------------
 Change:
 - Linux port
+- Add AFNT file support.
 - Add find by file id function.
 - Add model's lightmap, specular and dye map export.
 - Model viewer lightmap support.
@@ -12,11 +13,11 @@ Change:
 - Properly implement specular maping for Guild Wars 2 texture.
 - Set Model viewer light position at camera position.
 - Update category name.
+- Use KDE Breeze icons as the old one are hard to see on Windows 10.
 - Minor model viewer purrformance improvement.
 
 Fix:
-- Fix some crash.
-- Fix some bugs.
+- Many crashes and bugs fixed.
 
 Gw2Browser_2017-01-07 (1.0.8.1)
 -------------------------------

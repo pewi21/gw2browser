@@ -3,7 +3,7 @@ TODO list
 
 May change over time. :P
 
-Gw2Browser_201x-xx-xx (1.0.9.1)
+Gw2Browser_2022-xx-xx (1.0.9.1)
 -------------------------------
 
 * Add XML exporter for some files format.
@@ -17,17 +17,17 @@ figure out how gw2 do it.
 
 * content reader and viewer.
 
+* Appimage for Linux
+
 Further plans
 -------------
-
-* cmake build system.
 
 * map file reader, renderer, exporter.
 see Tyria-3D code for this.
 
 * Scene manager (need when implement map viewer).
 
-* COLLADA model export, use libxml2 for write xml, also export skeleton and animation.
+* glTF model export, also export skeleton and (maybe) animation.
 
 * Deferred shading (need for map viewer with many light)
 
