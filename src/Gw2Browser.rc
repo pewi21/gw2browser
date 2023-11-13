@@ -57,12 +57,12 @@ BEGIN
         BLOCK LANG_WITH_CHARSET
         BEGIN
 
-        VALUE "CompanyName", "Iron Legion\0"
+        VALUE "CompanyName", "Skull Cat Studio\0"
         VALUE "Developer", "Khralkatorrix\0"
         VALUE "FileDescription", "Gw2Browser\0"
         VALUE "FileVersion", VER_FILEVERSION_STR
         VALUE "InternalName", "*purr*\0"
-        VALUE "LegalCopyright", "Copyright (c) 2012-2019\0"
+        VALUE "LegalCopyright", "Copyright (c) 2012-2023\0"
         VALUE "OriginalFilename", "Gw2Browser.exe\0"
         VALUE "ProductName", APP_TITLE
         VALUE "ProductVersion", VER_PRODUCTVERSION_STR
