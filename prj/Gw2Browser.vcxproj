@@ -174,34 +174,34 @@
     <ProjectGuid>{CB536AF9-593F-47E9-B5F9-6DF09ED3BED2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Gw2Browser</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -223,13 +223,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include\;..\..\wxWidgets-3.1.5\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Debug\Win32;..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Debug;..\extern\libvorbis\win32\VS2017\Win32\Debug;..\extern\tinyxml2\vs\Debug;..\..\wxWidgets-3.1.5\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.2.4\include\;..\..\wxWidgets-3.2.4\lib\vc_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Debug\Win32;..\extern\libwebp\obj\debug-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2022\Win32\Debug;..\extern\libvorbis\win32\VS2022\libvorbis\Win32\Debug;..\extern\libvorbis\win32\VS2022\libvorbisfile\Win32\Debug;..\extern\tinyxml2\vs\Debug;..\..\wxWidgets-3.2.4\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include;..\..\wxWidgets-3.1.5\lib\vc_x64_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs\x64\Debug Static;..\extern\glew\lib\Debug\x64;..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Debug;..\extern\libvorbis\win32\VS2017\x64\Debug;..\extern\tinyxml2\vs\x64\Debug;..\..\wxWidgets-3.1.5\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.2.4\include;..\..\wxWidgets-3.2.4\lib\vc_x64_lib\mswud;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\freetype\objs\x64\Debug Static;..\extern\glew\lib\Debug\x64;..\extern\libwebp\obj\debug-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2022\x64\Debug;..\extern\libvorbis\win32\VS2022\libvorbis\x64\Debug;..\extern\libvorbis\win32\VS2022\libvorbisfile\x64\Debug;..\extern\tinyxml2\vs\x64\Debug;..\..\wxWidgets-3.2.4\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
@@ -239,12 +239,12 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include\;..\..\wxWidgets-3.1.5\lib\vc_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\Win32;..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2017\Win32\Release;..\extern\libvorbis\win32\VS2017\Win32\Release;..\extern\tinyxml2\vs\Debug;..\..\wxWidgets-3.1.1\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include\;..\extern\glm\;..\extern\gw2dattools\include\;..\extern\gw2formats\include\;..\extern\libwebp\src\;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.2.4\include\;..\..\wxWidgets-3.2.4\lib\vc_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\Win32;..\extern\libwebp\obj\release-static\x86\lib;..\extern\gw2formats\lib\x86;..\extern\gw2dattools\lib\x86;..\extern\libogg\win32\VS2022\Win32\Release;..\extern\libvorbis\win32\VS2022\libvorbis\Win32\Debug;..\extern\libvorbis\win32\VS2022\libvorbisfile\Win32\Release;..\extern\tinyxml2\vs\Debug;..\..\wxWidgets-3.2.4\lib\vc_lib;..\..\openal-soft\libs\Win32;..\..\mpg123;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.1.5\include;..\..\wxWidgets-3.1.5\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2017\x64\Release;..\extern\libvorbis\win32\VS2017\x64\Release;..\extern\tinyxml2\vs\x64\Release;..\..\wxWidgets-3.1.5\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.2.4\include;..\..\wxWidgets-3.2.4\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2022\x64\Release;..\extern\libvorbis\win32\VS2022\libvorbis\x64\Release;..\extern\libvorbis\win32\VS2022\libvorbisfile\x64\Release;..\extern\tinyxml2\vs\x64\Release;..\..\wxWidgets-3.2.4\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>
@@ -264,7 +264,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype.lib;glew32sd.lib;gw2dattoolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;wxbase31ud.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew32sd.lib;gw2dattoolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;wxbase32ud.lib;wxjpegd.lib;wxmsw32ud_adv.lib;wxmsw32ud_aui.lib;wxmsw32ud_core.lib;wxmsw32ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -287,7 +287,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype.lib;glew32sd.lib;gw2dattoolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;tinyxml2.lib;wxbase31ud.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew32sd.lib;gw2dattoolsd.lib;gw2formatsd.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder_debug.lib;OpenAL32.lib;tinyxml2.lib;wxbase32ud.lib;wxjpegd.lib;wxmsw32ud_adv.lib;wxmsw32ud_aui.lib;wxmsw32ud_core.lib;wxmsw32ud_gl.lib;wxpngd.lib;wxtiffd.lib;wxzlibd.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -312,7 +312,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype.lib;glew32s.lib;gw2dattools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_core.lib;wxmsw31u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew32s.lib;gw2dattools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;wxbase32u.lib;wxjpeg.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_core.lib;wxmsw32u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
@@ -337,7 +337,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype.lib;glew32s.lib;gw2dattools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;tinyxml2.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_core.lib;wxmsw31u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew32s.lib;gw2dattools.lib;gw2formats.lib;libmpg123-0.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;libwebpdecoder.lib;OpenAL32.lib;tinyxml2.lib;wxbase32u.lib;wxjpeg.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_core.lib;wxmsw32u_gl.lib;wxpng.lib;wxtiff.lib;wxzlib.lib;comctl32.lib;rpcrt4.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
