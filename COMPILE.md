@@ -37,12 +37,11 @@ Building Gw2Browser
 
 * [CMake](https://cmake.org/)
 
-* Microsoft Visual Studio 2017 or [Visual Studio Community 2017](https://www.visualstudio.com/products/visual-studio-community-vs)
-Choose ... also install Windows SDK Version 8.1
+* Microsoft Visual Studio 2022 or [Visual Studio Community 2022](https://www.visualstudio.com/products/visual-studio-community-vs)
 
   or
 
-* [TDM=GCC](https://jmeubank.github.io/tdm-gcc/)
+* [TDM-GCC](https://jmeubank.github.io/tdm-gcc/)
 
 * [CodeBlocks](http://www.codeblocks.org/)
 
@@ -56,7 +55,7 @@ If using Visual Studio, also download [Visual Studio integration add-in for Cppc
 
 * [mpg123](https://www.mpg123.de)
 * [OpenAL-Soft](https://openal-soft.org/)
-* [wxWidgets 3.1.5 or higher](http://wxwidgets.org/)
+* [wxWidgets 3.2.4 or higher](http://wxwidgets.org/)
 * [FreeType](http://www.freetype.org/) Included
 * [gw2dattools](https://github.com/kytulendu/gw2dattools) Included
 * [gw2formats](https://github.com/kytulendu/gw2formats) Included
@@ -94,7 +93,7 @@ extract it to the same directory that gw2browser directory is in. Or download th
 and build it your self.
 
 * Download wxWidgets source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose `wxWidgets-3.1.5.zip` or `wxWidgets-3.1.5.7z` and extract it to the same directory
+choose `wxWidgets-3.2.4.zip` or `wxWidgets-3.2.4.7z` and extract it to the same directory
 that gw2browser directory is in. Or download and use the binaries.
 
 **Note:** The library and source code directory must be in directory like this.
@@ -116,7 +115,7 @@ The ROOT is the directory you created in Getting the source code.
          |    +--lib
          |    +--...
          |
-         +--wxWidgets-3.1.2
+         +--wxWidgets-3.2.4
               +--include
               +--src
               +--...
@@ -129,13 +128,13 @@ The ROOT is the directory you created in Getting the source code.
 
 #### Compile wxWidgets:
 
-* Use solution file corresponding with your VS version in directory `wxWidgets-3.1.2/build/msw`.
-  For example, VS2017 is `wx_vc15.sln`, if there is no corresponding solution file for your newer VS,
-  just open the higest version of solution file available.
+* Use solution file corresponding with your VS version in directory `wxWidgets-3.2.4/build/msw`.
+  For example, VS2022 is `wx_vc17.sln`, if there is no corresponding solution file for your newer VS,
+  just open the highest version of solution file available.
 
 #### Make libmpg123 library:
 
-* Open a `x64 Native Tools Command Prompt for VS 2017` or `x86 Native Tools Command Prompt for VS 2017`
+* Open a `x64 Native Tools Command Prompt for VS 2022` or `x86 Native Tools Command Prompt for VS 2022`
   and change it's directory to mpg123's directory.
 
 * Rename export definition file by using this command.
@@ -154,8 +153,8 @@ The ROOT is the directory you created in Getting the source code.
 
 #### Compile libwebp:
 
-* Open `x64 Native Tools Command Prompt for VS 2017`
-  If you want to compile 32 bit library, use `x86 Native Tools Command Prompt for VS 2017` instread.
+* Open `x64 Native Tools Command Prompt for VS 2022`
+  If you want to compile 32 bit library, use `x86 Native Tools Command Prompt for VS 2022` instread.
 
 * Change directory to `gw2browser/extern/libweb`
 
@@ -166,13 +165,11 @@ The ROOT is the directory you created in Getting the source code.
 
 #### Compile freetype:
 
-* Create vc2017 directory in `gw2browser/extern/freetype/builds/windows`
+* Create vc2022 directory in `gw2browser/extern/freetype/builds/windows`
 
-* Copy all content from vc2010 directory to vc2017 directory
+* Copy all content from vc2010 directory to vc2022 directory
 
-* Open `freetype.sln` solution file in `gw2browser/extern/freetype/builds/windows/vc2017`
-  If it ask for upgrade project file, choose Windows SDK Version to `8.1`,
-  then click "Ok" to upgrade it.
+* Open `freetype.sln` solution file in `gw2browser/extern/freetype/builds/windows/vc2022` with VS 2022
 
 * Choose `Debug Static` or `Release Static` configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
   from two dropdown box in Visual Studio toolbar.
@@ -185,12 +182,8 @@ The ROOT is the directory you created in Getting the source code.
 
 * Remove `xmltest.cpp` from `tinyxml2` project.
 
-* Right click  `tinyxml2` entry in `Solution Explorer`, then click `Retarget Projects`,
-  choose Windows SDK Version to `8.1`, then click "Ok".
-
 * Right click  `tinyxml2` entry in `Solution Explorer`, then click `Properties`,
-  in `Configuration Properties` -> `General` Change `Platform Toolset` to `Visual Studio 2017 (v141)`
-  and change `Configuration Type` to `Static library (.lib)`. Do this for each configurations and platforms.
+  in `Configuration Properties` -> `General` change `Configuration Type` to `Static library (.lib)`. Do this for each configurations and platforms.
 
 * Choose Debug-Lib or Release-Lib configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
   from two dropdown box in Visual Studio toolbar.
@@ -243,7 +236,7 @@ for example set your path to `%path%;C:\TDM-GCC-64\bin`
 
 #### Compile wxWidgets:
 
-* Open Git Bash command line window and change directory to `wxWidgets-3.1.2/build/msw` and use these command.
+* Open Git Bash command line window and change directory to `wxWidgets-3.2.4/build/msw` and use these command.
 
       mingw32-make -j 4 -f makefile.gcc BUILD=debug SHARED=1
 
@@ -286,7 +279,7 @@ for example set your path to `%path%;C:\TDM-GCC-64\bin`
 * Open Git Bash command line window and change directory to `gw2browser/extern/libvorbis` and use these command
 
       mkdir build && cd build
-      cmake -G "MinGW Makefiles" .. -DBUILD_SHARED_LIBS=ON -DOGG_INCLUDE_DIR="D:/DEV/gw2browser/extern/libogg/include" -D OGG_LIBRARY="D:/DEV/gw2browser/extern/libogg/build/libogg.dll.a"
+      cmake -G "MinGW Makefiles" .. -DBUILD_SHARED_LIBS=ON -DOGG_INCLUDE_DIR="D:/devel/gw2browser/extern/libogg/include" -D OGG_LIBRARY="D:/devel/gw2browser/extern/libogg/build/libogg.dll.a"
       mingw32-make
 
 #### Compile libwebp:
@@ -339,35 +332,41 @@ for example set your path to `%path%;C:\TDM-GCC-64\bin`
 
 * Copy `libwebpdecoder.dll` from `gw2browser/extern/libwebp/build` directory to `gw2browser/bin`
 
-* Copy following dll files from `wxWidgets-3.1.5/lib/gcc_dll` directory to `gw2browser/bin`
+* Copy following dll files from `wxWidgets-3.2.4/lib/gcc_dll` directory to `gw2browser/bin`
 
-      wxbase315u_gcc_custom.dll
-      wxmsw315u_aui_gcc_custom.dll
-      wxmsw315u_core_gcc_custom.dll
-      wxmsw315u_gl_gcc_custom
+      wxbase32u_gcc_custom.dll
+      wxmsw32u_aui_gcc_custom.dll
+      wxmsw32u_core_gcc_custom.dll
+      wxmsw32u_gl_gcc_custom
 
   If debug build, also copy these dll files.
 
-      wxbase315ud_gcc_custom.dll
-      wxmsw315ud_aui_gcc_custom.dll
-      wxmsw315ud_core_gcc_custom.dll
-      wxmsw315ud_gl_gcc_custom
+      wxbase32ud_gcc_custom.dll
+      wxmsw32ud_aui_gcc_custom.dll
+      wxmsw32ud_core_gcc_custom.dll
+      wxmsw32ud_gl_gcc_custom
 
 ---
 
 ## Building on Linux
 
-For this guide, I was using Kubuntu 18.04, but this guide also work with any Linux distribution that was Debian based.
+For this guide, I was using Kubuntu and ArchLinux, but this guide can be adapt to work with any Linux distribution.
 
 ### Building instructions
 
 #### Getting the required library and tools:
 
-* Download wxWidgets 3.1 source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
-choose wxWidgets-3.1.5.tar.bz2 and extract it to somewhere, for example, your home directory.
-If your Linux distribution have wxWidgets 3.1 package, you can skip this and use a command like below command to install wxWidgets 3.1.
+* Download wxWidgets 3.2 source code from [here](https://github.com/wxWidgets/wxWidgets/releases),
+choose wxWidgets-3.2.4.tar.bz2 and extract it to somewhere, for example, your home directory.
+If your Linux distribution have wxWidgets 3.2 package, you can skip this and use a command like below command to install wxWidgets 3.2.
 
-      sudo apt install libwxbase3.1-dev libwxgtk3.1-dev
+  for Debian and it's derivative
+
+      sudo apt install libwxbase3.2-dev libwxgtk3.2-dev
+
+  for ArchLinux and it's derivative
+
+      sudo pacman -S wxwidgets-common wxwidgets-gtk3
 
   Or download wxWidgets's repository using this command.
 
@@ -377,11 +376,23 @@ If your Linux distribution have wxWidgets 3.1 package, you can skip this and use
 * Install git by using this command.
   You can skip this step if you have already install git.
 
+  for Debian and it's derivative
+
       sudo apt install git git-gui
+
+  for ArchLinux and it's derivative
+
+      sudo pacman -S git git-gui
 
 * Use this command to install required library and tools.
 
+  for Debian and it's derivative
+
       sudo apt install build-essential codeblocks cmake cmake-gui libwebp-dev libglew-dev libopenal-dev libmpg123-dev libvorbis-dev libogg-dev libfreetype6 libfreetype6-dev libtinyxml2-dev libglm-dev
+
+  for ArchLinux and it's derivative
+
+      sudo pacman -S gcc codeblocks cmake libwebp glew openal mpg123 libvorbis libogg freetype2 tinyxml2 glm
 
 #### Getting the source code:
 
@@ -393,7 +404,7 @@ This will download gw2browser and all included library source code, although we 
 
 #### Compiling wxWidgets:
 
-* If your system have wxWidgets 3.1 package, you can skip this step.
+* If your system have wxWidgets 3.2 package, you can skip this step.
 * Open a terminal window and change directory to wxWidgets source code directory you have extracted.
 * Make a directory using this command
 
