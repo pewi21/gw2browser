@@ -62,6 +62,7 @@ namespace gw2b {
         FCC_TTF = 0x00000100,   // files with this signature seems to be ttf but it is Embedded OpenType fonts with ttf header
         FCC_OggS = 0x5367674f,
         FCC_ARAP = 0x50415241,  // relate to temp folder name of Awesomium
+        FCC_CTEX = 0x58455443,  // DXT5 compressed texture, custom format.
 
         // Texture codec
         FCC_DXT1 = 0x31545844,
@@ -130,6 +131,7 @@ namespace gw2b {
         ANFT_ATEP,                      /**< ATEP texture, used for maps. */
         ANFT_ATEU,                      /**< ATEU texture, used for UI. */
         ANFT_ATET,                      /**< ATET texture, unknown use. */
+        ANFT_CTEX,                      /**< CTEX texture, unknown use. */
         ANFT_DDS,                       /**< DDS texture, not an ANet specific format. */
         ANFT_JPEG,                      /**< JPEG Image, not an ANet specific format. */
         ANFT_WEBP,                      /**< WebP Image, not an ANet specific format. */

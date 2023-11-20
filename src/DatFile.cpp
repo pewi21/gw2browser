@@ -384,6 +384,9 @@ namespace gw2b {
         } else if ( fourcc == FCC_ATET ) {
             po_fileType = ANFT_ATET;
 
+        } else if ( fourcc == FCC_CTEX ) {
+            po_fileType = ANFT_CTEX;
+
         } else if ( fourcc == FCC_DDS ) {
             po_fileType = ANFT_DDS;
 

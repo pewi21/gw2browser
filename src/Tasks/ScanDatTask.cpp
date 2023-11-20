@@ -202,6 +202,7 @@ namespace gw2b {
         case ANFT_JPEG:
         case ANFT_WEBP:
         case ANFT_PNG:
+        case ANFT_CTEX:
             MakeCategory( wxT( "Textures" ) );
 
             switch ( p_fileType ) {
@@ -222,6 +223,9 @@ namespace gw2b {
                 break;
             case ANFT_ATET:
                 MakeSubCategory( wxT( "ATET" ) );
+                break;
+            case ANFT_CTEX:
+                MakeSubCategory( wxT( "CTEX" ) );
                 break;
             case ANFT_DDS:
                 MakeSubCategory( wxT( "DDS" ) );

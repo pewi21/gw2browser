@@ -452,6 +452,7 @@ namespace gw2b {
         case ANFT_ATEP:
         case ANFT_ATEU:
         case ANFT_ATET:
+        case ANFT_CTEX:
         case ANFT_DDS:
         case ANFT_JPEG:
         case ANFT_WEBP:
