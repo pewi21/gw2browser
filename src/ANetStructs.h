@@ -61,7 +61,7 @@ namespace gw2b {
         FCC_RIFF = 0x46464952,  // resource interchange file format
         FCC_TTF = 0x00000100,   // files with this signature seems to be ttf but it is Embedded OpenType fonts with ttf header
         FCC_OggS = 0x5367674f,
-        FCC_ARAP = 0x50415241,  // relate to temp folder name of Awesomium
+        FCC_ARAP = 0x50415241,  // relate to temp folder name of CoherentUI
         FCC_CTEX = 0x58455443,  // DXT5 compressed texture, custom format.
 
         // Texture codec
