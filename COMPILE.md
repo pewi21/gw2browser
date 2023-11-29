@@ -178,15 +178,21 @@ The ROOT is the directory you created in Getting the source code.
 
 #### Compile tinyxml2:
 
-* Open `tinyxml2.sln` solution file in `gw2browser/extern/tinyxml2/vs`
+* Open cmake-gui, put path of directory `gw2browser/extern/tinyxml2` to `Where is the source code:`
 
-* Remove `xmltest.cpp` from `tinyxml2` project.
+* Create a directory named `build-vc` in `gw2browser/extern/tinyxml2`
 
-* Right click  `tinyxml2` entry in `Solution Explorer`, then click `Properties`,
-  in `Configuration Properties` -> `General` change `Configuration Type` to `Static library (.lib)`. Do this for each configurations and platforms.
+* Put path of directory `gw2browser/extern/tinyxml2/build-vc` to `Where to build the binaries`
 
-* Choose Debug-Lib or Release-Lib configuration and choose to Win32 for 32 bit build or x64 for 64 bit build
-  from two dropdown box in Visual Studio toolbar.
+* Click `Configure` button
+
+* Choose `Visual Studio 17 2022` then click `OK`
+
+* Click `Generate` button
+
+* Open `tinyxml2.sln` solution file in `gw2browser/extern/tinyxml2/build-vc`
+
+* Choose Debug or Release configuration.
 
 * Press F7 or in MenuBar -> Build -> Build Solution to compile tinyxml2.
 
