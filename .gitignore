@@ -54,4 +54,3 @@ CMakeCache.txt
 doxygen
 *.bak
 *.pc
-extern/tinyxml2
