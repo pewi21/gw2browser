@@ -1,0 +1,1737 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:19 (project)"
+    message: |
+      The system is: Windows - 10.0.19045 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:19 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+      Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:11:53.
+      
+      Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\4.0.1\\CompilerIdC\\CompilerIdC.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+      PrepareForBuild:
+        Tworzenie katalogu â€žDebug\\â€ť.
+        Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+        Tworzenie katalogu â€žDebug\\CompilerIdC.tlog\\â€ť.
+      InitializeBuildStatus:
+        Trwa tworzenie â€žDebug\\CompilerIdC.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+        Modyfikowanie â€žDebug\\CompilerIdC.tlog\\unsuccessfulbuildâ€ť.
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\4.0.1\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Usuwanie pliku â€žDebug\\CompilerIdC.tlog\\unsuccessfulbuildâ€ť.
+        Modyfikowanie â€žDebug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstateâ€ť.
+      Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\4.0.1\\CompilerIdC\\CompilerIdC.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+      
+      Kompilacja powiodĹ‚a siÄ™.
+          OstrzeĹĽenia: 0
+          Liczba bĹ‚Ä™dĂłw: 0
+      
+      Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.84
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/4.0.1/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:19 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xn658p"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xn658p"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xn658p'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_019b1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:11:55.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xn658p\\cmTC_019b1.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_019b1.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xn658p\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_019b1.dir\\Debug\\cmTC_019b1.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_019b1.dir\\Debug\\cmTC_019b1.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_019b1.dir\\Debug\\cmTC_019b1.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_019b1.dir\\Debug\\\\" /Fd"cmTC_019b1.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.0\\Modules\\CMakeCCompilerABI.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_019b1.dir\\Debug\\\\" /Fd"cmTC_019b1.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.0\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xn658p\\Debug\\cmTC_019b1.exe" /INCREMENTAL /ILK:"cmTC_019b1.dir\\Debug\\cmTC_019b1.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xn658p/Debug/cmTC_019b1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xn658p/Debug/cmTC_019b1.lib" /MACHINE:X64  /machine:x64 cmTC_019b1.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_019b1.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xn658p\\Debug\\cmTC_019b1.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_019b1.dir\\Debug\\cmTC_019b1.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_019b1.dir\\Debug\\cmTC_019b1.tlog\\cmTC_019b1.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xn658p\\cmTC_019b1.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.80
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:227 (message)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:19 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:264 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:19 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.43.34810.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/deps.cmake:13 (check_c_source_compiles)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test HAVE_BUILTIN_BSWAP16"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-gshlx2"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-gshlx2"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_BUILTIN_BSWAP16"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-gshlx2'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_47140.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:11:56.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_47140.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_47140.dir\\Debug\\cmTC_47140.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_47140.dir\\Debug\\cmTC_47140.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_47140.dir\\Debug\\cmTC_47140.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_BUILTIN_BSWAP16 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_47140.dir\\Debug\\\\" /Fd"cmTC_47140.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_BUILTIN_BSWAP16 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_47140.dir\\Debug\\\\" /Fd"cmTC_47140.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\src.c(3,13): warning C4013: niezdefiniowany "__builtin_bswap16"; przy zaĹ‚oĹĽeniu, ĹĽe extern zwraca int [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxproj]
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\Debug\\cmTC_47140.exe" /INCREMENTAL /ILK:"cmTC_47140.dir\\Debug\\cmTC_47140.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-gshlx2/Debug/cmTC_47140.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-gshlx2/Debug/cmTC_47140.lib" /MACHINE:X64  /machine:x64 cmTC_47140.dir\\Debug\\src.obj
+        src.obj : error LNK2019: nierozpoznany symbol zewnÄ™trzny __builtin_bswap16 przywoĹ‚any w funkcji main [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\Debug\\cmTC_47140.exe : fatal error LNK1120: liczba nierozpoznanych elementĂłw zewnÄ™trznych: 1 [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\src.c(3,13): warning C4013: niezdefiniowany "__builtin_bswap16"; przy zaĹ‚oĹĽeniu, ĹĽe extern zwraca int [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxproj]
+        
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy Link) -> 
+          src.obj : error LNK2019: nierozpoznany symbol zewnÄ™trzny __builtin_bswap16 przywoĹ‚any w funkcji main [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\Debug\\cmTC_47140.exe : fatal error LNK1120: liczba nierozpoznanych elementĂłw zewnÄ™trznych: 1 [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-gshlx2\\cmTC_47140.vcxproj]
+        
+            OstrzeĹĽenia: 1
+            Liczba bĹ‚Ä™dĂłw: 2
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.71
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/deps.cmake:21 (check_c_source_compiles)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test HAVE_BUILTIN_BSWAP32"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-etu16n"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-etu16n"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_BUILTIN_BSWAP32"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-etu16n'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_24f69.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:11:57.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_24f69.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_24f69.dir\\Debug\\cmTC_24f69.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_24f69.dir\\Debug\\cmTC_24f69.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_24f69.dir\\Debug\\cmTC_24f69.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_BUILTIN_BSWAP32 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_24f69.dir\\Debug\\\\" /Fd"cmTC_24f69.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_BUILTIN_BSWAP32 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_24f69.dir\\Debug\\\\" /Fd"cmTC_24f69.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\src.c(3,13): warning C4013: niezdefiniowany "__builtin_bswap32"; przy zaĹ‚oĹĽeniu, ĹĽe extern zwraca int [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxproj]
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\Debug\\cmTC_24f69.exe" /INCREMENTAL /ILK:"cmTC_24f69.dir\\Debug\\cmTC_24f69.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-etu16n/Debug/cmTC_24f69.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-etu16n/Debug/cmTC_24f69.lib" /MACHINE:X64  /machine:x64 cmTC_24f69.dir\\Debug\\src.obj
+        src.obj : error LNK2019: nierozpoznany symbol zewnÄ™trzny __builtin_bswap32 przywoĹ‚any w funkcji main [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\Debug\\cmTC_24f69.exe : fatal error LNK1120: liczba nierozpoznanych elementĂłw zewnÄ™trznych: 1 [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\src.c(3,13): warning C4013: niezdefiniowany "__builtin_bswap32"; przy zaĹ‚oĹĽeniu, ĹĽe extern zwraca int [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxproj]
+        
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy Link) -> 
+          src.obj : error LNK2019: nierozpoznany symbol zewnÄ™trzny __builtin_bswap32 przywoĹ‚any w funkcji main [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\Debug\\cmTC_24f69.exe : fatal error LNK1120: liczba nierozpoznanych elementĂłw zewnÄ™trznych: 1 [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-etu16n\\cmTC_24f69.vcxproj]
+        
+            OstrzeĹĽenia: 1
+            Liczba bĹ‚Ä™dĂłw: 2
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.69
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/deps.cmake:29 (check_c_source_compiles)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test HAVE_BUILTIN_BSWAP64"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-0qscgb"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-0qscgb"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_BUILTIN_BSWAP64"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-0qscgb'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_bf37d.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:11:58.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_bf37d.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_bf37d.dir\\Debug\\cmTC_bf37d.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_bf37d.dir\\Debug\\cmTC_bf37d.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_bf37d.dir\\Debug\\cmTC_bf37d.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_BUILTIN_BSWAP64 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_bf37d.dir\\Debug\\\\" /Fd"cmTC_bf37d.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_BUILTIN_BSWAP64 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_bf37d.dir\\Debug\\\\" /Fd"cmTC_bf37d.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\src.c(3,13): warning C4013: niezdefiniowany "__builtin_bswap64"; przy zaĹ‚oĹĽeniu, ĹĽe extern zwraca int [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxproj]
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\Debug\\cmTC_bf37d.exe" /INCREMENTAL /ILK:"cmTC_bf37d.dir\\Debug\\cmTC_bf37d.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-0qscgb/Debug/cmTC_bf37d.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-0qscgb/Debug/cmTC_bf37d.lib" /MACHINE:X64  /machine:x64 cmTC_bf37d.dir\\Debug\\src.obj
+        src.obj : error LNK2019: nierozpoznany symbol zewnÄ™trzny __builtin_bswap64 przywoĹ‚any w funkcji main [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\Debug\\cmTC_bf37d.exe : fatal error LNK1120: liczba nierozpoznanych elementĂłw zewnÄ™trznych: 1 [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\src.c(3,13): warning C4013: niezdefiniowany "__builtin_bswap64"; przy zaĹ‚oĹĽeniu, ĹĽe extern zwraca int [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxproj]
+        
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy Link) -> 
+          src.obj : error LNK2019: nierozpoznany symbol zewnÄ™trzny __builtin_bswap64 przywoĹ‚any w funkcji main [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\Debug\\cmTC_bf37d.exe : fatal error LNK1120: liczba nierozpoznanych elementĂłw zewnÄ™trznych: 1 [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-0qscgb\\cmTC_bf37d.vcxproj]
+        
+            OstrzeĹĽenia: 1
+            Liczba bĹ‚Ä™dĂłw: 2
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.70
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake:97 (check_c_source_compiles)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "cmake/deps.cmake:40 (find_package)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-4psfhj"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-4psfhj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-4psfhj'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1ee7c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:11:59.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\cmTC_1ee7c.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_1ee7c.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_1ee7c.dir\\Debug\\cmTC_1ee7c.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_1ee7c.dir\\Debug\\cmTC_1ee7c.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_1ee7c.dir\\Debug\\cmTC_1ee7c.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ee7c.dir\\Debug\\\\" /Fd"cmTC_1ee7c.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ee7c.dir\\Debug\\\\" /Fd"cmTC_1ee7c.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\src.c(1,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'pthread.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\cmTC_1ee7c.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\cmTC_1ee7c.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\cmTC_1ee7c.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\src.c(1,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'pthread.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-4psfhj\\cmTC_1ee7c.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.43
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckLibraryExists.cmake:112 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake:112 (check_library_exists)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "cmake/deps.cmake:40 (find_package)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rmrwpo"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rmrwpo"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rmrwpo'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_79573.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:00.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\cmTC_79573.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_79573.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_79573.dir\\Debug\\cmTC_79573.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_79573.dir\\Debug\\cmTC_79573.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_79573.dir\\Debug\\cmTC_79573.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_79573.dir\\Debug\\\\" /Fd"cmTC_79573.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\CheckFunctionExists.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_79573.dir\\Debug\\\\" /Fd"cmTC_79573.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\CheckFunctionExists.c"
+          CheckFunctionExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\Debug\\cmTC_79573.exe" /INCREMENTAL /ILK:"cmTC_79573.dir\\Debug\\cmTC_79573.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rmrwpo/Debug/cmTC_79573.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rmrwpo/Debug/cmTC_79573.lib" /MACHINE:X64  /machine:x64 cmTC_79573.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: nie moĹĽna otworzyÄ‡ pliku "pthreads.lib" [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\cmTC_79573.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\cmTC_79573.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\cmTC_79573.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy Link) -> 
+          LINK : fatal error LNK1104: nie moĹĽna otworzyÄ‡ pliku "pthreads.lib" [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rmrwpo\\cmTC_79573.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.59
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckLibraryExists.cmake:112 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake:112 (check_library_exists)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "cmake/deps.cmake:40 (find_package)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-87ijda"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-87ijda"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-87ijda'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_63c34.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:01.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\cmTC_63c34.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_63c34.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_63c34.dir\\Debug\\cmTC_63c34.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_63c34.dir\\Debug\\cmTC_63c34.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_63c34.dir\\Debug\\cmTC_63c34.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_63c34.dir\\Debug\\\\" /Fd"cmTC_63c34.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\CheckFunctionExists.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_63c34.dir\\Debug\\\\" /Fd"cmTC_63c34.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\CheckFunctionExists.c"
+          CheckFunctionExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\Debug\\cmTC_63c34.exe" /INCREMENTAL /ILK:"cmTC_63c34.dir\\Debug\\cmTC_63c34.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-87ijda/Debug/cmTC_63c34.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-87ijda/Debug/cmTC_63c34.lib" /MACHINE:X64  /machine:x64 cmTC_63c34.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: nie moĹĽna otworzyÄ‡ pliku "pthread.lib" [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\cmTC_63c34.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\cmTC_63c34.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\cmTC_63c34.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy Link) -> 
+          LINK : fatal error LNK1104: nie moĹĽna otworzyÄ‡ pliku "pthread.lib" [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-87ijda\\cmTC_63c34.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.66
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/deps.cmake:60 (check_c_source_compiles)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test HAVE_MATH_LIBRARY"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xjikb4"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xjikb4"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_MATH_LIBRARY"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xjikb4'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_c918d.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:02.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\cmTC_c918d.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_c918d.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_c918d.dir\\Debug\\cmTC_c918d.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_c918d.dir\\Debug\\cmTC_c918d.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_c918d.dir\\Debug\\cmTC_c918d.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_MATH_LIBRARY /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c918d.dir\\Debug\\\\" /Fd"cmTC_c918d.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_MATH_LIBRARY /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c918d.dir\\Debug\\\\" /Fd"cmTC_c918d.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\Debug\\cmTC_c918d.exe" /INCREMENTAL /ILK:"cmTC_c918d.dir\\Debug\\cmTC_c918d.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xjikb4/Debug/cmTC_c918d.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-xjikb4/Debug/cmTC_c918d.lib" /MACHINE:X64  /machine:x64 cmTC_c918d.dir\\Debug\\src.obj
+          cmTC_c918d.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\Debug\\cmTC_c918d.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_c918d.dir\\Debug\\cmTC_c918d.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_c918d.dir\\Debug\\cmTC_c918d.tlog\\cmTC_c918d.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-xjikb4\\cmTC_c918d.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.79
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:131 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file GLUT/glut.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-3nrjfh"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-3nrjfh"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_GLUT_GLUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-3nrjfh'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_7214c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:03.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\cmTC_7214c.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_7214c.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_7214c.dir\\Debug\\cmTC_7214c.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_7214c.dir\\Debug\\cmTC_7214c.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_7214c.dir\\Debug\\cmTC_7214c.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7214c.dir\\Debug\\\\" /Fd"cmTC_7214c.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\HAVE_GLUT_GLUT_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7214c.dir\\Debug\\\\" /Fd"cmTC_7214c.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\HAVE_GLUT_GLUT_H.c"
+          HAVE_GLUT_GLUT_H.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\HAVE_GLUT_GLUT_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'GLUT/glut.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\cmTC_7214c.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\cmTC_7214c.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\cmTC_7214c.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\HAVE_GLUT_GLUT_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'GLUT/glut.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3nrjfh\\cmTC_7214c.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.43
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:132 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file GL/glut.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-x256ju"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-x256ju"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_GL_GLUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-x256ju'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_904d4.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:04.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\cmTC_904d4.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_904d4.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_904d4.dir\\Debug\\cmTC_904d4.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_904d4.dir\\Debug\\cmTC_904d4.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_904d4.dir\\Debug\\cmTC_904d4.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_904d4.dir\\Debug\\\\" /Fd"cmTC_904d4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\HAVE_GL_GLUT_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_904d4.dir\\Debug\\\\" /Fd"cmTC_904d4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\HAVE_GL_GLUT_H.c"
+          HAVE_GL_GLUT_H.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\HAVE_GL_GLUT_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'GL/glut.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\cmTC_904d4.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\cmTC_904d4.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\cmTC_904d4.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\HAVE_GL_GLUT_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'GL/glut.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-x256ju\\cmTC_904d4.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.52
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:133 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file OpenGL/glut.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-ht077m"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-ht077m"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_OPENGL_GLUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-ht077m'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_39d8b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:05.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\cmTC_39d8b.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_39d8b.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_39d8b.dir\\Debug\\cmTC_39d8b.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_39d8b.dir\\Debug\\cmTC_39d8b.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_39d8b.dir\\Debug\\cmTC_39d8b.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_39d8b.dir\\Debug\\\\" /Fd"cmTC_39d8b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\HAVE_OPENGL_GLUT_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_39d8b.dir\\Debug\\\\" /Fd"cmTC_39d8b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\HAVE_OPENGL_GLUT_H.c"
+          HAVE_OPENGL_GLUT_H.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\HAVE_OPENGL_GLUT_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'OpenGL/glut.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\cmTC_39d8b.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\cmTC_39d8b.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\cmTC_39d8b.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\HAVE_OPENGL_GLUT_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'OpenGL/glut.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-ht077m\\cmTC_39d8b.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.47
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:134 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file shlwapi.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu133w"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu133w"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_SHLWAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu133w'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_fc5e8.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:06.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\cmTC_fc5e8.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_fc5e8.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_fc5e8.dir\\Debug\\cmTC_fc5e8.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_fc5e8.dir\\Debug\\cmTC_fc5e8.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_fc5e8.dir\\Debug\\cmTC_fc5e8.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fc5e8.dir\\Debug\\\\" /Fd"cmTC_fc5e8.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\HAVE_SHLWAPI_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fc5e8.dir\\Debug\\\\" /Fd"cmTC_fc5e8.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\HAVE_SHLWAPI_H.c"
+          HAVE_SHLWAPI_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\Debug\\cmTC_fc5e8.exe" /INCREMENTAL /ILK:"cmTC_fc5e8.dir\\Debug\\cmTC_fc5e8.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu133w/Debug/cmTC_fc5e8.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu133w/Debug/cmTC_fc5e8.lib" /MACHINE:X64  /machine:x64 cmTC_fc5e8.dir\\Debug\\HAVE_SHLWAPI_H.obj
+          cmTC_fc5e8.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\Debug\\cmTC_fc5e8.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_fc5e8.dir\\Debug\\cmTC_fc5e8.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_fc5e8.dir\\Debug\\cmTC_fc5e8.tlog\\cmTC_fc5e8.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu133w\\cmTC_fc5e8.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:01.09
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:135 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file unistd.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-u7fd0m"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-u7fd0m"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_UNISTD_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-u7fd0m'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ca317.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:07.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\cmTC_ca317.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_ca317.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_ca317.dir\\Debug\\cmTC_ca317.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_ca317.dir\\Debug\\cmTC_ca317.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_ca317.dir\\Debug\\cmTC_ca317.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ca317.dir\\Debug\\\\" /Fd"cmTC_ca317.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\HAVE_UNISTD_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ca317.dir\\Debug\\\\" /Fd"cmTC_ca317.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\HAVE_UNISTD_H.c"
+          HAVE_UNISTD_H.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\HAVE_UNISTD_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'unistd.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\cmTC_ca317.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\cmTC_ca317.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\cmTC_ca317.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\HAVE_UNISTD_H.c(2,10): error C1083: Nie moĹĽna otworzyÄ‡ pliku doĹ‚Ä…cz: 'unistd.h': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-u7fd0m\\cmTC_ca317.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 1
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.44
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:136 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file wincodec.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-pcuxxj"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-pcuxxj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_WINCODEC_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-pcuxxj'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_dd425.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:08.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\cmTC_dd425.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_dd425.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_dd425.dir\\Debug\\cmTC_dd425.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_dd425.dir\\Debug\\cmTC_dd425.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_dd425.dir\\Debug\\cmTC_dd425.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_dd425.dir\\Debug\\\\" /Fd"cmTC_dd425.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\HAVE_WINCODEC_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_dd425.dir\\Debug\\\\" /Fd"cmTC_dd425.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\HAVE_WINCODEC_H.c"
+          HAVE_WINCODEC_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\Debug\\cmTC_dd425.exe" /INCREMENTAL /ILK:"cmTC_dd425.dir\\Debug\\cmTC_dd425.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-pcuxxj/Debug/cmTC_dd425.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-pcuxxj/Debug/cmTC_dd425.lib" /MACHINE:X64  /machine:x64 cmTC_dd425.dir\\Debug\\HAVE_WINCODEC_H.obj
+          cmTC_dd425.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\Debug\\cmTC_dd425.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_dd425.dir\\Debug\\cmTC_dd425.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_dd425.dir\\Debug\\cmTC_dd425.tlog\\cmTC_dd425.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-pcuxxj\\cmTC_dd425.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:01.10
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/deps.cmake:137 (check_include_files)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Looking for include file windows.h"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-z982iq"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-z982iq"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_WINDOWS_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-z982iq'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_01f28.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:10.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\cmTC_01f28.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_01f28.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_01f28.dir\\Debug\\cmTC_01f28.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_01f28.dir\\Debug\\cmTC_01f28.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_01f28.dir\\Debug\\cmTC_01f28.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_01f28.dir\\Debug\\\\" /Fd"cmTC_01f28.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\HAVE_WINDOWS_H.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_01f28.dir\\Debug\\\\" /Fd"cmTC_01f28.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\HAVE_WINDOWS_H.c"
+          HAVE_WINDOWS_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\Debug\\cmTC_01f28.exe" /INCREMENTAL /ILK:"cmTC_01f28.dir\\Debug\\cmTC_01f28.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-z982iq/Debug/cmTC_01f28.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-z982iq/Debug/cmTC_01f28.lib" /MACHINE:X64  /machine:x64 cmTC_01f28.dir\\Debug\\HAVE_WINDOWS_H.obj
+          cmTC_01f28.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\Debug\\cmTC_01f28.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_01f28.dir\\Debug\\cmTC_01f28.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_01f28.dir\\Debug\\cmTC_01f28.tlog\\cmTC_01f28.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-z982iq\\cmTC_01f28.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:01.06
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:90 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_SSE41"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-boujg7"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-boujg7"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_SSE41"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-boujg7'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ce31a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:11.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\cmTC_ce31a.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_ce31a.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_ce31a.dir\\Debug\\cmTC_ce31a.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_ce31a.dir\\Debug\\cmTC_ce31a.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_ce31a.dir\\Debug\\cmTC_ce31a.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_SSE41 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ce31a.dir\\Debug\\\\" /Fd"cmTC_ce31a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_SSE41 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ce31a.dir\\Debug\\\\" /Fd"cmTC_ce31a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\Debug\\cmTC_ce31a.exe" /INCREMENTAL /ILK:"cmTC_ce31a.dir\\Debug\\cmTC_ce31a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-boujg7/Debug/cmTC_ce31a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-boujg7/Debug/cmTC_ce31a.lib" /MACHINE:X64  /machine:x64 cmTC_ce31a.dir\\Debug\\src.obj
+          cmTC_ce31a.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\Debug\\cmTC_ce31a.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_ce31a.dir\\Debug\\cmTC_ce31a.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_ce31a.dir\\Debug\\cmTC_ce31a.tlog\\cmTC_ce31a.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-boujg7\\cmTC_ce31a.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.79
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:90 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_SSE2"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-s58zpp"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-s58zpp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_SSE2"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-s58zpp'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_65439.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:12.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\cmTC_65439.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_65439.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_65439.dir\\Debug\\cmTC_65439.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_65439.dir\\Debug\\cmTC_65439.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_65439.dir\\Debug\\cmTC_65439.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_SSE2 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_65439.dir\\Debug\\\\" /Fd"cmTC_65439.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_SSE2 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_65439.dir\\Debug\\\\" /Fd"cmTC_65439.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\Debug\\cmTC_65439.exe" /INCREMENTAL /ILK:"cmTC_65439.dir\\Debug\\cmTC_65439.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-s58zpp/Debug/cmTC_65439.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-s58zpp/Debug/cmTC_65439.lib" /MACHINE:X64  /machine:x64 cmTC_65439.dir\\Debug\\src.obj
+          cmTC_65439.vcxproj -> D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\Debug\\cmTC_65439.exe
+        FinalizeBuildStatus:
+          Usuwanie pliku â€žcmTC_65439.dir\\Debug\\cmTC_65439.tlog\\unsuccessfulbuildâ€ť.
+          Modyfikowanie â€žcmTC_65439.dir\\Debug\\cmTC_65439.tlog\\cmTC_65439.lastbuildstateâ€ť.
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-s58zpp\\cmTC_65439.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe).
+        
+        Kompilacja powiodĹ‚a siÄ™.
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 0
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.80
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:90 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_MIPS32"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rkwiqc"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rkwiqc"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_MIPS32"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-rkwiqc'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_5dadf.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:13.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_5dadf.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_5dadf.dir\\Debug\\cmTC_5dadf.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_5dadf.dir\\Debug\\cmTC_5dadf.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_5dadf.dir\\Debug\\cmTC_5dadf.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS32 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5dadf.dir\\Debug\\\\" /Fd"cmTC_5dadf.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS32 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5dadf.dir\\Debug\\\\" /Fd"cmTC_5dadf.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-rkwiqc\\cmTC_5dadf.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 10
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.44
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:97 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_MIPS32"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-mppf0s"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-mppf0s"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_MIPS32"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-mppf0s'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ed024.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:14.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_ed024.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_ed024.dir\\Debug\\cmTC_ed024.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_ed024.dir\\Debug\\cmTC_ed024.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_ed024.dir\\Debug\\cmTC_ed024.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS32 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ed024.dir\\Debug\\\\" /Fd"cmTC_ed024.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS32 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ed024.dir\\Debug\\\\" /Fd"cmTC_ed024.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c"
+          NOTFOUND
+          src.c
+          Generowanie kodu...
+        \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          (kompilowanie pliku ĹşrĂłdĹ‚owego â€ž/NOTFOUNDâ€ť)
+          
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-mppf0s\\cmTC_ed024.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 11
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.45
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:90 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_MIPS_DSP_R2"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu0rne"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu0rne"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_MIPS_DSP_R2"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-zu0rne'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d40ad.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:15.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_d40ad.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_d40ad.dir\\Debug\\cmTC_d40ad.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_d40ad.dir\\Debug\\cmTC_d40ad.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_d40ad.dir\\Debug\\cmTC_d40ad.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS_DSP_R2 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d40ad.dir\\Debug\\\\" /Fd"cmTC_d40ad.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS_DSP_R2 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d40ad.dir\\Debug\\\\" /Fd"cmTC_d40ad.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-zu0rne\\cmTC_d40ad.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 10
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.45
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:97 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_MIPS_DSP_R2"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-3n9zxk"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-3n9zxk"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_MIPS_DSP_R2"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-3n9zxk'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d7abd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:16.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_d7abd.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_d7abd.dir\\Debug\\cmTC_d7abd.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_d7abd.dir\\Debug\\cmTC_d7abd.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_d7abd.dir\\Debug\\cmTC_d7abd.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS_DSP_R2 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d7abd.dir\\Debug\\\\" /Fd"cmTC_d7abd.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MIPS_DSP_R2 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d7abd.dir\\Debug\\\\" /Fd"cmTC_d7abd.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c"
+          NOTFOUND
+          src.c
+          Generowanie kodu...
+        \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          (kompilowanie pliku ĹşrĂłdĹ‚owego â€ž/NOTFOUNDâ€ť)
+          
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-3n9zxk\\cmTC_d7abd.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 11
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.44
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:90 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_NEON"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-tvb7zj"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-tvb7zj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_NEON"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-tvb7zj'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_0d6b0.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:17.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_0d6b0.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_0d6b0.dir\\Debug\\cmTC_0d6b0.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_0d6b0.dir\\Debug\\cmTC_0d6b0.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_0d6b0.dir\\Debug\\cmTC_0d6b0.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_NEON /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_0d6b0.dir\\Debug\\\\" /Fd"cmTC_0d6b0.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_NEON /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_0d6b0.dir\\Debug\\\\" /Fd"cmTC_0d6b0.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-tvb7zj\\cmTC_0d6b0.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 10
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.49
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:97 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_NEON"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-k0sur6"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-k0sur6"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_NEON"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-k0sur6'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_2ed40.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:18.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_2ed40.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_2ed40.dir\\Debug\\cmTC_2ed40.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_2ed40.dir\\Debug\\cmTC_2ed40.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_2ed40.dir\\Debug\\cmTC_2ed40.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_NEON /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_2ed40.dir\\Debug\\\\" /Fd"cmTC_2ed40.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_NEON /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_2ed40.dir\\Debug\\\\" /Fd"cmTC_2ed40.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c"
+          NOTFOUND
+          src.c
+          Generowanie kodu...
+        \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          (kompilowanie pliku ĹşrĂłdĹ‚owego â€ž/NOTFOUNDâ€ť)
+          
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-k0sur6\\cmTC_2ed40.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 11
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.45
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:90 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_MSA"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-axevbq"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-axevbq"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_MSA"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-axevbq'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_8f36a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:18.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_8f36a.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_8f36a.dir\\Debug\\cmTC_8f36a.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_8f36a.dir\\Debug\\cmTC_8f36a.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_8f36a.dir\\Debug\\cmTC_8f36a.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MSA /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_8f36a.dir\\Debug\\\\" /Fd"cmTC_8f36a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MSA /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_8f36a.dir\\Debug\\\\" /Fd"cmTC_8f36a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c"
+          src.c
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-axevbq\\cmTC_8f36a.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 10
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.45
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/cpu.cmake:21 (check_c_source_compiles)"
+      - "cmake/cpu.cmake:97 (webp_check_compiler_flag)"
+      - "cmake/deps.cmake:145 (include)"
+      - "CMakeLists.txt:112 (include)"
+    checks:
+      - "Performing Test WEBP_HAVE_FLAG_MSA"
+    directories:
+      source: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-wc6ki9"
+      binary: "D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-wc6ki9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "WEBP_HAVE_FLAG_MSA"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/PEWI_work/SRC/gw2browser/extern/libwebp/CMakeFiles/CMakeScratch/TryCompile-wc6ki9'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_9b5b3.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Wersja programu MSBuild 17.13.19+0d9f5a35a dla .NET Framework
+        Kompilacja rozpoczÄ™Ĺ‚a siÄ™ 12.04.2025 21:12:19.
+        
+        Projekt â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxprojâ€ť w wÄ™Ĺşle 1 (domyĹ›lne elementy docelowe).
+        PrepareForBuild:
+          Tworzenie katalogu â€žcmTC_9b5b3.dir\\Debug\\â€ť.
+          Dane wyjĹ›ciowe ze strukturÄ… sÄ… wĹ‚Ä…czone. Formatowanie diagnostyki kompilatora bÄ™dzie odzwierciedlaÄ‡ hierarchiÄ™ bĹ‚Ä™dĂłw. Aby uzyskaÄ‡ wiÄ™cej informacji, zobacz https://aka.ms/cpp/structured-output.
+          Tworzenie katalogu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\Debug\\â€ť.
+          Tworzenie katalogu â€žcmTC_9b5b3.dir\\Debug\\cmTC_9b5b3.tlog\\â€ť.
+        InitializeBuildStatus:
+          Trwa tworzenie â€žcmTC_9b5b3.dir\\Debug\\cmTC_9b5b3.tlog\\unsuccessfulbuildâ€ť, poniewaĹĽ okreĹ›lono "AlwaysCreate".
+          Modyfikowanie â€žcmTC_9b5b3.dir\\Debug\\cmTC_9b5b3.tlog\\unsuccessfulbuildâ€ť.
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MSA /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_9b5b3.dir\\Debug\\\\" /Fd"cmTC_9b5b3.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c"
+          Microsoft (R) C/C++ wersja kompilatora optymalizujÄ…cego 19.43.34810 dla x64
+          Copyright (C) Microsoft Corporation. Wszystkie prawa zastrzeĹĽone.
+          cl /c /ID:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D WEBP_HAVE_FLAG_MSA /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_9b5b3.dir\\Debug\\\\" /Fd"cmTC_9b5b3.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue  NOTFOUND "D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c"
+          NOTFOUND
+          src.c
+          Generowanie kodu...
+        \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          (kompilowanie pliku ĹşrĂłdĹ‚owego â€ž/NOTFOUNDâ€ť)
+          
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        Kompilowanie projektu â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxprojâ€ť wykonane (domyĹ›lne elementy docelowe) â€” NIEPOWODZENIE.
+        
+        Kompilacja NIE POWIODĹ\xc2\x81A SIÄ\xc2\x98.
+        
+        â€žD:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxprojâ€ť (domyĹ›lny element docelowy) (1)->
+        (element docelowy ClCompile) -> 
+          \\NOTFOUND(1,1): error C1083: Nie moĹĽna otworzyÄ‡ pliku ĹşrĂłdĹ‚o: 'NOTFOUND': No such file or directory [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,9): error C2065: "this": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,14): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žisâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,14): error C2065: "is": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,17): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žnotâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,17): error C2065: "not": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,21): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žvalidâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,21): error C2065: "valid": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,27): error C2146: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed identyfikatorem â€žcodeâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(5,27): error C2065: "code": niezadeklarowany identyfikator [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+          D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\src.c(7,9): error C2143: bĹ‚Ä…d skĹ‚adniowy: brakuje â€ž;â€ť przed â€žreturnâ€ť [D:\\PEWI_work\\SRC\\gw2browser\\extern\\libwebp\\CMakeFiles\\CMakeScratch\\TryCompile-wc6ki9\\cmTC_9b5b3.vcxproj]
+        
+            OstrzeĹĽenia: 0
+            Liczba bĹ‚Ä™dĂłw: 11
+        
+        Czas, ktĂłry upĹ‚ynÄ…Ĺ‚: 00:00:00.48
+        
+      exitCode: 1
+...

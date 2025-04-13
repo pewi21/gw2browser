@@ -244,7 +244,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>..\extern\freetype\include;..\extern\glew\include;..\extern\glm;..\extern\gw2dattools\include;..\extern\gw2formats\include;..\extern\libwebp\src;..\extern\libogg\include;..\extern\libvorbis\include;..\extern\tinyxml2;..\..\wxWidgets-3.2.4\include;..\..\wxWidgets-3.2.4\lib\vc_x64_lib\mswu;..\..\openal-soft\include;..\..\mpg123;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\obj\release-static\x64\lib;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2022\x64\Release;..\extern\libvorbis\win32\VS2022\libvorbis\x64\Release;..\extern\libvorbis\win32\VS2022\libvorbisfile\x64\Release;..\extern\tinyxml2\build-vc\Release;..\..\wxWidgets-3.2.4\lib\vc_x64_lib;..\..\openal-soft\libs\Win64;..\..\mpg123;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\extern\freetype\objs;..\extern\glew\lib\Release\x64;..\extern\libwebp\release;..\extern\gw2formats\lib\x64;..\extern\gw2dattools\lib\x64;..\extern\libogg\win32\VS2022\x64\Release;..\extern\libvorbis\win32\VS2022\libvorbis\x64\Release;..\extern\libvorbis\win32\VS2022\libvorbisfile\x64\Release;..\extern\tinyxml2\Release;..\..\wxWidgets-3.2.4\lib\vc_x64_lib;..\..\openal-soft\build\Release;..\..\mpg123;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(ProjectName)\$(Configuration)_$(PlatformShortName)\</IntDir>

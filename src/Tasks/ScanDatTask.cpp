@@ -67,6 +67,12 @@ namespace gw2b {
             this->setCurrentProgress( entryNumber + 1 );
             return;
         }
+        
+        // Get the full file size first - we'll need this for filtering
+        uint fileSize = m_datFile.fileSize(entryNumber);
+        
+        // Define minimum size threshold - 5KB
+        const uint MIN_SIZE_THRESHOLD = 5 * 1024; // 5KB in bytes
 
         // Get the file type
         ANetFileType fileType;
@@ -92,6 +98,45 @@ namespace gw2b {
         // Need another check, since the file might have been reloaded a couple of times
         if ( !size ) {
             this->setCurrentProgress( entryNumber + 1 );
+            return;
+        }
+        
+        // Check if it's a model or texture file that should be filtered
+        bool isModel = (fileType == ANFT_Model);
+        bool isTexture = (fileType == ANFT_ATEX || fileType == ANFT_ATTX || fileType == ANFT_ATEC ||
+                          fileType == ANFT_ATEP || fileType == ANFT_ATEU || fileType == ANFT_ATET ||
+                          fileType == ANFT_DDS || fileType == ANFT_JPEG || fileType == ANFT_WEBP ||
+                          fileType == ANFT_PNG || fileType == ANFT_CTEX);
+        
+        // Check if this is a PF file with MODL type
+        if (!isModel && size >= 12) {
+            // Check if it's a PF file
+            uint16 pfIdentifier = *reinterpret_cast<const uint16*>(m_outputBuffer.GetPointer());
+            if (pfIdentifier == FCC_PF) {
+                // Check for MODL type at offset 8
+                uint32 typeIdentifier = *reinterpret_cast<const uint32*>(m_outputBuffer.GetPointer() + 8);
+                if (typeIdentifier == FCC_MODL) {
+                    isModel = true;
+                }
+            }
+        }
+        
+        // Debug log for model files to understand size determination
+        if (isModel) {
+            uint baseId = m_datFile.baseIdFromFileNum(entryNumber);
+            wxLogMessage(wxT("Model file detected - ID: %d, Size: %d bytes"), baseId, fileSize);
+        }
+        
+        // Skip small model and texture files
+        if ((isModel || isTexture) && fileSize < MIN_SIZE_THRESHOLD) {
+            // Log skipped file for debugging
+            wxLogMessage(wxT("Skipping small %s file: %d (size: %d bytes)"), 
+                        isModel ? wxT("model") : wxT("texture"),
+                        m_datFile.baseIdFromFileNum(entryNumber),
+                        fileSize);
+            
+            // Skip this file and move to the next one
+            this->setCurrentProgress(entryNumber + 1);
             return;
         }
 

@@ -1,0 +1,1 @@
+D:\PEWI_work\SRC\gw2browser\extern\libvorbis\win32\VS2022\libvorbisfile\x64\Debug\libvorbisfile_static.lib

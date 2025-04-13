@@ -30,7 +30,8 @@
 // For AL* data types
 #include <AL/al.h>
 
-#include <mpg123.h>
+#define MPG123_ENUM_API
+#include <src/include/mpg123.h>
 #include <vorbis/vorbisfile.h>
 
 #include "OggCallback.h"
