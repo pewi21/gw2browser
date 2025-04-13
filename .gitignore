@@ -1,56 +1,76 @@
-# Binaries
-bin
-bin.gcc
-bind
-build
-obj
-objs
-share
-tmp
-extern/freetype/build
-extern/glew/lib
-extern/libogg/build
-extern/libvorbis/build
-extern/libwebp/build
-extern/tinyxml2/build
-*.o
-*.a
-*.exe
+### custom
+__test*/
+__trash*/
 
-# CodeBlocks
-*.depend
-*.layout
-
-# Visual Studio
-.vs
-ipch
-Debug
-Debug_x86
-Debug_x64
-Release
-Release_x86
-Release_x64
-*.aps
-*.sdf
-*.suo
-*.user
+### vs data binaries
+*.ncb
 *.opensdf
-*.db
-*.opendb
-*.diagsession
-*.psess
-*.vsps
-*.vspx
+*.sdf
+##unskipped:
+#*.suo
 
-# Cmake
-CMakeFiles
-CMakeCache.txt
-*.cmake
+### vs compile binaries
+*.bsc
+*.exe
+*.ilk
+*.map
+*.pdb
+*.idb
+*.aps
 
-# File manager
-.directory
+### vs folders
+obj/
+ipch/
+Release/
+MfcDebug/
+MfcRelease/
+Distribute/
+## vs out:
+bin/
+## vs server-side:
+OBJDIR/
+*.obj
+*.tlog
+*.pch
+*.log
+*.recipe
 
-# Misc
-doxygen
+*Win32_MfcDebug/
+*Win32_MfcRelease/
+
+### gcc depend (old)
+Depend
+Depend.bak
+
+### libs
+cryptlib-Debug.lib
+
+### compiled games
+db_r*
+game_r*
+## related symlinks
+db_symlink
+game_symlink
+
+### python stuff
+pre_qc
+*.pyc
+
+### backups and git conflicts
 *.bak
-*.pc
+*.orig
+*.rej
+
+### archives
+*.7z
+*.zip
+*.gz
+*.bz
+*.tar
+*.tgz
+*.txz
+
+### vs2017 workspace
+.vs/
+
+### giteye (eclipse egit)
